@@ -1,5 +1,5 @@
 {
-  "name": "flb_music",
+  "name": "flb-music",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -14,16 +14,37 @@
   },
   "main": "background.js",
   "dependencies": {
+    "axios": "^0.21.1",
+    "bluebird": "^3.7.2",
+    "browser-id3-writer": "^4.4.0",
     "core-js": "^3.6.5",
+    "crypto": "^1.0.1",
+    "electron-updater": "^4.3.8",
+    "ffbinaries": "^1.1.4",
+    "fluent-ffmpeg": "^2.1.2",
+    "g-i-s": "^2.1.6",
+    "genius-lyrics-api": "^3.0.6",
+    "material-icons": "^0.2.3",
+    "music-metadata": "^7.8.0",
+    "node-downloader-helper": "^1.0.17",
+    "node-id3": "^0.2.2",
+    "request-promise": "^4.2.6",
+    "util": "^0.12.3",
+    "uuidv4": "^6.2.6",
     "vue": "^2.6.11",
     "vue-class-component": "^7.2.3",
     "vue-property-decorator": "^9.1.2",
     "vue-router": "^3.2.0",
+    "vue-virtual-scroll-list": "^2.3.2",
+    "vue-virtual-scroller": "^1.0.10",
+    "vuedraggable": "^2.24.3",
+    "vuesax": "^3.4.7",
     "vuex": "^3.4.0"
   },
   "devDependencies": {
     "@types/electron-devtools-installer": "^2.2.0",
     "@types/jest": "^24.0.19",
+    "@types/node-downloader-helper": "^1.0.2",
     "@typescript-eslint/eslint-plugin": "^2.33.0",
     "@typescript-eslint/parser": "^2.33.0",
     "@vue/cli-plugin-babel": "~4.5.0",
@@ -44,6 +65,7 @@
     "spectron": "13.0.0",
     "typescript": "~3.9.3",
     "vue-cli-plugin-electron-builder": "~2.0.0-rc.6",
+    "vue-cli-plugin-vuesax": "~1.0.0",
     "vue-template-compiler": "^2.6.11"
   }
 }

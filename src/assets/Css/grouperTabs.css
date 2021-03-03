@@ -1,0 +1,149 @@
+.groupCards {
+	height: 70vh;
+	overflow-y: scroll;
+	padding: 10px;
+}
+
+.grouperTab .groupCards {
+	display: -ms-grid;
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr 1fr;
+}
+
+.grouperTab .groupCard {
+	position: relative;
+	cursor: pointer;
+	border: 2px solid rgba(255, 255, 255, 0);
+	padding: 5px;
+	margin: 10px;
+	max-width: 150px;
+	min-height: 200px;
+	height: auto;
+	overflow: hidden;
+}
+
+.grouperTab .groupedCard_info {
+	display: -webkit-box;
+	display: -ms-flexbox;
+	/* background-color: rgba(0, 0, 0, 0.39); */
+	border-radius: 10px;
+}
+.sliverBar .groupedCard_info .groupedInfo_title {
+	max-width: 300px !important;
+}
+.grouperTab .groupedCard_info p {
+	text-align: left;
+}
+
+.grouperTab .groupedCard_info .groupedInfo_title {
+	font-family: roboto-light;
+	max-width: 150px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	font-size: 0.9rem;
+}
+
+.grouperTab .groupedCard_info .groupedInfo_subtitle {
+	font-family: roboto-thin;
+	font-size: 0.8em;
+	max-width: 150px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.grouperTab .coverArt {
+	width: 150px;
+}
+
+.groupCard:hover {
+	background: rgba(255, 255, 255, 0.11);
+}
+
+.grouperTab .tracksCount {
+	position: absolute;
+	height: 20px;
+	width: 20px;
+	z-index: 2;
+	top: 10px;
+	right: -5px;
+	font-family: roboto-thin;
+	padding: 0px;
+	padding-left: 6px;
+	padding-top: 4px;
+	border-radius: 10px;
+	font-size: 0.8em;
+	background-color: rgba(0, 0, 0, 0.39);
+	-webkit-backdrop-filter: blur(10px);
+	backdrop-filter: blur(10px);
+}
+.selectedGroup {
+	position: relative;
+}
+
+.selectedGroup .cardsWrapper {
+	position: relative;
+	z-index: 5;
+	overflow: hidden;
+	overflow-y: scroll;
+	max-height: 330px;
+}
+
+.sliverBar {
+	position: relative;
+	height: 200px;
+	width: 100%;
+	margin-bottom: 10px;
+}
+.sliverBar .sliverBarArtions {
+	position: absolute;
+	z-index: 3;
+	right: 0px;
+	bottom: 10px;
+	display: flex;
+}
+.sliverBar .groupedCard_info {
+	position: absolute;
+	bottom: 0%;
+	left: 10px;
+	display: block;
+	-webkit-backdrop-filter: none !important;
+	backdrop-filter: none !important;
+	background: none;
+}
+
+.sliverBar .groupedCard_info .groupedInfo_title {
+	font-size: 1.4rem;
+	width: 100%;
+}
+
+.sliverBar .groupedCard_info .groupedInfo_subtitle {
+	font-size: 1.2rem;
+	width: 100%;
+}
+
+.sliverBar .coverArt {
+	position: absolute;
+	height: 90%;
+	top: 50%;
+	width: auto !important;
+	left: 50%;
+	z-index: 3;
+	-webkit-transform: translateX(-50%);
+	transform: translateX(-50%) translateY(-50%);
+}
+
+.sliverBar #blurred {
+	-webkit-transform: none !important;
+	transform: none !important;
+	width: 100% !important;
+	height: 240px !important;
+	z-index: -1;
+	-webkit-filter: blur(20px);
+	filter: blur(20px);
+	top: 0;
+	left: 0;
+	opacity: 0.5;
+}
+/*# sourceMappingURL=test.css.map */
