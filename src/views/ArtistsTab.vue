@@ -40,7 +40,7 @@
 		>
 			<div v-if="selectedGroup" class="selectedGroup">
 				<div class="sliverBar">
-					<div class="sliverBarArtions">
+					<div class="sliverBarActions">
 						<button @click="playAll" class="btWithIcon">
 							<img src="@/assets/images/playnext.svg" alt="" />
 							<p>Play All</p>

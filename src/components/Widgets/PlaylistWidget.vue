@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import { mapMutations, mapState } from "vuex";
+import { mapActions, mapMutations, mapState } from "vuex";
 export default {
 	data() {
 		return {
@@ -39,7 +39,7 @@ export default {
 		};
 	},
 	computed: {
-		...mapState(["tabsData"]),
+		...mapState(["tabsData", "selectedTracks"]),
 	},
 	methods: {
 		...mapMutations([
@@ -47,6 +47,7 @@ export default {
 			"addSelectedTrackToPlaylist",
 			"UIcontrollerToggleProperty",
 		]),
+		...mapActions(["pushNotification"]),
 		createNewPlaylist() {
 			this.createPlaylist(this.newPlaylistName);
 			this.newPlaylistName = "";
@@ -54,6 +55,11 @@ export default {
 		addToPlaylist(playlistName) {
 			this.addSelectedTrackToPlaylist(playlistName);
 			this.UIcontrollerToggleProperty("showPlaylistWidget");
+			this.pushNotification({
+				title: `Added to ${playlistName} playlist`,
+				subTitle: `${this.selectedTracks[0].defaultTitle}`,
+				type: "normal",
+			});
 			// const noti = this.$vs.notify({
 			//   color: "success",
 			//   position: "top-center",

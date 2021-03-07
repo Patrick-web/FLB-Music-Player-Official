@@ -15,7 +15,7 @@
 	src: url("../Fonts/Roboto-Light.ttf");
 }
 .accent_blue {
-	--accentColor: #2075ff;
+	--accentColor: #0062ff;
 	--accentColorLight: #0062ffa8;
 }
 .accent_orange {
@@ -79,7 +79,7 @@ a {
 button {
 	cursor: pointer;
 	border-radius: 20px;
-	background: #0000003d;
+	background: rgba(255, 255, 255, 0.083);
 	padding: 7px;
 	font-family: roboto;
 	margin-top: 10px;
@@ -125,11 +125,12 @@ button:hover {
 .center-content {
 	width: 100%;
 	display: flex;
+	flex-direction: column;
 	align-items: center;
 	justify-content: center;
 }
 .switch {
-	background: rgba(0, 0, 0, 0.479);
+	background: rgba(255, 255, 255, 0.158);
 	display: flex;
 	align-items: center;
 	justify-content: space-between;

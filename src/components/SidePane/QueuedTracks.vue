@@ -88,13 +88,13 @@ export default {
 
 <style lang="scss">
 .QueuedTracks {
-	height: 85vh;
+	height: 95%;
 	width: 100%;
 	overflow: hidden;
-	overflow-x: scroll;
+	overflow-y: scroll;
 	.queuedTrack {
 		position: relative;
-		background: rgba(0, 0, 0, 0.247);
+		background: rgba(255, 255, 255, 0.103);
 		padding: 10px;
 		border-radius: 10px;
 		margin-bottom: 10px;
@@ -117,14 +117,14 @@ export default {
 			width: 10px;
 			padding: 5px;
 			background: crimson;
-			border-radius: 5px;
+			border-radius: 10px;
 		}
 		img:hover {
 			transform: translateY(-50%) scale(1.2) !important;
 		}
 	}
 	.ghost {
-		background: rgba(255, 255, 255, 0.349);
+		background: rgba(0, 110, 255, 0.808);
 	}
 	.queuedTrack:hover {
 		background: rgba(255, 255, 255, 0.158);

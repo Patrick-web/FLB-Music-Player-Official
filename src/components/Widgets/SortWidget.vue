@@ -74,7 +74,7 @@ export default {
 	.toggler {
 		background: rgba(255, 255, 255, 0.083);
 		display: flex;
-		padding: 7px;
+		padding: 5px;
 		border-radius: 10px;
 		cursor: pointer;
 	}

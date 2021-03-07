@@ -11,19 +11,6 @@
 			class="audioImageResolver"
 		>
 			<img
-				v-if="!playingTrack.albumArt"
-				src="@/assets/images/FLBDefaultCover.png"
-				alt=""
-				id="blurred"
-			/>
-			<img
-				v-if="playingTrack.albumArt"
-				:src="playingTrack.albumArt"
-				alt=""
-				id="blurred"
-			/>
-
-			<img
 				v-if="playingTrack.albumArt"
 				@dblclick="toggleFromFavourites"
 				@click="expandPlayingPane"
@@ -67,7 +54,11 @@
 				<p id="trackName">
 					{{ playingTrack.defaultTitle }}
 				</p>
-				<p @click="goToArtist(playingTrack.defaultArtist)" id="artistName">
+				<p
+					@click="goToArtist(playingTrack.defaultArtist)"
+					title="Go To Artist"
+					id="artistName"
+				>
 					{{ playingTrack.defaultArtist }}
 				</p>
 			</div>
@@ -100,7 +91,11 @@
 						alt=""
 					/>
 				</button>
-				<button @click="toggleFromFavourites" id="favorIcon" class="iconBt">
+				<button
+					@click="toggleFromFavourites"
+					id="favorIcon"
+					:class="[isInFavourites ? 'bt_active' : '', 'iconBt']"
+				>
 					<img width="18px" src="@/assets/images/heart.svg" alt="" />
 				</button>
 				<button
@@ -149,6 +144,11 @@ export default {
 			"UIcontroller",
 			"settings",
 		]),
+		isInFavourites() {
+			return this.tabsData.playlists[0].tracks.some(
+				(track) => track.fileLocation == this.playingTrack.fileLocation
+			);
+		},
 	},
 	data() {
 		return {
@@ -163,13 +163,17 @@ export default {
 		};
 	},
 	methods: {
-		...mapActions(["determineNextTrack", "findAndGoToArtist"]),
+		...mapActions([
+			"determineNextTrack",
+			"findAndGoToArtist",
+			"pushNotification",
+		]),
 		...mapMutations([
 			"addToFavorites",
 			"removeFromFavorites",
 			"addToSelectedTracks",
 			"addSelectedTrackToPlaylist",
-			"removeSelectedTrackFromPlaylist",
+			"deleteSelectedTrackToFavourites",
 			"toggleRepeat",
 			"toggleShuffler",
 			"toggleIsPlaying",
@@ -213,26 +217,20 @@ export default {
 		},
 		toggleFromFavourites() {
 			this.addToSelectedTracks(this.playingTrack);
-			if (
-				document.querySelector(".playingPane").classList.contains("favored")
-			) {
-				// const noti = this.$vs.notify({
-				//   color: "danger",
-				//   position: "top-center",
-				//   title: "Removed from Favourites",
-				//   text: `${this.playingTrack.title} removed from Favourites`,
-				// });
-				this.removeSelectedTrackFromPlaylist("Favourites");
-				document.querySelector(".playingPane").classList.remove("favored");
+			if (this.isInFavourites) {
+				this.deleteSelectedTrackToFavourites();
+				this.pushNotification({
+					title: `Removed from Favourites`,
+					subTitle: `${this.playingTrack.defaultTitle}`,
+					type: "danger",
+				});
 			} else {
 				this.addSelectedTrackToPlaylist("Favourites");
-				// const noti = this.$vs.notify({
-				//   color: "success",
-				//   position: "top-center",
-				//   title: "Added to Favourites",
-				//   text: `${this.playingTrack.title} added to Favourites`,
-				// });
-				document.querySelector(".playingPane").classList.add("favored");
+				this.pushNotification({
+					title: `Added to Favourites`,
+					subTitle: `${this.playingTrack.defaultTitle}`,
+					type: "normal",
+				});
 			}
 		},
 	},
@@ -260,6 +258,7 @@ export default {
 				}
 			}
 		});
+		document.querySelector(".split").classList.add("playingPaneLoaded");
 	},
 	components: {
 		TrackBar,
@@ -270,7 +269,8 @@ export default {
 
 <style lang="scss">
 .fullScreenPlayingPane {
-	height: 96vh !important;
+	background-color: rgba(0, 0, 0, 0.301) !important;
+	height: 100vh !important;
 	left: 0;
 	width: 100vw;
 	z-index: 60 !important;
@@ -282,14 +282,14 @@ export default {
 		z-index: 5;
 	}
 	#cover {
-		transform: translateX(130%) translateY(-35%);
+		position: fixed;
+		top: 60px;
+		left: 50%;
+		transform: translateX(-50%);
 		max-width: 400px !important;
-		width: 380px;
+		width: 50vw;
 		min-width: 200px !important;
 		max-height: 800px !important;
-	}
-	#cover:hover {
-		transform: translateX(130%) translateY(-35%);
 	}
 	#blurred {
 		height: 100vh !important;
@@ -299,7 +299,7 @@ export default {
 		position: absolute;
 		bottom: 200px;
 		left: 20px;
-		font-size: 6rem;
+		font-size: 6vw;
 		font-family: roboto-thick;
 		text-overflow: ellipsis;
 		white-space: nowrap;
@@ -310,7 +310,7 @@ export default {
 		position: absolute;
 		bottom: 120px;
 		left: 25px;
-		font-size: 3em;
+		font-size: 3vw;
 	}
 	#pauseBt {
 		position: absolute;
@@ -357,23 +357,17 @@ export default {
 		}
 	}
 }
-.favored {
-	#favorIcon {
-		cursor: pointer;
-		background: rgb(255, 255, 255);
-		img {
-			filter: invert(100%);
-		}
-	}
-}
 .playingPane {
+	background: rgba(255, 255, 255, 0.083);
+	backdrop-filter: blur(10px);
 	position: fixed;
-	left: 0;
-	bottom: 0;
+	left: 50%;
+	bottom: 10px;
 	height: 100px;
-	width: 100vw;
+	transform: translateX(-50%);
+	width: 99vw;
 	z-index: 20;
-	background: black;
+	border-radius: 20px;
 	display: grid;
 	gap: 10px;
 	grid-template-columns: 0.5fr 0.1fr 4fr 2fr;
@@ -383,8 +377,10 @@ export default {
 	transition: 0.4s cubic-bezier(0.19, 1, 0.22, 1);
 	#cover {
 		max-width: 150px;
+		border-radius: 10px;
 		max-height: 90px;
 		margin: auto;
+		margin-top: 2px;
 		margin-left: 10px;
 		align-self: center;
 		cursor: pointer;
@@ -422,8 +418,8 @@ export default {
 		left: 0;
 		width: 100%;
 		height: 120%;
-		filter: blur(100px);
-		opacity: 1;
+		filter: blur(40px);
+		opacity: 0.4;
 		z-index: -1;
 		pointer-events: none;
 	}

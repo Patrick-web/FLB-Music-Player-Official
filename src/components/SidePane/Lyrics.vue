@@ -40,9 +40,9 @@ export default {
 		p {
 			background: rgba(255, 255, 255, 0.111);
 			padding: 10px;
+			width:250px;
 			margin-bottom: 10px;
 			margin-left: -10px;
-			margin-right: 10px;
 			line-height: 1.5rem;
       pre{
         white-space: pre-wrap; 

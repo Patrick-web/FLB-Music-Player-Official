@@ -76,19 +76,24 @@ export default {
 	}
 }
 .Tabswitcher {
-	background: #0000003f;
-	display: grid;
-	grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
-	margin-bottom: 10px;
+	display: flex;
+	justify-content: center;
 	position: relative;
 	overflow: hidden;
 	z-index: 10;
+	padding: 10px;
 	p {
+		background: rgba(255, 255, 255, 0.083);
+		margin-right: 5px;
+		margin-left: 5px;
 		text-align: center;
 		position: relative;
 		z-index: 2;
 		padding: 5px;
+		padding-top: 7px;
 		color: white;
+		border-radius: 20px;
+		min-width: 100px;
 		cursor: pointer;
 		transition: 0.2s ease;
 		font-family: roboto-light;
@@ -96,16 +101,14 @@ export default {
 		border-bottom: 3px solid rgba(0, 132, 255, 0);
 	}
 	p:hover {
-		background: linear-gradient(transparent, var(--accentColorLight));
-		border-bottom: 2px solid var(--accentColor);
+		background: rgba(255, 255, 255, 0.144);
 	}
 	.activeTab {
-		background: linear-gradient(transparent, var(--accentColorLight));
-		border-bottom: 3px solid var(--accentColor);
+		background: var(--accentColor);
+		font-family: roboto;
 	}
 	.activeTab:hover {
-		background: linear-gradient(transparent, var(--accentColorLight));
-		border-bottom: 3px solid var(--accentColor);
+		background: var(--accentColor);
 	}
 }
 // @media (max-width: 700px) {

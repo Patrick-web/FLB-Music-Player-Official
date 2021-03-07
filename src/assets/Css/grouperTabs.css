@@ -1,5 +1,5 @@
 .groupCards {
-	height: 70vh;
+	height: 62vh;
 	overflow-y: scroll;
 	padding: 10px;
 }
@@ -14,12 +14,13 @@
 	position: relative;
 	cursor: pointer;
 	border: 2px solid rgba(255, 255, 255, 0);
-	padding: 5px;
+	padding: 10px;
 	margin: 10px;
 	max-width: 150px;
 	min-height: 200px;
 	height: auto;
 	overflow: hidden;
+	border-radius: 10px;
 }
 
 .grouperTab .groupedCard_info {
@@ -87,7 +88,7 @@
 	z-index: 5;
 	overflow: hidden;
 	overflow-y: scroll;
-	max-height: 330px;
+	max-height: 280px;
 }
 
 .sliverBar {
@@ -96,7 +97,7 @@
 	width: 100%;
 	margin-bottom: 10px;
 }
-.sliverBar .sliverBarArtions {
+.sliverBar .sliverBarActions {
 	position: absolute;
 	z-index: 3;
 	right: 0px;

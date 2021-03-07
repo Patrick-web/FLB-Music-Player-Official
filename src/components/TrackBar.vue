@@ -34,14 +34,6 @@ export default {
 	methods: {
 		...mapActions(["determineNextTrack"]),
 		...mapMutations(["toggleIsPlaying"]),
-		// notify(title, text) {
-		//   // const noti = this.$vs.notify({
-		//   //   color: "danger",
-		//   //   position: "top-center",
-		//   //   title,
-		//   //   text,
-		//   // });
-		// },
 		play() {
 			document.querySelector("audio").play();
 			document.querySelector("video").play();

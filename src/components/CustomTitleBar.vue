@@ -39,7 +39,7 @@ export default {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	background: rgba(19, 19, 19, 0.494);
+	background: rgba(255, 255, 255, 0.083);
 	padding: 5px;
 	padding-top: 0px;
 	-webkit-app-region: drag;

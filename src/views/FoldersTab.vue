@@ -43,7 +43,7 @@
 					<img src="@/assets/images/back.svg" alt="" />
 				</button>
 				<div class="sliverBar">
-					<div class="sliverBarArtions">
+					<div class="sliverBarActions">
 						<button @click="playAll" class="btWithIcon">
 							<img src="@/assets/images/playnext.svg" alt="" />
 							<p>Play All</p>
@@ -139,14 +139,14 @@ export default {
 	display: grid;
 	grid-template-columns: 1fr 1fr 1fr 1fr;
 	gap: 10px;
-	height: 70vh;
+	height: 63vh;
 	overflow: hidden;
 	overflow-y: scroll;
 	.folderCard {
 		cursor: pointer;
 		padding: 10px;
 		border-radius: 20px;
-		max-width: 170px;
+		max-width: 150px;
 		.silv {
 			position: relative;
 			.folderIcon {

@@ -2,6 +2,7 @@
 	<div @click="cleanUp" id="app" :class="settings.accentColor">
 		<CustomTitleBar />
 		<OnBoard v-if="!hideOnboard" />
+		<Notifications />
 		<div class="split">
 			<img
 				v-if="settings.theme == 'fancy' && playingTrack"
@@ -34,13 +35,15 @@ import { ipcRenderer } from "electron";
 import PlayingPane from "./components/Widgets/PlayingPane.vue";
 import CustomTitleBar from "./components/CustomTitleBar.vue";
 import OnBoard from "./components/OnBoard.vue";
+import Notifications from "./components/Widgets/Notifications.vue";
 export default Vue.extend({
   name: "App",
   components: {
     SideNav,
     PlayingPane,
 	CustomTitleBar,
-	OnBoard
+	OnBoard,
+	Notifications
   },
   data(){return{
 	hideOnboard:false,
@@ -50,7 +53,7 @@ export default Vue.extend({
   },
   methods: {
     ...mapMutations(["addTrack","restoreTracks","restorePlaylists","restoreSettings","restoreRecentlyPlayed","setScannedFolders","generateAlbumsData","generateArtistsData","generateFoldersData"]),
-	...mapActions(['removeSelectedTracks']),
+	...mapActions(['removeSelectedTracks',"playFirstTrack"]),
     cleanUp() {
       if(document.querySelector(".trackOptions")){
         document.querySelector(".trackOptions").style.height = `0px`;
@@ -91,12 +94,16 @@ export default Vue.extend({
 	ipcRenderer.on("removeSelectedTracks", () => {
 		this.removeSelectedTracks();
 	});
+	ipcRenderer.on("playFirstTrack", () => {
+		this.playFirstTrack();
+	});
 	ipcRenderer.on("parsingDone", () => {
 		this.generateAlbumsData()
 		this.generateArtistsData()
 		this.generateFoldersData()
 		this.hideOnboard = true
 	});
+
 	window.addEventListener('online',()=>{
 		console.log("online");
 	})
@@ -121,10 +128,11 @@ body {
 }
 ::-webkit-scrollbar {
 	background: rgba(0, 0, 0, 0.199);
-	width: 5px;
+	width: 8px;
 }
 ::-webkit-scrollbar-track-piece {
-	background: rgba(0, 0, 0, 0.514);
+	background: rgba(255, 255, 255, 0.083);
+	border-radius: 10px;
 }
 ::-webkit-scrollbar-thumb {
 	background: rgb(255, 255, 255);
@@ -148,8 +156,8 @@ body {
 		top: -50%;
 		left: 0;
 		width: 120%;
-		filter: blur(20px);
-		opacity: 0.5;
+		filter: blur(40px);
+		opacity: 0.2;
 		z-index: -1;
 	}
 }

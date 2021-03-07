@@ -31,6 +31,6 @@ export default {
 .recentsTab {
 	overflow: hidden;
 	overflow-y: scroll;
-	height: 70vh;
+	height: 64vh;
 }
 </style>

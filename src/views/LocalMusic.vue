@@ -12,10 +12,7 @@
 			/>
 		</transition>
 		<main>
-			<section
-				id="centralArea_tabs"
-				style="min-width:60vw;max-width:70vw;width:60vw;margin-right:10px"
-			>
+			<section id="centralArea_tabs">
 				<TrackOptions v-on:targetTrack="setTagEditorTrack" />
 				<TitleArea />
 				<TabSwitcher />
@@ -77,9 +74,28 @@ export default {
 };
 </script>
 <style lang="scss">
+.playingPaneLoaded {
+	.LocalMusic {
+		main {
+			#centralArea_tabs {
+				height: 76.5vh;
+			}
+		}
+	}
+}
 .LocalMusic {
 	main {
 		display: flex;
+		#centralArea_tabs {
+			min-width: 60vw;
+			max-width: 70vw;
+			width: 60vw;
+			margin-right: 20px;
+			padding: 10px;
+			border-radius: 20px;
+			margin-top: 10px;
+			background: rgba(255, 255, 255, 0.083);
+		}
 	}
 }
 @media (max-width: 900px) {
@@ -88,8 +104,8 @@ export default {
 	}
 	.LocalMusic {
 		#centralArea_tabs {
-			width: 80vw !important;
-			max-width: 80vw !important;
+			width: 87vw !important;
+			max-width: 87vw !important;
 		}
 	}
 }

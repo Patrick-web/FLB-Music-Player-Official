@@ -8,6 +8,7 @@ import {
 	ipcMain,
 	dialog,
 	screen,
+	nativeImage,
 } from "electron";
 import { createProtocol } from "vue-cli-plugin-electron-builder/lib";
 import fs from "fs";
@@ -24,18 +25,15 @@ import {
 	tabType,
 	SettingsType,
 } from "./store/types";
-import { Tags } from "node-id3";
 import NodeID3 from "node-id3";
 const musicParser = require("music-metadata");
-const ffbinaries = require("ffbinaries");
 const APPDATAFOLDER = app.getPath("userData");
 const MUSICFOLDER = path.join(require("os").homedir(), "Music");
 const TrackerLocation = path.join(APPDATAFOLDER, "Tracker.json");
 const SettingsLocation = path.join(APPDATAFOLDER, "Settings.json");
-let ffmpegPath = path.join(APPDATAFOLDER, "ffmpeg");
-let ffProbePath = path.join(APPDATAFOLDER, "ffprobe");
 import { DownloaderHelper } from "node-downloader-helper";
 import { removeDuplicates, searchArtistPicture } from "./Utils/frontEndUtils";
+import { NotificationConstructorOptions } from "electron/main";
 
 // const logo = path.join(__static, "icon.png");
 
@@ -55,9 +53,10 @@ async function createWindow() {
 	const { width, height } = primaryDisplay.workAreaSize;
 	// Create the browser window.
 	win = new BrowserWindow({
-		width: width,
-		height: height,
+		width: width - 10,
+		height: height - 10,
 		frame: false,
+		transparent: true,
 		webPreferences: {
 			// Required for Spectron testing
 			webSecurity: false,
@@ -69,8 +68,6 @@ async function createWindow() {
 				.ELECTRON_NODE_INTEGRATION as unknown) as boolean,
 		},
 	});
-
-	win.maximize();
 
 	if (process.env.WEBPACK_DEV_SERVER_URL) {
 		// Load the url of the dev server if in development mode
@@ -182,10 +179,11 @@ class Tracker {
 				this.processedFiles.splice(index, 1);
 			}
 		});
-		this.playlists.forEach((playlist) => {
-			playlist.tracks.forEach((track, index) => {
-				deletedFiles.includes(track.fileLocation);
-				playlist.tracks.splice(index, 1);
+		this.playlists.forEach((playlist, pindex) => {
+			playlist.tracks.forEach((track, tindex) => {
+				if (deletedFiles.includes(track.fileLocation)) {
+					this.playlists[pindex].tracks.splice(tindex, 1);
+				}
 			});
 		});
 		console.log("Deleted Files =>");
@@ -215,6 +213,7 @@ class Tracker {
 			recentlyPlayed: this.recentlyPlayed,
 			playlists: this.playlists,
 		};
+		console.log(this.playlists);
 		fs.writeFile(TrackerLocation, JSON.stringify(data), (err) => {
 			if (err) console.log(err);
 		});
@@ -284,12 +283,22 @@ ipcMain.on("initializeSettings", () => {
 ipcMain.on("getFirstTracks", async () => {
 	refreshTracks();
 });
-ipcMain.on("initializeAppData", () => {
+ipcMain.on("initializeAppData", async () => {
+	if (process.argv[1] && isValidFileType(process.argv[1])) {
+		const pathInfo = path.parse(process.argv[0]);
+		await createParsedTrack(
+			process.argv[0],
+			process.argv[0].replace(/(.*)[\/\\]/, ""),
+			{ name: pathInfo.name, path: pathInfo.dir }
+		);
+		win.webContents.send("playFirstTrack");
+	}
 	console.log("Initializing...");
 	const trackerData = tracker.trackerData;
 	console.log(trackerData.processedFiles.length);
 	if (trackerData.processedFiles.length > 0) {
 		win.webContents.send("processedFiles", trackerData.processedFiles);
+		console.log(trackerData.playlists);
 		win.webContents.send("userPlaylists", trackerData.playlists);
 		win.webContents.send("recentlyPlayed", trackerData.recentlyPlayed);
 		refreshTracks();
@@ -304,6 +313,8 @@ ipcMain.on("resetApp", () => {
 });
 
 ipcMain.on("updatePlaylists", (e, payload) => {
+	console.log("Updating playlists");
+	console.log(payload);
 	tracker.updatePlaylists(payload);
 });
 
@@ -332,7 +343,8 @@ ipcMain.on("playingTrack", async (e, track: TrackType) => {
 	if (!appIsFocused && settings.getSettings.desktopNotifications) {
 		sendNativeNotification(
 			track.title || track.extractedTitle || "",
-			track.artist || track.extractedArtist
+			track.artist || track.extractedArtist,
+			track.albumArt
 		);
 	}
 });
@@ -394,7 +406,7 @@ ipcMain.on("minimize", () => win.minimize());
 ipcMain.on("maximize", () => {
 	if (win.isMaximized()) {
 		win.unmaximize();
-		win.setSize(win.getBounds().width - 50, win.getBounds().height, true);
+		win.center();
 	} else {
 		win.maximize();
 	}
@@ -615,8 +627,8 @@ function refreshTracks() {
 }
 
 async function writeTags(path: string, tagChanges: TagChangesType) {
-	if (tagChanges.imageUrl && tagChanges.imageUrl.includes("https:")) {
-		tagChanges.imageUrl = await downloadFile(tagChanges.imageUrl);
+	if (tagChanges.APIC && tagChanges.APIC.includes("https:")) {
+		tagChanges.APIC = await downloadFile(tagChanges.APIC);
 	}
 	let isSuccessFull = NodeID3.update(tagChanges, path);
 	return isSuccessFull;
@@ -626,9 +638,9 @@ async function downloadFile(url: string) {
 	return new Promise<string>((resolve, reject) => {
 		const dl = new DownloaderHelper(url, APPDATAFOLDER);
 		dl.start();
-		win.webContents.send("successMsg", "Downloading...");
+		win.webContents.send("normalMsg", "Downloading...");
 		dl.on("end", () => {
-			win.webContents.send("successMsg", "Download Succesfull...");
+			win.webContents.send("normalMsg", "Download Succesfull...");
 			resolve(dl.getDownloadPath());
 		});
 		dl.on("error", () => reject("Error in downloding the cover"));
@@ -637,16 +649,17 @@ async function downloadFile(url: string) {
 function deleteFile(path: string) {
 	fs.unlink(path.replace("file://", ""), (err) => {
 		if (err) return win.webContents.send("errorMsg", "Error in Deleting File");
-		win.webContents.send("successMsg", `${path} deleted`);
+		win.webContents.send("normalMsg", `${path} deleted`);
 	});
 	win.webContents.send("deleteComplete");
 }
-function sendNativeNotification(title: string, text: string) {
-	const options = {
+function sendNativeNotification(title: string, text: string, imageURI: string) {
+	const options: NotificationConstructorOptions = {
 		title,
 		subtitle: text,
 		body: text,
 		silent: true,
+		icon: nativeImage.createFromDataURL(imageURI),
 	};
 	const notification = new Notification(options);
 	notification.show();
@@ -701,4 +714,7 @@ function extractTitleAndArtist(trackName: string): any {
 
 function removeMIME(str: string) {
 	return str.replace(/(\.mp3)|(\.m4a)|(\.ogg)|(\.wav)/gi, "");
+}
+function isValidFileType(path: string) {
+	return path.match(/\.mp3|\.webm|\.m4a|\.ogg/gi);
 }

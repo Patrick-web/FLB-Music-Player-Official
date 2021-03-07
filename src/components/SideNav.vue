@@ -103,7 +103,7 @@ export default {
 			this.isCollapsed = !this.isCollapsed;
 			if (this.isCollapsed) {
 				document.querySelector("#centralArea_tabs").style.width = "70vw";
-				document.querySelector("#centralArea_tabs").style.marginRight = "30px";
+				document.querySelector("#centralArea_tabs").style.marginRight = "20px";
 			} else {
 				document.querySelector("#centralArea_tabs").style.width = "60vw";
 			}
@@ -120,28 +120,37 @@ export default {
 </script>
 
 <style lang="scss">
-.whiten {
-	filter: brightness(0) invert(1);
+.playingPaneLoaded {
+	.sideNav {
+		height: 78.5vh;
+	}
 }
 .collapsed {
 	min-width: 50px !important;
 	width: 60px !important;
-	margin-right: 30px !important;
+	margin-right: 20px !important;
+	#menuIcon {
+		transform: translateX(5px);
+	}
 }
 .sideNav {
-	background: rgba(0, 0, 0, 0.425);
-	height: 83vh;
+	background: rgba(255, 255, 255, 0.083);
+	height: 93vh;
 	padding-bottom: 5px;
 	min-width: 200px;
 	width: 200px;
+	border-radius: 20px;
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
-	margin-right: 30px;
+	margin-right: 20px;
+	margin-top: 10px;
+	transform: translateX(10px);
 	overflow: hidden;
 	.sideNav-group {
+		border-radius: 15px;
 		margin: 5px;
-		border-radius: 10px;
+		// border-radius: 10px;
 		a {
 			padding: 10px;
 			display: grid;
@@ -158,15 +167,15 @@ export default {
 			position: absolute;
 			right: 0px;
 			top: 0px;
-			font-size: 0.5rem;
+			font-size: 0.6rem;
 			background: var(--accentColor);
-			padding: 2px;
+			padding: 2px 5px 2px 5px;
 			border-radius: 10px;
 		}
 	}
 	.sideNav-group:hover {
 		cursor: pointer;
-		background: var(--accentColorLight);
+		background: rgba(255, 255, 255, 0.144);
 	}
 	.active-sideNav-group {
 		background: var(--accentColor);

@@ -153,25 +153,6 @@ export default {
 </script>
 
 <style lang="scss">
-.disable__options {
-	.TrackCard {
-		.options {
-			display: none;
-		}
-		.delIcon {
-			display: block !important;
-		}
-	}
-}
-.brockentrack {
-	.trackTitle,
-	.artist,
-	.duration {
-		text-decoration: line-through;
-	}
-	opacity: 0.6;
-	pointer-events: none;
-}
 .multiSelectMode {
 	.TrackCard {
 		margin-left: 30px;
@@ -210,7 +191,7 @@ export default {
 
 .TrackCard {
 	position: relative;
-	background: #0f0f0f7e;
+	// background: rgba(255, 255, 255, 0.083);
 	border-bottom: 1px solid rgba(255, 255, 255, 0.356);
 	color: white;
 	cursor: pointer;
@@ -298,7 +279,7 @@ export default {
 	}
 }
 .TrackCard:hover {
-	background: #ffffff1c;
+	background: rgba(255, 255, 255, 0.144);
 	.delIcon {
 		transform: translateX(50%) translateY(-50%) scale(1);
 	}

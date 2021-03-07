@@ -4,7 +4,7 @@
 			<div class="loadingIndicator"></div>
 		</div>
 		<virtual-list
-			style="height: 70vh;overflow:hidden; overflow-y: scroll;"
+			id="tracksTabVirtualList"
 			scrollable
 			:data-key="'fileLocation'"
 			:data-sources="renderedTracks"
@@ -39,21 +39,22 @@ export default {
 </script>
 
 <style lang="scss">
-.fxMode {
-	.fxModeToggle {
-		background: rgb(109, 81, 90) !important;
-	}
-	#enterFxMode {
-		display: none !important;
-	}
-	#exitFxMode {
-		display: block !important;
+.playingPaneLoaded {
+	.addedTracksTab {
+		#tracksTabVirtualList {
+			height: 64vh;
+		}
 	}
 }
 .addedTracksTab {
 	position: relative;
 	overflow: hidden !important;
 	height: auto !important;
+	#tracksTabVirtualList {
+		height: 85vh;
+		overflow: hidden;
+		overflow-y: scroll;
+	}
 	.showHiddenActions {
 		background: #0062ff !important;
 		border-radius: 12px !important;

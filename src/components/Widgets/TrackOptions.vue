@@ -41,10 +41,15 @@
 
 <script>
 import { sendMessageToNode } from "@/Utils/frontEndUtils";
-import { mapState, mapMutations } from "vuex";
+import { mapState, mapMutations, mapActions } from "vuex";
 export default {
 	computed: {
-		...mapState(["selectedTracks", "UIcontroller", "currentTab"]),
+		...mapState([
+			"selectedTracks",
+			"UIcontroller",
+			"currentTab",
+			"selectedGroup",
+		]),
 	},
 	methods: {
 		...mapMutations([
@@ -57,14 +62,25 @@ export default {
 			"switchSidePaneTab",
 			"clearSelectedTracks",
 		]),
+		...mapActions(["pushNotification"]),
 		queueTrack() {
 			this.addSelectedTrackToCustomQueue();
 			this.switchSidePaneTab("CustomQueue");
+			this.pushNotification({
+				title: "Track(s) added to queue",
+				subTitle: null,
+				type: "normal",
+			});
 			this.close();
 		},
 		playNext() {
 			this.setSelectedTrackToPlayNext();
 			this.close();
+			this.pushNotification({
+				title: `Playing that track Next`,
+				subTitle: null,
+				type: "normal",
+			});
 		},
 		close() {
 			document.querySelector(".trackOptions").style.height = `0px`;
@@ -96,9 +112,19 @@ export default {
 			console.log(this.selectedTracks);
 			this.deleteSelectedTrackToPlaylist();
 			this.close();
+			this.pushNotification({
+				title: `Removed from Favourites ${this.selectedGroup.name}`,
+				subTitle: `${this.selectedTracks[0].defaultTitle}`,
+				type: "danger",
+			});
 		},
 		addToFavourites() {
 			this.addSelectedTrackToPlaylist("Favourites");
+			this.pushNotification({
+				title: `Added to Favourites`,
+				subTitle: `${this.selectedTracks[0].defaultTitle}`,
+				type: "normal",
+			});
 			this.close();
 		},
 		showTagEditor() {

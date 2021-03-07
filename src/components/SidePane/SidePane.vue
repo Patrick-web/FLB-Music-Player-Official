@@ -59,23 +59,31 @@ export default {
 </script>
 
 <style lang="scss">
+.playingPaneLoaded {
+	.SidePane {
+		height: 76.5vh;
+	}
+}
 .SidePane {
-	height: 100vh;
+	height: 91vh;
 	position: relative;
 	padding-bottom: 110px;
 	overflow: hidden;
-	background: rgba(12, 12, 12, 0.562);
+	background: rgba(255, 255, 255, 0.083);
+	margin-top: 10px;
 	padding: 10px;
-	max-width: 23vw;
-	min-width: 23vw;
+	border-radius: 20px;
+	max-width: 19.5vw;
+	min-width: 19.5vw;
+	transform: translateX(-10px);
 	.tabber {
 		margin: auto;
 		display: grid;
 		grid-template-columns: 1fr 1fr 1fr;
-		gap: 10px;
 		width: 50%;
 		backdrop-filter: blur(10px);
-		background: #2929293f;
+		background: rgba(255, 255, 255, 0.083);
+		border-radius: 20px;
 		position: sticky;
 		z-index: 10;
 		overflow: hidden;
@@ -90,18 +98,15 @@ export default {
 		div:hover {
 			cursor: pointer;
 			background: rgba(79, 111, 255, 0.178);
-			border-bottom: 2px solid var(--accentColor);
 		}
 		img {
 			width: 20px;
 		}
 		.activeSidePaneTab {
 			background: linear-gradient(transparent, var(--accentColorLight));
-			border-bottom: 3px solid var(--accentColor);
 		}
 		.activeSidePaneTab:hover {
 			background: linear-gradient(transparent, var(--accentColorLight));
-			border-bottom: 3px solid var(--accentColor);
 		}
 	}
 	#visualizerArea {

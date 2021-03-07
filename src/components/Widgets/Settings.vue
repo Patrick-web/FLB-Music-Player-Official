@@ -28,7 +28,7 @@
 						</button>
 					</div>
 					<button class="bt_active" @click="addFolder">
-						<h5>Add Folder</h5>
+						<h2>Add Folder</h2>
 					</button>
 				</article>
 				<article>
@@ -253,6 +253,13 @@ export default {
 		...mapMutations(["updateSetting", "UIcontrollerToggleProperty"]),
 		addFolder() {
 			sendMessageToNode("addScanFolder", "");
+			setTimeout(() => {
+				sendMessageToNode("refresh", "");
+				document.querySelector("#refreshLib").classList.add("rotateOut");
+				setTimeout(() => {
+					document.querySelector("#refreshLib").classList.remove("rotateOut");
+				}, 4000);
+			}, 100000);
 		},
 		removeFromScannedFolders(path) {
 			sendMessageToNode("removeFromScannedFolders", path);
@@ -267,7 +274,7 @@ export default {
 <style lang="scss">
 .Settings {
 	position: fixed;
-	background-color: rgba(0, 0, 0, 0.645);
+	background-color: rgba(0, 0, 0, 0.301);
 	backdrop-filter: blur(10px);
 	overflow: hidden;
 	top: 0px;
@@ -291,27 +298,27 @@ export default {
 			article {
 				margin: 10px;
 				margin-bottom: 20px;
+				background: rgba(255, 255, 255, 0.062);
+				padding: 10px;
+				border-radius: 10px;
 				h4 {
 					text-align: center;
 					margin-bottom: 10px;
 				}
-				background: rgba(0, 0, 0, 0.192);
-				padding: 10px;
-				border-radius: 10px;
 				.folderBox {
-					background: rgba(0, 0, 0, 0.479);
-					padding: 10px 0px 10px 10px;
-					border-left: 2px solid var(--accentColor);
-					display: grid;
-					align-items: center;
-					grid-template-columns: 5fr 1fr;
+					background: rgba(255, 255, 255, 0.096);
+					padding: 10px;
+					margin-bottom: 10px;
+					border-radius: 20px;
+					display: flex;
+					justify-content: space-between;
 					button {
 						margin-top: 0px;
 					}
 				}
 				ul {
 					p {
-						background: rgba(0, 0, 0, 0.282);
+						background: rgba(255, 255, 255, 0.096);
 						margin-bottom: 1px;
 						padding: 5px;
 						font-family: roboto-light;

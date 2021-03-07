@@ -3,15 +3,12 @@
 		<p class="modalClose" @click="UIcontrollerToggleProperty('showTagEditor')">
 			<img src="@/assets/images/x.svg" alt="" />
 		</p>
-		<h2 class="modalTitle">Tag Editor</h2>
+		<div class="center-content">
+			<h1 class="modalTitle">Tag Editor</h1>
+		</div>
 		<div class="trackTags">
 			<div class="center-content">
-				<img
-					id="coverArtTag"
-					v-if="targetTrack.albumArt"
-					:src="targetTrack.albumArt"
-					alt=""
-				/>
+				<img id="coverArtTag" :src="targetTrack.albumArt" alt="" />
 				<p style="margin-top:10px" v-if="!targetTrack.albumArt">No Album Art</p>
 			</div>
 			<button @click="importCover" id="selectCoverArt">

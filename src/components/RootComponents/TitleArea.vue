@@ -170,12 +170,10 @@ export default {
 	justify-content: space-between;
 	width: 100%;
 	position: relative;
-	margin-top: 5px;
-	margin-bottom: 5px;
 	z-index: 21;
 	.multiSelect {
 		background: rgba(255, 255, 255, 0.083);
-		padding: 7px;
+		padding: 5px;
 		border-radius: 10px;
 		cursor: pointer;
 	}
@@ -232,7 +230,7 @@ export default {
 		padding: 5px;
 		padding-left: 10px;
 		font-size: 1rem;
-		border-radius: 10px;
+		border-radius: 20px;
 		border: 1px solid transparent;
 		outline: none;
 		background: rgba(255, 255, 255, 0.083);
@@ -243,6 +241,7 @@ export default {
 	}
 
 	#search:focus {
+		border-radius: 10px;
 		width: 300px;
 		background: rgba(255, 255, 255, 0.083);
 	}
@@ -252,6 +251,7 @@ export default {
 	}
 
 	#search:hover {
+		border-radius: 10px;
 		background: rgba(255, 255, 255, 0.144);
 		cursor: pointer;
 	}

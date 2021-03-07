@@ -79,7 +79,19 @@
 							{{ selectedGroup.name }}
 						</p>
 					</div>
-					<div class="sliverBarArtions">
+					<div class="sliverBarActions">
+						<button @click="addPlaylistToQueue" class="btWithIcon">
+							<img src="@/assets/images/queue-music.svg" alt="" />
+							<p>Add To Queue</p>
+						</button>
+						<button
+							v-if="selectedGroup.name !== 'Favourites'"
+							@click="showPlaylistEditor = true"
+							class="btWithIcon"
+						>
+							<img src="@/assets/images/edit.svg" alt="" />
+							<p>Edit Playlist</p>
+						</button>
 						<button
 							v-if="selectedGroup.name !== 'Favourites'"
 							@click="deleteCurrentPlaylist"
@@ -88,10 +100,29 @@
 							<img src="@/assets/images/trash-bin-outline.svg" alt="" />
 							<p>Delete Playlist</p>
 						</button>
-						<button @click="addPlaylistToQueue" class="btWithIcon">
-							<img src="@/assets/images/queue-music.svg" alt="" />
-							<p>Add To Queue</p>
-						</button>
+						<transition
+							enter-active-class="animated fadeInUp extrafaster"
+							leave-active-class="animated fadeOutDown extrafaster"
+						>
+							<div v-if="showPlaylistEditor" class="editPlForm">
+								<input
+									class="inputElem"
+									type="text"
+									v-model="newPlaylistName"
+									placeholder="New Playlist Name"
+								/>
+								<button @click="renamePlaylist" v-if="newPlaylistName">
+									Save
+								</button>
+								<button
+									class="dangerBt"
+									@click="showPlaylistEditor = false"
+									v-if="!newPlaylistName"
+								>
+									Cancel
+								</button>
+							</div>
+						</transition>
 					</div>
 				</div>
 				<div class="cardsWrapper">
@@ -117,6 +148,8 @@ export default {
 	data() {
 		return {
 			card: TrackCard,
+			newPlaylistName: "",
+			showPlaylistEditor: false,
 		};
 	},
 	methods: {
@@ -128,6 +161,7 @@ export default {
 			"clearSelectedTracks",
 			"addSelectedTrackToCustomQueue",
 			"switchSidePaneTab",
+			"renameCurrentPlaylist",
 		]),
 		addPlaylistToQueue() {
 			this.switchSidePaneTab("CustomQueue");
@@ -142,6 +176,10 @@ export default {
 		deleteCurrentPlaylist() {
 			this.deletePlaylist(this.selectedGroup.name);
 			this.deSelectGroup();
+		},
+		renamePlaylist() {
+			this.showPlaylistEditor = false;
+			this.renameCurrentPlaylist(this.newPlaylistName);
 		},
 	},
 	computed: {
@@ -208,5 +246,17 @@ export default {
 			}
 		}
 	}
+}
+.editPlForm {
+	position: absolute;
+	background: rgba(255, 255, 255, 0.096);
+	padding: 15px;
+	border-radius: 10px;
+	top: -220%;
+	right: 80px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
 }
 </style>
