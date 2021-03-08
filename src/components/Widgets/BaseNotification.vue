@@ -1,20 +1,33 @@
 <template>
-	<div :class="[notification.type, 'notificationCard']">
-		<h4>{{ notification.title }}</h4>
-		<p v-if="notification.subTitle">{{ notification.subTitle }}</p>
+	<div :class="[currentNotification.type, 'notificationCard']">
+		<h4>{{ currentNotification.title }}</h4>
+		<p v-if="currentNotification.subTitle">
+			{{ currentNotification.subTitle }}
+		</p>
 	</div>
 </template>
 
 <script>
+import { ipcRenderer } from "electron";
 import { mapActions } from "vuex";
 export default {
+	data() {
+		return {
+			currentNotification: this.notification,
+		};
+	},
 	methods: {
 		...mapActions(["popNotification"]),
 	},
 	mounted() {
 		setTimeout(() => {
-			this.popNotification();
+			if (this.notification.type !== "persist") {
+				this.popNotification();
+			}
 		}, 1500);
+		ipcRenderer.on("parsingProgress", (e, [currentIndex, total]) => {
+			this.currentNotification.subTitle = `${currentIndex}/${total}`;
+		});
 	},
 	props: {
 		notification: Object,

@@ -103,6 +103,13 @@
 	right: 0px;
 	bottom: 10px;
 	display: flex;
+	justify-content: space-between;
+	padding-right: 10px;
+}
+.sliverBar .sliverBarActions button {
+	margin-right: 5px;
+	background-color: var(--accentColorLight);
+	backdrop-filter: blur(10px);
 }
 .sliverBar .groupedCard_info {
 	position: absolute;

@@ -128,9 +128,9 @@ export default {
 			this.close();
 		},
 		showTagEditor() {
-			console.log("Tag");
 			this.UIcontrollerToggleProperty("showTagEditor");
 			this.$emit("targetTrack", this.selectedTracks[0]);
+			this.close();
 		},
 		deleteSelectedTracks() {
 			console.log("Deleting");

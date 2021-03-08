@@ -187,7 +187,7 @@ const store: StoreOptions<RootStateType> = {
 				(track) => track.fileLocation == payload.fileLocation
 			);
 			if (!trackAlreadyAdded) {
-				state.tabsData.addedTracks.unshift(payload);
+				state.tabsData.addedTracks.push(payload);
 			}
 		},
 		restoreTracks(state: RootStateType, payload: Array<TrackType>) {

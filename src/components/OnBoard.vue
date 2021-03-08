@@ -7,14 +7,15 @@
 			<div class="slide" v-if="currentSlide == 1">
 				<img id="onboard1" src="@/assets/images/onboard1.svg" alt="" />
 				<img id="lamma" src="@/assets/images/lamma.gif" alt="" />
-				<button @click="currentSlide = 2" id="jamBt" class="bt_active">
+				<button @click="goToSlide2" id="jamBt" class="bt_active">
 					<h1>Let's Jam</h1>
 					<h2>🎸</h2>
 				</button>
 			</div>
 			<div class="slide" v-if="currentSlide == 2">
-				<h1 class="slideTitle">Where should I look for Music ?</h1>
 				<article>
+					<h2>Where should I look for Music ?</h2>
+					<br />
 					<div
 						v-for="folder in settings.foldersToScan"
 						:key="folder"
@@ -34,9 +35,27 @@
 							<img style="width:15px" src="@/assets/images/x.svg" alt="" />
 						</button>
 					</div>
-					<button class="bt_active" @click="addFolder">
+					<button class="bt_active" style="max-width:200px" @click="addFolder">
 						<h3>Add Folder</h3>
 					</button>
+				</article>
+				<article>
+					<div
+						@click="updateSetting(['includeVideo', !settings.includeVideo])"
+						class="opt"
+					>
+						<h2>Should I add videos too ?</h2>
+						<button class="bt_active" v-if="settings.includeVideo">
+							<h3>
+								Yes, I have some music videos
+							</h3>
+						</button>
+						<button class="bt_active" v-if="!settings.includeVideo">
+							<h3>
+								No, all my music is in audio
+							</h3>
+						</button>
+					</div>
 				</article>
 				<button @click="initialize" id="jamBt" class="bt_active">
 					<h1>Next</h1>
@@ -46,7 +65,7 @@
 			<div class="slide" v-if="currentSlide == 3">
 				<h1 class="slideTitle">Great! Am loading your music</h1>
 				<h3 style="position:absolute;bottom:100px;z-index:2">
-					Patience my friend, this will only happen once
+					Tip {{ tips[currentTip] }}
 				</h3>
 				<img id="loadingCat" src="@/assets/images/cat.gif" alt="" />
 				<div id="parseProgress">
@@ -66,7 +85,13 @@ export default {
 	data() {
 		return {
 			currentSlide: 1,
+			currentTip: 0,
 			fraction: "0/0",
+			tips: [
+				"✨✨ Right click on any track to see more options ✨✨",
+				"🪓🪓 Drag tracks in the queue to reorder them 🪓🪓",
+				"🏹🏹 Make sure to check out the settings 🏹🏹",
+			],
 		};
 	},
 	computed: {
@@ -78,6 +103,16 @@ export default {
 			"restoreSettings",
 			"UIcontrollerToggleProperty",
 		]),
+		goToSlide2() {
+			this.currentSlide = 2;
+			setInterval(() => {
+				if (this.currentTip == 2) {
+					this.currentTip = 0;
+				} else {
+					this.currentTip += 1;
+				}
+			}, 3000);
+		},
 		addFolder() {
 			sendMessageToNode("addScanFolder", "");
 		},
@@ -90,7 +125,9 @@ export default {
 		},
 	},
 	mounted() {
-		ipcRenderer.on("parsingProgress", (e, data) => (this.fraction = data));
+		ipcRenderer.on("parsingProgress", (e, [currentIndex, total]) => {
+			this.fraction = `${currentIndex}/${total}`;
+		});
 		ipcRenderer.on("userSettings", (e, payload) => {
 			console.log(payload);
 			console.log("User Settings Received");
@@ -188,13 +225,19 @@ export default {
 		}
 	}
 	article {
-		background: rgba(22, 22, 22, 0.192);
+		background: rgba(255, 255, 255, 0.082);
+		width: 40vw;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		margin-bottom: 10px;
 		padding: 10px;
 		border-radius: 10px;
 		.folderBox {
-			background: rgba(22, 22, 22, 0.479);
+			background: rgba(0, 0, 0, 0.801);
 			padding: 10px 0px 10px 10px;
-			border-left: 2px solid #0062ff;
+			border-radius: 20px;
 			width: 400px;
 			display: grid;
 			align-items: center;

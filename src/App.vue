@@ -53,7 +53,7 @@ export default Vue.extend({
   },
   methods: {
     ...mapMutations(["addTrack","restoreTracks","restorePlaylists","restoreSettings","restoreRecentlyPlayed","setScannedFolders","generateAlbumsData","generateArtistsData","generateFoldersData"]),
-	...mapActions(['removeSelectedTracks',"playFirstTrack"]),
+	...mapActions(['removeSelectedTracks',"playFirstTrack","popNotification"]),
     cleanUp() {
       if(document.querySelector(".trackOptions")){
         document.querySelector(".trackOptions").style.height = `0px`;
@@ -102,7 +102,13 @@ export default Vue.extend({
 		this.generateArtistsData()
 		this.generateFoldersData()
 		this.hideOnboard = true
+		this.popNotification()
 	});
+		ipcRenderer.on("parsingProgress", (e, [currentIndex, total]) => {
+			if(currentIndex==100){
+				this.hideOnboard = true
+			}
+		})
 
 	window.addEventListener('online',()=>{
 		console.log("online");
@@ -129,6 +135,10 @@ body {
 ::-webkit-scrollbar {
 	background: rgba(0, 0, 0, 0.199);
 	width: 8px;
+}
+::-webkit-scrollbar:hover {
+	background: rgba(0, 0, 0, 0.199);
+	width: 10px;
 }
 ::-webkit-scrollbar-track-piece {
 	background: rgba(255, 255, 255, 0.083);

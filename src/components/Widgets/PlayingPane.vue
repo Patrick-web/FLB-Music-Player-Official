@@ -111,7 +111,7 @@
 					<img id="plIcon" src="@/assets/images/playlist_add.svg" alt="" />
 				</button>
 				<button
-					@click="toggleRepeat"
+					@click="changeRepeat"
 					:class="[audioState.repeat ? 'bt_active' : '', 'iconBt']"
 					id="repeatIcon"
 					title="repeat"
@@ -232,6 +232,14 @@ export default {
 					type: "normal",
 				});
 			}
+		},
+		changeRepeat() {
+			this.toggleRepeat();
+			this.pushNotification({
+				title: `Repeat ${this.audioState.repeat ? "On" : "Off"}`,
+				subTitle: null,
+				type: "normal",
+			});
 		},
 	},
 	mounted() {

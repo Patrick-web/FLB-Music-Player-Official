@@ -18,6 +18,11 @@ import { ipcRenderer } from "electron";
 import { mapActions, mapState } from "vuex";
 import BaseNotification from "./BaseNotification.vue";
 export default {
+	data() {
+		return {
+			progressNotificationSent: false,
+		};
+	},
 	components: { BaseNotification },
 	computed: {
 		...mapState(["notifications"]),
@@ -33,13 +38,23 @@ export default {
 				type: "normal",
 			})
 		);
-		ipcRenderer.on("normalMsg", (e, msg) =>
+		ipcRenderer.on("errorMsg", (e, msg) =>
 			this.pushNotification({
 				title: msg,
 				subTitle: null,
-				type: "normal",
+				type: "danger",
 			})
 		);
+		ipcRenderer.on("parsingProgress", (e, [currentIndex, total]) => {
+			if (!this.progressNotificationSent) {
+				this.progressNotificationSent = true;
+				this.pushNotification({
+					title: "Adding tracks",
+					subTitle: `${currentIndex}/${total}`,
+					type: "persist",
+				});
+			}
+		});
 	},
 };
 </script>
@@ -53,6 +68,9 @@ export default {
 		padding: 10px;
 		border-radius: 10px;
 		margin: 10px;
+	}
+	.persist {
+		background: rgb(0, 132, 255);
 	}
 	.normal {
 		background: rgb(0, 132, 255);

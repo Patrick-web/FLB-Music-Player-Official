@@ -6,7 +6,7 @@
 		:class="[source.isCurrentlyPlaying ? 'playingTrack' : '', 'TrackCard']"
 	>
 		<div @click.stop="bulkSelectTrack($event)" class="fxSelectBt"></div>
-		<div v-if="!source.fileName.match(/mp4|mkv/)" class="info">
+		<div class="info">
 			<img v-if="source.albumArt" class="cover" :src="source.albumArt" alt="" />
 			<img
 				v-if="!source.albumArt && !source.fileName.match(/mp4|mkv/)"
@@ -30,12 +30,6 @@
 					{{ source.formattedLength }}
 				</p>
 			</div>
-		</div>
-		<div v-if="source.fileName.match(/mp4|mkv/)" class="info_video">
-			<img class="cover" src="@/assets/images/video.svg" alt="" />
-			<p class="trackTitle">
-				{{ source.defaultTitle }}
-			</p>
 		</div>
 	</div>
 </template>

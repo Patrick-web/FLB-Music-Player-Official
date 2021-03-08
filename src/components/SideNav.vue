@@ -30,7 +30,7 @@
 				</router-link>
 			</div>
 			<div class="sideNav-group">
-				<a href="">
+				<a>
 					<span v-if="!isCollapsed">Soon</span>
 					<img
 						title="Podcasts"
@@ -103,7 +103,6 @@ export default {
 			this.isCollapsed = !this.isCollapsed;
 			if (this.isCollapsed) {
 				document.querySelector("#centralArea_tabs").style.width = "70vw";
-				document.querySelector("#centralArea_tabs").style.marginRight = "20px";
 			} else {
 				document.querySelector("#centralArea_tabs").style.width = "60vw";
 			}
@@ -128,7 +127,6 @@ export default {
 .collapsed {
 	min-width: 50px !important;
 	width: 60px !important;
-	margin-right: 20px !important;
 	#menuIcon {
 		transform: translateX(5px);
 	}
@@ -143,9 +141,9 @@ export default {
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
-	margin-right: 20px;
+	margin-right: 10px;
+	margin-left: 10px;
 	margin-top: 10px;
-	transform: translateX(10px);
 	overflow: hidden;
 	.sideNav-group {
 		border-radius: 15px;

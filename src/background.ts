@@ -19,10 +19,8 @@ import {
 	FolderType,
 	FolderInfoType,
 	TagChangesType,
-	processedFolderType,
 	PlaylistType,
 	TrackerDataType,
-	tabType,
 	SettingsType,
 } from "./store/types";
 import NodeID3 from "node-id3";
@@ -78,7 +76,6 @@ async function createWindow() {
 		createProtocol("app");
 		// Load the index.html when not in development
 		win.loadURL("app://./index.html");
-		autoUpdater.checkForUpdatesAndNotify();
 	}
 
 	win.on("blur", () => {
@@ -88,6 +85,21 @@ async function createWindow() {
 	win.on("focus", () => {
 		appIsFocused = true;
 		win.webContents.send("turnOnVisuals", "Window is focused again");
+	});
+	autoUpdater.checkForUpdatesAndNotify();
+	autoUpdater.on("checking-for-update", () => {
+		console.log("checking-for-update");
+		win.webContents.send("normalMsg", "📻");
+	});
+	autoUpdater.on("update-available", () => {
+		console.log("update-available");
+		win.webContents.send(
+			"normalMsg",
+			"A New version has been released 🎁🎁🎉🎉🎈🎈"
+		);
+	});
+	autoUpdater.on("update-downloaded", () => {
+		win.webContents.send("normalMsg", "New version downloaded");
 	});
 }
 
@@ -287,10 +299,10 @@ ipcMain.on("getFirstTracks", async () => {
 });
 ipcMain.on("initializeAppData", async () => {
 	if (process.argv[1] && isValidFileType(process.argv[1])) {
-		const pathInfo = path.parse(process.argv[0]);
+		const pathInfo = path.parse(process.argv[1]);
 		await createParsedTrack(
-			process.argv[0],
-			process.argv[0].replace(/(.*)[\/\\]/, ""),
+			process.argv[1],
+			process.argv[1].replace(/(.*)[\/\\]/, ""),
 			{ name: pathInfo.name, path: pathInfo.dir }
 		);
 		win.webContents.send("playFirstTrack");
@@ -474,12 +486,13 @@ function createParsedTrack(
 		if (fileName.match(/\.mp4|\.mkv/)) {
 			console.log(fileName);
 			track.title = null;
-			track.extractedTitle = null;
+			track.extractedTitle = extractTitleAndArtist(track.fileName).title;
 			track.artist = null;
-			track.extractedArtist = "";
+			track.extractedArtist = extractTitleAndArtist(track.fileName).artist;
+			track.defaultTitle =
+				track.title || track.extractedTitle || track.fileName;
+			track.defaultArtist = track.artist || track.extractedArtist;
 			track.album = "unknown";
-			track.defaultTitle = track.fileName;
-			track.defaultArtist = "";
 			fs.stat(track.fileLocation, (err, stats) => {
 				track.dateAdded = stats.ctimeMs;
 			});
@@ -602,7 +615,7 @@ async function processTracks(data: Array<dataParamObj>, index: number) {
 	console.log("Done parsing " + data[index].fileName);
 	if (index !== data.length - 1) {
 		processTracks(data, index + 1);
-		win.webContents.send("parsingProgress", `${index + 2}/${data.length}`);
+		win.webContents.send("parsingProgress", [index + 2, data.length]);
 	} else {
 		tracker.updateJSONfile();
 		win.webContents.send("parsingDone", data.length);
@@ -632,7 +645,14 @@ async function writeTags(path: string, tagChanges: TagChangesType) {
 	if (tagChanges.APIC && tagChanges.APIC.includes("https:")) {
 		tagChanges.APIC = await downloadFile(tagChanges.APIC);
 	}
+	tagChanges.APIC.replace("file:///", "");
+	tagChanges.APIC = decodeURI(tagChanges.APIC);
 	let isSuccessFull = NodeID3.update(tagChanges, path);
+	if (isSuccessFull) {
+		win.webContents.send("normalMsg", "Tags Succcefully changed");
+	} else {
+		win.webContents.send("errorMsg", "An Error occured while changing tags");
+	}
 	return isSuccessFull;
 }
 

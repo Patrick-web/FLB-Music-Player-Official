@@ -33,7 +33,7 @@
 			<p>{{ Date(playingTrack.dateAdded) }}</p>
 		</div>
 		<button
-			@click="selectPlayingTrack"
+			@click="emitPlayingTrack"
 			class="iconBt"
 			id="toggleTagEditor"
 			title="Edit Tags"
@@ -55,6 +55,9 @@ export default {
 		selectPlayingTrack() {
 			this.addToSelectedTracks(this.playingTrack);
 			this.UIcontrollerToggleProperty("showTagEditor");
+		},
+		emitPlayingTrack() {
+			this.$emit("targetTrack", this.playingTrack);
 		},
 	},
 };
@@ -87,8 +90,6 @@ export default {
 		top: 0px;
 		left: 10%;
 		transform: translateX(-50%);
-		background-color: #0000004b;
-		backdrop-filter: blur(10px);
 	}
 }
 </style>

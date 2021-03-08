@@ -24,7 +24,10 @@
 				<img src="@/assets/images/lyrics.svg" alt="" />
 			</div>
 		</div>
-		<TrackInfo v-if="sidePaneActiveTab == 'TrackInfo' && playingTrack" />
+		<TrackInfo
+			v-on:targetTrack="emitTargetTrack"
+			v-if="sidePaneActiveTab == 'TrackInfo' && playingTrack"
+		/>
 		<QueuedTracks v-if="sidePaneActiveTab == 'CustomQueue'" />
 		<Lyrics v-if="sidePaneActiveTab == 'Lyrics'" />
 
@@ -48,7 +51,11 @@ export default {
 		...mapState(["sidePaneActiveTab", "playingTrack"]),
 	},
 	methods: {
-		...mapMutations(["switchSidePaneTab"]),
+		...mapMutations(["switchSidePaneTab", "UIcontrollerToggleProperty"]),
+		emitTargetTrack(track) {
+			this.$emit("targetTrack", track);
+			this.UIcontrollerToggleProperty("showTagEditor");
+		},
 	},
 	components: {
 		QueuedTracks,
@@ -75,7 +82,6 @@ export default {
 	border-radius: 20px;
 	max-width: 19.5vw;
 	min-width: 19.5vw;
-	transform: translateX(-10px);
 	.tabber {
 		margin: auto;
 		display: grid;

@@ -1,13 +1,14 @@
 <template>
 	<div class="sortOption actionBt">
-		<div
+		<button
 			@click="showSortOptions = !showSortOptions"
-			:class="[showSortOptions ? 'bt_active' : '', 'toggler']"
-			class="toggler"
+			:class="[showSortOptions ? 'bt_active' : '', 'btWithIcon']"
 			title="Sort Tracks"
+			style="min-width:70px"
 		>
+			<p>Sort</p>
 			<img id="sortIcon" src="@/assets/images/sort.svg" alt="" />
-		</div>
+		</button>
 		<transition
 			enter-active-class="animated extrafaster fadeInUp"
 			leave-active-class="animated extrafaster fadeOutDown"

@@ -80,7 +80,7 @@ button {
 	cursor: pointer;
 	border-radius: 20px;
 	background: rgba(255, 255, 255, 0.083);
-	padding: 7px;
+	padding: 5px;
 	font-family: roboto;
 	margin-top: 10px;
 	width: 100%;
@@ -107,11 +107,11 @@ button:hover {
 	width: auto !important;
 	display: flex;
 	align-items: center;
-	margin-right: 10px;
+	justify-content: space-around;
+	min-width: 80px;
 }
 .btWithIcon img {
 	width: 20px;
-	margin-right: 5px;
 }
 .backToUnfilteredItems {
 	position: absolute;

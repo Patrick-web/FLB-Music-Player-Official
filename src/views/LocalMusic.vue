@@ -18,7 +18,7 @@
 				<TabSwitcher />
 				<router-view />
 			</section>
-			<SidePane />
+			<SidePane v-on:targetTrack="setTagEditorTrack" />
 		</main>
 	</div>
 </template>
@@ -90,7 +90,7 @@ export default {
 			min-width: 60vw;
 			max-width: 70vw;
 			width: 60vw;
-			margin-right: 20px;
+			margin-right: 10px;
 			padding: 10px;
 			border-radius: 20px;
 			margin-top: 10px;

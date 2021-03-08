@@ -10,13 +10,35 @@
 			<div class="center-content">
 				<img id="coverArtTag" :src="targetTrack.albumArt" alt="" />
 				<p style="margin-top:10px" v-if="!targetTrack.albumArt">No Album Art</p>
+				<!-- <button
+					style="max-width:210px;padding-top:8px"
+					@click="importCover"
+					id="selectCoverArt"
+				>
+					<p style="font-family:roboto;font-size:1rem">Import Album Art</p>
+				</button> -->
+				<button
+					v-if="!searchAlbumArt"
+					style="max-width:210px;padding-top:8px"
+					@click="searchAlbumArt = true"
+					id="selectCoverArt"
+				>
+					<p style="font-family:roboto;font-size:1rem">
+						Search Album Art Online
+					</p>
+				</button>
+				<button
+					v-if="searchAlbumArt"
+					style="max-width:210px;padding-top:8px"
+					@click="searchAlbumArt = false"
+					class="dangerBt"
+					id="selectCoverArt"
+				>
+					<p style="font-family:roboto;font-size:1rem">
+						Close Album Searcher
+					</p>
+				</button>
 			</div>
-			<button @click="importCover" id="selectCoverArt">
-				<h4>Import Album Art</h4>
-			</button>
-			<button @click="searchAlbumArt = true" id="selectCoverArt">
-				<h4>Search Album Art Online</h4>
-			</button>
 			<div class="tag">
 				<p>Current Title : {{ targetTrack.title || "unknown" }}</p>
 				<input
@@ -44,15 +66,22 @@
 					id="albumTag"
 				/>
 			</div>
-			<div v-if="isOnline" class="possibleCovers">
+			<div v-if="searchAlbumArt" class="possibleCovers">
 				<p>Album Art Search</p>
-				<input
-					type="text"
-					v-model="query"
-					@keyup.enter="searchImage"
-					class="inputElem"
-				/>
-				<div v-if="possibleAlbumArt.length == 0" class="loadingArea">
+				<div class="center-content">
+					<input
+						type="text"
+						v-model="query"
+						@keyup.enter="searchImage"
+						class="inputElem"
+						placeholder="Search"
+					/>
+					<button @click="searchImage"><h2>Search</h2></button>
+				</div>
+				<div
+					v-if="possibleAlbumArt.length == 0 && searching"
+					class="loadingArea"
+				>
 					<div class="loadingIndicator"></div>
 				</div>
 				<div class="possibles">
@@ -77,9 +106,8 @@
 
 <script>
 import { ipcRenderer } from "electron";
-import { mapGetters, mapMutations, mapState } from "vuex";
-// const electron = window.require("electron");
-
+import { mapMutations, mapState } from "vuex";
+import gis from "g-i-s";
 export default {
 	data() {
 		return {
@@ -93,6 +121,7 @@ export default {
 			query: "",
 			cover: "",
 			searchAlbumArt: false,
+			searching: false,
 		};
 	},
 	computed: {
@@ -139,29 +168,21 @@ export default {
 			this.UIcontrollerToggleProperty("showTagEditor");
 		},
 		searchImage() {
-			console.log(this.query);
 			this.possibleAlbumArt = [];
-			// gis(this.query, (error, results) => {
-			//   console.log("logging results");
-			//   if (error) {
-			//     console.log(error);
-			//   } else {
-			//     if (results.length > 1) {
-			//       this.possibleAlbumArt = results.slice(0, 10);
-			//     }
-			//   }
-			// });
+			this.searching = true;
+			gis(this.query, (error, results) => {
+				console.log("logging results");
+				if (error) {
+					console.log(error);
+				} else {
+					if (results.length > 1) {
+						this.possibleAlbumArt = results.slice(0, 10);
+					}
+				}
+			});
 		},
 	},
 	mounted() {
-		console.log("Tag Editor Mounted");
-		ipcRenderer.on("tagWriteError", () => {
-			// const noti = this.$vs.notify({
-			//   color: "danger",
-			//   position: "top-center",
-			//   title: "An error occured while changing song info",
-			// });
-		});
 		ipcRenderer.on("importedCoverArt", (e, data) => {
 			document.querySelector("#coverArtTag").src = data;
 		});
@@ -224,14 +245,13 @@ export default {
 		padding: 10px;
 		position: absolute;
 		left: -2px;
-		bottom: 0px;
+		top: 0px;
 		transform: translateX(-100%);
-		background-color: rgb(0, 0, 0);
-		backdrop-filter: blur(10px);
+		background-color: rgb(22, 22, 22);
 		width: 100%;
 		.possibles {
 			margin-top: 10px;
-			height: 400px;
+			max-height: 440px;
 			overflow: hidden;
 			overflow-y: scroll;
 		}

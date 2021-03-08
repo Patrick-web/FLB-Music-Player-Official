@@ -1,12 +1,13 @@
 <template>
 	<div class="Titlebar">
-		<div
+		<button
 			title="Select Multiple Tracks"
 			@click.stop="toggleMultiSelect"
-			:class="[multiSelect ? 'bt_active' : '', 'multiSelect']"
+			:class="[multiSelect ? 'bt_active' : '', 'btWithIcon']"
 		>
+			<p>Select</p>
 			<img src="@/assets/images/multiselect.svg" alt="" />
-		</div>
+		</button>
 		<div class="searchBar">
 			<input
 				@keyup="search(query)"
