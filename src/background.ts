@@ -53,8 +53,8 @@ async function createWindow() {
 	const { width, height } = primaryDisplay.workAreaSize;
 	// Create the browser window.
 	win = new BrowserWindow({
-		width: width - 10,
-		height: height - 10,
+		width: width,
+		height: height,
 		frame: false,
 		transparent: true,
 		webPreferences: {
@@ -69,6 +69,8 @@ async function createWindow() {
 		},
 	});
 
+	win.maximize();
+
 	if (process.env.WEBPACK_DEV_SERVER_URL) {
 		// Load the url of the dev server if in development mode
 		await win.loadURL(process.env.WEBPACK_DEV_SERVER_URL as string);
@@ -76,7 +78,7 @@ async function createWindow() {
 		createProtocol("app");
 		// Load the index.html when not in development
 		win.loadURL("app://./index.html");
-		// autoUpdater.checkForUpdatesAndNotify()
+		autoUpdater.checkForUpdatesAndNotify();
 	}
 
 	win.on("blur", () => {
