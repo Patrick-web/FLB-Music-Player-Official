@@ -31,7 +31,7 @@
 			</div>
 			<div class="sideNav-group">
 				<a href="">
-					<span v-if="!isCollapsed">Coming Soon</span>
+					<span v-if="!isCollapsed">Soon</span>
 					<img
 						title="Podcasts"
 						class="whiten"
