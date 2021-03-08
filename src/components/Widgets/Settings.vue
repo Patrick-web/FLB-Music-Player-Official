@@ -212,6 +212,10 @@
 					<h3>About</h3>
 					<div class="infos">
 						<div class="info-group">
+							<div class="it">App Version</div>
+							<div class="i">{{ appVersion }}</div>
+						</div>
+						<div class="info-group">
 							<div class="it">Made with 🤍 By</div>
 							<div class="i">Patrick Waweru</div>
 						</div>
@@ -242,9 +246,12 @@
 <script>
 import { sendMessageToNode } from "@/Utils/frontEndUtils";
 import { mapMutations, mapState } from "vuex";
+import { ipcRenderer } from "electron";
 export default {
 	data() {
-		return {};
+		return {
+			appVersion: "0.0.1",
+		};
 	},
 	computed: {
 		...mapState(["scannedFolders", "settings"]),
@@ -267,6 +274,12 @@ export default {
 		clearLibrary() {
 			sendMessageToNode("resetApp");
 		},
+	},
+	mounted() {
+		ipcRenderer.send("requestVersion");
+		ipcRenderer.on("appVersion", (e, version) => {
+			this.appVersion = version;
+		});
 	},
 };
 </script>

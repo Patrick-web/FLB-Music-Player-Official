@@ -5,8 +5,12 @@
     "name": "Patrick Waweru",
     "email": "pntxall100@gmail.com"
   },
-  "version": "0.1.1",
+  "version": "0.1.2",
   "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Patrick-web/FLB-Music-Player-Official.git"
+  },
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",

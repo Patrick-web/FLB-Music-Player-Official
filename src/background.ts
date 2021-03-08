@@ -101,6 +101,9 @@ async function createWindow() {
 	autoUpdater.on("update-downloaded", () => {
 		win.webContents.send("normalMsg", "New version downloaded");
 	});
+	autoUpdater.on("download-progress", (progressObj) => {
+		console.log("Downloading Update");
+	});
 }
 
 // Quit when all windows are closed.
@@ -407,7 +410,9 @@ ipcMain.on("updateTags", async (e, payload) => {
 		tracker.updateTrackInfo(payload);
 	}
 });
-
+ipcMain.on("requestVersion", () =>
+	win.webContents.send("appVersion", app.getVersion())
+);
 ipcMain.on("deleteFiles", async (e, payload: Array<TrackType>) => {
 	win.webContents.send("removeSelectedTracks", "");
 	payload.forEach((track) => {
