@@ -46,74 +46,73 @@
 </template>
 
 <script lang="js">
-import { mapMutations, mapState } from "vuex";
-export default {
-  name: "TabSwitcher",
-  computed: {
-    ...mapState(["currentTab"]),
-  },
-  methods: {
-    ...mapMutations(["switchTab", "deSelectGroup","clearSelectedTracks"]),
-    routeTo(e,tab) {
-      this.switchTab(tab);
-      this.deSelectGroup();
-      e.currentTarget.querySelector('a').click()
-	this.clearSelectedTracks();
-	document.querySelector("#centralArea_tabs").classList.remove("multiSelectMode");
-    },
-  },
-};
+	import { mapMutations, mapState } from "vuex";
+	export default {
+	name: "TabSwitcher",
+	computed: {
+	...mapState(["currentTab"]),
+	},
+	methods: {
+	...mapMutations(["switchTab", "deSelectGroup","clearSelectedTracks"]),
+	routeTo(e,tab) {
+	this.switchTab(tab);
+	this.deSelectGroup();
+	e.currentTarget.querySelector('a').click();
+		this.clearSelectedTracks();	document.querySelector("#centralArea_tabs").classList.remove("multiSelectMode");
+	},
+	},
+	};
 </script>
 
 <style lang="scss">
-.traditionalLayout {
-	.Tabswitcher {
-		width: 60%;
-		margin: auto;
-		.indicator {
-			width: 100px;
+	.traditionalLayout {
+		.Tabswitcher {
+			width: 60%;
+			margin: auto;
+			.indicator {
+				width: 100px;
+			}
 		}
 	}
-}
-.Tabswitcher {
-	display: flex;
-	justify-content: center;
-	position: relative;
-	overflow: hidden;
-	z-index: 10;
-	padding: 10px;
-	p {
-		background: rgba(255, 255, 255, 0.083);
-		margin-right: 5px;
-		margin-left: 5px;
-		text-align: center;
+	.Tabswitcher {
+		display: flex;
+		justify-content: center;
 		position: relative;
-		z-index: 2;
-		padding: 5px;
-		padding-top: 7px;
-		color: white;
-		border-radius: 20px;
-		min-width: 100px;
-		cursor: pointer;
-		transition: 0.2s ease;
-		font-family: roboto-light;
-		font-size: 1rem;
-		border-bottom: 3px solid rgba(0, 132, 255, 0);
+		overflow: hidden;
+		z-index: 10;
+		padding: 10px;
+		p {
+			background: rgba(255, 255, 255, 0.083);
+			margin-right: 5px;
+			margin-left: 5px;
+			text-align: center;
+			position: relative;
+			z-index: 2;
+			padding: 3px;
+			padding-top: 5px;
+			color: white;
+			border-radius: 20px;
+			min-width: 100px;
+			cursor: pointer;
+			transition: 0.2s ease;
+			font-family: roboto-light;
+			font-size: 0.9rem;
+			border-bottom: 3px solid rgba(0, 132, 255, 0);
+		}
+		p:hover {
+			background: rgba(255, 255, 255, 0.144);
+		}
+		.activeTab {
+			background: var(--accentColor);
+			font-family: roboto;
+		}
+		.activeTab:hover {
+			background: var(--accentColor);
+		}
 	}
-	p:hover {
-		background: rgba(255, 255, 255, 0.144);
-	}
-	.activeTab {
-		background: var(--accentColor);
-		font-family: roboto;
-	}
-	.activeTab:hover {
-		background: var(--accentColor);
-	}
-}
-// @media (max-width: 700px) {
-//   .Tabswitcher {
-//     display: none;
-//   }
-// }
+	// @media (max-width: 700px) {
+	//   .Tabswitcher {
+	//     display: none;
+	//   }
+	// }
 </style>

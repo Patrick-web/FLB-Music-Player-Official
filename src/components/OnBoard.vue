@@ -16,24 +16,26 @@
 				<article>
 					<h2>Where should I look for Music ?</h2>
 					<br />
-					<div
-						v-for="folder in settings.foldersToScan"
-						:key="folder"
-						class="folderBox"
-					>
-						<div>
-							<p>{{ folder.replace(/(.*)[\/\\]/, "") }}</p>
-							<p style="font-family:roboto-thin;font-size:0.9rem">
-								{{ folder }}
-							</p>
-						</div>
-						<button
-							@click="removeFromScannedFolders(folder)"
-							title="Remove folder"
-							class="iconBt dangerBt"
+					<div class="folderBoxWrapper">
+						<div
+							v-for="folder in settings.foldersToScan"
+							:key="folder"
+							class="folderBox"
 						>
-							<img style="width:15px" src="@/assets/images/x.svg" alt="" />
-						</button>
+							<div>
+								<p>{{ folder.replace(/(.*)[\/\\]/, "") }}</p>
+								<p style="font-family:roboto-thin;font-size:0.9rem">
+									{{ folder }}
+								</p>
+							</div>
+							<button
+								@click="removeFromScannedFolders(folder)"
+								title="Remove folder"
+								class="iconBt dangerBt"
+							>
+								<img style="width:15px" src="@/assets/images/x.svg" alt="" />
+							</button>
+						</div>
 					</div>
 					<button class="bt_active" style="max-width:200px" @click="addFolder">
 						<h3>Add Folder</h3>
@@ -78,195 +80,202 @@
 </template>
 
 <script>
-import { mapMutations, mapState } from "vuex";
-import { sendMessageToNode } from "@/Utils/frontEndUtils";
-import { ipcRenderer } from "electron";
-export default {
-	data() {
-		return {
-			currentSlide: 1,
-			currentTip: 0,
-			fraction: "0/0",
-			tips: [
-				"✨✨ Right click on any track to see more options ✨✨",
-				"🪓🪓 Drag tracks in the queue to reorder them 🪓🪓",
-				"🏹🏹 Make sure to check out the settings 🏹🏹",
-			],
-		};
-	},
-	computed: {
-		...mapState(["scannedFolders", "settings"]),
-	},
-	methods: {
-		...mapMutations([
-			"updateSetting",
-			"restoreSettings",
-			"UIcontrollerToggleProperty",
-		]),
-		goToSlide2() {
-			this.currentSlide = 2;
-			setInterval(() => {
-				if (this.currentTip == 2) {
-					this.currentTip = 0;
-				} else {
-					this.currentTip += 1;
-				}
-			}, 3000);
+	import { mapMutations, mapState } from "vuex";
+	import { sendMessageToNode } from "@/Utils/frontEndUtils";
+	import { ipcRenderer } from "electron";
+	export default {
+		data() {
+			return {
+				currentSlide: 1,
+				currentTip: 0,
+				fraction: "0/0",
+				tips: [
+					"✨✨ Right click on any track to see more options ✨✨",
+					"🪓🪓 Drag tracks in the queue to reorder them 🪓🪓",
+					"🏹🏹 Make sure to check out the settings 🏹🏹",
+				],
+			};
 		},
-		addFolder() {
-			sendMessageToNode("addScanFolder", "");
+		computed: {
+			...mapState(["scannedFolders", "settings"]),
 		},
-		removeFromScannedFolders(path) {
-			sendMessageToNode("removeFromScannedFolders", path);
+		methods: {
+			...mapMutations([
+				"updateSetting",
+				"restoreSettings",
+				"UIcontrollerToggleProperty",
+			]),
+			goToSlide2() {
+				this.currentSlide = 2;
+				setInterval(() => {
+					if (this.currentTip == 2) {
+						this.currentTip = 0;
+					} else {
+						this.currentTip += 1;
+					}
+				}, 3000);
+			},
+			addFolder() {
+				sendMessageToNode("addScanFolder", "");
+			},
+			removeFromScannedFolders(path) {
+				sendMessageToNode("removeFromScannedFolders", path);
+			},
+			initialize() {
+				ipcRenderer.send("getFirstTracks");
+				this.currentSlide = 3;
+			},
 		},
-		initialize() {
-			ipcRenderer.send("getFirstTracks");
-			this.currentSlide = 3;
+		mounted() {
+			ipcRenderer.on("parsingProgress", (e, [currentIndex, total]) => {
+				this.fraction = `${currentIndex}/${total}`;
+			});
+			ipcRenderer.on("userSettings", (e, payload) => {
+				console.log(payload);
+				console.log("User Settings Received");
+				this.restoreSettings(payload);
+			});
+			ipcRenderer.send("initializeSettings");
 		},
-	},
-	mounted() {
-		ipcRenderer.on("parsingProgress", (e, [currentIndex, total]) => {
-			this.fraction = `${currentIndex}/${total}`;
-		});
-		ipcRenderer.on("userSettings", (e, payload) => {
-			console.log(payload);
-			console.log("User Settings Received");
-			this.restoreSettings(payload);
-		});
-		ipcRenderer.send("initializeSettings");
-	},
-};
+	};
 </script>
 
 <style lang="scss">
-.onboard {
-	position: fixed;
-	bottom: 0;
-	width: 100vw;
-	height: 95vh;
-	background: rgb(22, 22, 22);
-	left: 0;
-	z-index: 60;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-	.slide {
-		position: relative;
-		background: black;
+	.onboard {
+		position: fixed;
+		bottom: 0;
+		width: 100vw;
+		height: 95vh;
+		background: rgb(22, 22, 22);
+		left: 0;
+		z-index: 60;
 		display: flex;
-		border-radius: 20px;
 		flex-direction: column;
 		justify-content: center;
 		align-items: center;
-		height: 70%;
-		width: 60%;
-		.slideTitle {
-			width: 100%;
-			text-align: center;
-			position: absolute;
-			top: 20px;
-			left: 50%;
-			transform: translateX(-50%);
+		.folderBoxWrapper {
+			max-height: 180px;
+			overflow: hidden;
+			overflow-y: scroll;
+			padding: 10px;
+			padding-bottom: 0px;
 		}
-		#onboard1 {
-			width: 60vw;
-			margin-top: -30px;
-		}
-		#lamma {
-			position: absolute;
-			top: 250px;
-			left: 50%;
-			transform: translateX(-50%);
-			width: 200px;
-			filter: invert(1);
-		}
-		#loadingCat {
-			position: absolute;
-			top: 60px;
-			left: 50%;
-			transform: translateX(-50%);
-			width: 300px;
-			filter: invert(1);
-		}
-		#jamBt {
-			width: 220px;
-			left: 50%;
-			transform: translateX(-50%);
-			border-radius: 40px;
-			bottom: 20px;
-			position: absolute;
+		.slide {
+			position: relative;
+			background: black;
 			display: flex;
+			border-radius: 20px;
+			flex-direction: column;
 			justify-content: center;
-			background: rgb(0, 132, 255) !important;
-			h2 {
-				margin-left: 5px;
+			align-items: center;
+			height: 70%;
+			width: 60%;
+			.slideTitle {
+				width: 100%;
+				text-align: center;
+				position: absolute;
+				top: 20px;
+				left: 50%;
+				transform: translateX(-50%);
+			}
+			#onboard1 {
+				width: 60vw;
+				margin-top: -30px;
+			}
+			#lamma {
+				position: absolute;
+				top: 250px;
+				left: 50%;
+				transform: translateX(-50%);
+				width: 200px;
+				filter: invert(1);
+			}
+			#loadingCat {
+				position: absolute;
+				top: 60px;
+				left: 50%;
+				transform: translateX(-50%);
+				width: 300px;
+				filter: invert(1);
+			}
+			#jamBt {
+				width: 220px;
+				left: 50%;
+				transform: translateX(-50%);
+				border-radius: 40px;
+				bottom: 20px;
+				position: absolute;
+				display: flex;
+				justify-content: center;
+				background: rgb(0, 132, 255) !important;
+				h2 {
+					margin-left: 5px;
+				}
+			}
+			#jamBt:hover {
+				background: rgb(0, 174, 255) !important;
+				border-radius: 5px;
+			}
+			#parseProgress {
+				position: absolute;
+				width: 100%;
+				background: rgb(2, 196, 67);
+				bottom: 0px;
+				padding-bottom: 10px;
+				padding-top: 10px;
+				border-bottom-left-radius: 20px;
+				border-bottom-right-radius: 20px;
+				left: 50%;
+				transform: translateX(-50%);
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				justify-content: center;
 			}
 		}
-		#jamBt:hover {
-			background: rgb(0, 174, 255) !important;
-			border-radius: 5px;
-		}
-		#parseProgress {
-			position: absolute;
-			width: 100%;
-			background: rgb(2, 196, 67);
-			bottom: 0px;
-			padding-bottom: 10px;
-			padding-top: 10px;
-			border-bottom-left-radius: 20px;
-			border-bottom-right-radius: 20px;
-			left: 50%;
-			transform: translateX(-50%);
+		article {
+			background: rgba(255, 255, 255, 0.082);
+			width: 40vw;
 			display: flex;
 			flex-direction: column;
 			align-items: center;
 			justify-content: center;
-		}
-	}
-	article {
-		background: rgba(255, 255, 255, 0.082);
-		width: 40vw;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		justify-content: center;
-		margin-bottom: 10px;
-		padding: 10px;
-		border-radius: 10px;
-		.folderBox {
-			background: rgba(0, 0, 0, 0.801);
-			padding: 10px 0px 10px 10px;
-			border-radius: 20px;
-			width: 400px;
-			display: grid;
-			align-items: center;
-			grid-template-columns: 7fr 1fr;
-			margin-bottom: 2px;
-			button {
-				margin-top: 0px;
+			margin-bottom: 10px;
+			padding: 10px;
+			border-radius: 10px;
+			.folderBox {
+				background: rgba(0, 0, 0, 0.801);
+				padding: 10px 0px 10px 10px;
+				border-radius: 20px;
+				width: 400px;
+				display: grid;
+				align-items: center;
+				grid-template-columns: 7fr 1fr;
+				margin-bottom: 2px;
+				button {
+					margin-top: 0px;
+				}
 			}
-		}
-		ul {
-			p {
-				background: rgba(0, 0, 0, 0.282);
-				margin-bottom: 1px;
-				padding: 5px;
-				font-family: roboto-light;
-				cursor: pointer;
-			}
-			p:hover {
-				border-radius: 5px;
-				padding-left: 10px;
-				margin: 5px;
-			}
-			.activeSetting {
-				padding-left: 10px;
-				border-radius: 5px;
-				margin: 5px;
-				background: #0062ff !important;
+			ul {
+				p {
+					background: rgba(0, 0, 0, 0.282);
+					margin-bottom: 1px;
+					padding: 5px;
+					font-family: roboto-light;
+					cursor: pointer;
+				}
+				p:hover {
+					border-radius: 5px;
+					padding-left: 10px;
+					margin: 5px;
+				}
+				.activeSetting {
+					padding-left: 10px;
+					border-radius: 5px;
+					margin: 5px;
+					background: #0062ff !important;
+				}
 			}
 		}
 	}
-}
 </style>

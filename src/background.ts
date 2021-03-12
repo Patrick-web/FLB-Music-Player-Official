@@ -51,8 +51,8 @@ async function createWindow() {
 	const { width, height } = primaryDisplay.workAreaSize;
 	// Create the browser window.
 	win = new BrowserWindow({
-		width: width,
-		height: height,
+		width: width - 100,
+		height: height - 100,
 		frame: false,
 		transparent: true,
 		webPreferences: {

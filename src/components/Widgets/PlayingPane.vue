@@ -119,7 +119,7 @@
 					<img id="plIcon" src="@/assets/images/repeat_one.svg" alt="" />
 				</button>
 				<button
-					@click="toggleShuffler"
+					@click="shuffler"
 					id="shuffleIcon"
 					:class="[audioState.shuffle ? 'bt_active' : '', 'iconBt']"
 				>
@@ -131,389 +131,401 @@
 </template>
 
 <script>
-import TrackBar from "@/components/TrackBar.vue";
-import { mapActions, mapMutations, mapState } from "vuex";
-// import particleBg from "@/components/particleBg.vue";
+	import TrackBar from "@/components/TrackBar.vue";
+	import { mapActions, mapMutations, mapState } from "vuex";
+	// import particleBg from "@/components/particleBg.vue";
 
-export default {
-	computed: {
-		...mapState([
-			"playingTrack",
-			"audioState",
-			"tabsData",
-			"UIcontroller",
-			"settings",
-		]),
-		isInFavourites() {
-			return this.tabsData.playlists[0].tracks.some(
-				(track) => track.fileLocation == this.playingTrack.fileLocation
-			);
+	export default {
+		computed: {
+			...mapState([
+				"playingTrack",
+				"audioState",
+				"tabsData",
+				"UIcontroller",
+				"settings",
+			]),
+			isInFavourites() {
+				return this.tabsData.playlists[0].tracks.some(
+					(track) => track.fileLocation == this.playingTrack.fileLocation
+				);
+			},
 		},
-	},
-	data() {
-		return {
-			elements: ["songName", "artistName", "albumName"],
-			repeat: false,
-			shuffle: false,
-			possibleThumbnails: [],
-			selectedCover: "",
-			volume: 1,
-			isOnline: false,
-			visualsOffDueToBlur: false,
-		};
-	},
-	methods: {
-		...mapActions([
-			"determineNextTrack",
-			"findAndGoToArtist",
-			"pushNotification",
-		]),
-		...mapMutations([
-			"addToFavorites",
-			"removeFromFavorites",
-			"addToSelectedTracks",
-			"addSelectedTrackToPlaylist",
-			"deleteSelectedTrackToFavourites",
-			"toggleRepeat",
-			"toggleShuffler",
-			"toggleIsPlaying",
-			"UIcontrollerToggleProperty",
-			"updateSetting",
-		]),
-		expandPlayingPane() {
-			const pane = document.querySelector(".playingPane");
-			const audio = document.querySelector("audio");
-			const video = document.querySelector("video");
-			if (this.playingTrack.fileName.match(/mp4|mkv/)) {
-				audio.muted = true;
-				video.muted = false;
-				video.requestFullscreen();
-				audio.currentTime = video.currentTime;
-			} else {
-				pane.classList.toggle("fullScreenPlayingPane");
-			}
+		data() {
+			return {
+				elements: ["songName", "artistName", "albumName"],
+				repeat: false,
+				shuffle: false,
+				possibleThumbnails: [],
+				selectedCover: "",
+				volume: 1,
+				isOnline: false,
+				visualsOffDueToBlur: false,
+			};
 		},
-		adjustVolume() {
-			document.querySelector("audio").volume = this.volume;
-			this.updateSetting(["volume", this.volume]);
-		},
-		goToArtist() {
-			document.querySelector("#Artists").click();
-			this.findAndGoToArtist(
-				this.playingTrack.artist || this.playingTrack.extractedArtist
-			);
-		},
-		showPlaylistAdder() {
-			this.addToSelectedTracks(this.playingTrack);
-			if (!this.UIcontroller.showPlaylistWidget) {
-				this.UIcontrollerToggleProperty("showPlaylistWidget");
-			}
-			setTimeout(() => {
-				const playlistWidget = document.querySelector("#PlaylistWidget");
-				playlistWidget.style.bottom = "100px";
-				document.querySelector("#PlaylistWidget").style.top = "initial";
-				document.querySelector("#PlaylistWidget").style.left = "78%";
-			}, 0);
-		},
-		toggleFromFavourites() {
-			this.addToSelectedTracks(this.playingTrack);
-			if (this.isInFavourites) {
-				this.deleteSelectedTrackToFavourites();
+		methods: {
+			...mapActions([
+				"determineNextTrack",
+				"findAndGoToArtist",
+				"pushNotification",
+			]),
+			...mapMutations([
+				"addToFavorites",
+				"removeFromFavorites",
+				"addToSelectedTracks",
+				"addSelectedTrackToPlaylist",
+				"deleteSelectedTrackToFavourites",
+				"toggleRepeat",
+				"toggleShuffler",
+				"toggleIsPlaying",
+				"UIcontrollerToggleProperty",
+				"updateSetting",
+			]),
+			expandPlayingPane() {
+				const pane = document.querySelector(".playingPane");
+				const audio = document.querySelector("audio");
+				const video = document.querySelector("video");
+				if (this.playingTrack.fileName.match(/mp4|mkv/)) {
+					audio.muted = true;
+					video.muted = false;
+					video.requestFullscreen();
+					audio.currentTime = video.currentTime;
+				} else {
+					pane.classList.toggle("fullScreenPlayingPane");
+				}
+			},
+			adjustVolume() {
+				document.querySelector("audio").volume = this.volume;
+				this.updateSetting(["volume", this.volume]);
+			},
+			goToArtist() {
+				document.querySelector("#Artists").click();
+				this.findAndGoToArtist(
+					this.playingTrack.artist || this.playingTrack.extractedArtist
+				);
+			},
+			shuffler() {
+				this.toggleShuffler();
+				const state = this.audioState.shuffle ? "On" : "Off";
 				this.pushNotification({
-					title: `Removed from Favourites`,
-					subTitle: `${this.playingTrack.defaultTitle}`,
-					type: "danger",
-				});
-			} else {
-				this.addSelectedTrackToPlaylist("Favourites");
-				this.pushNotification({
-					title: `Added to Favourites`,
-					subTitle: `${this.playingTrack.defaultTitle}`,
+					title: `Shuffle ${state}`,
+					subTitle: null,
 					type: "normal",
 				});
-			}
+			},
+			showPlaylistAdder() {
+				this.addToSelectedTracks(this.playingTrack);
+				if (!this.UIcontroller.showPlaylistWidget) {
+					this.UIcontrollerToggleProperty("showPlaylistWidget");
+				}
+				setTimeout(() => {
+					const playlistWidget = document.querySelector("#PlaylistWidget");
+					playlistWidget.style.bottom = "100px";
+					document.querySelector("#PlaylistWidget").style.top = "initial";
+					document.querySelector("#PlaylistWidget").style.left = "78%";
+				}, 0);
+			},
+			toggleFromFavourites() {
+				this.addToSelectedTracks(this.playingTrack);
+				if (this.isInFavourites) {
+					this.deleteSelectedTrackToFavourites();
+					this.pushNotification({
+						title: `Removed from Favourites`,
+						subTitle: `${this.playingTrack.defaultTitle}`,
+						type: "danger",
+					});
+				} else {
+					this.addSelectedTrackToPlaylist("Favourites");
+					this.pushNotification({
+						title: `Added to Favourites`,
+						subTitle: `${this.playingTrack.defaultTitle}`,
+						type: "normal",
+					});
+				}
+			},
+			changeRepeat() {
+				this.toggleRepeat();
+				const state = this.audioState.repeat ? "On" : "Off";
+				this.pushNotification({
+					title: `Repeat ${state}`,
+					subTitle: null,
+					type: "normal",
+				});
+			},
 		},
-		changeRepeat() {
-			this.toggleRepeat();
-			this.pushNotification({
-				title: `Repeat ${this.audioState.repeat ? "On" : "Off"}`,
-				subTitle: null,
-				type: "normal",
+		mounted() {
+			this.volume = this.settings.volume;
+			this.adjustVolume();
+			window.addEventListener("keydown", (e) => {
+				if (!document.activeElement.classList.contains("inputElem")) {
+					if (e.code === "Space") {
+						e.preventDefault();
+						document.querySelector("#pauseBt img").click();
+						return;
+					}
+					if (e.code === "ArrowLeft") {
+						document.querySelector("#prevTrackBt").click();
+						return;
+					}
+					if (e.code === "ArrowRight") {
+						document.querySelector("#nextTrackBt").click();
+						return;
+					}
+					if (e.code === "ArrowDown" || e.code === "ArrowUp") {
+						document.querySelector("#volume").focus();
+						return;
+					}
+				}
 			});
+			document.querySelector(".split").classList.add("playingPaneLoaded");
+			document.querySelector("#tracksTabVirtualList").scrollBy(0, 50);
 		},
-	},
-	mounted() {
-		this.volume = this.settings.volume;
-		this.adjustVolume();
-		window.addEventListener("keydown", (e) => {
-			if (!document.activeElement.classList.contains("inputElem")) {
-				if (e.code === "Space") {
-					e.preventDefault();
-					document.querySelector("#pauseBt img").click();
-					return;
-				}
-				if (e.code === "ArrowLeft") {
-					document.querySelector("#prevTrackBt").click();
-					return;
-				}
-				if (e.code === "ArrowRight") {
-					document.querySelector("#nextTrackBt").click();
-					return;
-				}
-				if (e.code === "ArrowDown" || e.code === "ArrowUp") {
-					document.querySelector("#volume").focus();
-					return;
-				}
-			}
-		});
-		document.querySelector(".split").classList.add("playingPaneLoaded");
-	},
-	components: {
-		TrackBar,
-		// particleBg,
-	},
-};
+		components: {
+			TrackBar,
+			// particleBg,
+		},
+	};
 </script>
 
 <style lang="scss">
-.fullScreenPlayingPane {
-	background-color: rgba(0, 0, 0, 0.301) !important;
-	height: 100vh !important;
-	left: 0;
-	width: 100vw;
-	z-index: 60 !important;
-	#expandPlayingPane {
-		position: fixed;
-		left: 50%;
-		top: 40px;
-		transform: rotate(180deg);
-		z-index: 5;
-	}
-	#cover {
-		position: fixed;
-		top: 60px;
-		left: 50%;
-		transform: translateX(-50%);
-		max-width: 400px !important;
-		width: 50vw;
-		min-width: 200px !important;
-		max-height: 800px !important;
-	}
-	#blurred {
+	.fullScreenPlayingPane {
+		background-color: rgba(0, 0, 0, 0.301) !important;
 		height: 100vh !important;
-		top: 0% !important;
-	}
-	#trackName {
-		position: absolute;
-		bottom: 200px;
-		left: 20px;
-		font-size: 6vw;
-		font-family: roboto-thick;
-		text-overflow: ellipsis;
-		white-space: nowrap;
-		overflow: hidden;
-		width: 99%;
-	}
-	#artistName {
-		position: absolute;
-		bottom: 120px;
-		left: 25px;
-		font-size: 3vw;
-	}
-	#pauseBt {
-		position: absolute;
-		bottom: 50px;
-		left: 50%;
-		img {
-			width: 50px;
+		left: 0;
+		width: 100vw;
+		z-index: 60 !important;
+		border-radius: 0px;
+		#expandPlayingPane {
+			position: fixed;
+			left: 50%;
+			top: 40px;
+			transform: rotate(180deg);
+			z-index: 5;
 		}
-	}
-	.volumeRockerArea {
-		display: none !important;
-	}
-	.controls {
-		transform: translate(80%, 350%);
-		#playlistBt {
-			display: none;
+		#cover {
+			position: fixed;
+			top: 60px;
+			left: 50%;
+			transform: translateX(-50%);
+			max-width: 400px !important;
+			width: 50vw;
+			min-width: 200px !important;
+			max-height: 800px !important;
 		}
-		button {
-			transform: scale(1.3);
-			margin: 20px;
-			margin-bottom: 10px;
-			margin-top: 10px;
+		#blurred {
+			height: 100vh !important;
+			top: 0% !important;
 		}
-		.play_controls {
-			border: none;
+		#trackName {
+			position: absolute;
+			bottom: 200px;
+			left: 20px;
+			font-size: 6vw;
+			font-family: roboto-thick;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+			overflow: hidden;
+			width: 99%;
 		}
-	}
-	.TrackBar {
-		position: absolute;
-		bottom: 0px;
-		left: 20px;
-		width: 98%;
-		.seekBar {
-			background: rgba(255, 255, 255, 0.082);
-			border-radius: 0;
-			height: 4px;
-			.seekProgress {
-				background: white;
-				border-radius: 0;
+		#artistName {
+			position: absolute;
+			bottom: 120px;
+			left: 25px;
+			font-size: 3vw;
+		}
+		#pauseBt {
+			position: absolute;
+			bottom: 50px;
+			left: 50%;
+			img {
+				width: 50px;
 			}
 		}
-		.seekBar:hover {
-			height: 8px;
+		.volumeRockerArea {
+			display: none !important;
+		}
+		.controls {
+			transform: translate(82%, 400%);
+			#playlistBt {
+				display: none;
+			}
+			button {
+				transform: scale(1.1);
+				margin: 10px;
+				margin-bottom: 10px;
+				margin-top: 10px;
+			}
+			.play_controls {
+				border: none;
+			}
+		}
+		.TrackBar {
+			position: absolute;
+			bottom: 0px;
+			left: 20px;
+			width: 98%;
+			.seekBar {
+				background: rgba(255, 255, 255, 0.082);
+				border-radius: 0;
+				height: 4px;
+				.seekProgress {
+					background: white;
+					border-radius: 0;
+				}
+			}
+			.seekBar:hover {
+				height: 8px;
+			}
 		}
 	}
-}
-.playingPane {
-	background: rgba(255, 255, 255, 0.083);
-	backdrop-filter: blur(10px);
-	position: fixed;
-	left: 50%;
-	bottom: 10px;
-	height: 100px;
-	transform: translateX(-50%);
-	width: 99vw;
-	z-index: 20;
-	border-radius: 20px;
-	display: grid;
-	gap: 10px;
-	grid-template-columns: 0.5fr 0.1fr 4fr 2fr;
-	align-items: center;
-	justify-content: center;
-	overflow: hidden;
-	transition: 0.4s cubic-bezier(0.19, 1, 0.22, 1);
-	#cover {
-		max-width: 150px;
-		border-radius: 10px;
-		max-height: 90px;
-		margin: auto;
-		margin-top: 2px;
-		margin-left: 10px;
-		align-self: center;
+	.playingPane {
+		background: rgba(255, 255, 255, 0.083);
+		backdrop-filter: blur(10px);
+		position: fixed;
+		left: 50%;
+		bottom: 10px;
+		height: 100px;
+		transform: translateX(-50%);
+		width: 99vw;
+		z-index: 20;
+		border-radius: 20px;
+		display: grid;
+		gap: 10px;
+		grid-template-columns: 0.5fr 0.1fr 4fr 2fr;
+		align-items: center;
+		justify-content: center;
+		overflow: hidden;
+		transition: 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+		#cover {
+			max-width: 150px;
+			border-radius: 10px;
+			max-height: 90px;
+			margin: auto;
+			margin-top: 2px;
+			margin-left: 10px;
+			align-self: center;
+			cursor: pointer;
+		}
+		#cover:hover {
+			border-radius: 20px;
+		}
+		.video_resolver {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			width: 150px;
+			margin-left: 10px;
+			background: black;
+			video {
+				width: 98%;
+				cursor: pointer;
+			}
+		}
+		.trackInfo {
+			display: flex;
+			justify-content: space-between;
+			#artistName {
+				font-family: roboto-thin;
+			}
+			#artistName:hover {
+				text-decoration: underline;
+				cursor: pointer;
+			}
+		}
+
+		#blurred {
+			position: absolute;
+			top: -20px;
+			left: 0;
+			width: 100%;
+			height: 120%;
+			filter: blur(40px);
+			opacity: 0.4;
+			z-index: -1;
+			pointer-events: none;
+		}
+		.bordered {
+			border: 2px solid white;
+			border-radius: 15px;
+			border-bottom-right-radius: 0px;
+			padding: 5px;
+		}
+	}
+	.controls {
+		position: relative;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		button {
+			margin-left: 5px;
+			margin-right: 5px;
+		}
+		.control {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			overflow: hidden;
+			transition: 0.2s ease;
+		}
+		.play_controls {
+			border-right: 1px solid white;
+		}
+		.volumeRockerArea {
+			position: absolute;
+			left: 35px;
+			bottom: -2px;
+			width: 200px;
+			transform: translate(0, 95%);
+			z-index: 3;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			border-radius: 10px;
+			input {
+				width: 65%;
+				height: 2px;
+				cursor: pointer;
+				filter: grayscale(0.9);
+			}
+		}
+		.volumeRockerArea:hover {
+			input {
+				opacity: 1;
+			}
+		}
+	}
+	#expandPlayingPane {
+		position: absolute;
+		top: 8px;
+		left: 97%;
+		width: 20px;
 		cursor: pointer;
 	}
-	#cover:hover {
-		border-radius: 20px;
-	}
-	.video_resolver {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		width: 150px;
-		margin-left: 10px;
-		background: black;
-		video {
-			width: 98%;
-			cursor: pointer;
-		}
-	}
-	.trackInfo {
-		display: flex;
-		justify-content: space-between;
-		#artistName {
-			font-family: roboto-thin;
-		}
-		#artistName:hover {
-			text-decoration: underline;
-			cursor: pointer;
-		}
-	}
-
-	#blurred {
+	.noMusicPlaying {
 		position: absolute;
-		top: -20px;
+		z-index: 4;
+		top: 0;
 		left: 0;
 		width: 100%;
-		height: 120%;
-		filter: blur(40px);
-		opacity: 0.4;
-		z-index: -1;
-		pointer-events: none;
+		height: 100%;
+		background: black;
 	}
-	.bordered {
-		border: 2px solid white;
-		border-radius: 15px;
-		border-bottom-right-radius: 0px;
-		padding: 5px;
-	}
-}
-.controls {
-	position: relative;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	button {
-		margin-left: 5px;
-		margin-right: 5px;
-	}
-	.control {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		overflow: hidden;
-		transition: 0.2s ease;
-	}
-	.play_controls {
-		border-right: 1px solid white;
-	}
-	.volumeRockerArea {
-		position: absolute;
-		left: 35px;
-		bottom: -2px;
-		width: 200px;
-		transform: translate(0, 95%);
-		z-index: 3;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		border-radius: 10px;
-		input {
-			width: 65%;
-			height: 2px;
-			cursor: pointer;
-			filter: grayscale(0.9);
-		}
-	}
-	.volumeRockerArea:hover {
-		input {
-			opacity: 1;
-		}
-	}
-}
-#expandPlayingPane {
-	position: absolute;
-	top: 8px;
-	left: 97%;
-	width: 20px;
-	cursor: pointer;
-}
-.noMusicPlaying {
-	position: absolute;
-	z-index: 4;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	background: black;
-}
-// @media (max-width: 700px) {
-//   .playingPane {
-//     #cover {
-//       width: 100px;
-//     }
-//   }
-//   .volumeRockerArea {
-//     display: none;
-//   }
-//   .editModeBtns {
-//     display: none;
-//   }
-//   .control extra_controls {
-//     display: none !important;
-//   }
-//   #CoverSearcher {
-//     display: none;
-//   }
-// }
+	// @media (max-width: 700px) {
+	//   .playingPane {
+	//     #cover {
+	//       width: 100px;
+	//     }
+	//   }
+	//   .volumeRockerArea {
+	//     display: none;
+	//   }
+	//   .editModeBtns {
+	//     display: none;
+	//   }
+	//   .control extra_controls {
+	//     display: none !important;
+	//   }
+	//   #CoverSearcher {
+	//     display: none;
+	//   }
+	// }
 </style>

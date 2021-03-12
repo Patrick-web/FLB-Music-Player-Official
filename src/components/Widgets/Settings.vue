@@ -8,26 +8,32 @@
 			<section>
 				<h3>Library</h3>
 				<article>
-					<div
-						v-for="folder in settings.foldersToScan"
-						:key="folder"
-						class="folderBox"
-					>
-						<div>
-							<p>{{ folder.replace(/(.*)[\/\\]/, "") }}</p>
-							<p style="font-family:roboto-thin;font-size:0.9rem">
-								{{ folder }}
-							</p>
-						</div>
-						<button
-							@click="removeFromScannedFolders(folder)"
-							title="Remove folder"
-							class="iconBt dangerBt"
+					<div class="folderBoxWrapper">
+						<div
+							v-for="folder in settings.foldersToScan"
+							:key="folder"
+							class="folderBox"
 						>
-							<img style="width:15px" src="@/assets/images/x.svg" alt="" />
-						</button>
+							<div>
+								<p>{{ folder.replace(/(.*)[\/\\]/, "") }}</p>
+								<p style="font-family:roboto-thin;font-size:0.9rem">
+									{{ folder }}
+								</p>
+							</div>
+							<button
+								@click="removeFromScannedFolders(folder)"
+								title="Remove folder"
+								class="iconBt dangerBt"
+							>
+								<img style="width:15px" src="@/assets/images/x.svg" alt="" />
+							</button>
+						</div>
 					</div>
-					<button class="bt_active" @click="addFolder">
+					<button
+						style="max-width:380px;margin-left:10px"
+						class="bt_active"
+						@click="addFolder"
+					>
 						<h2>Add Folder</h2>
 					</button>
 				</article>
@@ -244,172 +250,179 @@
 </template>
 
 <script>
-import { sendMessageToNode } from "@/Utils/frontEndUtils";
-import { mapMutations, mapState } from "vuex";
-import { ipcRenderer } from "electron";
-export default {
-	data() {
-		return {
-			appVersion: "0.0.1",
-		};
-	},
-	computed: {
-		...mapState(["scannedFolders", "settings"]),
-	},
-	methods: {
-		...mapMutations(["updateSetting", "UIcontrollerToggleProperty"]),
-		addFolder() {
-			sendMessageToNode("addScanFolder", "");
-			setTimeout(() => {
-				sendMessageToNode("refresh", "");
-				document.querySelector("#refreshLib").classList.add("rotateOut");
+	import { sendMessageToNode } from "@/Utils/frontEndUtils";
+	import { mapMutations, mapState } from "vuex";
+	import { ipcRenderer } from "electron";
+	export default {
+		data() {
+			return {
+				appVersion: "0.0.1",
+			};
+		},
+		computed: {
+			...mapState(["scannedFolders", "settings"]),
+		},
+		methods: {
+			...mapMutations(["updateSetting", "UIcontrollerToggleProperty"]),
+			addFolder() {
+				sendMessageToNode("addScanFolder", "");
 				setTimeout(() => {
-					document.querySelector("#refreshLib").classList.remove("rotateOut");
-				}, 4000);
-			}, 100000);
+					sendMessageToNode("refresh", "");
+					document.querySelector("#refreshLib").classList.add("rotateOut");
+					setTimeout(() => {
+						document.querySelector("#refreshLib").classList.remove("rotateOut");
+					}, 4000);
+				}, 100000);
+			},
+			removeFromScannedFolders(path) {
+				sendMessageToNode("removeFromScannedFolders", path);
+			},
+			clearLibrary() {
+				sendMessageToNode("resetApp");
+			},
 		},
-		removeFromScannedFolders(path) {
-			sendMessageToNode("removeFromScannedFolders", path);
+		mounted() {
+			ipcRenderer.send("requestVersion");
+			ipcRenderer.on("appVersion", (e, version) => {
+				this.appVersion = version;
+			});
 		},
-		clearLibrary() {
-			sendMessageToNode("resetApp");
-		},
-	},
-	mounted() {
-		ipcRenderer.send("requestVersion");
-		ipcRenderer.on("appVersion", (e, version) => {
-			this.appVersion = version;
-		});
-	},
-};
+	};
 </script>
 
 <style lang="scss">
-.Settings {
-	position: fixed;
-	background-color: rgba(0, 0, 0, 0.301);
-	backdrop-filter: blur(10px);
-	overflow: hidden;
-	top: 0px;
-	right: 0px;
-	height: 100%;
-	z-index: 50;
-	#SettingsTitle {
-		margin: 10px;
-	}
-	main {
-		display: grid !important;
-		grid-template-columns: 1fr 1fr 1fr;
-		gap: 10px;
-		width: 100%;
-		section {
-			border-right: 1px solid white;
-			height: 90vh;
-			h3 {
-				margin-bottom: 10px;
-			}
-			article {
-				margin: 10px;
-				margin-bottom: 20px;
-				background: rgba(255, 255, 255, 0.062);
-				padding: 10px;
-				border-radius: 10px;
-				h4 {
-					text-align: center;
+	.Settings {
+		position: fixed;
+		background-color: rgba(0, 0, 0, 0.301);
+		backdrop-filter: blur(10px);
+		overflow: hidden;
+		top: 0px;
+		right: 0px;
+		height: 100%;
+		z-index: 50;
+		#SettingsTitle {
+			margin: 10px;
+		}
+		main {
+			display: grid !important;
+			grid-template-columns: 1fr 1fr 1fr;
+			gap: 10px;
+			width: 100%;
+			section {
+				border-right: 1px solid white;
+				height: 90vh;
+				h3 {
 					margin-bottom: 10px;
 				}
-				.folderBox {
-					background: rgba(255, 255, 255, 0.096);
+				article {
+					margin: 10px;
+					margin-bottom: 20px;
+					background: rgba(255, 255, 255, 0.062);
 					padding: 10px;
-					margin-bottom: 10px;
-					border-radius: 20px;
-					display: flex;
-					justify-content: space-between;
-					button {
-						margin-top: 0px;
+					border-radius: 10px;
+					.folderBoxWrapper {
+						max-height: 200px;
+						overflow: hidden;
+						overflow-y: scroll;
+						padding: 10px;
+						padding-bottom: 0px;
 					}
-				}
-				ul {
-					p {
+					h4 {
+						text-align: center;
+						margin-bottom: 10px;
+					}
+					.folderBox {
 						background: rgba(255, 255, 255, 0.096);
-						margin-bottom: 1px;
-						padding: 5px;
-						font-family: roboto-light;
-						cursor: pointer;
+						padding: 10px;
+						margin-bottom: 10px;
+						border-radius: 20px;
+						display: flex;
+						justify-content: space-between;
+						button {
+							margin-top: 0px;
+						}
 					}
-					p:hover {
-						border-radius: 5px;
-						padding-left: 10px;
-						margin: 5px;
-					}
-					.activeSetting {
-						padding-left: 10px;
-						border-radius: 5px;
-						margin: 5px;
-						background: var(--accentColor) !important;
+					ul {
+						p {
+							background: rgba(255, 255, 255, 0.096);
+							margin-bottom: 1px;
+							padding: 5px;
+							font-family: roboto-light;
+							cursor: pointer;
+						}
+						p:hover {
+							border-radius: 5px;
+							padding-left: 10px;
+							margin: 5px;
+						}
+						.activeSetting {
+							padding-left: 10px;
+							border-radius: 5px;
+							margin: 5px;
+							background: var(--accentColor) !important;
+						}
 					}
 				}
 			}
 		}
-	}
-	h1 {
-		text-align: center;
-	}
-	h3 {
-		margin-top: 10px;
-		text-align: center;
-	}
-	.setting {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		border-radius: 20px;
-		padding: 5px;
-		padding-left: 10px;
-		border-bottom: 1px solid rgba(255, 255, 255, 0.192);
-		border-radius: 0px;
-		cursor: pointer;
-		p {
-			font-family: roboto-light;
-			margin-right: 5px;
+		h1 {
+			text-align: center;
 		}
-	}
-	.setting:hover {
-		background-color: #ffffff1e;
-		border-radius: 20px;
-		margin: 5px;
-	}
-	.shortcut {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		padding: 10px;
-		border-bottom: 1px solid rgba(255, 255, 255, 0.192);
-		padding-bottom: 5px;
-		font-family: roboto-light;
-		pre {
-			background: rgb(0, 0, 0);
+		h3 {
+			margin-top: 10px;
+			text-align: center;
+		}
+		.setting {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			border-radius: 20px;
 			padding: 5px;
-			border-radius: 8px;
+			padding-left: 10px;
+			border-bottom: 1px solid rgba(255, 255, 255, 0.192);
+			border-radius: 0px;
+			cursor: pointer;
+			p {
+				font-family: roboto-light;
+				margin-right: 5px;
+			}
 		}
-	}
-	.info-group {
-		padding-bottom: 5px;
-		margin-top: 10px;
-		margin-bottom: 10px;
-		margin-left: 10px;
-		font-size: 1.2em;
-		border-bottom: 1px solid rgba(255, 255, 255, 0.39);
-		.it {
+		.setting:hover {
+			background-color: #ffffff1e;
+			border-radius: 20px;
+			margin: 5px;
+		}
+		.shortcut {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			padding: 10px;
+			border-bottom: 1px solid rgba(255, 255, 255, 0.192);
+			padding-bottom: 5px;
 			font-family: roboto-light;
-			font-weight: 300;
-			font-size: 0.9em;
+			pre {
+				background: rgb(0, 0, 0);
+				padding: 5px;
+				border-radius: 8px;
+			}
 		}
-		.i {
-			font-size: 0.8em;
-			font-family: roboto-thin;
-			font-weight: 300;
+		.info-group {
+			padding-bottom: 5px;
+			margin-top: 10px;
+			margin-bottom: 10px;
+			margin-left: 10px;
+			font-size: 1.2em;
+			border-bottom: 1px solid rgba(255, 255, 255, 0.39);
+			.it {
+				font-family: roboto-light;
+				font-weight: 300;
+				font-size: 0.9em;
+			}
+			.i {
+				font-size: 0.8em;
+				font-family: roboto-thin;
+				font-weight: 300;
+			}
 		}
 	}
-}
 </style>

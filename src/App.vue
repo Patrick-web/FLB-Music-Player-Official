@@ -53,7 +53,7 @@ export default Vue.extend({
   },
   methods: {
     ...mapMutations(["addTrack","restoreTracks","restorePlaylists","restoreSettings","restoreRecentlyPlayed","setScannedFolders","generateAlbumsData","generateArtistsData","generateFoldersData"]),
-	...mapActions(['removeSelectedTracks',"playFirstTrack","popNotification"]),
+	...mapActions(['removeSelectedTracks',"playFirstTrack","popNotification","sortTracks"]),
     cleanUp() {
       if(document.querySelector(".trackOptions")){
         document.querySelector(".trackOptions").style.height = `0px`;
@@ -101,6 +101,7 @@ export default Vue.extend({
 		this.generateAlbumsData()
 		this.generateArtistsData()
 		this.generateFoldersData()
+		this.sortTracks('dateAdded')
 		this.hideOnboard = true
 		this.popNotification()
 	});

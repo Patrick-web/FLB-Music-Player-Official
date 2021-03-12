@@ -44,52 +44,53 @@
 </template>
 
 <script>
-import { mapMutations, mapState } from "vuex";
+	import { mapMutations, mapState } from "vuex";
 
-export default {
-	computed: {
-		...mapState(["playingTrack", "UIcontroller"]),
-	},
-	methods: {
-		...mapMutations(["UIcontrollerToggleProperty", "addToSelectedTracks"]),
-		selectPlayingTrack() {
-			this.addToSelectedTracks(this.playingTrack);
-			this.UIcontrollerToggleProperty("showTagEditor");
+	export default {
+		computed: {
+			...mapState(["playingTrack", "UIcontroller"]),
 		},
-		emitPlayingTrack() {
-			this.$emit("targetTrack", this.playingTrack);
+		methods: {
+			...mapMutations(["UIcontrollerToggleProperty", "addToSelectedTracks"]),
+			selectPlayingTrack() {
+				this.addToSelectedTracks(this.playingTrack);
+				this.UIcontrollerToggleProperty("showTagEditor");
+			},
+			emitPlayingTrack() {
+				this.$emit("targetTrack", this.playingTrack);
+			},
 		},
-	},
-};
+	};
 </script>
 
 <style lang="scss">
-.TrackInfo {
-	padding-top: 10px;
-	position: relative;
-	.tag {
-		border-bottom: 1px solid rgba(255, 255, 255, 0.192);
-		padding: 10px;
-		pre {
-			font-size: 0.8em;
-			background: black;
-			padding: 3px;
-			border-left: 1px solid white;
-			display: inline;
+	.TrackInfo {
+		padding-top: 10px;
+		position: relative;
+		.tag {
+			border-bottom: 1px solid rgba(255, 255, 255, 0.192);
+			padding: 10px;
+			pre {
+				font-size: 0.8rem;
+				background: rgba(0, 0, 0, 0.411);
+				padding: 3px;
+				border-left: 1px solid white;
+				display: inline;
+			}
+			p {
+				margin-top: 5px;
+				font-size: 0.9rem;
+				font-family: roboto-thin;
+			}
 		}
-		p {
-			margin-top: 5px;
-			font-family: roboto-thin;
+		#tag_albumArt {
+			width: 150px;
+		}
+		#toggleTagEditor {
+			position: absolute;
+			top: 0px;
+			left: 10%;
+			transform: translateX(-50%);
 		}
 	}
-	#tag_albumArt {
-		width: 150px;
-	}
-	#toggleTagEditor {
-		position: absolute;
-		top: 0px;
-		left: 10%;
-		transform: translateX(-50%);
-	}
-}
 </style>
