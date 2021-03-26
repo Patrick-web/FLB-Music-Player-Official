@@ -1,5 +1,3 @@
-import { Settings } from "electron/main";
-
 export interface TrackType {
 	r_fileLocation: string;
 	fileLocation: string;
@@ -15,8 +13,11 @@ export interface TrackType {
 	formattedLength: string;
 	duration: any;
 	dateAdded: number;
-	folderInfo: FolderInfoType;
-	isCurrentlyPlaying: boolean;
+	folderInfo: FolderInfoType
+}
+export interface TrackStatType {
+	track: TrackType;
+	numberOfPlays: number;
 }
 export interface geniusSongType {
 	id: any;
@@ -75,6 +76,7 @@ export interface AudioStateType {
 }
 export type audioStateType = "playing" | "repeat" | "shuffle";
 export type tabType =
+	| "Home"
 	| "Tracks"
 	| "Recents"
 	| "Folders"
@@ -87,19 +89,6 @@ export interface BingDataType {
 	artists: Array<ArtistType>;
 	albums: Array<AlbumType>;
 }
-export interface TabsDataType {
-	addedTracks: Array<TrackType>;
-	recentTracks: Array<TrackType>;
-	artists: Array<ArtistType>;
-	albums: Array<AlbumType>;
-	playlists: Array<PlaylistType>;
-	folders: Array<FolderParsedType>;
-}
-interface UIcontrollerType {
-	showSettings: boolean;
-	showTagEditor: boolean;
-	showPlaylistWidget: boolean;
-}
 
 interface SearchResultsType {
 	tracks: Array<TrackType>;
@@ -107,39 +96,15 @@ interface SearchResultsType {
 	albums: Array<AlbumType>;
 }
 
-export interface TrackerDataType {
-	processedFiles: Array<TrackType>;
-	recentlyPlayed: Array<TrackType>;
-	playlists: Array<PlaylistType>;
-}
 export interface NotificationType {
 	title: string;
-	subTitile: string | null;
+	subTitle: string | null;
 	type: "normal" | "success" | "warning";
 }
 export type UIcontrollerPropertiesType =
 	| "showSettings"
 	| "showTagEditor"
 	| "showPlaylistWidget";
-export interface RootStateType {
-	tabsData: TabsDataType;
-	renderedTracks: Array<TrackType>;
-	customQueue: Array<TrackType>;
-	playingTrack: TrackType | null;
-	playingNext: TrackType | null;
-	selectedTracks: Array<TrackType>;
-	playingTrackLyrics: Array<string> | null;
-	bingData: BingDataType;
-	UIcontroller: UIcontrollerType;
-	audioState: AudioStateType;
-	currentTab: tabType;
-	searchResults: SearchResultsType;
-	selectedGroup: ArtistType | AlbumType | FolderParsedType | null;
-	sidePaneActiveTab: string;
-	scannedFolders: Array<FolderInfoType>;
-	settings: SettingsType | any;
-	notifications: Array<NotificationType>;
-}
 
 export interface SettingsType {
 	includeVideo: boolean;
@@ -147,11 +112,11 @@ export interface SettingsType {
 	defaultTab: tabType;
 	theme: "fancy" | "dark" | "light";
 	accentColor:
-		| "accent_blue"
-		| "accent_white"
-		| "accent_orange"
-		| "accent_purple"
-		| "accent_magenta";
+	| "accent_blue"
+	| "accent_white"
+	| "accent_orange"
+	| "accent_purple"
+	| "accent_magenta";
 	volume: 1;
 	foldersToScan: Array<string>;
 }
@@ -159,7 +124,13 @@ export interface SettingsType {
 export type SettingsPropertiesType =
 	| "includeVideo"
 	| "desktopNotifications"
-	| "defaulTab"
+	| "defaultTab"
 	| "theme"
 	| "accentColor"
 	| "volume";
+
+export interface mixTyping {
+	name: string,
+	info: string,
+	tracks: TrackType[]
+}

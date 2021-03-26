@@ -1,0 +1,49 @@
+.accent_blue {
+	--accentColor: #0066ff;
+	--accentColorLight: #0062ffa8;
+}
+.accent_orange {
+	--accentColor: rgb(238, 156, 3);
+	--accentColorLight: rgba(255, 166, 0, 0.645);
+}
+.accent_purple {
+	--accentColor: purple;
+	--accentColorLight: rgba(128, 0, 128, 0.623);
+}
+.accent_magenta {
+	--accentColor: magenta;
+	--accentColorLight: rgba(255, 0, 255, 0.603);
+}
+.accent_cyan {
+	--accentColor: rgb(5, 201, 201);
+	--accentColorLight: rgb(2, 126, 126);
+}
+.accent_white {
+	--accentColor: gray;
+	--accentColorLight: rgba(255, 255, 255, 0.083);
+}
+.light_theme {
+	background: rgb(255, 255, 255) !important;
+}
+.light_theme .bt_active {
+	filter: invert(1);
+}
+.light_theme button:hover {
+	filter: invert(1);
+}
+.dark_theme .searchResults {
+	background: rgb(17, 17, 17) !important;
+}
+.dark_theme .fullScreenPlayingPane {
+	background: rgb(17, 17, 17) !important;
+}
+.dark_theme .MixCard .cardContent,
+.dark_theme .MixCard .cardTitle {
+	background: rgb(17, 17, 17) !important;
+}
+.dark_theme .trackOptions {
+	background: rgb(17, 17, 17) !important;
+}
+.dark_theme .Settings {
+	background: rgb(17, 17, 17) !important;
+}

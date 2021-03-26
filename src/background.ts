@@ -4,11 +4,9 @@ import {
 	app,
 	protocol,
 	BrowserWindow,
-	Notification,
 	ipcMain,
 	dialog,
 	screen,
-	nativeImage,
 } from "electron";
 import { createProtocol } from "vue-cli-plugin-electron-builder/lib";
 import fs from "fs";
@@ -19,33 +17,37 @@ import {
 	FolderType,
 	FolderInfoType,
 	TagChangesType,
-	PlaylistType,
-	TrackerDataType,
 	SettingsType,
 } from "./store/types";
 import NodeID3 from "node-id3";
-const musicParser = require("music-metadata");
-const APPDATAFOLDER = app.getPath("userData");
-const MUSICFOLDER = path.join(require("os").homedir(), "Music");
-const TrackerLocation = path.join(APPDATAFOLDER, "Tracker.json");
-const SettingsLocation = path.join(APPDATAFOLDER, "Settings.json");
-import { DownloaderHelper } from "node-downloader-helper";
-import { removeDuplicates, searchArtistPicture } from "./Utils/frontEndUtils";
-import { NotificationConstructorOptions } from "electron/main";
-
-// const logo = path.join(__static, "icon.png");
+import { paths } from "./MainProcessModules/b_Defaults";
+import { FilesTracker, PlaylistsTracker } from "./MainProcessModules/b_Tracker";
+import { PlaybackStats } from "./MainProcessModules/b_PlaybackStats";
+import { isValidFileType } from "./Utils/SharedUtilityFunctions";
+import { Settings } from "./MainProcessModules/b_Settings";
+import {
+	createParsedTrack,
+	deleteFile,
+	downloadFile,
+	sendNativeNotification,
+} from "./Utils/ElectronUtils";
 
 let appIsFocused = true;
+export const fileTracker = new FilesTracker();
+const playlistsTracker = new PlaylistsTracker();
+const playbackStats = new PlaybackStats();
+const settings = new Settings();
 
-console.log(APPDATAFOLDER);
+console.log(paths.appFolder);
 
 const isDevelopment = process.env.NODE_ENV !== "production";
 // Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([
 	{ scheme: "app", privileges: { secure: true, standard: true } },
 ]);
-//Gloabally accessible window object
-var win: BrowserWindow;
+//Globally accessible window object
+
+export var win: BrowserWindow;
 async function createWindow() {
 	const primaryDisplay = screen.getPrimaryDisplay();
 	const { width, height } = primaryDisplay.workAreaSize;
@@ -80,30 +82,15 @@ async function createWindow() {
 
 	win.on("blur", () => {
 		appIsFocused = false;
-		win.webContents.send("turnOffVisuals", "Window is not focused");
 	});
 	win.on("focus", () => {
 		appIsFocused = true;
-		win.webContents.send("turnOnVisuals", "Window is focused again");
 	});
+	win.on('close', () => {
+		saveAppData()
+	})
+
 	autoUpdater.checkForUpdatesAndNotify();
-	autoUpdater.on("checking-for-update", () => {
-		console.log("checking-for-update");
-		win.webContents.send("normalMsg", "📻");
-	});
-	autoUpdater.on("update-available", () => {
-		console.log("update-available");
-		win.webContents.send(
-			"normalMsg",
-			"A New version has been released 🎁🎁🎉🎉🎈🎈"
-		);
-	});
-	autoUpdater.on("update-downloaded", () => {
-		win.webContents.send("normalMsg", "New version downloaded");
-	});
-	autoUpdater.on("download-progress", (progressObj) => {
-		console.log("Downloading Update");
-	});
 }
 
 // Quit when all windows are closed.
@@ -111,6 +98,7 @@ app.on("window-all-closed", () => {
 	// On macOS it is common for applications and their menu bar
 	// to stay active until the user quits explicitly with Cmd + Q
 	if (process.platform !== "darwin") {
+		saveAppData()
 		app.quit();
 	}
 });
@@ -147,192 +135,39 @@ if (isDevelopment) {
 		});
 	}
 }
-
-class Tracker {
-	processedFiles: Array<TrackType> = [];
-	recentlyPlayed: Array<TrackType> = [];
-	playlists: Array<PlaylistType> = [{ name: "Favourites", tracks: [] }];
-	constructor() {
-		if (fs.existsSync(TrackerLocation)) {
-			const data = JSON.parse(fs.readFileSync(TrackerLocation, "utf-8"));
-			this.processedFiles = data.processedFiles;
-			this.playlists = data.playlists;
-			this.recentlyPlayed = data.recentlyPlayed;
-			this.checkDeletedFiles();
-		}
-	}
-	addToProcessedFile(track: TrackType) {
-		this.processedFiles.unshift(track);
-	}
-	updateTrackInfo(payload: TrackType) {
-		const tindex1 = this.processedFiles.findIndex(
-			(track) => track.fileLocation == payload.fileLocation
-		);
-		const tindex2 = this.recentlyPlayed.findIndex(
-			(track) => track.fileLocation == payload.fileLocation
-		);
-		this.processedFiles[tindex1] = payload;
-		this.recentlyPlayed[tindex2] = payload;
-		this.updateJSONfile();
-	}
-	addToRecentlyPlayed(track: TrackType) {
-		track.isCurrentlyPlaying = false;
-		this.recentlyPlayed.unshift(track);
-		if (this.recentlyPlayed.length > 20) {
-			this.recentlyPlayed.pop();
-		}
-		this.recentlyPlayed = removeDuplicates(this.recentlyPlayed, "fileLocation");
-		this.updateJSONfile();
-	}
-	updatePlaylists(playlists: Array<PlaylistType>) {
-		this.playlists = playlists;
-		this.updateJSONfile();
-	}
-	checkDeletedFiles() {
-		const deletedFiles: Array<string> = [];
-		this.processedFiles.forEach((track, index) => {
-			if (!fs.existsSync(track.fileLocation)) {
-				deletedFiles.push(track.fileLocation);
-				this.processedFiles.splice(index, 1);
-			}
-		});
-		this.playlists.forEach((playlist, pindex) => {
-			playlist.tracks.forEach((track, tindex) => {
-				if (deletedFiles.includes(track.fileLocation)) {
-					this.playlists[pindex].tracks.splice(tindex, 1);
-				}
-			});
-		});
-		console.log("Deleted Files =>");
-		console.log(deletedFiles);
-	}
-	reset() {
-		this.processedFiles = [];
-	}
-	runBackGroundTasks() {
-		const artists = new Set(
-			this.processedFiles.map((file) => file.artist).filter((artist) => artist)
-		);
-		const artistData: object[] = [];
-		artists.forEach((artist) => {
-			searchArtistPicture(artist).then((res) => {
-				if (res) {
-					artistData.push(res);
-				}
-			});
-		});
-		console.log(artistData);
-	}
-	updateJSONfile() {
-		this.processedFiles = removeDuplicates(this.processedFiles, "fileLocation");
-		const data = {
-			processedFiles: this.processedFiles,
-			recentlyPlayed: this.recentlyPlayed,
-			playlists: this.playlists,
-		};
-		console.log(this.playlists);
-		fs.writeFile(TrackerLocation, JSON.stringify(data), (err) => {
-			if (err) console.log(err);
-		});
-	}
-
-	public get trackerData(): TrackerDataType {
-		return {
-			processedFiles: this.processedFiles,
-			recentlyPlayed: this.recentlyPlayed,
-			playlists: this.playlists,
-		};
-	}
-}
-
-class Settings {
-	settings: SettingsType = {
-		includeVideo: false,
-		desktopNotifications: true,
-		defaultTab: "Tracks",
-		theme: "fancy",
-		accentColor: "accent_blue",
-		volume: 1,
-		foldersToScan: [MUSICFOLDER],
-	};
-	constructor() {
-		if (fs.existsSync(SettingsLocation)) {
-			const data = JSON.parse(fs.readFileSync(SettingsLocation, "utf-8"));
-			this.settings = data;
-		}
-	}
-	updateSettings(payload: SettingsType) {
-		this.settings = payload;
-		this.saveSettings();
-	}
-	addFolderToScan(folderPath: string) {
-		this.settings.foldersToScan.push(folderPath);
-		this.saveSettings();
-	}
-	removeFromScannedFolders(folderPath: string) {
-		this.settings.foldersToScan.forEach((folder, index) => {
-			if (
-				folder.replace(/(.*)[\/\\]/, "") == folderPath.replace(/(.*)[\/\\]/, "")
-			) {
-				this.settings.foldersToScan.splice(index, 1);
-				return;
-			}
-		});
-		this.saveSettings();
-	}
-	saveSettings() {
-		fs.writeFile(SettingsLocation, JSON.stringify(this.settings), (err) => {
-			if (err) console.log(err);
-		});
-	}
-
-	public get getSettings(): SettingsType {
-		return this.settings;
-	}
-}
-
-const tracker = new Tracker();
-const settings = new Settings();
-
 ipcMain.on("initializeSettings", () => {
 	win.webContents.send("userSettings", settings.getSettings);
 });
 ipcMain.on("getFirstTracks", async () => {
 	refreshTracks();
 });
-ipcMain.on("initializeAppData", async () => {
+ipcMain.on("initializeApp", async () => {
 	if (process.argv[1] && isValidFileType(process.argv[1])) {
-		const pathInfo = path.parse(process.argv[1]);
 		await createParsedTrack(
 			process.argv[1],
-			process.argv[1].replace(/(.*)[\/\\]/, ""),
-			{ name: pathInfo.name, path: pathInfo.dir }
 		);
 		win.webContents.send("playFirstTrack");
 	}
-	console.log("Initializing...");
-	const trackerData = tracker.trackerData;
-	console.log(trackerData.processedFiles.length);
-	if (trackerData.processedFiles.length > 0) {
-		win.webContents.send("processedFiles", trackerData.processedFiles);
-		console.log(trackerData.playlists);
-		win.webContents.send("userPlaylists", trackerData.playlists);
-		win.webContents.send("recentlyPlayed", trackerData.recentlyPlayed);
+	const processedFiles = fileTracker.getTracks;
+	const playlists = playlistsTracker.getPlaylists;
+	const recentlyPlayedTracks = playbackStats.recentlyPlayedTracks;
+	console.log("Processed Tracks " + processedFiles.length);
+	if (processedFiles.length > 0) {
+		win.webContents.send("processedFiles", processedFiles);
+		win.webContents.send("userPlaylists", playlists);
+		win.webContents.send("recentlyPlayed", recentlyPlayedTracks);
+		win.webContents.send("mostPlayedTracks", playbackStats.mostPlayedTracks);
 		refreshTracks();
 	}
 });
 
 ipcMain.on("resetApp", () => {
-	tracker.reset();
-	deleteFile(TrackerLocation);
-	deleteFile(SettingsLocation);
+	deleteFile(paths.filesTrackerLocation);
 	win.reload();
 });
 
 ipcMain.on("updatePlaylists", (e, payload) => {
-	console.log("Updating playlists");
-	console.log(payload);
-	tracker.updatePlaylists(payload);
+	playlistsTracker.updatePlaylists(payload);
 });
 
 ipcMain.on("addScanFolder", () => {
@@ -351,12 +186,12 @@ ipcMain.on("removeFromScannedFolders", (e, payload) => {
 	win.webContents.send("userSettings", settings.getSettings);
 });
 ipcMain.on("refresh", () => {
-	console.log("refreshing");
 	refreshTracks();
 });
 
 ipcMain.on("playingTrack", async (e, track: TrackType) => {
-	tracker.addToRecentlyPlayed(track);
+	console.log("Playing " + track.defaultTitle);
+	playbackStats.addFile(track);
 	if (!appIsFocused && settings.getSettings.desktopNotifications) {
 		sendNativeNotification(
 			track.title || track.extractedTitle || "",
@@ -364,7 +199,9 @@ ipcMain.on("playingTrack", async (e, track: TrackType) => {
 			track.albumArt
 		);
 	}
+	win.webContents.send("mostPlayedArtists", playbackStats.mostPlayedTracks);
 });
+
 ipcMain.on("processDroppedFiles", (e, filePaths) => {
 	console.log("Dropped " + filePaths);
 	if (Array.isArray(filePaths) && filePaths[0]) {
@@ -374,13 +211,8 @@ ipcMain.on("processDroppedFiles", (e, filePaths) => {
 		} else {
 			filePaths.forEach(async (pathToFile) => {
 				if (pathToFile.match(/\.mp3|\.webm|\.m4a|\.ogg/gi)) {
-					const pathInfo = path.parse(pathToFile);
-					await createParsedTrack(
-						pathToFile,
-						pathToFile.replace(/(.*)[\/\\]/, ""),
-						{ name: pathInfo.name, path: pathInfo.dir }
-					);
-					tracker.updateJSONfile();
+					await createParsedTrack(pathToFile);
+					fileTracker.saveChanges();
 				}
 			});
 			setTimeout(() => {
@@ -390,7 +222,6 @@ ipcMain.on("processDroppedFiles", (e, filePaths) => {
 	}
 });
 ipcMain.on("updateSettings", async (e, payload: SettingsType) => {
-	console.log(payload);
 	settings.updateSettings(payload);
 });
 
@@ -401,13 +232,8 @@ ipcMain.on("updateTags", async (e, payload) => {
 		payload.tagChanges
 	);
 	if (isSuccess) {
-		createParsedTrack(
-			payload.track.fileLocation,
-			payload.track.fileName,
-			payload.track.folderInfo
-		);
-		console.log("Track Tags Updated");
-		tracker.updateTrackInfo(payload);
+		createParsedTrack(payload.track.fileLocation); console.log("Track Tags Updated");
+		fileTracker.updateFile(payload);
 	}
 });
 ipcMain.on("requestVersion", () =>
@@ -431,8 +257,7 @@ ipcMain.on("maximize", () => {
 	}
 });
 ipcMain.on("closeWindow", () => {
-	tracker.updateJSONfile();
-	settings.saveSettings();
+	saveAppData()
 	win.close();
 });
 
@@ -457,86 +282,6 @@ ipcMain.on("importCoverArt", async () => {
 		return;
 	}
 });
-function createParsedTrack(
-	fileLocation: string,
-	fileName: string,
-	folderInfo: FolderInfoType
-) {
-	return new Promise<TrackType>((resolve, reject) => {
-		const track: TrackType = {
-			r_fileLocation: "",
-			fileLocation: "",
-			albumArt: "",
-			album: "",
-			title: "",
-			artist: "",
-			extractedTitle: "",
-			defaultTitle: "",
-			extractedArtist: "",
-			defaultArtist: "",
-			fileName: "",
-			formattedLength: "",
-			duration: "",
-			dateAdded: 0,
-			folderInfo: {
-				name: "",
-				path: "",
-			},
-			isCurrentlyPlaying: false,
-		};
-		track.fileLocation = fileLocation;
-		track.r_fileLocation = "file://" + fileLocation;
-		track.fileName = removeMIME(fileName);
-		track.folderInfo = folderInfo;
-		if (fileName.match(/\.mp4|\.mkv/)) {
-			console.log(fileName);
-			track.title = null;
-			track.extractedTitle = extractTitleAndArtist(track.fileName).title;
-			track.artist = null;
-			track.extractedArtist = extractTitleAndArtist(track.fileName).artist;
-			track.defaultTitle =
-				track.title || track.extractedTitle || track.fileName;
-			track.defaultArtist = track.artist || track.extractedArtist;
-			track.album = "unknown";
-			fs.stat(track.fileLocation, (err, stats) => {
-				track.dateAdded = stats.ctimeMs;
-			});
-			tracker.addToProcessedFile(track);
-			win.webContents.send("newTrack", track);
-			resolve(track);
-		} else {
-			NodeID3.read(fileLocation, async (err: any, tags: any) => {
-				if (tags && tags.image && tags.image.imageBuffer) {
-					track.albumArt = `data:${
-						tags.image.mime
-					};base64,${tags.image.imageBuffer.toString("base64")}`;
-				}
-				track.title = tags.title;
-				track.extractedTitle = extractTitleAndArtist(track.fileName).title;
-				track.artist = tags.artist;
-				track.extractedArtist = extractTitleAndArtist(track.fileName).artist;
-				track.album = tags.album || "unknown";
-				track.defaultTitle =
-					track.title || track.extractedTitle || track.fileName;
-				track.defaultArtist = track.artist || track.extractedArtist;
-				fs.stat(track.fileLocation, (err, stats) => {
-					track.dateAdded = stats.ctimeMs;
-				});
-				await musicParser
-					.parseFile(fileLocation)
-					.then((data: any) => {
-						track.duration = data.format.duration;
-						track.formattedLength = convertSecondsToTime(data.format.duration);
-					})
-					.catch(() => console.error("Music Parser Error"));
-				console.log("sending track");
-				win.webContents.send("newTrack", track);
-				tracker.addToProcessedFile(track);
-				resolve(track);
-			});
-		}
-	});
-}
 
 async function parseFolder(
 	folderPath: string,
@@ -549,7 +294,6 @@ async function parseFolder(
 			subFolders: Array<string>,
 			foldersFinalData: Array<FolderType>
 		) {
-			//  console.log("Parseing " + folderPath);
 			subFolders.shift();
 			const folderObject_notParsed: FolderType = {
 				name: folderPath.replace(/(.*)[\/\\]/, "").split(".")[0],
@@ -585,7 +329,6 @@ async function parseFolder(
 			});
 		})(folderPath, subFolders, foldersFinalData);
 	});
-	// });
 }
 
 interface dataParamObj {
@@ -598,7 +341,7 @@ async function prepareTracksForProcessing(foldersFinalData: Array<FolderType>) {
 	foldersFinalData.forEach((folder) => {
 		folder.tracks.forEach((fileName) => {
 			const filePath = path.join(folder.path, fileName);
-			const parsed = tracker.processedFiles.some(
+			const parsed = fileTracker.getTracks.some(
 				(file) => file.fileLocation == filePath
 			);
 			if (!parsed) {
@@ -612,17 +355,13 @@ async function prepareTracksForProcessing(foldersFinalData: Array<FolderType>) {
 }
 async function processTracks(data: Array<dataParamObj>, index: number) {
 	console.log("Beginning to parse " + data[index].fileName);
-	await createParsedTrack(
-		data[index].filePath,
-		data[index].fileName,
-		data[index].folder
-	);
+	await createParsedTrack(data[index].filePath);
 	console.log("Done parsing " + data[index].fileName);
 	if (index !== data.length - 1) {
 		processTracks(data, index + 1);
 		win.webContents.send("parsingProgress", [index + 2, data.length]);
 	} else {
-		tracker.updateJSONfile();
+		fileTracker.saveChanges();
 		win.webContents.send("parsingDone", data.length);
 		return;
 	}
@@ -654,94 +393,15 @@ async function writeTags(path: string, tagChanges: TagChangesType) {
 	tagChanges.APIC = decodeURI(tagChanges.APIC);
 	let isSuccessFull = NodeID3.update(tagChanges, path);
 	if (isSuccessFull) {
-		win.webContents.send("normalMsg", "Tags Succcefully changed");
+		win.webContents.send("normalMsg", "Tags Successfully changed");
 	} else {
-		win.webContents.send("errorMsg", "An Error occured while changing tags");
+		win.webContents.send("errorMsg", "An Error occurred while changing tags");
 	}
 	return isSuccessFull;
 }
 
-async function downloadFile(url: string) {
-	return new Promise<string>((resolve, reject) => {
-		const dl = new DownloaderHelper(url, APPDATAFOLDER);
-		dl.start();
-		win.webContents.send("normalMsg", "Downloading...");
-		dl.on("end", () => {
-			win.webContents.send("normalMsg", "Download Succesfull...");
-			resolve(dl.getDownloadPath());
-		});
-		dl.on("error", () => reject("Error in downloding the cover"));
-	});
-}
-function deleteFile(path: string) {
-	fs.unlink(path.replace("file://", ""), (err) => {
-		if (err) return win.webContents.send("errorMsg", "Error in Deleting File");
-		win.webContents.send("normalMsg", `${path} deleted`);
-	});
-	win.webContents.send("deleteComplete");
-}
-function sendNativeNotification(title: string, text: string, imageURI: string) {
-	const options: NotificationConstructorOptions = {
-		title,
-		subtitle: text,
-		body: text,
-		silent: true,
-		icon: nativeImage.createFromDataURL(imageURI),
-	};
-	const notification = new Notification(options);
-	notification.show();
-	notification.on("click", () => {
-		win.focus();
-		win.maximize();
-	});
-}
-function convertSecondsToTime(sec: number) {
-	if (sec) {
-		let sec_num = parseInt(JSON.stringify(sec), 10); // don't forget the second param
-		let hours: string | number = Math.floor(sec_num / 3600);
-		let minutes: string | number = Math.floor((sec_num - hours * 3600) / 60);
-		let seconds: string | number = sec_num - hours * 3600 - minutes * 60;
-
-		if (hours < 10) {
-			hours = "0" + hours;
-		}
-		if (minutes < 10) {
-			minutes = "0" + minutes;
-		}
-		if (seconds < 10) {
-			seconds = "0" + seconds;
-		}
-		return hours + ":" + minutes + ":" + seconds;
-	}
-	return "_ _ : _ _";
-}
-
-function extractTitleAndArtist(trackName: string): any {
-	const split = trackName.split("-");
-	let artist;
-	let title;
-	if (trackName.includes("_-")) {
-		artist = split[0];
-		title = split[1];
-	} else if (trackName.includes("-")) {
-		artist = split[1];
-		title = split[0];
-	} else {
-		return { artist: "unknown", title: null };
-	}
-	artist = artist.replace(/_/g, " ").trim();
-	title = title
-		.replace(/_/g, " ")
-		.replace(/\(.*\).*/gi, "")
-		.replace(/\[.*\].*/gi, "")
-		.replace(/\)/, "")
-		.trim();
-	return { artist, title };
-}
-
-function removeMIME(str: string) {
-	return str.replace(/(\.mp3)|(\.m4a)|(\.ogg)|(\.wav)/gi, "");
-}
-function isValidFileType(path: string) {
-	return path.match(/\.mp3|\.webm|\.m4a|\.ogg/gi);
+function saveAppData() {
+	fileTracker.saveChanges();
+	settings.saveSettings();
+	playbackStats.saveChanges();
 }

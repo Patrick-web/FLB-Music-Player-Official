@@ -15,7 +15,6 @@
 	cursor: pointer;
 	border: 2px solid rgba(255, 255, 255, 0);
 	padding: 10px;
-	margin: 10px;
 	max-width: 150px;
 	min-height: 200px;
 	height: auto;
@@ -29,11 +28,17 @@
 	/* background-color: rgba(0, 0, 0, 0.39); */
 	border-radius: 10px;
 }
+.sliverBar .groupedCard_info {
+	padding-bottom: 10px;
+	z-index: 3;
+	max-width: 350px !important;
+}
 .sliverBar .groupedCard_info .groupedInfo_title {
 	max-width: 300px !important;
 }
 .grouperTab .groupedCard_info p {
 	text-align: left;
+	max-width: 300px !important;
 }
 
 .grouperTab .groupedCard_info .groupedInfo_title {
@@ -55,7 +60,7 @@
 }
 
 .grouperTab .coverArt {
-	width: 150px;
+	width: 100%;
 }
 
 .groupCard:hover {
@@ -88,7 +93,8 @@
 	z-index: 5;
 	overflow: hidden;
 	overflow-y: scroll;
-	max-height: 280px;
+	max-height: 270px;
+	height: 270px;
 }
 
 .sliverBar {
@@ -103,13 +109,14 @@
 	right: 0px;
 	bottom: 10px;
 	display: flex;
+	gap: 10px;
 	justify-content: space-between;
 	padding-right: 10px;
 }
 .sliverBar .sliverBarActions button {
-	margin-right: 5px;
-	background-color: var(--accentColorLight);
-	backdrop-filter: blur(10px);
+	background-color: rgba(255, 255, 255, 0.034);
+	box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.315);
+	/* backdrop-filter: blur(10px); */
 }
 .sliverBar .groupedCard_info {
 	position: absolute;
@@ -146,10 +153,10 @@
 	-webkit-transform: none !important;
 	transform: none !important;
 	width: 100% !important;
-	height: 240px !important;
+	height: 150% !important;
 	z-index: -1;
 	-webkit-filter: blur(20px);
-	filter: blur(20px);
+	filter: blur(40px);
 	top: 0;
 	left: 0;
 	opacity: 0.5;

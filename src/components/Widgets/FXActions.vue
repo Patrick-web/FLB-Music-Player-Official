@@ -8,7 +8,7 @@
       </div>
       <div @click="switchToAction('Tag Changer')" class="action">
         <img
-          style="width:15px;margin-right:13px"
+          style="width: 15px; margin-right: 13px"
           src="@/assets/images/pen.svg"
           alt=""
         />
@@ -19,7 +19,7 @@
         <p>Merge to One</p>
       </div>
       <div @click="switchToAction('Select Output File Type')" class="action">
-        <img style="width:22px" src="@/assets/images/convert.svg" alt="" />
+        <img style="width: 22px" src="@/assets/images/convert.svg" alt="" />
         <p>Convert</p>
       </div>
       <div @click="switchToAction('Select Playlist')" class="action">
@@ -135,7 +135,7 @@ export default {
     ...mapMutations([
       "addToQueue",
       "selectATrack",
-      "addSelectedTrackToPlaylist",
+      "addSelectedTracksToPlaylist",
       "removeFromAddedTracks",
     ]),
     switchToAction(title) {
@@ -164,7 +164,7 @@ export default {
     addToBulkPlaylist(playlist) {
       this.bulkSelected.forEach((track) => {
         this.selectATrack(track);
-        this.addSelectedTrackToPlaylist(playlist);
+        this.addSelectedTracksToPlaylist(playlist);
       });
       const noti = this.$vs.notify({
         color: "success",
