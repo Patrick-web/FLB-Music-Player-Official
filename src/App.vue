@@ -18,15 +18,15 @@
 <script lang="js">
 	import Vue from "vue";
 
-	import SideNav from "@/components/SideNav.vue";
 	import { mapMutations, mapState ,mapActions} from "vuex";
-	import PlayingPane from "./components/Widgets/PlayingPane.vue";
-  import Settings from "@/components/Widgets/Settings";
-	import CustomTitleBar from "./components/CustomTitleBar.vue";
-	import OnBoard from "./components/OnBoard.vue";
-	import Notifications from "./components/Widgets/Notifications.vue";
-	import IpcListener from "@/components/IpcListener.vue";
-	import Bg from "@/components/RootComponents/Bg.vue";
+	import SideNav from "@/RendererProcess/components/Root/SideNav.vue";
+	import PlayingPane from "@/RendererProcess/components/Root/Player/PlayingPane.vue";
+  import Settings from "@/RendererProcess/components/Root/Settings";
+	import CustomTitleBar from "@/RendererProcess/components/Root/CustomTitleBar.vue";
+	import OnBoard from "@/RendererProcess/components/Root/Onboarder/OnBoard.vue";
+	import Notifications from "@/RendererProcess/components/Root/Notifications/Notifications.vue";
+	import IpcListener from "@/RendererProcess/components/Root/IpcListener.vue";
+	import Bg from "@/RendererProcess/components/Root/Bg.vue";
 	export default Vue.extend({
 	  name: "App",
 	  components: {
@@ -72,10 +72,10 @@
 	});
 </script>
 <style lang="scss">
-@import "./assets/Css/animate.css";
-@import "./assets/Css/global.css";
-@import "./assets/Css/themer.css";
-@import "./assets/Css/grouperTabs.css";
+@import "./RendererProcess/assets/Css/animate.css";
+@import "./RendererProcess/assets/Css/global.css";
+@import "./RendererProcess/assets/Css/themer.css";
+@import "./RendererProcess/assets/Css/grouperTabs.css";
 * {
   scroll-behavior: smooth;
 }

@@ -1,0 +1,94 @@
+import fs from "fs";
+import { paths } from "../modules/Paths";
+import { win } from "../../background";
+import { DownloaderHelper } from "node-downloader-helper";
+import { Notification } from "electron";
+
+
+export function writeImageBuffer(imageBuffer: string, savePath: string) {
+    fs.writeFileSync(savePath, imageBuffer)
+    console.log("Writing album art to " + savePath);
+}
+
+export async function downloadFile(url: string) {
+    return new Promise<string>((resolve, reject) => {
+        const dl = new DownloaderHelper(url, paths.appFolder);
+        dl.start();
+        win.webContents.send("normalMsg", "Downloading...");
+        dl.on("end", () => {
+            win.webContents.send("normalMsg", "Download Successful...");
+            resolve(dl.getDownloadPath());
+        });
+        dl.on("error", () => reject("Error in downloading the cover"));
+    });
+}
+
+export function deleteFile(path: string, quiet: boolean) {
+    if (fs.existsSync(path)) {
+        fs.unlink(path.replace("file://", ""), (err) => {
+            if (err) {
+                console.log("Error in deleting file");
+                console.log(err);
+                return win.webContents.send("errorMsg", "Error in Deleting File")
+            };
+            if (!quiet) {
+                console.log("File deleted");
+                win.webContents.send("normalMsg", `${path} deleted`);
+            }
+        });
+        win.webContents.send("deleteComplete");
+    } else {
+        console.log("File does not exist");
+    }
+}
+
+export function extractTitleAndArtist(trackName: string): any {
+    const split = trackName.split("-");
+    let artist;
+    let title;
+    if (trackName.includes("_-")) {
+        artist = split[0];
+        title = split[1];
+    } else if (trackName.includes("-")) {
+        artist = split[1];
+        title = split[0];
+    } else {
+        return { artist: "unknown", title: null };
+    }
+    artist = artist.replace(/_/g, " ").trim();
+    title = title
+        .replace(/_/g, " ")
+        .replace(/\(.*\).*/gi, "")
+        .replace(/\[.*\].*/gi, "")
+        .replace(/\)/, "")
+        .trim();
+    return { artist, title };
+}
+
+export function isValidFileType(path: string) {
+    return path.match(/\.mp3|\.webm|\.m4a|\.ogg/gi);
+}
+
+export function removeMIME(str: string) {
+    return str.replace(/(\.mp3)|(\.m4a)|(\.ogg)|(\.wav)/gi, "");
+}
+
+export function sendNativeNotification(
+    title: string,
+    text: string,
+    image: string
+) {
+    const options = {
+        title,
+        subtitle: text,
+        body: text,
+        silent: true,
+        icon: image,
+    };
+    const notification = new Notification(options);
+    notification.show();
+    notification.on("click", () => {
+        win.focus();
+        win.maximize();
+    });
+}
