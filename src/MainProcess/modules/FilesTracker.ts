@@ -3,7 +3,7 @@ import fs from "fs";
 import { paths } from "./Paths";
 
 export class FilesTracker {
-    processedFiles: Array<TrackType> = [];
+    private processedFiles: Array<TrackType> = [];
 
     constructor() {
         console.log(fs.existsSync(paths.filesTrackerLocation));

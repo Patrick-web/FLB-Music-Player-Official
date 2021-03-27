@@ -174,6 +174,10 @@ ipcMain.on("addScanFolder", () => {
         if (!data.canceled) {
             settings.addFolderToScan(data.filePaths[0]);
             win.webContents.send("userSettings", settings.getSettings);
+            if (fileTracker.getTracks.length) {
+                refreshTracks()
+                win.webContents.send('normalMsg', 'Refreshing...')
+            }
         }
     });
 });

@@ -330,7 +330,6 @@ export default {
     ...mapMutations(["setSettingValue", "UIcontrollerToggleProperty"]),
     addFolder() {
       sendMessageToNode("addScanFolder", "");
-      sendMessageToNode("refresh", "");
     },
     removeFromScannedFolders(path) {
       sendMessageToNode("removeFromScannedFolders", path);

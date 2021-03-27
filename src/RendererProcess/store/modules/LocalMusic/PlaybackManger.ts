@@ -98,9 +98,10 @@ const actions: ActionTree<any, any> = {
     determineNextTrack({ state, commit }, direction) {
         const playingTrackInfo = state.playingTrackInfo;
         let targetArray: TrackType[] = [];
-
+        let playingFromCustomQueue = false
         if (state.customQueue.length) {
             targetArray = state.customQueue
+            playingFromCustomQueue = true
         }
         else if (TrackSelector.state.selectedGroup?.tracks.length) {
             targetArray = TrackSelector.state.selectedGroup?.tracks;
@@ -118,10 +119,12 @@ const actions: ActionTree<any, any> = {
         } else {
             if (direction == 'next') {
                 commit('setPlayingTrack', { track: targetArray[indexOfPlayingTrack + 1], index: [indexOfPlayingTrack + 1] })
+                if (playingFromCustomQueue) commit('removeTrackFromCustomQueue', [indexOfPlayingTrack + 1])
             }
             //when command is playPrevious
             else if (direction == 'prev') {
                 commit('setPlayingTrack', { track: targetArray[indexOfPlayingTrack - 1], index: [indexOfPlayingTrack - 1] })
+                if (playingFromCustomQueue) commit('removeTrackFromCustomQueue', [indexOfPlayingTrack - 1])
             }
         }
 
