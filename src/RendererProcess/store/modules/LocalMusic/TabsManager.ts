@@ -1,5 +1,5 @@
 import { sendMessageToNode } from "@/RendererProcess/utilities";
-import { removeDuplicates } from "@/sharedUtilities";
+import { removeDuplicates, sortArrayOfObjects } from "@/sharedUtilities";
 import { TrackType, ArtistType, AlbumType, PlaylistType, FolderParsedType, FolderInfoType } from "@/types";
 import { ActionTree } from "vuex";
 import TrackSelector from "./TrackSelector";
@@ -161,6 +161,7 @@ const actions: ActionTree<any, any> = {
             });
             state.tabsData.artists.unshift(artistInfo);
         });
+        sortArrayOfObjects(state.tabsData.artists, 'name')
         dispatch('fetchArtistsInfo')
     },
     generateAlbumsData: ({ state }) => {
