@@ -16,7 +16,7 @@
 <script>
 import { mapMutations } from "vuex";
 import SortWidget from "./SortWidget.vue";
-import SearchResults from "@/RendererProcess/components/FLBing/SearchResults";
+import SearchResults from "./SearchResults";
 import MultiSelectButton from "./MultiSelectButton.vue";
 export default {
   data() {
@@ -72,50 +72,6 @@ export default {
   .multiSelect:hover {
     max-width: 200px;
     background: rgba(255, 255, 255, 0.144);
-  }
-  .searchResults {
-    position: absolute;
-    bottom: -5px;
-    transform: translateY(100%);
-    width: 97%;
-    padding: 10px;
-    max-height: 600px;
-    background-color: rgba(0, 0, 0, 0.507);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.315);
-    border-radius: 20px;
-    box-shadow: 0px 0px 50px black;
-    overflow: hidden;
-    #closeSearch {
-      position: absolute;
-      right: 10px;
-      top: 10px;
-      width: 15px;
-      cursor: pointer;
-    }
-    h3 {
-      padding: 5px;
-    }
-    hr {
-      height: 1px;
-      background: rgba(255, 255, 255, 0.377);
-      border: none;
-      margin-bottom: 5px;
-    }
-    .groupCard {
-      width: 90px;
-      img {
-        width: 50px;
-      }
-      .groupedCard_info {
-        .groupedInfo_title {
-          max-width: 90px;
-        }
-        .groupedInfo_subtitle {
-          max-width: 90px;
-        }
-      }
-    }
   }
 }
 

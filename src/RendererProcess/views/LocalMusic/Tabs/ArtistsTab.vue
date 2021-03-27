@@ -73,10 +73,10 @@
           </div>
         </div>
         <div class="cardsWrapper">
-          <h1>Albums</h1>
+          <h1 style="margin: 10px">Albums</h1>
           <div class="albumsGrid">
             <div
-              v-for="album in selectedGroup.albums"
+              v-for="album in removeDuplicateAlbums(selectedGroup.albums)"
               :key="album.name"
               @click="goToAlbum(album)"
               class="groupCard"
@@ -101,9 +101,6 @@
                   <p class="groupedInfo_title">
                     {{ album.name }}
                   </p>
-                  <p class="groupedInfo_subtitle">
-                    {{ album.tracks[0].artist }}
-                  </p>
                 </div>
               </div>
             </div>
@@ -125,7 +122,7 @@
 import { mapActions, mapMutations } from "vuex";
 import TrackCard from "@/RendererProcess/components/Root/Track/TrackCard.vue";
 import ArtistCard from "@/RendererProcess/components/LocalMusic/TabsPane/ArtistTab/ArtistCard.vue";
-
+import { removeDuplicates } from "@/sharedUtilities";
 export default {
   data() {
     return {
@@ -172,6 +169,9 @@ export default {
       document.querySelector("#Albums").click();
       this.selectGroup(album);
       this.query = "";
+    },
+    removeDuplicateAlbums(arr) {
+      return removeDuplicates(arr, "name");
     },
   },
   computed: {

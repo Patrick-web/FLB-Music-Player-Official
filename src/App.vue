@@ -4,7 +4,6 @@
     <Settings v-if="showSettings" />
     <OnBoard v-on:closeOnBoard="showOnboard = false" v-if="showOnboard" />
     <Notifications />
-    <Bg />
     <div class="split">
       <section style="display: flex">
         <SideNav />
@@ -13,6 +12,7 @@
       <PlayingPane v-if="playingTrack" />
       <IpcListener />
     </div>
+    <Bg />
   </div>
 </template>
 <script lang="js">
@@ -106,6 +106,8 @@ body {
 .split {
   display: flex;
   justify-content: space-between;
+  position: relative;
+  z-index: 2;
   #logo {
     position: fixed;
     width: 40px;

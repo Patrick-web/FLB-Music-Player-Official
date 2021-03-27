@@ -1,7 +1,7 @@
 <template>
   <div class="bg">
     <img
-      v-if="theme == 'fancy' && playingTrack"
+      v-if="theme == 'fancy' && playingTrack && playingTrack.albumArt"
       :src="playingTrack.albumArt"
       id="bg_fancy"
       alt=""
@@ -30,17 +30,17 @@ export default {
 
 <style lang="scss">
 .bg {
-  position: fixed;
   pointer-events: none;
+  position: fixed;
+  top: 0%;
+  left: 0;
+  width: 120%;
+  height: 100vh;
   #bg_fancy {
-    position: fixed;
-    top: 0%;
-    left: 0;
-    width: 120%;
-    height: 100vh;
+    width: 100%;
+    height: 100%;
     filter: blur(40px);
     opacity: 0.3;
-    z-index: -1;
   }
 }
 </style>

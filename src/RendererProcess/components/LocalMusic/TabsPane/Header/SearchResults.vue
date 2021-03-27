@@ -1,11 +1,10 @@
 <template>
-  <div class="searchResults" v-if="query">
+  <div class="searchResults">
     <img
       id="closeSearch"
-      @click="query = ''"
+      @click="closeSearch"
       src="@/RendererProcess/assets/images/x.svg"
       alt
-      v-if="query"
     />
     <div class="TracksResults">
       <h3>Tracks</h3>
@@ -41,7 +40,6 @@
             class="coverArt"
             src="@/RendererProcess/assets/images/FLBDefaultArtistPic.png"
             alt=""
-            style="border-radius: 50%"
           />
           <p class="tracksCount">
             {{ artist.tracks.length }}
@@ -59,6 +57,7 @@
 
 <script>
 import TrackCard from "@/RendererProcess/components/Root/Track/TrackCard.vue";
+import { mapMutations } from "vuex";
 
 export default {
   computed: {
@@ -88,5 +87,49 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss">
+.searchResults {
+  position: absolute;
+  bottom: -5px;
+  transform: translateY(100%);
+  width: 97%;
+  padding: 10px;
+  max-height: 600px;
+  background-color: rgba(0, 0, 0, 0.507);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.315);
+  border-radius: 20px;
+  box-shadow: 0px 0px 50px black;
+  overflow: hidden;
+  #closeSearch {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    width: 15px;
+    cursor: pointer;
+  }
+  h3 {
+    padding: 5px;
+  }
+  hr {
+    height: 1px;
+    background: rgba(255, 255, 255, 0.377);
+    border: none;
+    margin-bottom: 5px;
+  }
+  .groupCard {
+    width: 90px;
+    img {
+      width: 50px;
+    }
+    .groupedCard_info {
+      .groupedInfo_title {
+        max-width: 90px;
+      }
+      .groupedInfo_subtitle {
+        max-width: 90px;
+      }
+    }
+  }
+}
 </style>
