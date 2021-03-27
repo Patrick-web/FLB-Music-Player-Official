@@ -14,8 +14,13 @@ export class Settings {
 	};
 	constructor() {
 		if (fs.existsSync(paths.settingsLocation)) {
-			const data = JSON.parse(fs.readFileSync(paths.settingsLocation, "utf-8"));
-			this.settings = data;
+			try {
+
+				const data = JSON.parse(fs.readFileSync(paths.settingsLocation, "utf-8"));
+				this.settings = data;
+			} catch (error) {
+				console.log("An error occurred while reading the settings file");
+			}
 		}
 	}
 	updateSettings(payload: SettingsType) {

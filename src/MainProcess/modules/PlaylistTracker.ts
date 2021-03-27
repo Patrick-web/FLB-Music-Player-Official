@@ -7,10 +7,16 @@ export class PlaylistsTracker {
 
     constructor() {
         if (fs.existsSync(paths.playlistsLocation)) {
-            const data = JSON.parse(
-                fs.readFileSync(paths.playlistsLocation, "utf-8")
-            );
-            this.playlists = data;
+            try {
+
+                const data = JSON.parse(
+                    fs.readFileSync(paths.playlistsLocation, "utf-8")
+                );
+                this.playlists = data;
+            } catch (error) {
+                console.log("An error occured while reading playlistTracker file");
+
+            }
         }
     }
     updatePlaylists(playlists: Array<PlaylistType>) {

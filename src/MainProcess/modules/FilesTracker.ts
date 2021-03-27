@@ -8,10 +8,14 @@ export class FilesTracker {
     constructor() {
         console.log(fs.existsSync(paths.filesTrackerLocation));
         if (fs.existsSync(paths.filesTrackerLocation)) {
-            const data = JSON.parse(
-                fs.readFileSync(paths.filesTrackerLocation, "utf-8")
-            );
-            this.processedFiles = data;
+            try {
+                const data = JSON.parse(
+                    fs.readFileSync(paths.filesTrackerLocation, "utf-8")
+                );
+                this.processedFiles = data;
+            } catch (error) {
+                console.log("Error in reading the file tracker file");
+            }
         }
     }
     addFile(track: TrackType) {

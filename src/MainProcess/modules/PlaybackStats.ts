@@ -9,11 +9,16 @@ export class PlaybackStats {
 
 	constructor() {
 		if (fs.existsSync(paths.playbackStatsLocation)) {
-			const data = JSON.parse(
-				fs.readFileSync(paths.playbackStatsLocation, "utf-8")
-			);
-			this.playedFiles = data.playedFiles;
-			this.tracksStats = data.tracksStats;
+			try {
+
+				const data = JSON.parse(
+					fs.readFileSync(paths.playbackStatsLocation, "utf-8")
+				);
+				this.playedFiles = data.playedFiles;
+				this.tracksStats = data.tracksStats;
+			} catch (error) {
+				console.log("An error occured while reading playbackStats file");
+			}
 		}
 	}
 
