@@ -186,6 +186,7 @@ const actions: ActionTree<any, any> = {
             albumInfo.artist = tracks[0].artist || tracks[0].extractedArtist;
             state.tabsData.albums.unshift(albumInfo);
         });
+        sortArrayOfObjects(state.tabsData.albums, 'name')
     },
     generateFoldersData: ({ state }) => {
         state.tabsData.folders = [];
@@ -205,6 +206,8 @@ const actions: ActionTree<any, any> = {
             folderInfo.tracks = tracks;
             state.tabsData.folders.unshift(folderInfo);
         });
+        sortArrayOfObjects(state.tabsData.folders, 'name')
+
     },
     findAndGoToArtist({ state, commit }, payload: string) {
         state.tabsData.artists.forEach((artist: ArtistType) => {
