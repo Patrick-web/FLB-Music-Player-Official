@@ -63,7 +63,7 @@
       }
     },
     methods: {
-      ...mapMutations(["deSelectGroup","clearSelectedTracks"]),
+      ...mapMutations(["deSelectGroup","clearSelectedTracks","UIcontrollerSetPropertyValue"]),
       routeTo(tab) {
         this.clearSelectedTracks()
         this.deSelectGroup()

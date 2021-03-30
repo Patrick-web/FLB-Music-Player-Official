@@ -2,9 +2,7 @@
   <div class="PlaylistsTab tab">
     <div v-if="!selectedGroup" class="playlistCards">
       <PlaylistCard
-        v-for="playlist in playlists.filter(
-          (playlist) => playlist.tracks.length != 0
-        )"
+        v-for="playlist in playlists"
         :playlist="playlist"
         :key="playlist.name"
       />

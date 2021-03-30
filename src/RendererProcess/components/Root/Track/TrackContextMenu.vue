@@ -13,7 +13,7 @@
       <span>Add to Favourites</span>
     </div>
     <div
-      v-if="UIcontroller.currentMainTab !== 'Playlists'"
+      v-if="!$route.path === '/playlists'"
       @click.stop="showPlaylistWidget"
       class="option"
     >
@@ -24,7 +24,7 @@
       <span>Add to Playlist</span>
     </div>
     <div
-      v-if="UIcontroller.currentMainTab === 'Playlists'"
+      v-if="$route.path === '/playlists'"
       @click.stop="removeFromPlaylist"
       class="option"
     >

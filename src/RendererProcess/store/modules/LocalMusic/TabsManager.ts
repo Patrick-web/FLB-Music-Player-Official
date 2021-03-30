@@ -100,7 +100,7 @@ const mutations = {
             return
         }
         state.tabsData.playlists.forEach((playlist: PlaylistType, pindex: number) => {
-            if (playlist.name === state.selectedGroup?.name) {
+            if (playlist.name === TrackSelector.state.selectedGroup?.name) {
                 playlist.tracks.forEach((track: TrackType, tindex: number) => {
                     TrackSelector.state.selectedTracks.forEach((selectedTrack: TrackType) => {
                         if (selectedTrack.fileLocation === track.fileLocation) {

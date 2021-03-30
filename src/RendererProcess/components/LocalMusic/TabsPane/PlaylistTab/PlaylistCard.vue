@@ -1,6 +1,19 @@
 <template>
   <div class="PlaylistCard">
     <p class="playlist_name">{{ playlist.name }}</p>
+    <div
+      @click="openPlaylist"
+      style="cursor: pointer"
+      v-if="playlist.tracks.length == 0"
+      class="centerContents"
+    >
+      <img
+        style="width: 140px"
+        src="@/RendererProcess/assets/images/addIllustration.svg"
+        alt=""
+      />
+      <p style="font-family: roboto-thin">Empty Playlist</p>
+    </div>
     <div class="top4Tracks">
       <div
         @click="playTrack(track)"
@@ -28,22 +41,24 @@
         </p>
       </div>
     </div>
-    <button
-      style="margin-top: 10px"
-      class="btWithIcon playlistOption playlist_playBt"
-      @click="openPlaylist"
-    >
-      <img src="@/RendererProcess/assets/images/playlist_add.svg" />
-      <p>Open Playlist</p>
-    </button>
-    <button
-      style="margin-top: 10px"
-      class="btWithIcon playlistOption playlist_playBt"
-      @click="playAll"
-    >
-      <img src="@/RendererProcess/assets/images/playButton.svg" />
-      <p>Play All</p>
-    </button>
+    <div v-if="playlist.tracks.length != 0" class="pl_ActionsWrapper">
+      <button
+        style="margin-top: 10px"
+        class="btWithIcon playlistOption playlist_playBt"
+        @click="openPlaylist"
+      >
+        <img src="@/RendererProcess/assets/images/playlist_add.svg" />
+        <p>Open Playlist</p>
+      </button>
+      <button
+        style="margin-top: 10px"
+        class="btWithIcon playlistOption playlist_playBt"
+        @click="playAll"
+      >
+        <img src="@/RendererProcess/assets/images/playButton.svg" />
+        <p>Play All</p>
+      </button>
+    </div>
   </div>
 </template>
 
