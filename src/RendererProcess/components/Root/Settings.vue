@@ -34,7 +34,7 @@
             </div>
           </div>
           <button
-            style="max-width: 380px; margin-left: 10px"
+            style="margin-left: 10px; width: 95%"
             class="bt_active"
             @click="addFolder"
           >

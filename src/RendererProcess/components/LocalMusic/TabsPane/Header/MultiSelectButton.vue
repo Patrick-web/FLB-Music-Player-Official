@@ -22,7 +22,7 @@ export default {
     toggleMultiSelect() {
       this.multiSelect = !this.multiSelect;
       this.clearSelectedTracks();
-      const centralArea = document.querySelector("#centralArea_tabs");
+      const centralArea = document.querySelector("#tabsArea");
       centralArea.classList.toggle("multiSelectMode");
       const trackOptions = document.querySelector(".trackOptions");
       if (this.multiSelect) {

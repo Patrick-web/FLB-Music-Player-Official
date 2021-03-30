@@ -1,6 +1,7 @@
 <template>
   <div @click="cleanUp" id="app" :class="[accentColor, theme + '_theme']">
     <CustomTitleBar />
+    <IpcListener />
     <Settings v-if="showSettings" />
     <OnBoard v-on:closeOnBoard="showOnboard = false" v-if="showOnboard" />
     <Notifications />
@@ -10,7 +11,6 @@
         <router-view />
       </section>
       <PlayingPane v-if="playingTrack" />
-      <IpcListener />
     </div>
     <Bg />
   </div>
@@ -18,7 +18,7 @@
 <script lang="js">
 	import Vue from "vue";
 
-	import { mapMutations, mapState ,mapActions} from "vuex";
+	import { mapMutations ,mapActions} from "vuex";
 	import SideNav from "@/RendererProcess/components/Root/SideNav.vue";
 	import PlayingPane from "@/RendererProcess/components/Root/Player/PlayingPane.vue";
   import Settings from "@/RendererProcess/components/Root/Settings";
@@ -43,7 +43,6 @@
 		showOnboard:true,
 	  }},
 	  computed: {
-	    ...mapState(["playingTrackInfo","settings"]),
           theme() {
       return this.$store.state.SettingsManager.settings.theme;
     },
@@ -75,7 +74,7 @@
 @import "./RendererProcess/assets/Css/animate.css";
 @import "./RendererProcess/assets/Css/global.css";
 @import "./RendererProcess/assets/Css/themer.css";
-@import "./RendererProcess/assets/Css/grouperTabs.css";
+@import "./RendererProcess/assets/Css/groupedContent.css";
 * {
   scroll-behavior: smooth;
 }
@@ -90,10 +89,7 @@ body {
 ::-webkit-scrollbar {
   background: rgba(0, 0, 0, 0.199);
   width: 8px;
-}
-::-webkit-scrollbar:hover {
-  background: rgba(0, 0, 0, 0.199);
-  width: 10px;
+  height: 6px;
 }
 ::-webkit-scrollbar-track-piece {
   background: rgba(255, 255, 255, 0.083);
@@ -104,8 +100,10 @@ body {
   border-radius: 10px;
 }
 .split {
+  height: 100%;
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+  justify-content: start;
   position: relative;
   z-index: 2;
   #logo {
@@ -117,6 +115,11 @@ body {
   }
   #logo:hover {
     cursor: pointer;
+  }
+  section {
+    // background: rgb(110, 110, 0);
+    height: 95%;
+    padding: 10px;
   }
 }
 // @media (max-width: 700px) {
@@ -137,9 +140,6 @@ body {
   height: 100vh;
   padding-left: 0px;
   margin-right: 10px;
-}
-.tab {
-  overflow: hidden;
 }
 
 .playingPaneArea {

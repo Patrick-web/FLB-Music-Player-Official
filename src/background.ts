@@ -193,16 +193,15 @@ ipcMain.on("refresh", () => {
 });
 
 ipcMain.on("playingTrack", async (e, track: TrackType) => {
-    console.log("Playing " + track.defaultTitle);
     playbackStats.addFile(track);
     if (!appIsFocused && settings.getSettings.desktopNotifications) {
         sendNativeNotification(
-            track.title || track.extractedTitle || "",
-            track.artist || track.extractedArtist,
+            track.defaultTitle,
+            track.defaultArtist,
             track.albumArt
         );
     }
-    win.webContents.send("mostPlayedArtists", playbackStats.mostPlayedTracks);
+    // win.webContents.send("mostPlayedArtists", playbackStats.mostPlayedTracks);
 });
 
 ipcMain.on("processDroppedFiles", (e, filePaths) => {

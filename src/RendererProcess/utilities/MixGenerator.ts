@@ -16,12 +16,14 @@ export class MixGenerator {
         this.recentlyAddedTracks()
     }
     favoriteTracks() {
-        const mix: mixTyping = {
-            name: 'Most Played Tracks',
-            info: `Your favorites like ${this.mostPlayedTracks[0].defaultTitle} and ${this.mostPlayedTracks[1].defaultTitle}`,
-            tracks: this.mostPlayedTracks
+        if (this.mostPlayedTracks[1]) {
+            const mix: mixTyping = {
+                name: "Tracks you've fallen for 💘💘",
+                info: `Your Most Played tracks like 👉 💖${this.mostPlayedTracks[0].defaultTitle}💖  and  💖${this.mostPlayedTracks[1].defaultTitle}💖`,
+                tracks: this.mostPlayedTracks
+            }
+            this.mixes.push(mix)
         }
-        this.mixes.push(mix)
     }
     twoArtistMashUp() {
         const favoriteArtists = this.mostPlayedTracks.map(track => track.defaultArtist);
@@ -31,8 +33,8 @@ export class MixGenerator {
             const secondArtistTracks = this.allTracks.filter(track => track.defaultArtist == twoRandomArtists[1])
             const mashedTracks = shuffleArray([...firstArtistTracks, ...secondArtistTracks])
             const mix: mixTyping = {
-                name: '2 artist Mashup',
-                info: `Bangers from ${twoRandomArtists[0]} and ${twoRandomArtists[1]}`,
+                name: 'Power Duo 🎭',
+                info: `Bangers from 🎤 ${twoRandomArtists[0]} and 🎤${twoRandomArtists[1]}`,
                 tracks: mashedTracks
             }
             this.mixes.push(mix)
@@ -48,9 +50,10 @@ export class MixGenerator {
             }
         })
         forgottenTracks = forgottenTracks.splice(0, 10)
+        console.log(forgottenTracks);
         const mix: mixTyping = {
-            name: 'Tracks you might have forgotten',
-            info: `${forgottenTracks[0].defaultTitle}, ${forgottenTracks[1].defaultTitle} and others...`,
+            name: 'Tracks you might have forgotten 🤯',
+            info: `Remember 👉 ${forgottenTracks[0].defaultTitle}, ${forgottenTracks[1].defaultTitle} and others...`,
             tracks: forgottenTracks
         }
         this.mixes.push(mix)
@@ -61,8 +64,8 @@ export class MixGenerator {
         allTracksCopy.reverse()
         const topTenRecentlyAddedTracks = allTracksCopy.splice(0, 10)
         const mix: mixTyping = {
-            name: 'Fresh and Juicy',
-            info: `${topTenRecentlyAddedTracks[0].defaultTitle}, ${topTenRecentlyAddedTracks[1].defaultTitle} and others...`,
+            name: 'Fresh and Juicy 🧃🧃',
+            info: `Newly added tracks like 👉 ${topTenRecentlyAddedTracks[0].defaultTitle}, ${topTenRecentlyAddedTracks[1].defaultTitle} and others...`,
             tracks: topTenRecentlyAddedTracks
         }
         this.mixes.push(mix)

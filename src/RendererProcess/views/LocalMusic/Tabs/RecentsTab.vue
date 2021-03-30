@@ -1,5 +1,5 @@
 <template>
-  <div class="tab recentsTab">
+  <div class="tab RecentsTab">
     <TrackCard
       v-for="track in recentlyPlayedTracks"
       :source="track"
@@ -9,7 +9,6 @@
   </div>
 </template>
 <script>
-import { mapState } from "vuex";
 import TrackCard from "@/RendererProcess/components/Root/Track/TrackCard.vue";
 
 export default {
@@ -19,7 +18,6 @@ export default {
     };
   },
   computed: {
-    ...mapState(["tabsData"]),
     recentlyPlayedTracks() {
       return this.$store.state.TabsManager.tabsData.recentlyPlayedTracks;
     },
@@ -31,9 +29,9 @@ export default {
 </script>
 
 <style>
-.recentsTab {
+.RecentsTab {
   overflow: hidden;
   overflow-y: scroll;
-  height: 64vh;
+  height: 100%;
 }
 </style>

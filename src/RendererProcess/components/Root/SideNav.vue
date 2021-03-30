@@ -129,9 +129,9 @@ export default {
     toggleSideNavEpansion() {
       this.isCollapsed = !this.isCollapsed;
       if (this.isCollapsed) {
-        document.querySelector("#centralArea_tabs").style.width = "70vw";
+        document.querySelector("#tabsArea").style.width = "70vw";
       } else {
-        document.querySelector("#centralArea_tabs").style.width = "61.5vw";
+        document.querySelector("#tabsArea").style.width = "61.5vw";
       }
     },
     refresh() {
@@ -148,7 +148,7 @@ export default {
 <style lang="scss">
 .playingPaneLoaded {
   .sideNav {
-    height: 78.5vh;
+    margin-bottom: 110px;
   }
 }
 .collapsed {
@@ -175,7 +175,6 @@ export default {
 }
 .sideNav {
   background: rgba(255, 255, 255, 0.083);
-  height: 93vh;
   padding-bottom: 5px;
   min-width: 180px;
   width: 180px;
@@ -184,8 +183,6 @@ export default {
   flex-direction: column;
   justify-content: space-between;
   margin-right: 10px;
-  margin-left: 10px;
-  margin-top: 10px;
   overflow: hidden;
   .sideNav-group {
     border-radius: 15px;

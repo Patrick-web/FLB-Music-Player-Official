@@ -145,8 +145,6 @@ export default {
       this.fraction = `${currentIndex}/${total}`;
     });
     ipcRenderer.on("userSettings", (e, payload) => {
-      console.log(payload);
-      console.log("User Settings Received");
       this.restoreSettings(payload);
     });
     ipcRenderer.send("initializeSettings");

@@ -44,28 +44,18 @@ export default {
   components: {
     TrackCard,
     // VirtualList,
-    // Player,
   },
 };
 </script>
 
 <style lang="scss">
-.playingPaneLoaded {
-  .addedTracksTab {
-    #tracksTabVirtualList,
-    .tracksWrapper {
-      height: 64vh;
-    }
-  }
-}
-
 .addedTracksTab {
   position: relative;
   overflow: hidden;
-  height: 78vh;
+  height: 100%;
   #tracksTabVirtualList,
   .tracksWrapper {
-    height: 85vh;
+    height: 100%;
     overflow: hidden;
     overflow-y: scroll;
   }

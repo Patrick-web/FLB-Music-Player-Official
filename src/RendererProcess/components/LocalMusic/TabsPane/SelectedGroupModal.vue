@@ -39,7 +39,7 @@
 </template>
 
 <script>
-import { mapActions, mapMutations, mapState } from "vuex";
+import { mapActions, mapMutations } from "vuex";
 import TrackCard from "@/RendererProcess/components/Root/Track/TrackCard.vue";
 import AlbumCard from "@/RendererProcess/components/LocalMusic/TabsPane/AlbumsTab/AlbumCard.vue";
 
@@ -48,7 +48,7 @@ export default {
     ...mapMutations([
       "addSelectedTrackToCustomQueue",
       "addToSelectedTracks",
-      "switchSidePaneTab",
+      "UIcontrollerSetPropertyValue",
       "clearSelectedTracks",
       "selectGroup",
       "deSelectGroup",
@@ -58,7 +58,10 @@ export default {
     ]),
     ...mapActions(["generateAlbumsData"]),
     addTracksToQueue() {
-      this.switchSidePaneTab("CustomQueue");
+      this.UIcontrollerSetPropertyValue({
+        property: "currentSidePaneTab",
+        newValue: "CustomQueue",
+      });
       this.clearSelectedTracks();
       this.selectedGroup.tracks.forEach((track) => {
         this.addToSelectedTracks(track);
@@ -81,15 +84,11 @@ export default {
     },
   },
   computed: {
-    ...mapState(["tabsData", "selectedGroup", "renderedTracks"]),
     albums() {
       return this.$store.state.TabsManager.tabsData.albums;
     },
     selectedGroup() {
       return this.$store.state.TrackSelector.selectedGroup;
-    },
-    renderedTracks() {
-      return this.$store.state.renderedTracks;
     },
   },
   components: {

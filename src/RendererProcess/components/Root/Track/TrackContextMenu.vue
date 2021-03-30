@@ -66,13 +66,16 @@ export default {
       "addToCustomQueue",
       "addSelectedTrackToCustomQueue",
       "setSelectedTrackToPlayNext",
-      "switchSidePaneTab",
+      "UIcontrollerSetPropertyValue",
       "clearSelectedTracks",
       "pushNotification",
     ]),
     queueTrack() {
       this.addSelectedTrackToCustomQueue();
-      this.switchSidePaneTab("CustomQueue");
+      this.UIcontrollerSetPropertyValue({
+        property: "currentSidePaneTab",
+        newValue: "CustomQueue",
+      });
       this.pushNotification({
         title: "Track(s) added to queue",
         subTitle: null,
@@ -80,7 +83,7 @@ export default {
       });
       this.close();
     },
-    switchSidePaneTab(tab) {
+    UIcontrollerSetPropertyValue(tab) {
       this.UIcontrollerSetPropertyValue({
         property: "currentSidePaneTab",
         newValue: tab,
@@ -97,7 +100,7 @@ export default {
     },
     close() {
       document.querySelector(".trackOptions").style.height = `0px`;
-      const centralArea = document.querySelector("#centralArea_tabs");
+      const centralArea = document.querySelector("#tabsArea");
       centralArea.classList.remove("multiSelectMode");
     },
     showPlaylistWidget() {
@@ -157,7 +160,6 @@ export default {
       this.close();
     },
   },
-  // mounted() {},
 };
 </script>
 

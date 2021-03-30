@@ -11,15 +11,14 @@
     >
       Queue is Empty. Right click on a track to add it to the queue
     </p>
+    <div
+      class="clearQueueBt"
+      @click="clearCustomQueue"
+      v-if="customQueue.length !== 0"
+    >
+      Clear Queue
+    </div>
     <div class="QueuedTracksWrapper">
-      <button
-        class="dangerBt"
-        style="margin-bottom: 10px"
-        @click="clearCustomQueue"
-        v-if="customQueue.length !== 0"
-      >
-        Clear Queue
-      </button>
       <draggable
         v-model="customQueue"
         ghost-class="ghost"
@@ -36,8 +35,8 @@
             class="queuedTrack"
             @click.stop="playQueuedTrack($event, index, track)"
           >
-            <h3>{{ track.defaultTitle }}</h3>
-            <p>{{ track.defaultArtist }}</p>
+            <p class="card_title">{{ track.defaultTitle }}</p>
+            <p class="card_subTitle">{{ track.defaultArtist }}</p>
             <img
               @click.stop="removeTrackFromCustomQueue(index)"
               src="@/RendererProcess/assets/images/x.svg"
@@ -51,7 +50,7 @@
 </template>
 
 <script>
-import { mapMutations, mapState } from "vuex";
+import { mapMutations } from "vuex";
 import draggable from "vuedraggable";
 export default {
   data() {
@@ -63,7 +62,6 @@ export default {
     draggable,
   },
   computed: {
-    // ...mapState(["customQueue", "UIcontroller"]),
     customQueue: {
       get() {
         return this.$store.state.PlaybackManger.customQueue;
@@ -97,9 +95,26 @@ export default {
 <style lang="scss">
 .QueuedTracks {
   height: 95%;
-  width: 100%;
+  width: 19.5vw;
   overflow: hidden;
   overflow-y: scroll;
+  .clearQueueBt {
+    padding: 5px;
+    text-align: center;
+    background: crimson;
+    border-radius: 10px;
+    position: absolute;
+    top: 50px;
+    z-index: 2;
+    width: 84%;
+    cursor: pointer;
+    &:hover {
+      border-radius: 20px;
+    }
+  }
+  .QueuedTracksWrapper {
+    padding-top: 40px;
+  }
   .queuedTrack {
     position: relative;
     background: rgba(255, 255, 255, 0.103);
@@ -108,14 +123,13 @@ export default {
     margin-bottom: 10px;
     margin-right: 10px;
     cursor: pointer;
-    h3 {
-      font-family: roboto;
-      font-weight: 500;
-      font-size: 1rem;
-    }
-    p {
-      font-family: roboto-thin;
+    .card_title {
+      font-family: roboto-light;
       font-size: 0.9rem;
+    }
+    .card_subTitle {
+      font-family: roboto-thin;
+      font-size: 0.8rem;
     }
     img {
       position: absolute;

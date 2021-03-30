@@ -1,60 +1,13 @@
 <template>
-  <div class="Playlists">
+  <div class="PlaylistsTab tab">
     <div v-if="!selectedGroup" class="playlistCards">
-      <div
-        class="playlistCard"
-        v-for="playlist in playlists"
+      <PlaylistCard
+        v-for="playlist in playlists.filter(
+          (playlist) => playlist.tracks.length != 0
+        )"
+        :playlist="playlist"
         :key="playlist.name"
-        @click="selectGroup(playlist)"
-      >
-        <img
-          v-if="playlist.tracks.length == 0"
-          class="coverArt"
-          src="@/RendererProcess/assets/images/plImages/purple.png"
-          alt=""
-        />
-        <img
-          v-if="playlist.tracks.length > 0 && playlist.tracks.length < 5"
-          class="coverArt"
-          src="@/RendererProcess/assets/images/plImages/blue.png"
-          alt=""
-        />
-        <img
-          v-if="playlist.tracks.length > 4 && playlist.tracks.length < 8"
-          class="coverArt"
-          src="@/RendererProcess/assets/images/plImages/orange.png"
-          alt=""
-        />
-        <img
-          v-if="playlist.tracks.length > 7"
-          class="coverArt"
-          src="@/RendererProcess/assets/images/plImages/teal.png"
-          alt=""
-        />
-        <div class="top4">
-          <img
-            v-if="playlist.tracks[0]"
-            :src="playlist.tracks[0].albumArt"
-            alt=""
-          />
-          <img
-            v-if="playlist.tracks[1]"
-            :src="playlist.tracks[1].albumArt"
-            alt=""
-          />
-          <img
-            v-if="playlist.tracks[2]"
-            :src="playlist.tracks[2].albumArt"
-            alt=""
-          />
-          <img
-            v-if="playlist.tracks[3]"
-            :src="playlist.tracks[3].albumArt"
-            alt=""
-          />
-        </div>
-        <h2>{{ playlist.name }}</h2>
-      </div>
+      />
     </div>
     <transition
       enter-active-class="animated fadeInUp extrafaster"
@@ -79,6 +32,13 @@
               {{ selectedGroup.name }}
             </p>
           </div>
+
+          <EditPlaylistWidget
+            v-on:newPlaylistName="renamePlaylist"
+            v-on:closeWidget="closeWidget"
+            v-if="showPlaylistEditor"
+          />
+
           <div class="sliverBarActions">
             <button @click="addPlaylistToQueue" class="btWithIcon">
               <img
@@ -88,8 +48,8 @@
               <p>Add To Queue</p>
             </button>
             <button
-              v-if="selectedGroup.name !== 'Favourites'"
-              @click="showPlaylistEditor = true"
+              v-if="selectedGroup.name !== 'Favorites'"
+              @click="showPlaylistEditor = !showPlaylistEditor"
               class="btWithIcon"
             >
               <img src="@/RendererProcess/assets/images/edit.svg" alt="" />
@@ -106,29 +66,6 @@
               />
               <p>Delete Playlist</p>
             </button>
-            <transition
-              enter-active-class="animated fadeInUp extrafaster"
-              leave-active-class="animated fadeOutDown extrafaster"
-            >
-              <div v-if="showPlaylistEditor" class="editPlForm">
-                <input
-                  class="inputElem"
-                  type="text"
-                  v-model="newPlaylistName"
-                  placeholder="New Playlist Name"
-                />
-                <button @click="renamePlaylist" v-if="newPlaylistName">
-                  Save
-                </button>
-                <button
-                  class="dangerBt"
-                  @click="showPlaylistEditor = false"
-                  v-if="!newPlaylistName"
-                >
-                  Cancel
-                </button>
-              </div>
-            </transition>
           </div>
         </div>
         <div class="cardsWrapper">
@@ -147,13 +84,13 @@
 </template>
 
 <script>
-import { mapMutations, mapState } from "vuex";
+import { mapMutations } from "vuex";
 import TrackCard from "@/RendererProcess/components/Root/Track/TrackCard.vue";
+import PlaylistCard from "@/RendererProcess/components/LocalMusic/TabsPane/PlaylistTab/PlaylistCard.vue";
+import EditPlaylistWidget from "@/RendererProcess/components/LocalMusic/TabsPane/PlaylistTab/EditPlaylistWidget.vue";
 export default {
   data() {
     return {
-      card: TrackCard,
-      newPlaylistName: "",
       showPlaylistEditor: false,
     };
   },
@@ -165,11 +102,14 @@ export default {
       "addToSelectedTracks",
       "clearSelectedTracks",
       "addSelectedTrackToCustomQueue",
-      "switchSidePaneTab",
+      "UIcontrollerSetPropertyValue",
       "renameCurrentPlaylist",
     ]),
     addPlaylistToQueue() {
-      this.switchSidePaneTab("CustomQueue");
+      this.UIcontrollerSetPropertyValue({
+        property: "currentSidePaneTab",
+        newValue: "CustomQueue",
+      });
       this.clearSelectedTracks();
       this.selectedGroup.tracks.forEach((track) => {
         console.log(track);
@@ -182,9 +122,12 @@ export default {
       this.deletePlaylist(this.selectedGroup.name);
       this.deSelectGroup();
     },
-    renamePlaylist() {
+    renamePlaylist(newPlaylistName) {
       this.showPlaylistEditor = false;
-      this.renameCurrentPlaylist(this.newPlaylistName);
+      this.renameCurrentPlaylist(newPlaylistName);
+    },
+    closeWidget() {
+      this.showPlaylistEditor = false;
     },
   },
   computed: {
@@ -200,71 +143,24 @@ export default {
   },
   components: {
     TrackCard,
+    PlaylistCard,
+    EditPlaylistWidget,
   },
 };
 </script>
 
 <style lang="scss">
-.sliverBar {
-  background: linear-gradient(150deg, transparent, rgba(173, 216, 230, 0.171));
+.PlaylistsTab {
+  height: 100%;
+  position: relative;
 }
+
 .playlistCards {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 10px;
   height: 75vh;
   overflow: hidden;
   overflow-y: scroll;
-  .playlistCard {
-    cursor: pointer;
-    border-radius: 20px;
-    position: relative;
-    width: 200px;
-    height: 200px;
-    overflow: hidden;
-    .coverArt {
-      width: 100%;
-    }
-    h2 {
-      position: absolute;
-      width: 100%;
-      bottom: 0px;
-      left: 0px;
-      padding: 5px;
-      background: linear-gradient(transparent, rgba(0, 0, 0, 0.61));
-    }
-    .top4 {
-      position: absolute;
-      // width: 200px;
-      top: 0px;
-      left: 0px;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      opacity: 0.9;
-      img {
-        width: 100%;
-      }
-    }
-  }
-  .playlistCard:hover {
-    .top4 {
-      padding: 10px;
-      gap: 10px;
-      img {
-        border-radius: 20px;
-      }
-    }
-  }
-}
-.editPlForm {
-  position: absolute;
-  background: rgba(255, 255, 255, 0.096);
-  padding: 15px;
-  border-radius: 10px;
-  top: -220%;
-  right: 80px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
 }
 </style>

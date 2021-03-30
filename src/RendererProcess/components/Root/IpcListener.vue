@@ -28,7 +28,6 @@ export default {
     ipcRenderer.send("initializeApp");
     ipcRenderer.on("newTrack", (e, newTrack) => {
       this.addTrack(newTrack);
-      console.log("Adding " + newTrack.fileName);
     });
     ipcRenderer.on("processedFiles", (e, tracks) => {
       this.hideOnboard = true;
@@ -41,7 +40,6 @@ export default {
       this.setMostPlayedTracks(tracks);
     });
     ipcRenderer.on("recentlyPlayed", (e, tracks) => {
-      console.log(tracks);
       this.restoreRecentlyPlayed(tracks);
     });
     ipcRenderer.on("userPlaylists", (e, playlists) => {

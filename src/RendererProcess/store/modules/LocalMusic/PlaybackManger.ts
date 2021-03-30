@@ -8,7 +8,7 @@ import { removeDuplicates, shuffleArray } from "@/sharedUtilities";
 import { TrackType, geniusSongType } from "@/types";
 
 interface PlayingTrackPayload {
-    track: any;
+    track: TrackType;
     index: number;
 }
 const state = {
@@ -26,16 +26,18 @@ const state = {
 };
 const mutations = {
     setPlayingTrack: (state: any, payload: PlayingTrackPayload) => {
-        state.playingTrackInfo.track = payload.track;
-        state.playingTrackIndex = payload.index;
-        state.audioState.playing = true;
-        if (UIController.state.UIProperties.currentMainTab != "Recents") {
-            TabsManager.state.tabsData.recentlyPlayedTracks.unshift(payload.track);
-            TabsManager.state.tabsData.recentlyPlayedTracks = TabsManager.state.tabsData.recentlyPlayedTracks.splice(0, 20);
-            console.log(TabsManager.state.tabsData.recentlyPlayedTracks);
-            TabsManager.state.tabsData.recentlyPlayedTracks = removeDuplicates(TabsManager.state.tabsData.recentlyPlayedTracks, 'defaultTitle')
+        if (payload.track.defaultTitle) {
+            state.playingTrackInfo.track = payload.track;
+            state.playingTrackIndex = payload.index;
+            state.audioState.playing = true;
+            if (UIController.state.UIProperties.currentMainTab != "Recents") {
+                TabsManager.state.tabsData.recentlyPlayedTracks.unshift(payload.track);
+                TabsManager.state.tabsData.recentlyPlayedTracks = TabsManager.state.tabsData.recentlyPlayedTracks.splice(0, 20);
+                console.log(TabsManager.state.tabsData.recentlyPlayedTracks);
+                TabsManager.state.tabsData.recentlyPlayedTracks = removeDuplicates(TabsManager.state.tabsData.recentlyPlayedTracks, 'defaultTitle')
+            }
+            sendMessageToNode("playingTrack", payload.track);
         }
-        sendMessageToNode("playingTrack", payload.track);
     },
     setSelectedTrackToPlayNext(state: any) {
         state.customQueue.unshift(TrackSelector.state.selectedTracks[0]);

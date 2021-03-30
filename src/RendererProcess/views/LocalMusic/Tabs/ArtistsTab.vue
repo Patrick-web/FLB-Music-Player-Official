@@ -1,5 +1,5 @@
 <template>
-  <div class="tab grouperTab">
+  <div class="tab ArtistsTab groupedContentTab">
     <TrackCard v-if="0" />
     <div v-if="artists.length == 0" class="loadingArea">
       <div class="loadingIndicator"></div>
@@ -67,51 +67,38 @@
             <p class="groupedInfo_title">
               {{ selectedGroup.name }}
             </p>
-            <p class="artist">
+            <p
+              @click="goToArtist(selectedGroup.tracks.artist)"
+              class="groupedInfo_subtitle"
+            >
               {{ selectedGroup.tracks.artist }}
             </p>
           </div>
         </div>
         <div class="cardsWrapper">
-          <h1 style="margin: 10px">Albums</h1>
-          <div class="albumsGrid">
-            <div
-              v-for="album in removeDuplicateAlbums(selectedGroup.albums)"
-              :key="album.name"
-              @click="goToAlbum(album)"
-              class="groupCard"
-            >
-              <img
-                class="coverArt"
-                v-if="album.tracks[0].albumArt"
-                :src="album.tracks[0].albumArt"
-                alt=""
-              />
-              <img
-                class="coverArt"
-                v-if="!album.tracks[0].albumArt"
-                src="@/RendererProcess/assets/images/FLBDefaultCover.png"
-                alt=""
-              />
-              <p class="tracksCount">
-                {{ album.tracks.length }}
-              </p>
-              <div class="groupedCard_info">
-                <div>
-                  <p class="groupedInfo_title">
-                    {{ album.name }}
-                  </p>
-                </div>
+          <div class="grid2 gap10">
+            <div class="artistAlbums">
+              <h1>Albums</h1>
+              <div class="grid2 gap10">
+                <AlbumCard
+                  v-for="album in removeDuplicateAlbums(selectedGroup.albums)"
+                  :album="album"
+                  :hideArtist="true"
+                  :key="album.name"
+                />
               </div>
             </div>
+
+            <div class="artistTracks">
+              <h1>Tracks</h1>
+              <TrackCard
+                v-for="(track, index) in selectedGroup.tracks"
+                :key="track.path"
+                :index="index"
+                :source="track"
+              />
+            </div>
           </div>
-          <h1>Tracks</h1>
-          <TrackCard
-            v-for="(track, index) in selectedGroup.tracks"
-            :key="track.path"
-            :index="index"
-            :source="track"
-          />
         </div>
       </div>
     </transition>
@@ -122,6 +109,8 @@
 import { mapActions, mapMutations } from "vuex";
 import TrackCard from "@/RendererProcess/components/Root/Track/TrackCard.vue";
 import ArtistCard from "@/RendererProcess/components/LocalMusic/TabsPane/ArtistTab/ArtistCard.vue";
+import AlbumCard from "@/RendererProcess/components/LocalMusic/TabsPane/AlbumsTab/AlbumCard.vue";
+
 import { removeDuplicates } from "@/sharedUtilities";
 export default {
   data() {
@@ -134,7 +123,7 @@ export default {
     ...mapMutations([
       "addSelectedTrackToCustomQueue",
       "addToSelectedTracks",
-      "switchSidePaneTab",
+      "UIcontrollerSetPropertyValue",
       "clearSelectedTracks",
       "selectGroup",
       "deSelectGroup",
@@ -144,7 +133,10 @@ export default {
     ]),
     ...mapActions(["generateArtistsData"]),
     addTracksToQueue() {
-      this.switchSidePaneTab("CustomQueue");
+      this.UIcontrollerSetPropertyValue({
+        property: "currentSidePaneTab",
+        newValue: "CustomQueue",
+      });
       this.clearSelectedTracks();
       this.selectedGroup.tracks.forEach((track) => {
         this.addToSelectedTracks(track);
@@ -170,6 +162,10 @@ export default {
       this.selectGroup(album);
       this.query = "";
     },
+    goToArtist() {
+      document.querySelector("#Artists").click();
+      this.findAndGoToArtist(this.artist.name);
+    },
     removeDuplicateAlbums(arr) {
       return removeDuplicates(arr, "name");
     },
@@ -181,13 +177,11 @@ export default {
     selectedGroup() {
       return this.$store.state.TrackSelector.selectedGroup;
     },
-    renderedTracks() {
-      return this.$store.state.renderedTracks;
-    },
   },
   components: {
     ArtistCard,
     TrackCard,
+    AlbumCard,
   },
   mounted() {
     this.generateArtistsData();
@@ -196,8 +190,27 @@ export default {
 </script>
 
 <style lang="scss">
-.albumsGrid {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
+.playingPaneLoaded {
+  .cardsWrapper {
+    height: 60% !important;
+  }
+}
+.ArtistsTab {
+  .cardsWrapper {
+    overflow-y: hidden !important;
+    height: 35%;
+    .grid2 {
+      height: 100%;
+    }
+  }
+  .artistTracks,
+  .artistAlbums {
+    height: 100%;
+    overflow: hidden;
+    overflow-y: scroll;
+    h1 {
+      margin: 10px;
+    }
+  }
 }
 </style>

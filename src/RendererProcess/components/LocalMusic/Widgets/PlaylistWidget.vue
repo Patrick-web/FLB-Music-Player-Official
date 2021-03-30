@@ -14,11 +14,15 @@
         type="text"
         v-model="newPlaylistName"
       />
-      <button @click="createNewPlaylist()" v-if="newPlaylistName">
+      <button
+        class="bt_block"
+        style="margin-top: 5px"
+        @click="createNewPlaylist()"
+        v-if="newPlaylistName"
+      >
         Create
       </button>
     </div>
-    <br />
     <p
       @click="addToPlaylist(playlist.name)"
       v-for="playlist in playlists"

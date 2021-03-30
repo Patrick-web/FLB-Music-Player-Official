@@ -144,11 +144,10 @@
 
 <script>
 import TrackBar from "./TrackBar";
-import { mapActions, mapMutations, mapState } from "vuex";
+import { mapActions, mapMutations } from "vuex";
 
 export default {
   computed: {
-    ...mapState(["UIcontroller", "settings"]),
     playingTrack() {
       return this.$store.state.PlaybackManger.playingTrackInfo.track;
     },
@@ -206,9 +205,7 @@ export default {
     },
     goToArtist() {
       document.querySelector("#Artists").click();
-      this.findAndGoToArtist(
-        this.playingTrack.artist || this.playingTrack.extractedArtist
-      );
+      this.findAndGoToArtist(this.playingTrack.defaultArtist);
     },
     shuffler() {
       this.toggleShuffler();
@@ -241,7 +238,7 @@ export default {
           type: "danger",
         });
       } else {
-        this.addSelectedTracksToPlaylist("Favourites");
+        this.addSelectedTracksToPlaylist("Favorites");
         this.pushNotification({
           title: `Added to Favourites`,
           subTitle: `${this.playingTrack.defaultTitle}`,
@@ -401,12 +398,11 @@ export default {
 .playingPane {
   background: rgba(255, 255, 255, 0.083);
   backdrop-filter: blur(10px);
-  position: fixed;
-  left: 50%;
-  bottom: 2px;
   height: 100px;
-  transform: translateX(-50%);
-  width: 99vw;
+  position: fixed;
+  bottom: 0px;
+  width: 98.5vw;
+  margin-left: 10px;
   z-index: 20;
   border-radius: 20px;
   display: grid;
@@ -530,23 +526,9 @@ export default {
   height: 100%;
   background: black;
 }
-// @media (max-width: 700px) {
-//   .playingPane {
-//     #cover {
-//       width: 100px;
-//     }
-//   }
-//   .volumeRockerArea {
-//     display: none;
-//   }
-//   .editModeBtns {
-//     display: none;
-//   }
-//   .control extra_controls {
-//     display: none !important;
-//   }
-//   #CoverSearcher {
-//     display: none;
-//   }
-// }
+@media (min-height: 900px) {
+  .playingPane {
+    bottom: 10px;
+  }
+}
 </style>

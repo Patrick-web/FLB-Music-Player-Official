@@ -60,9 +60,8 @@ const mutations = {
     },
     renameCurrentPlaylist(state: any, payload: string) {
         state.tabsData.playlists.forEach((playlist: PlaylistType) => {
-            if (playlist.name === state.selectedGroup?.name) {
+            if (playlist.name === TrackSelector.state.selectedGroup?.name) {
                 playlist.name = payload;
-                state.selectedGroup.name = payload;
             }
         });
         sendMessageToNode("updatePlaylists", state.tabsData.playlists);
@@ -78,6 +77,7 @@ const mutations = {
     addSelectedTracksToPlaylist(state: any, payload: string) {
         state.tabsData.playlists.forEach((playlist: PlaylistType, index: number) => {
             if (playlist.name === payload) {
+                console.log("Adding to Playlist  " + payload);
                 TrackSelector.state.selectedTracks.forEach((track: TrackType) => {
                     state.tabsData.playlists[index].tracks.push(track);
                     state.tabsData.playlists[index].tracks = removeDuplicates(
@@ -162,7 +162,7 @@ const actions: ActionTree<any, any> = {
             state.tabsData.artists.unshift(artistInfo);
         });
         sortArrayOfObjects(state.tabsData.artists, 'name')
-        dispatch('fetchArtistsInfo')
+        //TODO: dispatch('fetchArtistsInfo')
     },
     generateAlbumsData: ({ state }) => {
         state.tabsData.albums = [];
@@ -219,7 +219,6 @@ const actions: ActionTree<any, any> = {
     fetchArtistsInfo({ state, commit }) {
         const artistsData: ArtistInfoInterface[] = []
         const artists = state.tabsData.artists.map((artist: ArtistType) => artist.name)
-        console.log(artists);
         artists.forEach((artist: string) => {
             fetch(
                 `https://apiflbdeezer.herokuapp.com/search/?category=artists&query=${artist}`,

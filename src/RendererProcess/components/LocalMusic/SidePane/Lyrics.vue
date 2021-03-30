@@ -1,9 +1,9 @@
 <template>
 	<div class="LyricsContainer">
-		<div v-if="!playingTrackLyrics" class="loadingArea center-content">
+		<div v-if="!playingTrackLyrics" class="loadingArea centerContents">
 			<div class="loadingIndicator"></div>
 		</div>
-    <div v-if="!playingTrackLyrics" class="center-content">
+    <div v-if="!playingTrackLyrics" class="centerContents">
     <p>Make Sure You Internet Connetion to Use this Feature</p>
     </div>
 		<div class="lyrics">
@@ -17,38 +17,38 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
-
 export default {
-	computed: {
-		...mapState(["playingTrackLyrics"]),
-	},
+  computed: {
+    playingTrackLyrics() {
+      return this.$store.state.PlaybackManger.playingTrackInfo.lyrics;
+    },
+  },
 };
 </script>
 
 <style lang="scss">
 .LyricsContainer {
-	position: relative;
-	overflow: hidden;
-	height: 600px;
-	overflow-y: scroll;
-	.lyrics {
-		position: absolute;
-		font-family: roboto-light;
-		text-align: left;
-		padding: 10px;
-		p {
-			background: rgba(255, 255, 255, 0.111);
-			padding: 10px;
-			width:250px;
-			margin-bottom: 10px;
-			margin-left: -10px;
-			line-height: 1.5rem;
-      pre{
-        white-space: pre-wrap; 
+  position: relative;
+  overflow: hidden;
+  height: 600px;
+  overflow-y: scroll;
+  .lyrics {
+    position: absolute;
+    font-family: roboto-light;
+    text-align: left;
+    padding: 10px;
+    p {
+      background: rgba(255, 255, 255, 0.111);
+      padding: 10px;
+      width: 250px;
+      margin-bottom: 10px;
+      margin-left: -10px;
+      line-height: 1.5rem;
+      pre {
+        white-space: pre-wrap;
       }
-		}
-		// width: 100px;
-	}
+    }
+    // width: 100px;
+  }
 }
 </style>

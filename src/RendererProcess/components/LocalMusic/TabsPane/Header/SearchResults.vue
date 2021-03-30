@@ -16,40 +16,18 @@
       />
     </div>
     <hr />
-    <div class="ArtistResults grouperTab">
+    <div @click="closeSearch" class="ArtistResults groupedContentTab">
       <h3>Artists</h3>
       <div
         v-if="searchResults.artists.length > 0"
         class="groupCards"
         style="height: 120px; overflow: hidden"
       >
-        <div
+        <ArtistCard
           v-for="artist in searchResults.artists"
           :key="artist.name"
-          @click="goToArtist(artist)"
-          class="groupCard"
-        >
-          <img
-            v-if="artist.picture"
-            class="coverArt"
-            :src="artist.picture"
-            alt=""
-          />
-          <img
-            v-if="!artist.picture"
-            class="coverArt"
-            src="@/RendererProcess/assets/images/FLBDefaultArtistPic.png"
-            alt=""
-          />
-          <p class="tracksCount">
-            {{ artist.tracks.length }}
-          </p>
-          <div class="groupedCard_info">
-            <p class="groupedInfo_title" style="text-align: center">
-              {{ artist.name }}
-            </p>
-          </div>
-        </div>
+          :artist="artist"
+        />
       </div>
     </div>
   </div>
@@ -57,6 +35,8 @@
 
 <script>
 import TrackCard from "@/RendererProcess/components/Root/Track/TrackCard.vue";
+import ArtistCard from "@/RendererProcess/components/LocalMusic/TabsPane/ArtistTab/ArtistCard.vue";
+
 import { mapMutations } from "vuex";
 
 export default {
@@ -83,6 +63,7 @@ export default {
   },
   components: {
     TrackCard,
+    ArtistCard,
   },
 };
 </script>

@@ -47,3 +47,19 @@
 .dark_theme .Settings {
 	background: rgb(17, 17, 17) !important;
 }
+.dark_theme .PlaylistCard {
+	background: rgb(14, 14, 14) !important;
+}
+.dark_theme .card {
+	background: rgb(20, 20, 20) !important;
+}
+.dark_theme.playlistOption {
+	background: rgb(10, 10, 10) !important;
+	border: 1px rgb(10, 10, 10) solid;
+}
+.dark_theme.playlistOption img {
+	filter: none !important;
+}
+.dark_theme.playlistOption p {
+	color: white !important;
+}

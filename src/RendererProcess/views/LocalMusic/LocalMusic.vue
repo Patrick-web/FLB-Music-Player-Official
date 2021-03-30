@@ -8,7 +8,7 @@
       <TagEditor v-if="showTagEditor" :targetTrack="selectedTrack" />
     </transition>
     <main>
-      <section id="centralArea_tabs">
+      <section id="tabsArea">
         <TrackContextMenu v-on:targetTrack="setTagEditorTrack" />
         <TabsPaneHeader />
         <TabSwitcher />
@@ -75,11 +75,7 @@ export default {
 <style lang="scss">
 .playingPaneLoaded {
   .LocalMusic {
-    main {
-      #centralArea_tabs {
-        height: 76.5vh;
-      }
-    }
+    margin-bottom: 110px;
   }
 }
 .light_theme {
@@ -90,24 +86,24 @@ export default {
 .LocalMusic {
   main {
     display: flex;
-    #centralArea_tabs {
+    height: 100%;
+    #tabsArea {
+      height: 97%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
       min-width: 60vw;
       max-width: 70vw;
       width: 61.5vw;
       margin-right: 10px;
-      padding: 10px;
       border-radius: 20px;
-      margin-top: 10px;
       background: rgba(255, 255, 255, 0.083);
     }
   }
 }
 @media (max-width: 900px) {
-  .SidePane {
-    display: none;
-  }
   .LocalMusic {
-    #centralArea_tabs {
+    #tabsArea {
       width: 87vw !important;
       max-width: 87vw !important;
     }

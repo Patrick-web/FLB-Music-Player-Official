@@ -1,5 +1,5 @@
 <template>
-  <div class="Folders">
+  <div class="FoldersTab groupedContentTab tab">
     <div v-if="!selectedGroup" class="folderCards">
       <div
         class="folderCard"
@@ -81,7 +81,7 @@
             <p class="groupedInfo_title">
               {{ selectedGroup.name }}
             </p>
-            <p>{{ selectedGroup.path }}</p>
+            <p class="groupedInfo_subtitle">{{ selectedGroup.path }}</p>
           </div>
         </div>
         <div class="cardsWrapper">
@@ -98,7 +98,7 @@
 </template>
 
 <script>
-import { mapActions, mapMutations, mapState } from "vuex";
+import { mapActions, mapMutations } from "vuex";
 import TrackCard from "@/RendererProcess/components/Root/Track/TrackCard.vue";
 
 export default {
@@ -111,7 +111,7 @@ export default {
     ...mapMutations([
       "addSelectedTrackToCustomQueue",
       "addToSelectedTracks",
-      "switchSidePaneTab",
+      "UIcontrollerSetPropertyValue",
       "clearSelectedTracks",
       "selectGroup",
       "deSelectGroup",
@@ -119,7 +119,10 @@ export default {
     ]),
     ...mapActions(["generateFoldersData"]),
     addTracksToQueue() {
-      this.switchSidePaneTab("CustomQueue");
+      this.UIcontrollerSetPropertyValue({
+        property: "currentSidePaneTab",
+        newValue: "CustomQueue",
+      });
       this.clearSelectedTracks();
       this.selectedGroup.tracks.forEach((track) => {
         console.log(track);
@@ -154,11 +157,14 @@ export default {
 </script>
 
 <style lang="scss">
+.FoldersTab {
+  height: 100%;
+}
 .folderCards {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
   gap: 10px;
-  height: 63vh;
+  height: 100%;
   overflow: hidden;
   overflow-y: scroll;
   .folderCard {

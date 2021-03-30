@@ -3,11 +3,11 @@
     <p class="modalClose" @click="UIcontrollerToggleProperty('showTagEditor')">
       <img src="@/RendererProcess/assets/images/x.svg" alt="" />
     </p>
-    <div class="center-content">
+    <div class="centerContents">
       <h1 class="modalTitle">Tag Editor</h1>
     </div>
     <div class="trackTags">
-      <div class="center-content">
+      <div class="centerContents">
         <img id="coverArtTag" :src="targetTrack.albumArt" alt="" />
         <p style="margin-top: 10px" v-if="!targetTrack.albumArt">
           No Album Art
@@ -70,7 +70,7 @@
       </div>
       <div v-if="searchAlbumArt" class="possibleCovers">
         <p>Album Art Search</p>
-        <div class="center-content">
+        <div class="centerContents">
           <input
             type="text"
             v-model="query"
@@ -108,7 +108,7 @@
 
 <script>
 import { ipcRenderer } from "electron";
-import { mapMutations, mapState } from "vuex";
+import { mapMutations } from "vuex";
 import gis from "g-i-s";
 export default {
   data() {

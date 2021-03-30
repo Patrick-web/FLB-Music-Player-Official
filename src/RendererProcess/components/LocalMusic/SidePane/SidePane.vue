@@ -1,22 +1,43 @@
 <template>
   <div class="SidePane">
-    <div class="tabber">
+    <div
+      v-if="!playingTrack"
+      style="width: 19.5vw; height: 100%"
+      class="centerContents"
+    >
+      <img
+        style="width: 19vw; margin: auto"
+        src="@/RendererProcess/assets/images/empty_Illustration.svg"
+        alt=""
+      />
+      <pre
+        style="
+          text-align: center;
+          font-family: roboto-thin;
+          transform: translateY(-180px);
+        "
+      >
+        This could be you,
+        if you started playing something
+      </pre>
+    </div>
+    <div v-if="playingTrack" class="tabber">
       <div
-        @click.stop="switchSidePaneTab('TrackInfo')"
+        @click.stop="switchAidePaneActiveTab('TrackInfo')"
         :class="[sidePaneActiveTab == 'TrackInfo' ? 'activeSidePaneTab' : '']"
         title="Track Info"
       >
         <img src="@/RendererProcess/assets/images/music_note.svg" alt="" />
       </div>
       <div
-        @click.stop="switchSidePaneTab('CustomQueue')"
+        @click.stop="switchAidePaneActiveTab('CustomQueue')"
         :class="[sidePaneActiveTab == 'CustomQueue' ? 'activeSidePaneTab' : '']"
         title="Queued Tracks"
       >
         <img src="@/RendererProcess/assets/images/queue-music.svg" alt="" />
       </div>
       <div
-        @click.stop="switchSidePaneTab('Lyrics')"
+        @click.stop="switchAidePaneActiveTab('Lyrics')"
         :class="[sidePaneActiveTab == 'Lyrics' ? 'activeSidePaneTab' : '']"
         title="Lyrics"
         class="lyricsTabIcon"
@@ -55,7 +76,7 @@ export default {
   },
   methods: {
     ...mapMutations(["UIcontrollerSetPropertyValue"]),
-    switchSidePaneTab(tab) {
+    switchAidePaneActiveTab(tab) {
       this.UIcontrollerSetPropertyValue({
         property: "currentSidePaneTab",
         newValue: tab,
@@ -75,27 +96,20 @@ export default {
 </script>
 
 <style lang="scss">
-.playingPaneLoaded {
-  .SidePane {
-    height: 76.5vh;
-  }
-}
 .light_theme {
   .activeSidePaneTab {
     filter: invert(1);
   }
 }
 .SidePane {
-  height: 91vh;
   position: relative;
   padding-bottom: 110px;
   overflow: hidden;
   background: rgba(255, 255, 255, 0.083);
-  margin-top: 10px;
   padding: 10px;
   border-radius: 20px;
   max-width: 19.5vw;
-  min-width: 19.5vw;
+  min-width: 17vw;
   .tabber {
     margin: auto;
     display: grid;
@@ -107,6 +121,7 @@ export default {
     position: sticky;
     z-index: 10;
     overflow: hidden;
+    margin-bottom: 10px;
     div {
       padding: 5px;
       display: flex;
@@ -129,14 +144,10 @@ export default {
       background: linear-gradient(transparent, var(--accentColorLight));
     }
   }
-  #visualizerArea {
-    position: absolute;
-    top: 48%;
-    right: 0;
-    width: 100%;
-    z-index: -1;
-    opacity: 0.8;
-    transform: rotate(90deg) translateY(-50%);
+  @media (max-width: 900px) {
+    .SidePane {
+      display: none;
+    }
   }
 }
 </style>

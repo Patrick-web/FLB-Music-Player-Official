@@ -176,7 +176,7 @@ export default {
     .elipse {
       border-radius: 50%;
       height: 15px;
-      width: 15px;
+      min-width: 15px;
       background: var(--accentColor);
       box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.527);
       transform-origin: center;

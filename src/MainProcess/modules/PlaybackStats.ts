@@ -17,7 +17,7 @@ export class PlaybackStats {
 				this.playedFiles = data.playedFiles;
 				this.tracksStats = data.tracksStats;
 			} catch (error) {
-				console.log("An error occured while reading playbackStats file");
+				console.log("An error occurred while reading playbackStats file");
 			}
 		}
 	}
@@ -26,8 +26,6 @@ export class PlaybackStats {
 		console.log("Adding New File for stats");
 		this.playedFiles.unshift(file);
 		this.playedFiles = this.playedFiles.slice(0, 100);
-		console.log(this.playedFiles.map(file => file.defaultTitle));
-		sortArrayOfObjects(this.playedFiles, "fileLocation");
 		this.generateMostPlayedTracks();
 	}
 

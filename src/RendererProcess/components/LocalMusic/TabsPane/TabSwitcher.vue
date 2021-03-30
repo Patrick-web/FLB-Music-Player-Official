@@ -93,30 +93,25 @@
 }
 .Tabswitcher {
   display: flex;
+  gap: 10px;
   justify-content: center;
   position: relative;
-  overflow: hidden;
   z-index: 10;
-  padding: 10px;
+  margin-bottom: 10px;
+  margin-top: 5px;
   p {
     background: rgba(255, 255, 255, 0.083);
-    margin-right: 5px;
-    margin-left: 5px;
     text-align: center;
     position: relative;
     z-index: 2;
-    padding: 3px;
-    padding-top: 5px;
+    padding: 5px;
     color: white;
     border-radius: 20px;
     min-width: 70px;
     cursor: pointer;
     transition: 0.2s ease;
     font-size: 0.9rem;
-    border-bottom: 3px solid rgba(0, 132, 255, 0);
-    a {
-      font-family: roboto-light;
-    }
+    font-family: roboto-light;
   }
   p:hover {
     background: rgba(255, 255, 255, 0.144);

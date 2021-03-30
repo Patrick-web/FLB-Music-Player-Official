@@ -46,9 +46,7 @@ export default {
     ...mapActions(["getLyrics"]),
     showOptions(e) {
       e.preventDefault();
-      document
-        .querySelector("#centralArea_tabs")
-        .classList.remove("multiSelectMode");
+      document.querySelector("#tabsArea").classList.remove("multiSelectMode");
       const cordinates = {
         x: e.clientX + 5,
         y: e.clientY,
@@ -68,7 +66,6 @@ export default {
       if (document.querySelector("audio")) {
         document.querySelector("audio").muted = false;
       }
-      const track = e.currentTarget;
       this.setPlayingTrack({ track: this.source, index: this.index });
       this.getLyrics(this.source);
     },

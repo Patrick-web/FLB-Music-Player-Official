@@ -44,7 +44,7 @@
       <div class="stats_title">
         <h1>Daily Mashups</h1>
       </div>
-      <div class="statsWrapper">
+      <div class="mixesWrapper">
         <MixCard
           v-for="mix in mixes"
           :key="mix.name"
@@ -61,13 +61,12 @@
 </template>
 
 <script>
-import { mapMutations, mapActions, mapState } from "vuex";
+import { mapMutations, mapActions } from "vuex";
 import { MixGenerator } from "@/RendererProcess/utilities/MixGenerator";
 import MixCard from "@/RendererProcess/components/LocalMusic/TabsPane/HomeTab/MixCard.vue";
 export default {
   components: { MixCard },
   computed: {
-    ...mapState(["TabsManager"]),
     tabsData() {
       return this.$store.state.TabsManager.tabsData;
     },
@@ -93,13 +92,14 @@ export default {
     },
   },
   mounted() {
-    const mixGen = new MixGenerator(
-      this.mostPlayedTracks,
-      this.tabsData.addedTracks,
-      this.tabsData.recentlyPlayedTracks
-    );
-    this.mixes = mixGen.allMixes;
-    console.log(this.mixes);
+    setTimeout(() => {
+      const mixGen = new MixGenerator(
+        this.mostPlayedTracks,
+        this.tabsData.addedTracks,
+        this.tabsData.recentlyPlayedTracks
+      );
+      this.mixes = mixGen.allMixes;
+    }, 0);
   },
 };
 </script>
@@ -116,11 +116,17 @@ export default {
   }
 }
 .home {
+  height: 100%;
+  overflow: hidden;
+  overflow-y: scroll;
+  padding-right: 10px;
   .stats {
     margin-top: 10px;
     margin-bottom: 10px;
     .stats_title {
-      padding: 5px;
+      // text-align: center;
+      margin-left: 5px;
+      margin-bottom: 10px;
     }
     h1 {
       font-size: 1.2rem;
@@ -174,72 +180,6 @@ export default {
       );
       border-top-left-radius: 30px;
       border-bottom-right-radius: 30px;
-    }
-  }
-  .mostPlayed {
-    display: initial;
-    position: relative;
-    height: 90px;
-    overflow: hidden;
-    .statTrack {
-      background: rgba(255, 255, 255, 0.068);
-      border-radius: 10px;
-      padding: 10px;
-      width: 200px;
-      min-width: 200px;
-      cursor: pointer;
-      h2 {
-        margin-bottom: 10px;
-        font-size: 1rem;
-      }
-      p {
-        font-size: 1rem;
-        font-family: roboto-light;
-      }
-      h2,
-      p {
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        overflow: hidden;
-      }
-    }
-    .statTrack:hover {
-      background: rgba(255, 255, 255, 0.116);
-    }
-    #slideWrapper {
-      position: absolute;
-      left: 0;
-      top: 0px;
-      display: flex;
-      align-items: center;
-      gap: 15px;
-      width: 200%;
-    }
-    .slideBt {
-      opacity: 0;
-    }
-    #slideWrapper:hover {
-      .slideBt {
-        opacity: 1;
-      }
-    }
-    #slideBackwards {
-      position: absolute;
-      top: 10px;
-      left: 10px;
-      z-index: 2;
-    }
-    #slideForwards {
-      z-index: 2;
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      transform: rotate(180deg);
-    }
-  }
-  .mostPlayed:hover {
-    .slideBt {
-      opacity: 1;
     }
   }
 }
