@@ -3529,6 +3529,18 @@
   -webkit-animation-iteration-count: infinite;
   animation-iteration-count: infinite;
 }
+.animated.repeat_2 {
+  -webkit-animation-iteration-count: 2;
+  animation-iteration-count: 2;
+}
+.animated.repeat_3 {
+  -webkit-animation-iteration-count: 3;
+  animation-iteration-count: 3;
+}
+.animated.repeat_4 {
+  -webkit-animation-iteration-count: 4;
+  animation-iteration-count: 4;
+}
 
 .animated.delay-1s {
   -webkit-animation-delay: 1s;

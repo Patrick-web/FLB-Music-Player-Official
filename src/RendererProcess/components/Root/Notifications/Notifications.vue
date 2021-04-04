@@ -5,8 +5,8 @@
       leave-active-class="animated fadeOutUp extrafaster"
     >
       <BaseNotification
-        :key="index"
-        v-for="(notification, index) in notifications"
+        :key="notification.title"
+        v-for="notification in notifications"
         :notification="notification"
       />
     </transition-group>

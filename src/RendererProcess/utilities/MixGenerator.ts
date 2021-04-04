@@ -1,4 +1,4 @@
-import { shuffleArray, sortArrayOfObjects } from "@/sharedUtilities";
+import { removeDuplicates, shuffleArray, sortArrayOfObjects } from "@/sharedUtilities";
 import { TrackType, mixTyping } from "@/types";
 
 export class MixGenerator {
@@ -20,7 +20,7 @@ export class MixGenerator {
             const mix: mixTyping = {
                 name: "Tracks you've fallen for 💘💘",
                 info: `Your Most Played tracks like 👉 💖${this.mostPlayedTracks[0].defaultTitle}💖  and  💖${this.mostPlayedTracks[1].defaultTitle}💖`,
-                tracks: this.mostPlayedTracks
+                tracks: removeDuplicates(this.mostPlayedTracks, 'defaultTitle')
             }
             this.mixes.push(mix)
         }
@@ -50,32 +50,35 @@ export class MixGenerator {
             }
         })
         forgottenTracks = forgottenTracks.splice(0, 10)
-        console.log(forgottenTracks);
-        const mix: mixTyping = {
-            name: 'Tracks you might have forgotten 🤯',
-            info: `Remember 👉 ${forgottenTracks[0].defaultTitle}, ${forgottenTracks[1].defaultTitle} and others...`,
-            tracks: forgottenTracks
+        if (forgottenTracks.length > 0) {
+            const mix: mixTyping = {
+                name: 'Tracks you might have forgotten 🤯',
+                info: `Remember 👉 ${forgottenTracks[0].defaultTitle}, ${forgottenTracks[1].defaultTitle} and others...`,
+                tracks: forgottenTracks
+            }
+            this.mixes.push(mix)
         }
-        this.mixes.push(mix)
     }
     recentlyAddedTracks() {
         const allTracksCopy = [...this.allTracks]
         sortArrayOfObjects(allTracksCopy, 'dateAdded')
         allTracksCopy.reverse()
         const topTenRecentlyAddedTracks = allTracksCopy.splice(0, 10)
-        const mix: mixTyping = {
-            name: 'Fresh and Juicy 🧃🧃',
-            info: `Newly added tracks like 👉 ${topTenRecentlyAddedTracks[0].defaultTitle}, ${topTenRecentlyAddedTracks[1].defaultTitle} and others...`,
-            tracks: topTenRecentlyAddedTracks
+        if (topTenRecentlyAddedTracks.length > 0) {
+            const mix: mixTyping = {
+                name: 'Fresh and Juicy 🧃🧃',
+                info: `Newly added tracks like 👉 ${topTenRecentlyAddedTracks[0].defaultTitle}, ${topTenRecentlyAddedTracks[1].defaultTitle} and others...`,
+                tracks: removeDuplicates(topTenRecentlyAddedTracks, 'defaultTitle')
+            }
+            this.mixes.push(mix)
         }
-        this.mixes.push(mix)
     }
     clearDataToSaveRam() {
         setTimeout(() => {
             this.mostPlayedTracks = []
             this.recentlyPlayedTracks = []
             this.allTracks = []
-        }, 1000);
+        }, 2000);
     }
     public get allMixes(): mixTyping[] {
         this.clearDataToSaveRam()

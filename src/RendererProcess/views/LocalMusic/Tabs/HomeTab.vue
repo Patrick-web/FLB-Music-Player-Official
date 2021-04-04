@@ -86,7 +86,6 @@ export default {
       "clearSelectedTracks",
       "overWriteCustomQueue",
     ]),
-    ...mapActions(["getLyrics"]),
     routeTo(tab) {
       if (tab !== this.$route.path) this.$router.push(tab);
     },
@@ -99,7 +98,7 @@ export default {
         this.tabsData.recentlyPlayedTracks
       );
       this.mixes = mixGen.allMixes;
-    }, 0);
+    }, 100);
   },
 };
 </script>

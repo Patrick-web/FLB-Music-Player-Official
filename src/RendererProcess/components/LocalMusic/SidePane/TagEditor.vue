@@ -98,11 +98,15 @@
       </div>
     </div>
     <div class="animated faster">
-      <button @click="saveChanges" id="saveChanges">
+      <button
+        @click="saveChanges"
+        class="bt_block bt_active"
+        style="margin-left: 5px"
+      >
         <h3>Save Changes</h3>
       </button>
     </div>
-    <p style="margin: 10px">:: {{ targetTrack.fileName }}</p>
+    <p style="margin: 10px">File Name : {{ targetTrack.fileName }}</p>
   </div>
 </template>
 
@@ -209,6 +213,7 @@ export default {
   background-color: rgba(0, 0, 0, 0.39);
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.315);
+  border-radius: 20px;
   box-shadow: 0px 0px 50px black;
   padding: 10px;
   top: 40px;

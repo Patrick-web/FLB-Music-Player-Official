@@ -25,6 +25,9 @@
 
 	/* font-family: roboto; */
 }
+body {
+	background: black;
+}
 .tab {
 	overflow: hidden;
 }
@@ -34,21 +37,7 @@ img {
 a {
 	text-decoration: none;
 }
-.fakeLightMode {
-	filter: invert(1) hue-rotate(180deg);
-}
-.fakeLightMode .TrackCard img {
-	filter: invert(1) hue-rotate(180deg);
-}
-.fakeLightMode #cover {
-	filter: invert(1) hue-rotate(180deg);
-}
-.fakeLightMode .CoverSearcher img {
-	filter: invert(1) hue-rotate(180deg);
-}
-.visualizerOff #visualizerArea {
-	display: none;
-}
+
 .loading div {
 	cursor: progress;
 }
@@ -145,7 +134,6 @@ pre {
 	font-family: roboto-thin;
 }
 input {
-	all: initial;
 	background: rgba(0, 0, 0, 0.158);
 	width: 100%;
 	padding: 5px;
@@ -282,23 +270,30 @@ input::placeholder {
 	gap: 5px;
 }
 .gap10 {
-	gap: 5px;
+	gap: 10px;
+}
+.gap20 {
+	gap: 20px;
+}
+.grid_auto {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
 }
 .grid2 {
 	display: grid;
-	grid-template-columns: 1fr 1fr;
+	grid-template-columns: repeat(2, 1fr);
 	row-gap: 10px;
 	align-items: center;
 	justify-content: center;
 }
 .grid3 {
 	display: grid;
-	grid-template-columns: 1fr 1fr 1fr;
+	grid-template-columns: repeat(3, 1fr);
 	row-gap: 10px;
 }
 .grid4 {
 	display: grid;
-	grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+	grid-template-columns: repeat(4, 1fr);
 	row-gap: 10px;
 }
 .grid4_30 {

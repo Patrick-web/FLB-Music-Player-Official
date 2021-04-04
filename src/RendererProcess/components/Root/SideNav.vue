@@ -34,8 +34,8 @@
           <p v-if="!isCollapsed">Deezer</p>
         </router-link>
       </div>
-      <div class="sideNav-group" @click="switchTo($event, 'deezer')">
-        <router-link to="/deezer">
+      <div class="sideNav-group">
+        <a>
           <span v-if="!isCollapsed">0%</span>
           <img
             title="Spotify"
@@ -44,7 +44,7 @@
             alt
           />
           <p v-if="!isCollapsed">Spotify</p>
-        </router-link>
+        </a>
       </div>
       <div class="sideNav-group">
         <a>
@@ -124,7 +124,6 @@ export default {
         .querySelector(".active-sideNav-group")
         .classList.remove("active-sideNav-group");
       e.currentTarget.classList.add("active-sideNav-group");
-      console.log(target);
     },
     toggleSideNavEpansion() {
       this.isCollapsed = !this.isCollapsed;

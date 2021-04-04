@@ -22,7 +22,7 @@
         <div class="sliverBar">
           <img
             class="coverArt"
-            src="@/RendererProcess/assets/images/plImages/teal.png"
+            src="@/RendererProcess/assets/images/FLBDefaultCover.png"
             alt=""
           />
           <div class="groupedCard_info">
@@ -54,7 +54,7 @@
               <p>Edit Playlist</p>
             </button>
             <button
-              v-if="selectedGroup.name !== 'Favourites'"
+              v-if="selectedGroup.name !== 'Favorites'"
               @click="deleteCurrentPlaylist"
               class="btWithIcon dangerBt"
             >
@@ -110,10 +110,8 @@ export default {
       });
       this.clearSelectedTracks();
       this.selectedGroup.tracks.forEach((track) => {
-        console.log(track);
         this.addToSelectedTracks(track);
       });
-      console.log(this.selectedTracks);
       this.addSelectedTrackToCustomQueue();
     },
     deleteCurrentPlaylist() {
@@ -155,9 +153,9 @@ export default {
 
 .playlistCards {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
-  gap: 10px;
-  height: 75vh;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 30px 0px;
+  height: 100%;
   overflow: hidden;
   overflow-y: scroll;
 }

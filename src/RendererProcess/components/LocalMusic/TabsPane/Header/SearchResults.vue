@@ -20,8 +20,8 @@
       <h3>Artists</h3>
       <div
         v-if="searchResults.artists.length > 0"
-        class="groupCards"
-        style="height: 120px; overflow: hidden"
+        class="grid_auto"
+        style="height: 150px; overflow: hidden; overflow-y: scroll"
       >
         <ArtistCard
           v-for="artist in searchResults.artists"
@@ -99,18 +99,7 @@ export default {
     margin-bottom: 5px;
   }
   .groupCard {
-    width: 90px;
-    img {
-      width: 50px;
-    }
-    .groupedCard_info {
-      .groupedInfo_title {
-        max-width: 90px;
-      }
-      .groupedInfo_subtitle {
-        max-width: 90px;
-      }
-    }
+    transform: scale(0.8) translateY(-25px);
   }
 }
 </style>

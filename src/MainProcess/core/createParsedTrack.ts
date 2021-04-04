@@ -37,7 +37,6 @@ export function createParsedTrack(
         NodeID3.read(fileLocation, async (err: any, tags: any) => {
             if (tags && tags.image && tags.image.imageBuffer) {
                 tags.image.mime = tags.image.mime.replace(/image\//g, '')
-                console.log(tags.image.mime);
                 const albumArtPath = path.join(
                     paths.albumArtFolder,
                     `${removeMIME(track.fileName)}.${tags.image.mime}`
@@ -65,7 +64,6 @@ export function createParsedTrack(
                 track.dateAdded = stats.ctimeMs;
             });
 
-            win.webContents.send("newTrack", track);
             fileTracker.addFile(track);
             resolve(track);
         });

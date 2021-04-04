@@ -102,7 +102,6 @@ export default {
     const progressBar = document.querySelector(".seekBar");
     const seekProgress = document.querySelector(".seekProgress");
     const audio = document.querySelector("audio");
-    console.log(audio.currentTime);
     document.querySelector("audio").addEventListener("timeupdate", (e) => {
       this.currentTime = this.timeFormatter(audio.currentTime);
       this.duration = this.timeFormatter(audio.duration);

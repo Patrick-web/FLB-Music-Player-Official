@@ -75,7 +75,6 @@ export default {
             position: "top-center",
             title: `Loading the preview`,
           });
-          console.log(notify);
         })
         .catch((error) => {
           document.body.classList.remove("loading");

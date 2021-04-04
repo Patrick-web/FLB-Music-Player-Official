@@ -42,7 +42,11 @@
         title="Lyrics"
         class="lyricsTabIcon"
       >
-        <img src="@/RendererProcess/assets/images/lyrics.svg" alt="" />
+        <img
+          :class="[playingTrackLyrics ? 'tada' : '', 'animated', 'repeat_3']"
+          src="@/RendererProcess/assets/images/lyrics.svg"
+          alt=""
+        />
       </div>
     </div>
     <TrackInfo
@@ -72,6 +76,14 @@ export default {
     },
     sidePaneActiveTab() {
       return this.$store.state.UIController.UIProperties.currentSidePaneTab;
+    },
+    playingTrackLyrics() {
+      return (
+        this.$store.state.PlaybackManger.allLyrics.filter(
+          (trackLyricInfo) =>
+            trackLyricInfo.trackName == this.playingTrack.defaultTitle
+        )[0]?.lyrics || false
+      );
     },
   },
   methods: {

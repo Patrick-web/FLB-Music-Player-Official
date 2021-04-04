@@ -1,10 +1,10 @@
 <template>
   <div
     @click="goToArtist()"
-    :class="[!artist.picture ? 'groupCard_noPicture' : '', 'groupCard']"
+    :class="[!artistPicture ? 'groupCard_noPicture' : '', 'groupCard']"
   >
-    <img v-if="artist.picture" class="coverArt" :src="artist.picture" />
-    <div class="letterDiv">
+    <img v-if="artistPicture" class="coverArt" :src="artistPicture" />
+    <div v-if="!artistPicture" class="letterDiv">
       <h1 :style="randomColorGenerator">
         {{ artist.name.charAt(0) }}
       </h1>
@@ -29,19 +29,19 @@ import { shuffleArray } from "@/sharedUtilities";
 export default {
   computed: {
     randomColorGenerator() {
-      const colors = [
-        "cyan",
-        "lightBlue",
-        "rgb(0, 102, 255)",
-        "rgb(0, 153, 255)",
-        "rgb(0, 204, 255)",
-        "rgb(0, 255, 221)",
-      ];
+      const colors = ["#3182FF", "#3074FF", "#0066FF"];
       const shuffledColors = shuffleArray(colors);
       const styleObject = {
         color: shuffledColors[0],
       };
       return styleObject;
+    },
+    artistPicture() {
+      return (
+        this.$store.state.TabsManager.downloadedArtistPictures.filter(
+          (artistPicInfo) => artistPicInfo.name == this.artist.name
+        )[0]?.pathToPicture || false
+      );
     },
   },
   methods: {

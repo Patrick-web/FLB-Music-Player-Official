@@ -22,6 +22,7 @@ import { Settings } from "./MainProcess/modules/Settings";
 import { createParsedTrack } from "./MainProcess/core/createParsedTrack";
 import { deleteFile, sendNativeNotification, downloadFile, isValidFileType } from "./MainProcess/utilities";
 import { TrackType, SettingsType, FolderType, FolderInfoType, TagChangesType } from "@/types";
+import { downloadArtistPicture } from "./MainProcess/services";
 
 
 let appIsFocused = true;
@@ -135,9 +136,10 @@ ipcMain.on("getFirstTracks", async () => {
 });
 ipcMain.on("initializeApp", async () => {
     if (process.argv[1] && isValidFileType(process.argv[1])) {
-        await createParsedTrack(
+        const newTrack = await createParsedTrack(
             process.argv[1],
         );
+        win.webContents.send("newTrack", newTrack);
         win.webContents.send("playFirstTrack");
     }
     const processedFiles = fileTracker.getTracks;
@@ -213,7 +215,8 @@ ipcMain.on("processDroppedFiles", (e, filePaths) => {
         } else {
             filePaths.forEach(async (pathToFile) => {
                 if (pathToFile.match(/\.mp3|\.webm|\.m4a|\.ogg/gi)) {
-                    await createParsedTrack(pathToFile);
+                    const newTrack = await createParsedTrack(pathToFile);
+                    win.webContents.send("newTrack", newTrack);
                     fileTracker.saveChanges();
                 }
             });
@@ -234,8 +237,11 @@ ipcMain.on("updateTags", async (e, payload) => {
         payload.tagChanges
     );
     if (isSuccess) {
-        createParsedTrack(payload.track.fileLocation); console.log("Track Tags Updated");
-        fileTracker.updateFile(payload);
+        const updatedTrack = await createParsedTrack(payload.track.fileLocation);
+        win.webContents.send('updatedTrack', updatedTrack)
+        fileTracker.updateFile(updatedTrack);
+        console.log("Updated Track 👇");
+        console.table(updatedTrack);
     }
 });
 ipcMain.on("requestVersion", () =>
@@ -262,6 +268,11 @@ ipcMain.on("closeWindow", () => {
     saveAppData()
     win.close();
 });
+
+ipcMain.on('downloadArtistPicture', (e, payload) => {
+    console.log("Downloading artist pic...");
+    downloadArtistPicture(payload)
+})
 
 ipcMain.on("importCoverArt", async () => {
     let file = dialog.showOpenDialog({
@@ -387,13 +398,14 @@ function refreshTracks() {
     }
 }
 
-async function writeTags(path: string, tagChanges: TagChangesType) {
+
+async function writeTags(filePath: string, tagChanges: TagChangesType) {
     if (tagChanges.APIC && tagChanges.APIC.includes("https:")) {
-        tagChanges.APIC = await downloadFile(tagChanges.APIC);
+        tagChanges.APIC = await downloadFile(tagChanges.APIC, paths.albumArtFolder, tagChanges.title || path.parse(filePath).name);
     }
     tagChanges.APIC.replace("file:///", "");
     tagChanges.APIC = decodeURI(tagChanges.APIC);
-    let isSuccessFull = NodeID3.update(tagChanges, path);
+    let isSuccessFull = NodeID3.update(tagChanges, filePath);
     if (isSuccessFull) {
         win.webContents.send("normalMsg", "Tags Successfully changed");
     } else {

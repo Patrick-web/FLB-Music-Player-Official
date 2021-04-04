@@ -1,6 +1,6 @@
 <template>
   <div class="FoldersTab groupedContentTab tab">
-    <div v-if="!selectedGroup" class="folderCards">
+    <div v-if="!selectedGroup" class="folderCards grid_auto">
       <div
         class="folderCard"
         v-for="folder in folders"
@@ -125,14 +125,11 @@ export default {
       });
       this.clearSelectedTracks();
       this.selectedGroup.tracks.forEach((track) => {
-        console.log(track);
         this.addToSelectedTracks(track);
       });
-      console.log(this.selectedTracks);
       this.addSelectedTrackToCustomQueue();
     },
     playAll() {
-      console.log(this.renderedTracks[0]);
       this.setPlayingTrack(this.renderedTracks[0]);
     },
   },
@@ -161,8 +158,6 @@ export default {
   height: 100%;
 }
 .folderCards {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
   gap: 10px;
   height: 100%;
   overflow: hidden;

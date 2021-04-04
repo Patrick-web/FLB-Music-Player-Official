@@ -1,6 +1,6 @@
 import { sendMessageToNode } from "@/RendererProcess/utilities";
 import { removeDuplicates, sortArrayOfObjects } from "@/sharedUtilities";
-import { TrackType, ArtistType, AlbumType, PlaylistType, FolderParsedType, FolderInfoType } from "@/types";
+import { TrackType, ArtistType, AlbumType, PlaylistType, FolderParsedType, FolderInfoType, ArtistInfoInterface } from "@/types";
 import { ActionTree } from "vuex";
 import TrackSelector from "./TrackSelector";
 
@@ -13,9 +13,7 @@ interface TabsManagerStateInterface {
         playlists: Array<PlaylistType>;
         folders: Array<FolderParsedType>;
     };
-}
-interface ArtistInfoInterface {
-    name: string; picture: any; otherTracks: any;
+    downloadedArtistPictures: Array<ArtistInfoInterface>;
 }
 const state: TabsManagerStateInterface = {
     tabsData: {
@@ -31,9 +29,10 @@ const state: TabsManagerStateInterface = {
         ],
         folders: [],
     },
+    downloadedArtistPictures: []
 };
 const mutations = {
-    addTrack(state: any, payload: TrackType) {
+    addTrack(state: TabsManagerStateInterface, payload: TrackType) {
         const trackAlreadyAdded = state.tabsData.addedTracks.some(
             (track: TrackType) => track.fileLocation == payload.fileLocation
         );
@@ -41,16 +40,24 @@ const mutations = {
             state.tabsData.addedTracks.push(payload);
         }
     },
-    restoreTracks(state: any, payload: Array<TrackType>) {
+    updateTrack(state: TabsManagerStateInterface, payload: TrackType) {
+        const indexOfUpdatedTrack = state.tabsData.addedTracks.findIndex((track => track.fileLocation == payload.fileLocation))
+        state.tabsData.addedTracks[indexOfUpdatedTrack] = payload
+    },
+    deleteTrack(state: TabsManagerStateInterface, payload: string) {
+        const indexOfDeletedTrack = state.tabsData.addedTracks.findIndex((track => track.fileLocation == payload))
+        state.tabsData.addedTracks.splice(indexOfDeletedTrack, 1)
+    },
+    restoreTracks(state: TabsManagerStateInterface, payload: Array<TrackType>) {
         state.tabsData.addedTracks = payload;
     },
-    restoreRecentlyPlayed(state: any, payload: Array<TrackType>) {
+    restoreRecentlyPlayed(state: TabsManagerStateInterface, payload: Array<TrackType>) {
         state.tabsData.recentlyPlayedTracks = payload;
     },
-    restorePlaylists(state: any, payload: Array<PlaylistType>) {
+    restorePlaylists(state: TabsManagerStateInterface, payload: Array<PlaylistType>) {
         state.tabsData.playlists = payload;
     },
-    createPlaylist(state: any, payload: string) {
+    createPlaylist(state: TabsManagerStateInterface, payload: string) {
         const newPlaylist: PlaylistType = {
             name: payload,
             tracks: [],
@@ -58,7 +65,7 @@ const mutations = {
         state.tabsData.playlists.push(newPlaylist);
         sendMessageToNode("updatePlaylists", state.tabsData.playlists);
     },
-    renameCurrentPlaylist(state: any, payload: string) {
+    renameCurrentPlaylist(state: TabsManagerStateInterface, payload: string) {
         state.tabsData.playlists.forEach((playlist: PlaylistType) => {
             if (playlist.name === TrackSelector.state.selectedGroup?.name) {
                 playlist.name = payload;
@@ -66,7 +73,7 @@ const mutations = {
         });
         sendMessageToNode("updatePlaylists", state.tabsData.playlists);
     },
-    deletePlaylist(state: any, payload: string) {
+    deletePlaylist(state: TabsManagerStateInterface, payload: string) {
         state.tabsData.playlists.forEach((playlist: PlaylistType, index: number) => {
             if (playlist.name === payload) {
                 state.tabsData.playlists.splice(index, 1);
@@ -74,10 +81,15 @@ const mutations = {
         });
         sendMessageToNode("updatePlaylists", state.tabsData.playlists);
     },
-    addSelectedTracksToPlaylist(state: any, payload: string) {
+    addSelectedTracksToPlaylist(state: TabsManagerStateInterface, payload: string) {
+        if (payload == 'Favorites') {
+            TrackSelector.state.selectedTracks.forEach((track: TrackType) => {
+                state.tabsData.playlists[0].tracks.push(track);
+            })
+            return
+        }
         state.tabsData.playlists.forEach((playlist: PlaylistType, index: number) => {
             if (playlist.name === payload) {
-                console.log("Adding to Playlist  " + payload);
                 TrackSelector.state.selectedTracks.forEach((track: TrackType) => {
                     state.tabsData.playlists[index].tracks.push(track);
                     state.tabsData.playlists[index].tracks = removeDuplicates(
@@ -89,7 +101,7 @@ const mutations = {
         });
         sendMessageToNode("updatePlaylists", state.tabsData.playlists);
     },
-    deleteSelectedTrackFromPlaylist(state: any, payload?: TrackType) {
+    deleteSelectedTrackFromPlaylist(state: TabsManagerStateInterface, payload?: TrackType) {
         if (payload) {
             state.tabsData.playlists[0].tracks.forEach((track: TrackType, tindex: number) => {
                 if (payload.fileLocation === track.fileLocation) {
@@ -112,16 +124,18 @@ const mutations = {
         });
         sendMessageToNode("updatePlaylists", state.tabsData.playlists);
     },
-    deleteSelectedTrackFromFavorites(state: any) {
-        console.log(TrackSelector.state.selectedTracks[0]);
+    deleteSelectedTrackFromFavorites(state: TabsManagerStateInterface) {
         state.tabsData.playlists[0].tracks.forEach((track: TrackType, index: number) => {
             if (TrackSelector.state.selectedTracks[0].fileLocation === track.fileLocation) {
                 state.tabsData.playlists[0].tracks.splice(index, 1);
             }
         });
     },
+    setDownloadedArtistInfo(state: TabsManagerStateInterface, payload: ArtistInfoInterface[]) {
+        state.downloadedArtistPictures = payload;
+    }
 }
-const actions: ActionTree<any, any> = {
+const actions: ActionTree<TabsManagerStateInterface, any> = {
     generateArtistsData: ({ state, dispatch }) => {
         //clear the current data
         state.tabsData.artists = [];
@@ -162,7 +176,6 @@ const actions: ActionTree<any, any> = {
             state.tabsData.artists.unshift(artistInfo);
         });
         sortArrayOfObjects(state.tabsData.artists, 'name')
-        //TODO: dispatch('fetchArtistsInfo')
     },
     generateAlbumsData: ({ state }) => {
         state.tabsData.albums = [];
@@ -218,30 +231,38 @@ const actions: ActionTree<any, any> = {
     },
     fetchArtistsInfo({ state, commit }) {
         const artistsData: ArtistInfoInterface[] = []
-        const artists = state.tabsData.artists.map((artist: ArtistType) => artist.name)
-        artists.forEach((artist: string) => {
-            fetch(
-                `https://apiflbdeezer.herokuapp.com/search/?category=artists&query=${artist}`,
-                { method: 'GET' }
-            )
-                .then((response) => response.text())
-                .then((result) => {
-                    const res = JSON.parse(result).results.slice(0, 1)[0];
-                    if (res && res.name != "X UNDEFINED") {
-                        if (res.name == artist) {
-                            const artistInfo = {
-                                name: artist,
-                                picture: res.picture,
-                                otherTracks: res.tracklist
+        if (navigator.onLine) {
+            const dbInfo = localStorage.getItem("downloadedArtists");
+            let downloadedArtists: ArtistInfoInterface[] = []
+            if (dbInfo) {
+                downloadedArtists = JSON.parse(dbInfo);
+                state.downloadedArtistPictures = downloadedArtists
+            }
+            const artists = state.tabsData.artists.map((artist: ArtistType) => artist.name)
+            artists.forEach((artist: string) => {
+                if (downloadedArtists.findIndex(artistsInfo => artistsInfo.name == artist) != -1) return
+                fetch(
+                    `https://apiflbdeezer.herokuapp.com/search/?category=artists&query=${artist}`,
+                    { method: 'GET' }
+                )
+                    .then((response) => response.text())
+                    .then((result) => {
+                        const res = JSON.parse(result).results.slice(0, 1)[0];
+                        if (res && res.name != "X UNDEFINED") {
+                            if (res.name == artist) {
+                                const artistInfo = {
+                                    name: artist,
+                                    picture: res.picture,
+                                }
+                                artistsData.push(artistInfo)
+                                sendMessageToNode('downloadArtistPicture', artistInfo)
                             }
-                            artistsData.push(artistInfo)
-                            localStorage.setItem('artistData', JSON.stringify(artistsData))
-
                         }
-                    }
-                })
-                .catch((error) => console.log("error", error));
-        });
+                    })
+                    .catch((error) => console.log("error", error));
+            });
+        }
+
     }
 };
 

@@ -1,16 +1,18 @@
 <template>
   <div class="QueuedTracks animated faster disable__options">
-    <p
-      style="
-        text-align: center;
-        margin-top: 250px;
-        padding: 10px;
-        font-family: roboto-light;
-      "
+    <div
       v-if="customQueue.length == 0"
+      class="centerContents"
+      style="height: 90%"
     >
-      Queue is Empty. Right click on a track to add it to the queue
-    </p>
+      <img
+        width="200px"
+        src="@/RendererProcess/assets/images/empty_queue.svg"
+      />
+      <p style="text-align: center; font-family: roboto-light">
+        Queue is Empty. Right click on a track to add it to the queue
+      </p>
+    </div>
     <div
       class="clearQueueBt"
       @click="clearCustomQueue"
@@ -70,9 +72,6 @@ export default {
         this.$store.commit("overWriteCustomQueue", value);
       },
     },
-  },
-  mounted() {
-    console.log(this.$store.state.PlaybackManger.customQueue);
   },
   methods: {
     ...mapMutations([

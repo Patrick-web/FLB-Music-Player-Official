@@ -43,7 +43,6 @@ export default {
       "UIcontrollerToggleProperty",
       "clearSelectedTracks",
     ]),
-    ...mapActions(["getLyrics"]),
     showOptions(e) {
       e.preventDefault();
       document.querySelector("#tabsArea").classList.remove("multiSelectMode");
@@ -67,7 +66,6 @@ export default {
         document.querySelector("audio").muted = false;
       }
       this.setPlayingTrack({ track: this.source, index: this.index });
-      this.getLyrics(this.source);
     },
     bulkSelectTrack(e) {
       e.currentTarget.parentElement.classList.toggle("bulkSelected");

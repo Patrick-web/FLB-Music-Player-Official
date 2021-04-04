@@ -3,12 +3,17 @@ import fs from 'fs'
 import path from "path";
 const APP_DATA_FOLDER = app.getPath("userData");
 const ALBUM_ART_FOLDER = path.join(APP_DATA_FOLDER, 'Album Art')
+const ARTIST_PICTURE_FOLDER = path.join(APP_DATA_FOLDER, 'Artist Pictures')
 if (!fs.existsSync(ALBUM_ART_FOLDER)) {
 	fs.mkdirSync(ALBUM_ART_FOLDER)
+}
+if (!fs.existsSync(ARTIST_PICTURE_FOLDER)) {
+	fs.mkdirSync(ARTIST_PICTURE_FOLDER)
 }
 export const paths = {
 	appFolder: APP_DATA_FOLDER,
 	albumArtFolder: ALBUM_ART_FOLDER,
+	artistPictureFolder: ARTIST_PICTURE_FOLDER,
 	musicFolder: path.join(require("os").homedir(), "Music"),
 	filesTrackerLocation: path.join(APP_DATA_FOLDER, "processedFiles.json"),
 	playlistsLocation: path.join(APP_DATA_FOLDER, "Playlists.json"),

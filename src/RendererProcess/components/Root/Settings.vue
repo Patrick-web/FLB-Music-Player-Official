@@ -44,7 +44,7 @@
         <article>
           <div class="settingBox">
             <h4>Default Tab</h4>
-            <ul>
+            <ul class="grid3 gap20">
               <div
                 @click="
                   setSettingValue({ property: 'defaultTab', newValue: 'Home' })
@@ -123,7 +123,7 @@
         </article>
         <article>
           <h4>Accent Color</h4>
-          <ul>
+          <ul class="grid3 gap10">
             <div
               @click="
                 setSettingValue({
@@ -208,7 +208,7 @@
       <section>
         <article>
           <h4>Theme</h4>
-          <ul>
+          <ul class="grid2 gap20">
             <div
               @click="setSettingValue({ property: 'theme', newValue: 'fancy' })"
               :class="[settings.theme == 'fancy' ? 'activeSetting' : '']"
@@ -221,21 +221,21 @@
             >
               <p>Dark</p>
             </div>
-            <div
+            <!-- <div
               @click="setSettingValue({ property: 'theme', newValue: 'light' })"
               :class="[settings.theme == 'light' ? 'activeSetting' : '']"
             >
               <p>Light</p>
-            </div>
+            </div> -->
           </ul>
         </article>
         <article>
           <div
             @click="
-              setSettingValue([
-                'desktopNotifications',
-                !settings.desktopNotifications,
-              ])
+              setSettingValue({
+                property: 'desktopNotifications',
+                newValue: !settings.desktopNotifications,
+              })
             "
             class="switch"
           >
@@ -245,7 +245,7 @@
           </div>
         </article>
         <article>
-          <button @click="resetApp" class="dangerBt">
+          <button @click="resetApp" class="dangerBt bt_block">
             <h2>Reset FLB 😵</h2>
           </button>
         </article>
@@ -335,6 +335,8 @@ export default {
       sendMessageToNode("removeFromScannedFolders", path);
     },
     resetApp() {
+      localStorage.removeItem("downloadedArtists");
+      localStorage.removeItem("lyrics");
       sendMessageToNode("resetApp");
     },
   },
@@ -400,9 +402,6 @@ export default {
           }
         }
         ul {
-          display: grid;
-          grid-template-columns: 1fr 1fr 1fr;
-          gap: 10px;
           div {
             justify-self: center;
             background: rgba(255, 255, 255, 0.096);

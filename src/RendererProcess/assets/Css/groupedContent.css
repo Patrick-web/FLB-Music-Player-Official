@@ -10,12 +10,6 @@
 	padding: 10px;
 }
 
-.groupedContentTab .groupCards {
-	display: grid;
-	grid-template-columns: 1fr 1fr 1fr 1fr;
-	gap: 1%;
-}
-
 .groupCard:hover {
 	background: rgba(255, 255, 255, 0.11);
 }

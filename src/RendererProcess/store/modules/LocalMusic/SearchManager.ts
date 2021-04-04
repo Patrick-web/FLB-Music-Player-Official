@@ -1,14 +1,21 @@
 import { TrackType, ArtistType } from "@/types";
 import TabsManager from "./TabsManager";
 
-const state = {
+interface SearchManagerStateInterface {
+    searchResults: {
+        tracks: TrackType[];
+        artists: ArtistType[];
+    };
+}
+
+const state: SearchManagerStateInterface = {
     searchResults: {
         tracks: [],
         artists: []
     }
 };
 const mutations = {
-    search(state: any, query: string) {
+    search(state: SearchManagerStateInterface, query: string) {
         if (query) {
             state.searchResults.tracks = TabsManager.state.tabsData.addedTracks
                 .filter(

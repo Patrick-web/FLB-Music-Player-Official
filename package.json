@@ -6,7 +6,7 @@
 		"name": "Patrick Waweru",
 		"email": "pntxall100@gmail.com"
 	},
-	"version": "0.1.6",
+	"version": "1.0.0",
 	"private": true,
 	"repository": {
 		"type": "git",
@@ -30,6 +30,7 @@
 		"browser-id3-writer": "^4.4.0",
 		"core-js": "^3.6.5",
 		"crypto": "^1.0.1",
+		"electron-settings": "^4.0.2",
 		"electron-updater": "^4.3.8",
 		"g-i-s": "^2.1.6",
 		"genius-lyrics-api": "^3.0.6",

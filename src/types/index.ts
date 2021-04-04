@@ -25,7 +25,10 @@ export interface geniusSongType {
     albumArt: any;
     lyrics: any;
 }
-
+export interface TrackLyricsType {
+    trackName: string,
+    lyrics: string[]
+}
 export interface PlaylistType {
     name: string;
     tracks: Array<TrackType>;
@@ -133,4 +136,8 @@ export interface mixTyping {
     name: string,
     info: string,
     tracks: TrackType[]
+}
+
+export interface ArtistInfoInterface {
+    name: string; picture: any;
 }

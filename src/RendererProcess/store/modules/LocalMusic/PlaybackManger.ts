@@ -2,25 +2,39 @@ import { getSong } from "genius-lyrics-api";
 import { ActionTree } from "vuex";
 import UIController from './UIController';
 import TabsManager from "./TabsManager";
+import NotificationManager from "./NotificationManager";
 import TrackSelector from "./TrackSelector";
 import { sendMessageToNode } from "@/RendererProcess/utilities";
 import { removeDuplicates, shuffleArray } from "@/sharedUtilities";
-import { TrackType, geniusSongType } from "@/types";
+import { TrackType, geniusSongType, TrackLyricsType } from "@/types";
 
 interface PlayingTrackPayload {
     track: TrackType;
     index: number;
 }
-const state = {
+interface PlaybackManagerStateInterface {
+    playingTrackInfo: {
+        track: TrackType | null;
+    };
+    audioState: {
+        playing: boolean;
+        repeat: boolean;
+        shuffle: boolean;
+    };
+    allLyrics: TrackLyricsType[];
+    playingQueue: TrackType[];
+    customQueue: TrackType[];
+}
+const state: PlaybackManagerStateInterface = {
     playingTrackInfo: {
         track: null,
-        lyrics: null
     },
     audioState: {
         playing: false,
         repeat: false,
         shuffle: false,
     },
+    allLyrics: [],
     playingQueue: [],
     customQueue: []
 };
@@ -33,7 +47,6 @@ const mutations = {
             if (UIController.state.UIProperties.currentMainTab != "Recents") {
                 TabsManager.state.tabsData.recentlyPlayedTracks.unshift(payload.track);
                 TabsManager.state.tabsData.recentlyPlayedTracks = TabsManager.state.tabsData.recentlyPlayedTracks.splice(0, 20);
-                console.log(TabsManager.state.tabsData.recentlyPlayedTracks);
                 TabsManager.state.tabsData.recentlyPlayedTracks = removeDuplicates(TabsManager.state.tabsData.recentlyPlayedTracks, 'defaultTitle')
             }
             sendMessageToNode("playingTrack", payload.track);
@@ -55,11 +68,13 @@ const mutations = {
     clearCustomQueue(state: any) {
         state.customQueue = [];
     },
-    overWriteCustomQueue(state: any, value: Array<TrackType>) {
-        state.customQueue = value;
+    overWriteCustomQueue(state: any, payload: Array<TrackType>) {
+        const copyOfPayload = [...payload];
+        copyOfPayload.shift();
+        state.customQueue = [copyOfPayload];
     },
 };
-const actions: ActionTree<any, any> = {
+const actions: ActionTree<PlaybackManagerStateInterface, any> = {
     toggleIsPlaying({ state }) {
         state.audioState.playing = !state.audioState.playing;
         if (state.audioState.playing) {
@@ -75,27 +90,36 @@ const actions: ActionTree<any, any> = {
     toggleShuffler({ state }) {
         state.audioState.shuffle = !state.audioState.shuffle;
     },
-    getLyrics({ state }, track: TrackType) {
-        state.playingTrackLyrics = null;
-        const options = {
-            apiKey:
-                "OvIJKwGiXVXykOca4Yr5V4ys0wReNjxazasnInKUqGItUzgih9uQjrYK6YmSSzeS",
-            title: track.defaultTitle,
-            artist: track.defaultArtist,
-            optimizeQuery: true,
-        };
+    getLyrics({ state }) {
+        const dbLyrics = localStorage.getItem('lyrics')
+        if (dbLyrics) {
+            const allLyrics: TrackLyricsType[] = JSON.parse(dbLyrics);
+            state.allLyrics = allLyrics;
+        }
+        TabsManager.state.tabsData.addedTracks.forEach(track => {
+            const options = {
+                apiKey:
+                    "OvIJKwGiXVXykOca4Yr5V4ys0wReNjxazasnInKUqGItUzgih9uQjrYK6YmSSzeS",
+                title: track.defaultTitle,
+                artist: track.defaultArtist,
+                optimizeQuery: true,
+            };
 
-        getSong(options).then((song: geniusSongType) => {
-            if (song) {
-                state.playingTrackInfo.lyrics = song.lyrics.split(/\s\s/);
-                state.playingTrackInfo.lyrics.filter((lyricBlock: string) => lyricBlock.trim() == '')
-                console.log(state.playingTrackLyrics);
-                const lyricsTabIcon: HTMLElement = document.getElementsByClassName(
-                    "lyricsTabIcon"
-                )[0] as HTMLElement;
-                lyricsTabIcon.click();
+            const indexOfLyricsForTheTrack = state.allLyrics.findIndex(trackLyricsInfo => trackLyricsInfo.trackName == track.defaultTitle)
+            if (indexOfLyricsForTheTrack == -1 && navigator.onLine) {
+                getSong(options).then((song: geniusSongType) => {
+                    if (song) {
+                        let lyrics = [];
+                        lyrics = song.lyrics.split(/\s\s/);
+                        lyrics.filter((lyricBlock: string) => lyricBlock.trim() == '')
+                        state.allLyrics.push({ trackName: track.defaultTitle, lyrics })
+                        localStorage.setItem('lyrics', JSON.stringify(state.allLyrics))
+                        //TODO: Replace above this click logic with the UIController method for switching to the lyrics tab 
+                    }
+                });
             }
-        });
+
+        })
     },
     determineNextTrack({ state, commit }, direction) {
         const playingTrackInfo = state.playingTrackInfo;
@@ -114,7 +138,7 @@ const actions: ActionTree<any, any> = {
         else if (UIController.state.UIProperties.currentMainTab == 'Tracks') {
             targetArray = TabsManager.state.tabsData.addedTracks;
         }
-        const indexOfPlayingTrack = targetArray.findIndex((track) => track.defaultTitle == playingTrackInfo.track.defaultTitle)
+        const indexOfPlayingTrack = targetArray.findIndex((track) => track.defaultTitle == state.playingTrackInfo.track?.defaultTitle)
 
         if (state.audioState.shuffle) {
             commit('setPlayingTrack', { track: shuffleArray(targetArray)[0], index: 0 })

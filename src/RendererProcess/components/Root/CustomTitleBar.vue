@@ -1,12 +1,8 @@
 <template>
   <div class="customTitleBar">
     <div class="leftSide">
-      <img
-        id="logo"
-        src="@/RendererProcess/assets/images/FLB Logo.png"
-        alt=""
-      />
-      <p>FLB Music</p>
+      <img id="logo" src="@/RendererProcess/assets/images/Logo.png" alt="" />
+      <p>LB Music</p>
     </div>
     <div class="ctrls">
       <div class="ctrl" @click="sendMessage('minimize')">
@@ -65,8 +61,7 @@ export default {
     margin-top: 5px;
     #logo {
       width: 15px;
-      margin-right: 5px;
-      transform: scale(0.7);
+      margin-right: -2px;
     }
     p {
       font-family: roboto-light;

@@ -107,11 +107,7 @@ export default {
     },
   },
   methods: {
-    ...mapMutations([
-      "updateSetting",
-      "restoreSettings",
-      "UIcontrollerToggleProperty",
-    ]),
+    ...mapMutations(["updateSetting", "UIcontrollerToggleProperty"]),
     goToSlide2() {
       this.currentSlide = 2;
       setInterval(() => {
@@ -143,9 +139,6 @@ export default {
   mounted() {
     ipcRenderer.on("parsingProgress", (e, [currentIndex, total]) => {
       this.fraction = `${currentIndex}/${total}`;
-    });
-    ipcRenderer.on("userSettings", (e, payload) => {
-      this.restoreSettings(payload);
     });
     ipcRenderer.send("initializeSettings");
     setTimeout(() => {

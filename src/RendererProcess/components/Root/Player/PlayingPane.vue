@@ -12,7 +12,7 @@
     >
       <img
         v-if="playingTrack.albumArt"
-        @dblclick="toggleFromFavourites"
+        @dblclick="toggleFromFavorites"
         @click="expandPlayingPane"
         id="cover"
         :src="playingTrack.albumArt"
@@ -20,7 +20,7 @@
       />
       <img
         v-if="!playingTrack.albumArt"
-        @dblclick="toggleFromFavourites"
+        @dblclick="toggleFromFavorites"
         @click="expandPlayingPane"
         id="cover"
         src="@/RendererProcess/assets/images/FLBDefaultCover.png"
@@ -92,9 +92,9 @@
           />
         </button>
         <button
-          @click="toggleFromFavourites"
+          @click="toggleFromFavorites"
           id="favorIcon"
-          :class="[isInFavourites ? 'bt_active' : '', 'iconBt']"
+          :class="[isInFavorites ? 'bt_active' : '', 'iconBt']"
         >
           <img
             width="18px"
@@ -157,7 +157,7 @@ export default {
     showPlaylistWidget() {
       return this.$store.state.UIController.UIProperties.showPlaylistWidget;
     },
-    isInFavourites() {
+    isInFavorites() {
       return this.$store.state.TabsManager.tabsData.playlists[0].tracks.some(
         (track) => track.fileLocation == this.playingTrack.fileLocation
       );
@@ -228,19 +228,19 @@ export default {
         document.querySelector("#PlaylistWidget").style.left = "78%";
       }, 0);
     },
-    toggleFromFavourites() {
+    toggleFromFavorites() {
       this.addToSelectedTracks(this.playingTrack);
-      if (this.isInFavourites) {
+      if (this.isInFavorites) {
         this.deleteSelectedTrackFromPlaylist(this.playingTrack);
         this.pushNotification({
-          title: `Removed from Favourites`,
+          title: `Removed from Favorites`,
           subTitle: `${this.playingTrack.defaultTitle}`,
           type: "danger",
         });
       } else {
         this.addSelectedTracksToPlaylist("Favorites");
         this.pushNotification({
-          title: `Added to Favourites`,
+          title: `Added to Favorites`,
           subTitle: `${this.playingTrack.defaultTitle}`,
           type: "normal",
         });
@@ -278,6 +278,10 @@ export default {
           document.querySelector("#volume").focus();
           return;
         }
+        if (e.code === "Tab") {
+          e.preventDefault();
+          document.querySelector("#search").focus();
+        }
       }
     });
     document.querySelector(".split").classList.add("playingPaneLoaded");
@@ -295,6 +299,7 @@ export default {
   height: 100vh !important;
   width: 100vw !important;
   left: 0;
+  margin-left: 0 !important;
   width: 100vw;
   z-index: 60 !important;
   border-radius: 0px !important;

@@ -15,22 +15,24 @@
         v-model="newPlaylistName"
       />
       <button
-        class="bt_block"
+        class="bt_block bt_active"
         style="margin-top: 5px"
         @click="createNewPlaylist()"
         v-if="newPlaylistName"
       >
-        Create
+        <p>Create</p>
       </button>
     </div>
-    <p
-      @click="addToPlaylist(playlist.name)"
-      v-for="playlist in playlists"
-      :key="playlist.name"
-      class="playlistName"
-    >
-      {{ playlist.name }}
-    </p>
+    <div class="playlistNamesWrapper">
+      <p
+        @click="addToPlaylist(playlist.name)"
+        v-for="playlist in playlists"
+        :key="playlist.name"
+        class="playlistName"
+      >
+        {{ playlist.name }}
+      </p>
+    </div>
   </div>
 </template>
 
@@ -83,7 +85,7 @@ export default {
   min-width: 250px;
   max-width: 250px;
   z-index: 60;
-  background-color: rgba(0, 0, 0, 0.39);
+  background-color: rgba(27, 27, 27, 0.39);
   backdrop-filter: blur(10px);
   box-shadow: 0px 0px 50px 10px black;
   padding: 10px;
@@ -97,19 +99,23 @@ export default {
   align-items: center;
   position: relative;
 }
-.playlistName {
-  background: #11111150;
-  padding: 5px;
-  font-size: 1rem;
-  transition: 0.2s ease;
-  cursor: pointer;
-  text-align: left;
-}
-.playlistName:hover {
-  background-color: #ffffff1e;
-  border-radius: 20px;
-  margin: 5px;
-  border: none;
-  padding: 8px;
+.playlistNamesWrapper {
+  margin-top: 10px;
+  .playlistName {
+    padding: 5px;
+    font-size: 1rem;
+    font-family: roboto-light;
+    transition: 0.2s ease;
+    cursor: pointer;
+    text-align: left;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.356);
+    &:hover {
+      background-color: #ffffff1e;
+      border-radius: 20px;
+      margin: 5px;
+      border: none;
+      padding-left: 10px;
+    }
+  }
 }
 </style>

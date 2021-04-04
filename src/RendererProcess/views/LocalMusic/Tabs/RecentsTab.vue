@@ -1,5 +1,13 @@
 <template>
   <div class="tab RecentsTab">
+    <div
+      v-if="recentlyPlayedTracks.length == 0"
+      class="centerContents"
+      style="height: 100%"
+    >
+      <img width="300px" src="@/RendererProcess/assets/images/no_recents.svg" />
+      <p style="font-family: roboto-thin">You still haven't played anything</p>
+    </div>
     <TrackCard
       v-for="track in recentlyPlayedTracks"
       :source="track"

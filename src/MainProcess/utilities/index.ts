@@ -1,22 +1,19 @@
 import fs from "fs";
 import { paths } from "../modules/Paths";
-import { win } from "../../background";
+import { fileTracker, win } from "../../background";
 import { DownloaderHelper } from "node-downloader-helper";
 import { Notification } from "electron";
 
 
 export function writeImageBuffer(imageBuffer: string, savePath: string) {
     fs.writeFileSync(savePath, imageBuffer)
-    console.log("Writing album art to " + savePath);
 }
 
-export async function downloadFile(url: string) {
+export async function downloadFile(url: string, targetFolder: string, fileName: string | null) {
     return new Promise<string>((resolve, reject) => {
-        const dl = new DownloaderHelper(url, paths.appFolder);
+        const dl = new DownloaderHelper(url, targetFolder, { fileName, override: false });
         dl.start();
-        win.webContents.send("normalMsg", "Downloading...");
         dl.on("end", () => {
-            win.webContents.send("normalMsg", "Download Successful...");
             resolve(dl.getDownloadPath());
         });
         dl.on("error", () => reject("Error in downloading the cover"));
@@ -27,16 +24,15 @@ export function deleteFile(path: string, quiet: boolean) {
     if (fs.existsSync(path)) {
         fs.unlink(path.replace("file://", ""), (err) => {
             if (err) {
-                console.log("Error in deleting file");
                 console.log(err);
                 return win.webContents.send("errorMsg", "Error in Deleting File")
             };
             if (!quiet) {
-                console.log("File deleted");
                 win.webContents.send("normalMsg", `${path} deleted`);
             }
         });
-        win.webContents.send("deleteComplete");
+        win.webContents.send("deleteComplete", path);
+        fileTracker.deleteFile(path)
     } else {
         console.log("File does not exist");
     }

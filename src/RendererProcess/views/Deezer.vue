@@ -23,8 +23,10 @@
 </template>
 
 <script>
+import { mapMutations } from "vuex";
 export default {
   methods: {
+    ...mapMutations(["pushNotification"]),
     reloadWebview() {
       document.querySelector("webview").reload();
       document.querySelector("#refreshWebview img").classList.add("rotateOut");
@@ -36,8 +38,12 @@ export default {
     },
   },
   mounted() {
-    if (!document.querySelector(".sideNav").classList.contains("collapsed")) {
-      document.querySelector("#menuIcon").click();
+    if (!navigator.onLine) {
+      this.pushNotification({
+        title: `No internet connection detected`,
+        subTitle: null,
+        type: "danger",
+      });
     }
   },
 };
@@ -53,7 +59,8 @@ export default {
     left: 50%;
     width: 40px;
     height: 40px;
-    background: rgb(10, 10, 10);
+    background: rgba(10, 10, 10, 0.329);
+    backdrop-filter: blur(10px);
     border-radius: 50%;
     top: 20px;
     transform: translateY(-50%);

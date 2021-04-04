@@ -31,7 +31,6 @@ export default {
       "UIcontrollerSetPropertyValue",
     ]),
     playMix() {
-      console.log("Playing mashup");
       this.setPlayingTrack({ track: this.tracks[0], index: 0 });
       const tracksCopy = [...this.tracks];
       this.overWriteCustomQueue(tracksCopy);

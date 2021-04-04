@@ -3,7 +3,7 @@
     <div v-if="albums.length == 0" class="loadingArea">
       <div class="loadingIndicator"></div>
     </div>
-    <div v-if="!selectedGroup" class="groupCards">
+    <div v-if="!selectedGroup" class="groupCards grid_auto">
       <AlbumCard v-for="album in albums" :key="album.name" :album="album" />
     </div>
     <transition

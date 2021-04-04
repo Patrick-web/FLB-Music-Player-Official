@@ -23,14 +23,12 @@ export class PlaybackStats {
 	}
 
 	public addFile(file: TrackType) {
-		console.log("Adding New File for stats");
 		this.playedFiles.unshift(file);
 		this.playedFiles = this.playedFiles.slice(0, 100);
 		this.generateMostPlayedTracks();
 	}
 
 	private generateMostPlayedTracks() {
-		console.log("Generating Most Played Tracks");
 		this.playedFiles.forEach((playedFile) => {
 			const arrOfTrackPaths: Array<string> = this.playedFiles.map(
 				(file) => file.defaultTitle
@@ -51,7 +49,6 @@ export class PlaybackStats {
 			this.tracksStats.push(trackStatObj);
 		});
 		// sortArrayOfObjects(this.tracksStats, "numberOfPlays");
-		win.webContents.send('mostPlayedTracks', this.mostPlayedTracks)
 	}
 	public saveChanges() {
 		const stats = {

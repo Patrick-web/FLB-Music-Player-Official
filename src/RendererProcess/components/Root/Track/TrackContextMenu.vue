@@ -8,12 +8,12 @@
       <img src="@/RendererProcess/assets/images/queue-music.svg" alt="" />
       <span>Add to Queue</span>
     </div>
-    <div @click.stop="addToFavourites" class="option">
+    <div @click.stop="addToFavorites" class="option">
       <img src="@/RendererProcess/assets/images/heart.svg" alt="" />
-      <span>Add to Favourites</span>
+      <span>Add to Favorites</span>
     </div>
     <div
-      v-if="!$route.path === '/playlists'"
+      v-if="$route.path !== '/playlists'"
       @click.stop="showPlaylistWidget"
       class="option"
     >
@@ -83,12 +83,6 @@ export default {
       });
       this.close();
     },
-    UIcontrollerSetPropertyValue(tab) {
-      this.UIcontrollerSetPropertyValue({
-        property: "currentSidePaneTab",
-        newValue: tab,
-      });
-    },
     playNext() {
       this.setSelectedTrackToPlayNext();
       this.pushNotification({
@@ -117,7 +111,6 @@ export default {
         ),
       };
       setTimeout(() => {
-        console.log(cordinates);
         const playlistWidget = document.querySelector("#PlaylistWidget");
         playlistWidget.style.bottom = "initial";
         document.querySelector("#PlaylistWidget").style.top =
@@ -128,20 +121,19 @@ export default {
       this.close();
     },
     removeFromPlaylist() {
-      console.log(this.selectedTracks);
       this.deleteSelectedTrackFromPlaylist();
       this.close();
       this.pushNotification({
-        title: `Removed from Favourites ${this.selectedGroup.name}`,
+        title: `Removed from Favorites ${this.selectedGroup.name}`,
         subTitle: `${this.selectedTracks[0].defaultTitle}`,
         type: "danger",
       });
       this.clearSelectedTracks();
     },
-    addToFavourites() {
-      this.addSelectedTracksToPlaylist("Favourites");
+    addToFavorites() {
+      this.addSelectedTracksToPlaylist("Favorites");
       this.pushNotification({
-        title: `Added to Favourites`,
+        title: `Added to Favorites`,
         subTitle: `${this.selectedTracks[0].defaultTitle}`,
         type: "normal",
       });
@@ -155,7 +147,6 @@ export default {
       this.clearSelectedTracks();
     },
     deleteSelectedTracks() {
-      console.log("Deleting");
       sendMessageToNode("deleteFiles", this.selectedTracks);
       this.close();
     },

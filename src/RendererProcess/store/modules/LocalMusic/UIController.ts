@@ -24,7 +24,7 @@ const state: UIControllerStateInterface = {
 };
 const mutations = {
     UIcontrollerToggleProperty: (
-        state: any,
+        state: UIControllerStateInterface,
         property: UIcontrollerPropertiesType
     ) => {
         state.UIProperties[property] = !state.UIProperties[property];

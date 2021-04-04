@@ -7,7 +7,8 @@
       alt=""
     />
     <img
-      v-if="theme == 'fancy' && playingTrack && !playingTrack.albumArt"
+      v-else
+      style="opacity: 0.7"
       src="@/RendererProcess/assets/images/FLBDefaultCover.png"
       id="bg_fancy"
       alt=""
@@ -39,7 +40,7 @@ export default {
   #bg_fancy {
     width: 100%;
     height: 100%;
-    filter: blur(40px);
+    filter: blur(50px);
     opacity: 0.3;
   }
 }

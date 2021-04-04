@@ -22,7 +22,7 @@
         <p class="param" @click.stop="sortBy($event, 'defaultArtist')">
           Artist
         </p>
-        <p class="param" @click.stop="sortBy($event, 'duration')">Length</p>
+        <!-- <p class="param" @click.stop="sortBy($event, 'duration')">Length</p> -->
         <p class="param" @click.stop="sortBy($event, 'dateAdded')">Date</p>
         <p class="param" @click="toggleSortBy">Flip</p>
       </section>
@@ -84,32 +84,35 @@ export default {
     background: rgba(255, 255, 255, 0.144);
   }
   .sortParams {
-    bottom: -160px;
+    position: absolute;
+    bottom: -150px;
     border-radius: 15px;
     right: -6px;
-    position: absolute;
-    width: 80px;
+    width: auto !important;
+    height: auto;
+    padding: 0;
     backdrop-filter: blur(20px) !important;
-    box-shadow: 0px 0px 50px black;
-    background: rgba(29, 29, 29, 0.199);
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.267);
     overflow: hidden;
     .param {
       padding: 5px;
+      margin: 5px;
+      width: 60px;
       text-align: center;
       font-family: roboto-thin;
       backdrop-filter: blur(10px) !important;
       cursor: pointer;
     }
     .param:hover {
-      background-color: #ffffff44;
+      background-color: #ffffff13;
       border-radius: 20px;
-      margin: 5px;
-      border: none;
     }
     .selectedParam {
       background: #0062ff;
+      border-radius: 20px;
     }
     .selectedParam:hover {
+      border-radius: 20px;
       background: #0062ff;
     }
   }

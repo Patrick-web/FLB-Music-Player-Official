@@ -12,7 +12,7 @@
       </section>
       <PlayingPane v-if="playingTrack" />
     </div>
-    <Bg />
+    <Bg v-if="theme == 'fancy'" />
   </div>
 </template>
 <script lang="js">
@@ -60,8 +60,6 @@
     },
 	  },
 	  methods: {
-	    ...mapMutations(["addTrack","restoreTracks","restorePlaylists","restoreSettings","restoreRecentlyPlayed","setScannedFolders"]),
-		...mapActions(['removeSelectedTracks',"popNotification","sortTracks","generateAlbumsData","generateArtistsData","generateFoldersData"]),
 	    cleanUp() {
 	      if(document.querySelector(".trackOptions")){
 	        document.querySelector(".trackOptions").style.height = `0px`;

@@ -1,4 +1,4 @@
-export function sortArrayOfObjects(targetArray: any, param: any) {
+export function sortArrayOfObjects(targetArray: any[], param: string) {
     function compare(a: any, b: any) {
         if (a[`${param}`] < b[`${param}`]) {
             return -1;
@@ -11,7 +11,7 @@ export function sortArrayOfObjects(targetArray: any, param: any) {
     targetArray.sort(compare);
 }
 
-export function shuffleArray(array: Array<any>) {
+export function shuffleArray(array: any[]) {
     const arrayCopy = [...array]
     let currentIndex = arrayCopy.length,
         temporaryValue,

@@ -4,7 +4,7 @@
     <div v-if="artists.length == 0" class="loadingArea">
       <div class="loadingIndicator"></div>
     </div>
-    <div v-if="!selectedGroup" class="groupCards">
+    <div v-if="!selectedGroup" class="groupCards grid_auto">
       <ArtistCard
         v-for="artist in artists"
         :key="artist.name"
@@ -37,29 +37,23 @@
           >
             <img src="@/RendererProcess/assets/images/back.svg" alt="" />
           </button>
+          <img v-if="artistPicture" class="coverArt" :src="artistPicture" />
           <img
-            v-if="selectedGroup.picture"
-            class="coverArt"
-            :src="artist.picture"
-            alt=""
-          />
-          <img
-            v-if="!selectedGroup.picture"
+            v-else
             class="coverArt"
             src="@/RendererProcess/assets/images/FLBDefaultArtistPic.png"
-            alt=""
           />
           <img
-            v-if="selectedGroup.picture"
+            v-if="artistPicture"
             class="coverArt"
-            :src="artist.picture"
+            :src="artistPicture"
             alt=""
             id="blurred"
           />
           <img
-            v-if="!selectedGroup.picture"
+            v-else
             class="coverArt"
-            src="@/RendererProcess/assets/images/FLBDefaultArtistPic.png"
+            src="@/RendererProcess/assets/images/FLBDefaultCover.png"
             alt=""
             id="blurred"
           />
@@ -79,7 +73,7 @@
           <div class="grid2 gap10">
             <div class="artistAlbums">
               <h1>Albums</h1>
-              <div class="grid2 gap10">
+              <div class="grid_auto">
                 <AlbumCard
                   v-for="album in removeDuplicateAlbums(selectedGroup.albums)"
                   :album="album"
@@ -130,6 +124,7 @@ export default {
       "setPlayingTrack",
       "overWriteCustomQueue",
       "pushNotification",
+      "setDownloadedArtistInfo",
     ]),
     ...mapActions(["generateArtistsData"]),
     addTracksToQueue() {
@@ -177,6 +172,13 @@ export default {
     selectedGroup() {
       return this.$store.state.TrackSelector.selectedGroup;
     },
+    artistPicture() {
+      return (
+        this.$store.state.TabsManager.downloadedArtistPictures.filter(
+          (artistPicInfo) => artistPicInfo.name == this.selectedGroup.name
+        )[0]?.pathToPicture || false
+      );
+    },
   },
   components: {
     ArtistCard,
@@ -185,6 +187,12 @@ export default {
   },
   mounted() {
     this.generateArtistsData();
+    const dbInfo = localStorage.getItem("downloadedArtists");
+    let downloadedArtists = [];
+    if (dbInfo) {
+      downloadedArtists = JSON.parse(dbInfo);
+      this.setDownloadedArtistInfo(downloadedArtists);
+    }
   },
 };
 </script>
@@ -198,7 +206,7 @@ export default {
 .ArtistsTab {
   .cardsWrapper {
     overflow-y: hidden !important;
-    height: 35%;
+    height: 60%;
     .grid2 {
       height: 100%;
     }

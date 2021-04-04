@@ -77,13 +77,11 @@ export default {
       "selectGroup",
       "pushNotification",
     ]),
-    ...mapActions(["getLyrics"]),
     playTrack(track) {
       if (document.querySelector("audio")) {
         document.querySelector("audio").muted = false;
       }
       this.setPlayingTrack({ track, index: 0 });
-      this.getLyrics(track);
     },
     playAll() {
       this.setPlayingTrack({ track: this.playlist.tracks[0], index: 0 });

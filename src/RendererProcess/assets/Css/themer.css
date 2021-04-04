@@ -37,8 +37,7 @@
 .dark_theme .fullScreenPlayingPane {
 	background: rgb(17, 17, 17) !important;
 }
-.dark_theme .MixCard .cardContent,
-.dark_theme .MixCard .cardTitle {
+.dark_theme .MixCard .cardContent {
 	background: rgb(17, 17, 17) !important;
 }
 .dark_theme .trackOptions {
@@ -62,4 +61,8 @@
 }
 .dark_theme.playlistOption p {
 	color: white !important;
+}
+
+.dark_theme .sliverBar #blurred {
+	display: none !important;
 }

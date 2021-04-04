@@ -62,7 +62,6 @@ export default {
       const filePaths = Array.from(event.dataTransfer.files).map(
         (file) => file.path
       );
-      console.log("Dropped ", filePaths[0]);
       ipcRenderer.send("processDroppedFiles", filePaths);
     });
     document.querySelector(".LocalMusic").addEventListener("dragover", (e) => {
