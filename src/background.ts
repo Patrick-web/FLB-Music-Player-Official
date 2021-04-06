@@ -206,24 +206,31 @@ ipcMain.on("playingTrack", async (e, track: TrackType) => {
     // win.webContents.send("mostPlayedArtists", playbackStats.mostPlayedTracks);
 });
 
-ipcMain.on("processDroppedFiles", (e, filePaths) => {
-    console.log("Dropped " + filePaths);
-    if (Array.isArray(filePaths) && filePaths[0]) {
-        win.webContents.send("normalMsg", "Processing Dropped Files");
-        if (fs.lstatSync(filePaths[0]).isDirectory()) {
-            parseFolder(filePaths[0], [], []);
-        } else {
-            filePaths.forEach(async (pathToFile) => {
-                if (pathToFile.match(/\.mp3|\.webm|\.m4a|\.ogg/gi)) {
-                    const newTrack = await createParsedTrack(pathToFile);
-                    win.webContents.send("newTrack", newTrack);
-                    fileTracker.saveChanges();
-                }
+ipcMain.on("processDroppedFiles", (e, droppedFiles) => {
+    console.log(droppedFiles);
+    win.webContents.send("normalMsg", `Processing Dropped Files: ${droppedFiles}`);
+    //User dropped an array of folders
+    if (fs.lstatSync(droppedFiles[0]).isDirectory()) {
+        console.log("User dropped folder(s)");
+        droppedFiles.forEach((folder: string) => {
+            parseFolder(folder, [], []).then((data) => {
+                prepareTracksForProcessing(data);
             });
-            setTimeout(() => {
-                win.webContents.send("playNow");
-            }, 1000);
-        }
+        });
+    }
+    //User dropped an array of files
+    else {
+        console.log("User dropped file(s)");
+        droppedFiles.forEach(async (file: string) => {
+            if (file.match(/\.mp3|\.webm|\.m4a|\.ogg/gi)) {
+                const newTrack = await createParsedTrack(file);
+                win.webContents.send("newTrack", newTrack);
+                fileTracker.saveChanges();
+            }
+        });
+        setTimeout(() => {
+            win.webContents.send("playNow");
+        }, 1000);
     }
 });
 ipcMain.on("updateSettings", async (e, payload: SettingsType) => {
@@ -368,7 +375,8 @@ async function prepareTracksForProcessing(foldersFinalData: Array<FolderType>) {
 }
 async function processTracks(data: Array<dataParamObj>, index: number) {
     console.log("Beginning to parse " + data[index].fileName);
-    await createParsedTrack(data[index].filePath);
+    const newTrack = await createParsedTrack(data[index].filePath);
+    win.webContents.send("newTrack", newTrack);
     console.log("Done parsing " + data[index].fileName);
     if (index !== data.length - 1) {
         processTracks(data, index + 1);
