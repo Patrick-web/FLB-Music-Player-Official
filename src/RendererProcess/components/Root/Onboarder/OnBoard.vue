@@ -107,7 +107,7 @@ export default {
     },
   },
   methods: {
-    ...mapMutations(["updateSetting", "UIcontrollerToggleProperty"]),
+    ...mapMutations(["updateSetting"]),
     goToSlide2() {
       this.currentSlide = 2;
       setInterval(() => {

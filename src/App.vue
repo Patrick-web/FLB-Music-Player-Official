@@ -10,12 +10,13 @@
         <SideNav />
         <router-view />
       </section>
-      <PlayingPane v-if="playingTrack" />
+      {{ $route.path }}
+      <PlayingPane v-if="playingTrack && $route.path !== '/deezer'" />
     </div>
     <Bg v-if="theme == 'fancy'" />
   </div>
 </template>
-<script lang="js">
+<script lang="js"> 
 	import Vue from "vue";
 
 	import { mapMutations ,mapActions} from "vuex";

@@ -1,18 +1,17 @@
 <template>
-  <div @click="getArtistData" class="squareCard artistCard">
-    <div class="thumbnailArea">
-      <img :src="artistInfo.picture" alt />
-    </div>
-    <div class="cardInfo">
-      <h4 class="artistName">{{ artistInfo.name }}</h4>
+  <div @click="getArtistData" class="groupCard">
+    <img class="coverArt" :src="artistInfo.picture" alt />
+    <div class="groupedCard_info">
+      <p class="groupedInfo_title">
+        {{ artistInfo.name }}
+      </p>
     </div>
   </div>
 </template>
 
 <script>
-import { mapActions, mapMutations } from "vuex";
+import { mapMutations } from "vuex";
 export default {
-  mounted() {},
   data() {
     return {
       artistData: {
@@ -24,10 +23,9 @@ export default {
     };
   },
   methods: {
-    ...mapMutations(["setBingArtistInfo"]),
     getArtistData() {
       document.body.classList.add("loading");
-      let requestOptions = {
+      const requestOptions = {
         method: "GET",
         redirect: "follow",
       };
@@ -56,7 +54,7 @@ export default {
             .then((response) => response.text())
             .then((result) => {
               this.artistData.albums = JSON.parse(result).data;
-              this.setBingArtistInfo(this.artistData);
+              this.$emit("selectedArtist", this.artistData);
               document.body.classList.remove("loading");
             })
             .catch((error) => console.log("error", error));
@@ -71,18 +69,4 @@ export default {
 </script>
 
 <style lang="scss">
-.artistCard {
-  height: 200px;
-  width: 200px;
-  border: 0px solid rgb(255, 255, 255);
-  .artistName {
-    font-size: 0.9em;
-    text-align: center;
-  }
-}
-.artistCard:hover {
-  .cardInfo {
-    box-shadow: none;
-  }
-}
 </style>

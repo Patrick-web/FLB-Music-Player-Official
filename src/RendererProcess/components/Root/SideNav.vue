@@ -10,8 +10,10 @@
         <img src="@/RendererProcess/assets/images/menu.svg" alt />
       </div>
       <div
-        class="sideNav-group active-sideNav-group"
-        @click="switchTo($event, 'localMusic')"
+        :class="[
+          $route.path === '/' ? 'active-sideNav-group' : '',
+          'sideNav-group',
+        ]"
       >
         <router-link to="/">
           <img
@@ -23,7 +25,13 @@
         </router-link>
       </div>
 
-      <div class="sideNav-group" @click="switchTo($event, 'deezer')">
+      <div
+        class="sideNav-group"
+        :class="[
+          $route.path === '/deezer' ? 'active-sideNav-group' : '',
+          'sideNav-group',
+        ]"
+      >
         <router-link to="/deezer">
           <img
             title="Deezer"
@@ -34,7 +42,12 @@
           <p v-if="!isCollapsed">Deezer</p>
         </router-link>
       </div>
-      <div class="sideNav-group">
+      <div
+        :class="[
+          $route.path === '/spotify' ? 'active-sideNav-group' : '',
+          'sideNav-group',
+        ]"
+      >
         <a>
           <span v-if="!isCollapsed">0%</span>
           <img
@@ -46,7 +59,12 @@
           <p v-if="!isCollapsed">Spotify</p>
         </a>
       </div>
-      <div class="sideNav-group">
+      <div
+        :class="[
+          $route.path === '/podcasts' ? 'active-sideNav-group' : '',
+          'sideNav-group',
+        ]"
+      >
         <a>
           <span v-if="!isCollapsed">75%</span>
           <img
@@ -58,17 +76,21 @@
           <p v-if="!isCollapsed">Podcasts</p>
         </a>
       </div>
-      <div class="sideNav-group">
-        <a>
+      <div
+        :class="[
+          $route.path === '/flbing' ? 'active-sideNav-group' : '',
+          'sideNav-group',
+        ]"
+      >
+        <router-link to="/flbing">
           <span v-if="!isCollapsed">80%</span>
           <img
-            title="Podcasts"
+            title="FLBing"
             class="whiten"
             src="@/RendererProcess/assets/images/flbing.svg"
-            alt
           />
           <p v-if="!isCollapsed">FLBing</p>
-        </a>
+        </router-link>
       </div>
     </div>
     <div>
@@ -119,12 +141,6 @@ export default {
   },
   methods: {
     ...mapMutations(["UIcontrollerToggleProperty"]),
-    switchTo(e, target) {
-      document
-        .querySelector(".active-sideNav-group")
-        .classList.remove("active-sideNav-group");
-      e.currentTarget.classList.add("active-sideNav-group");
-    },
     toggleSideNavEpansion() {
       this.isCollapsed = !this.isCollapsed;
       if (this.isCollapsed) {

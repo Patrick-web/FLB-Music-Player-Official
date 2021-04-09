@@ -1,30 +1,40 @@
 <template>
   <div class="FLBing">
-    <div v-if="!resultsGotten" class="SearchArea">
-      <h1>FLBing</h1>
+    <h1 v-if="!resultsGotten" style="font-size: 2.5rem">FLBING</h1>
+    <div :class="[resultsGotten ? 'shrinkToTop' : '', 'SearchArea']">
       <input
-        placeholder="Search, Select, Download"
+        placeholder="Search and Download Music"
         type="text"
         class="BigSearch inputElem"
         v-model="query"
         v-on:keyup.enter="search"
       />
+      <img
+        @click.stop="clearResults()"
+        src="@/RendererProcess/assets/images/x.svg"
+        v-if="resultsGotten"
+        id="clearResultsIcon"
+      />
+      <div id="fetchIndicator" v-if="searching" class="loadingIndicator"></div>
     </div>
-    <div v-if="resultsGotten" @click="reset" class="backToSearch">
-      <img src="@/RendererProcess/assets/images/back.svg" alt="" />
-    </div>
-    <div v-if="!resultsGotten && searching" class="loadingArea">
-      <div style="margin-left: 20px" class="loadingIndicator"></div>
-    </div>
-
-    <SearchResults v-if="resultsGotten && !bingArtistInfo" />
-    <ArtistPage v-if="bingArtistInfo" />
-    <AlbumPage v-if="bingAlbumInfo" />
+    <transition
+      enter-active-class="animated slideInUp extrafaster"
+      leave-active-class="animated slideOutDown extrafaster"
+    >
+      <SearchResults
+        v-on:selectedArtist="setSelectedArtist"
+        v-on:selectedAlbum="setSelectedAlbum"
+        v-if="resultsGotten"
+        :searchResults="results"
+      />
+    </transition>
+    <ArtistPage :artistInfo="selectedArtist" v-if="selectedArtist" />
+    <AlbumPage :albumInfo="selectedAlbum" v-if="selectedAlbum" />
   </div>
 </template>
 
 <script>
-import { mapGetters, mapMutations } from "vuex";
+import { mapMutations } from "vuex";
 import ArtistPage from "@/RendererProcess/components/FLBing/ArtistPage.vue";
 import AlbumPage from "@/RendererProcess/components/FLBing/AlbumPage.vue";
 import SearchResults from "@/RendererProcess/components/FLBing/SearchResults.vue";
@@ -34,10 +44,14 @@ export default {
       query: "",
       resultsGotten: false,
       searching: false,
+      results: {
+        tracks: [],
+        albums: [],
+        artists: [],
+      },
+      selectedArtist: null,
+      selectedAlbum: null,
     };
-  },
-  computed: {
-    ...mapGetters(["bingArtistInfo", "bingAlbumInfo"]),
   },
   methods: {
     ...mapMutations([
@@ -47,6 +61,16 @@ export default {
       "setBingArtistInfo",
       "setBingAlbumInfo",
     ]),
+    setSelectedArtist(payload) {
+      console.log("setSelectedArtis");
+      this.selectedArtist = payload;
+      console.table(payload);
+    },
+    setSelectedAlbum(payload) {
+      console.log("setSelectedAlbum");
+      this.selectedAlbum = payload;
+      console.table(payload);
+    },
     reset() {
       this.setBingArtistInfo(null);
       this.setBingAlbumInfo(null);
@@ -55,6 +79,12 @@ export default {
     },
     hideModal() {
       document.querySelector(".FLBing").style.display = "none";
+    },
+    clearResults() {
+      this.results.tracks = [];
+      this.results.artists = [];
+      this.results.albums = [];
+      this.resultsGotten = false;
     },
     search() {
       this.searching = true;
@@ -68,8 +98,7 @@ export default {
       )
         .then((response) => response.text())
         .then((result) => {
-          this.setBingTracks(JSON.parse(result).results);
-          this.$emit("goFullflbing", true);
+          this.results.tracks = JSON.parse(result).results;
         })
         .catch((error) => console.log("error", error));
 
@@ -79,7 +108,7 @@ export default {
       )
         .then((response) => response.text())
         .then((result) => {
-          this.setBingArtists(JSON.parse(result).results.slice(0, 6));
+          this.results.artists = JSON.parse(result).results.slice(0, 6);
         })
         .catch((error) => console.log("error", error));
       fetch(
@@ -90,7 +119,7 @@ export default {
         .then((result) => {
           this.searching = false;
           this.resultsGotten = true;
-          this.setBingAlbums(JSON.parse(result).results.slice(0, 18));
+          this.results.albums = JSON.parse(result).results.slice(0, 18);
         })
         .catch((error) => console.log("error", error));
     },
@@ -107,34 +136,49 @@ export default {
   flex-direction: column;
   justify-content: center;
   position: relative;
-  .backToSearch {
-    position: fixed;
-    z-index: 10;
-    top: 10px;
-    left: 35%;
-    transform: translateX(-50%);
-    background: black;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 5px;
-    cursor: pointer;
-    img {
-      width: 20px;
+  .shrinkToTop {
+    top: 2% !important;
+    left: 50% !important;
+    transform: translateX(-50%) translateY(0%) !important;
+    width: 60% !important;
+    #fetchIndicator {
+      right: -5px !important;
+      top: 60% !important;
+      transform: scale(0.8) translateY(-50%) !important;
+    }
+    .BigSearch {
+      font-size: 1rem;
+      padding: 10px;
     }
   }
-  .backToSearch:hover {
-    filter: invert(1);
-  }
   .SearchArea {
+    position: absolute;
+    z-index: 3;
+    top: 50%;
+    left: 50%;
+    transform: translateY(-50%) translateX(-50%);
+    width: 50%;
     display: flex;
     flex-direction: column;
     align-items: center;
+    #clearResultsIcon {
+      position: absolute;
+      right: 0px;
+      width: 15px;
+      bottom: 15px;
+      cursor: pointer;
+      z-index: 4;
+    }
+    #fetchIndicator {
+      position: absolute;
+      right: -15px;
+      top: 70%;
+      transform: scale(1) translateY(-50%);
+    }
   }
   h1 {
-    margin-top: -100px;
-    margin-bottom: 10px;
+    margin-top: -140px;
+    text-shadow: 2px 2px 0px rgba(255, 255, 255, 0.295);
     text-align: center;
   }
   .BigSearch {
@@ -143,7 +187,7 @@ export default {
     border-radius: 40px;
     outline: none;
     border: none;
-    background: rgb(0, 0, 0);
+    background: rgba(255, 255, 255, 0.103);
     font-size: 1.2em;
     font-family: roboto-thin;
   }

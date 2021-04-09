@@ -1,6 +1,7 @@
 import Vue from "vue";
 import VueRouter, { RouteConfig } from "vue-router";
 import LocalMusic from "../views/LocalMusic/LocalMusic.vue";
+import FLBing from '../views/FLBing.vue'
 import Deezer from "../views/Deezer.vue";
 import Spotify from "../views/Spotify.vue";
 import HomeTab from "../views/LocalMusic/Tabs/HomeTab.vue";
@@ -10,7 +11,6 @@ import ArtistsTab from "../views/LocalMusic/Tabs/ArtistsTab.vue";
 import AlbumsTab from "../views/LocalMusic/Tabs/AlbumsTab.vue";
 import FoldersTab from "../views/LocalMusic/Tabs/FoldersTab.vue";
 import PlaylistsTab from "../views/LocalMusic/Tabs/PlaylistsTab.vue";
-// import FLBing from '../views/FLBing.vue'
 
 Vue.use(VueRouter);
 
@@ -56,6 +56,10 @@ const routes: Array<RouteConfig> = [
 	{
 		path: "/spotify",
 		component: Spotify,
+	},
+	{
+		path: "/flbing",
+		component: FLBing,
 	},
 ];
 

@@ -58,10 +58,6 @@ export default {
   },
   methods: {
     ...mapMutations(["UIcontrollerToggleProperty", "addToSelectedTracks"]),
-    selectPlayingTrack() {
-      this.addToSelectedTracks(this.playingTrack);
-      this.UIcontrollerToggleProperty("showTagEditor");
-    },
     emitPlayingTrack() {
       this.$emit("targetTrack", this.playingTrack);
     },

@@ -1,34 +1,33 @@
 <template>
-  <div class="TrackCard track">
-    <img
-      class="coverArt"
-      :src="trackInfo.album_cover || trackInfo.album.cover"
-      alt=""
-    />
+  <div class="bingTrack">
     <div class="info">
-      <h4 class="trackTitle">
+      <img
+        class="coverArt"
+        :src="trackInfo.album_cover || overideCoverArt"
+        alt=""
+      />
+      <p style="font-family: roboto" class="trackTitle">
         {{ trackInfo.title }}
-      </h4>
-      <div class="grid2">
-        <p @click="getArtistData" class="artist">{{ trackInfo.artist_name }}</p>
-        <div class="duration" v-if="trackInfo.duration">
-          {{ JSON.stringify(trackInfo.duration).toHHMMSS() }}
-        </div>
+      </p>
+      <p style="font-size: 0.9rem" @click="getArtistData" class="artist">
+        {{ trackInfo.artist_name }}
+      </p>
+    </div>
+    <div class="trackActions">
+      <div @click="playPreview" class="trackBt">
+        <img
+          src="@/RendererProcess/assets/images/playButton.svg"
+          style="width: 20px"
+          alt=""
+        />
       </div>
-    </div>
-    <div @click="playPreview" class="trackBt">
-      <img
-        src="@/RendererProcess/assets/images/playButton.svg"
-        style="width: 20px"
-        alt=""
-      />
-    </div>
-    <div @click="downloadTrack" class="trackBt">
-      <img
-        src="@/RendererProcess/assets/images/save_alt.svg"
-        style="width: 20px"
-        alt=""
-      />
+      <div @click="downloadTrack" class="trackBt">
+        <img
+          src="@/RendererProcess/assets/images/save_alt.svg"
+          style="width: 20px"
+          alt=""
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -70,10 +69,6 @@ export default {
             album: res.album.title,
             cover: this.trackInfo.album_cover || this.trackInfo.album.cover,
             path: res.preview,
-          });
-          const notify = this.$vs.notify({
-            position: "top-center",
-            title: `Loading the preview`,
           });
         })
         .catch((error) => {
@@ -134,14 +129,28 @@ export default {
   },
   props: {
     trackInfo: Object,
+    overideCoverArt: String,
   },
 };
 </script>
 
 <style lang="scss">
-.track {
+.bingTrack {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.377);
+  .info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  p {
+    font-size: 0.95rem;
+    font-family: roboto-thin;
+  }
   .coverArt {
-    width: 50px;
+    width: 35px;
   }
   .trackBt {
     display: flex;
@@ -161,9 +170,8 @@ export default {
   .artist:hover {
     text-decoration: underline;
   }
-  .duration {
-    transform: translateY(-50%);
-    margin-right: 10px;
+  .trackActions {
+    display: flex;
   }
 }
 .track:hover {

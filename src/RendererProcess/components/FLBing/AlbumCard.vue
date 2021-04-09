@@ -1,16 +1,16 @@
 <template>
-  <div @click="getAlbumData" class="squareCard">
-    <div class="thumbnailArea">
-      <img :src="albumInfo.cover" alt />
-    </div>
-    <div class="cardInfo">
-      <h4 class="albumName">{{ albumInfo.title }}</h4>
+  <div @click="getAlbumData" class="groupCard">
+    <img class="coverArt" :src="albumInfo.cover" alt />
+    <div class="groupedCard_info">
+      <p class="groupedInfo_title">
+        {{ albumInfo.title }}
+      </p>
     </div>
   </div>
 </template>
 
 <script>
-import { mapActions, mapMutations } from "vuex";
+import { mapMutations } from "vuex";
 export default {
   data() {
     return {
@@ -22,11 +22,9 @@ export default {
     };
   },
   methods: {
-    ...mapMutations(["setBingAlbumInfo", "setBingArtistInfo"]),
     getAlbumData() {
       document.body.classList.add("loading");
-      this.setBingArtistInfo(null);
-      let requestOptions = {
+      const requestOptions = {
         method: "GET",
         redirect: "follow",
       };
@@ -43,8 +41,7 @@ export default {
           this.albumData.tracks.forEach((track) => {
             track["album_cover"] = this.albumData.cover;
           });
-          this.setBingAlbumInfo(this.albumData);
-          this.setBingArtistInfo(null);
+          this.$emit("selectedAlbum", this.albumData);
           document.body.classList.remove("loading");
         })
         .catch((error) => console.log("error", error));

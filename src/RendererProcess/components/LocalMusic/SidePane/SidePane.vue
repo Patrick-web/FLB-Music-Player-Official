@@ -87,7 +87,10 @@ export default {
     },
   },
   methods: {
-    ...mapMutations(["UIcontrollerSetPropertyValue"]),
+    ...mapMutations([
+      "UIcontrollerSetPropertyValue",
+      "UIcontrollerToggleProperty",
+    ]),
     switchAidePaneActiveTab(tab) {
       this.UIcontrollerSetPropertyValue({
         property: "currentSidePaneTab",
