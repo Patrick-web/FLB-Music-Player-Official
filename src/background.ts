@@ -195,6 +195,8 @@ ipcMain.on("refresh", () => {
 });
 
 ipcMain.on("playingTrack", async (e, track: TrackType) => {
+    console.log("Received playing tracks as");
+    console.table(track);
     playbackStats.addFile(track);
     if (!appIsFocused && settings.getSettings.desktopNotifications) {
         sendNativeNotification(

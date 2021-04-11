@@ -29,7 +29,18 @@ import { shuffleArray } from "@/sharedUtilities";
 export default {
   computed: {
     randomColorGenerator() {
-      const colors = ["#3182FF", "#3074FF", "#0066FF"];
+      const colors = [
+        "#7A86CB",
+        "#BA68C6",
+        "#FD8B64",
+        "#ACD580",
+        "#FCD450",
+        "#4FC2F6",
+        "#4DB6AC",
+        "#EE6390",
+        "#E57375",
+        "#FF8A66",
+      ];
       const shuffledColors = shuffleArray(colors);
       const styleObject = {
         color: shuffledColors[0],

@@ -59,7 +59,7 @@ export default {
     },
   },
   mounted() {
-    document.querySelector(".LocalMusic").addEventListener("drop", (event) => {
+    document.querySelector("#tabsArea").addEventListener("drop", (event) => {
       event.preventDefault();
       event.stopPropagation();
       const filePaths = Array.from(event.dataTransfer.files).map(
@@ -67,7 +67,7 @@ export default {
       );
       ipcRenderer.send("processDroppedFiles", filePaths);
     });
-    document.querySelector(".LocalMusic").addEventListener("dragover", (e) => {
+    document.querySelector("#tabsArea").addEventListener("dragover", (e) => {
       e.preventDefault();
       e.stopPropagation();
     });

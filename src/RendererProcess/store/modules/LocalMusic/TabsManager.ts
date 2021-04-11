@@ -147,6 +147,14 @@ const actions: ActionTree<TabsManagerStateInterface, any> = {
                 .map((track: TrackType) => track.artist || track.extractedArtist)
                 .filter((artist: string) => artist)
         );
+
+        //Algorithm 👇 to break down artist collabos eg. ['mane','rick,jin'] to ['mane',rick','jin']
+        // const artistNamesWithoutCollabos = Array.from(artistNames)
+        //     .map(item => item.split(','))
+        //     .join()
+        //     .split(',')
+        //Still debating on whether to do this or a better alternative
+
         //Loop through each artist to generate artistInfo objects
         artistNames.forEach((artist) => {
             const artistInfo: ArtistType = {
