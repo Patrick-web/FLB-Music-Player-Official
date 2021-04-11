@@ -1,7 +1,7 @@
 <template>
   <div class="TrackBar">
     <audio :src="playingTrack.r_fileLocation" id="audioTag" autoplay></audio>
-    <div @click="seek($event)" class="seekBar">
+    <div @click="goToPosition($event)" class="seekBar">
       <div class="seekProgress">
         <div></div>
         <div class="elipse"></div>
@@ -62,7 +62,7 @@ export default {
         video.currentTime = audio.currentTime + 30;
       }
     },
-    seek(e) {
+    goToPosition(e) {
       const track = document.querySelector(".seekBar");
       const seekProgress = document.querySelector(".seekProgress");
       const length = e.clientX - track.getBoundingClientRect().x;
@@ -79,6 +79,9 @@ export default {
         video.play();
       }
       audio.play();
+    },
+    seekPlayback(e) {
+      console.log("Dragging");
     },
     timeFormatter(duration) {
       // Hours, minutes and seconds
@@ -128,6 +131,10 @@ export default {
     audio.addEventListener("pause", () => {
       const playIcon = document.querySelector("#playIcon");
       if (playIcon) playIcon.click();
+    });
+
+    document.querySelector(".seekBar").addEventListener("dragstart", (e) => {
+      console.log("Seeking");
     });
   },
 };

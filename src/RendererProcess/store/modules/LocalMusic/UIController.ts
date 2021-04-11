@@ -11,6 +11,7 @@ interface UIControllerStateInterface {
         showPlaylistWidget: boolean;
         currentMainTab: 'Tracks' | 'Recents' | 'Playlists' | 'Home' | 'Albums' | 'Artists';
         currentSidePaneTab: 'TrackInfo' | 'Lyrics' | 'CustomQueue';
+        multiSelectMode: boolean;
     };
 }
 const state: UIControllerStateInterface = {
@@ -19,7 +20,8 @@ const state: UIControllerStateInterface = {
         showTagEditor: false,
         showPlaylistWidget: false,
         currentMainTab: 'Tracks',
-        currentSidePaneTab: 'TrackInfo'
+        currentSidePaneTab: 'TrackInfo',
+        multiSelectMode: false,
     },
 };
 const mutations = {

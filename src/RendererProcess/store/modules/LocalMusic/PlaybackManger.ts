@@ -71,7 +71,7 @@ const mutations = {
     overWriteCustomQueue(state: any, payload: Array<TrackType>) {
         const copyOfPayload = [...payload];
         copyOfPayload.shift();
-        state.customQueue = [copyOfPayload];
+        state.customQueue = copyOfPayload;
     },
 };
 const actions: ActionTree<PlaybackManagerStateInterface, any> = {

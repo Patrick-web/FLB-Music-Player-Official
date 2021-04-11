@@ -136,7 +136,7 @@ export default {
   },
   computed: {
     UIcontroller() {
-      return this.$store.state.UIcontroller.UIProperties;
+      return this.$store.state.UIController.UIProperties;
     },
   },
   methods: {

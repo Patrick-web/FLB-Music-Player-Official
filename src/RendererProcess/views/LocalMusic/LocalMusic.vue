@@ -8,7 +8,7 @@
       <TagEditor v-if="showTagEditor" :targetTrack="selectedTrack" />
     </transition>
     <main>
-      <section id="tabsArea">
+      <section :class="[multiSelectOn ? 'multiSelectMode' : '']" id="tabsArea">
         <TrackContextMenu v-on:targetTrack="setTagEditorTrack" />
         <TabsPaneHeader />
         <TabSwitcher />
@@ -40,6 +40,9 @@ export default {
     },
     showTagEditor() {
       return this.$store.state.UIController.UIProperties.showTagEditor;
+    },
+    multiSelectOn() {
+      return this.$store.state.UIController.UIProperties.multiSelectMode;
     },
   },
   components: {

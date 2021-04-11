@@ -2,7 +2,7 @@
   <button
     title="Select Multiple Tracks"
     @click.stop="toggleMultiSelect"
-    :class="[multiSelect ? 'bt_active' : '', 'btWithIcon']"
+    :class="[multiSelectOn ? 'bt_active' : '', 'btWithIcon']"
   >
     <p>Select</p>
     <img src="@/RendererProcess/assets/images/multiselect.svg" alt="" />
@@ -12,20 +12,22 @@
 <script>
 import { mapMutations } from "vuex";
 export default {
-  data() {
-    return {
-      multiSelect: false,
-    };
+  computed: {
+    multiSelectOn() {
+      return this.$store.state.UIController.UIProperties.multiSelectMode;
+    },
   },
   methods: {
-    ...mapMutations(["selectGroup", "clearSelectedTracks"]),
+    ...mapMutations([
+      "selectGroup",
+      "clearSelectedTracks",
+      "UIcontrollerToggleProperty",
+    ]),
     toggleMultiSelect() {
-      this.multiSelect = !this.multiSelect;
+      this.UIcontrollerToggleProperty("multiSelectMode");
       this.clearSelectedTracks();
-      const centralArea = document.querySelector("#tabsArea");
-      centralArea.classList.toggle("multiSelectMode");
       const trackOptions = document.querySelector(".trackOptions");
-      if (this.multiSelect) {
+      if (this.multiSelectOn) {
         trackOptions.style.height = `0px`;
         trackOptions.style.top = `300px`;
         trackOptions.style.left = `600px`;

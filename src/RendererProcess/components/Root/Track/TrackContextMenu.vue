@@ -66,7 +66,6 @@ export default {
       "addToCustomQueue",
       "addSelectedTrackToCustomQueue",
       "setSelectedTrackToPlayNext",
-      "UIcontrollerSetPropertyValue",
       "clearSelectedTracks",
       "pushNotification",
     ]),
@@ -94,8 +93,10 @@ export default {
     },
     close() {
       document.querySelector(".trackOptions").style.height = `0px`;
-      const centralArea = document.querySelector("#tabsArea");
-      centralArea.classList.remove("multiSelectMode");
+      this.UIcontrollerSetPropertyValue({
+        property: "multiSelectMode",
+        newValue: false,
+      });
     },
     showPlaylistWidget() {
       if (!this.UIcontroller.showPlaylistWidget) {
