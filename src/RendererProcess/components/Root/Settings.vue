@@ -1,6 +1,8 @@
 <template>
   <div class="Settings">
-    <h1 id="SettingsTitle">Settings</h1>
+    <h1 id="SettingsTitle" style="font-size: 1.6rem; margin-top: 5px">
+      Settings
+    </h1>
     <p class="modalClose" @click="UIcontrollerToggleProperty('showSettings')">
       <img src="@/RendererProcess/assets/images/x.svg" alt="" />
     </p>
@@ -20,189 +22,76 @@
                   {{ folder }}
                 </p>
               </div>
-              <button
-                @click="removeFromScannedFolders(folder)"
-                title="Remove folder"
-                class="iconBt dangerBt"
-              >
-                <img
-                  style="width: 15px"
-                  src="@/RendererProcess/assets/images/x.svg"
-                  alt=""
-                />
-              </button>
+              <base-button
+                @click.native="removeFromScannedFolders(folder)"
+                :icon="require('@/RendererProcess/assets/images/x.svg')"
+              />
             </div>
           </div>
-          <button
-            style="margin-left: 10px; width: 95%"
-            class="bt_active"
-            @click="addFolder"
-          >
-            <h2>Add Folder</h2>
-          </button>
+          <div class="uselessWrapper">
+            <base-button
+              @click.native="addFolder"
+              text="Add Folder"
+              :block="true"
+              :active="true"
+            />
+          </div>
         </article>
         <article>
           <div class="settingBox">
             <h4>Default Tab</h4>
             <ul class="grid3 gap20">
               <div
-                @click="
-                  setSettingValue({ property: 'defaultTab', newValue: 'Home' })
-                "
-                :class="[settings.defaultTab == 'Home' ? 'activeSetting' : '']"
-              >
-                <p>Home</p>
-              </div>
-              <div
+                v-for="tab in tabs"
+                :key="tab.name"
                 @click="
                   setSettingValue({
                     property: 'defaultTab',
-                    newValue: 'Tracks',
+                    newValue: tab.name,
                   })
                 "
                 :class="[
-                  settings.defaultTab == 'Tracks' ? 'activeSetting' : '',
+                  settings.defaultTab == tab.name ? 'defaultTab' : '',
+                  'tabDiv',
                 ]"
               >
-                <p>Tracks</p>
-              </div>
-              <div
-                @click="
-                  setSettingValue({
-                    property: 'defaultTab',
-                    newValue: 'Artists',
-                  })
-                "
-                :class="[
-                  settings.defaultTab == 'Artists' ? 'activeSetting' : '',
-                ]"
-              >
-                <p>Artists</p>
-              </div>
-              <div
-                @click="
-                  setSettingValue({
-                    property: 'defaultTab',
-                    newValue: 'Albums',
-                  })
-                "
-                :class="[
-                  settings.defaultTab == 'Albums' ? 'activeSetting' : '',
-                ]"
-              >
-                <p>Albums</p>
-              </div>
-              <div
-                @click="
-                  setSettingValue({
-                    property: 'defaultTab',
-                    newValue: 'Folders',
-                  })
-                "
-                :class="[
-                  settings.defaultTab == 'Folders' ? 'activeSetting' : '',
-                ]"
-              >
-                <p>Folders</p>
-              </div>
-              <div
-                @click="
-                  setSettingValue({
-                    property: 'defaultTab',
-                    newValue: 'Playlists',
-                  })
-                "
-                :class="[
-                  settings.defaultTab == 'Playlists' ? 'activeSetting' : '',
-                ]"
-              >
-                <p>Playlists</p>
+                <img :src="tab.icon" alt="" />
+                <p>{{ tab.name }}</p>
               </div>
             </ul>
           </div>
         </article>
         <article>
           <h4>Accent Color</h4>
-          <ul class="grid3 gap10">
+          <ul class="grid5 gap10">
             <div
+              v-for="(color, index) in accentColors"
               @click="
                 setSettingValue({
                   property: 'accentColor',
-                  newValue: 'accent_blue',
+                  newValue: 'accent_' + index,
                 })
               "
-              :class="[
-                settings.accentColor == 'accent_blue' ? 'activeSetting' : '',
-              ]"
-            >
-              <p>Blue</p>
-            </div>
-            <div
-              @click="
-                setSettingValue({
-                  property: 'accentColor',
-                  newValue: 'accent_orange',
-                })
-              "
-              :class="[
-                settings.accentColor == 'accent_orange' ? 'activeSetting' : '',
-              ]"
-            >
-              <p>Orange</p>
-            </div>
-            <div
-              @click="
-                setSettingValue({
-                  property: 'accentColor',
-                  newValue: 'accent_purple',
-                })
-              "
-              :class="[
-                settings.accentColor == 'accent_purple' ? 'activeSetting' : '',
-              ]"
-            >
-              <p>Purple</p>
-            </div>
-            <div
-              @click="
-                setSettingValue({
-                  property: 'accentColor',
-                  newValue: 'accent_magenta',
-                })
-              "
-              :class="[
-                settings.accentColor == 'accent_magenta' ? 'activeSetting' : '',
-              ]"
-            >
-              <p>Magenta</p>
-            </div>
-            <div
-              @click="
-                setSettingValue({
-                  property: 'accentColor',
-                  newValue: 'accent_cyan',
-                })
-              "
-              :class="[
-                settings.accentColor == 'accent_cyan' ? 'activeSetting' : '',
-              ]"
-            >
-              <p>Cyan</p>
-            </div>
-            <div
-              @click="
-                setSettingValue({
-                  property: 'accentColor',
-                  newValue: 'accent_white',
-                })
-              "
-              :class="[
-                settings.accentColor == 'accent_white' ? 'activeSetting' : '',
-              ]"
-            >
-              <p>Grey</p>
-            </div>
+              :style="{ background: color }"
+              :key="color"
+              class="colorDiv"
+            ></div>
           </ul>
+        </article>
+        <article>
+          <div
+            @click="
+              setSettingValue({
+                property: 'desktopNotifications',
+                newValue: !settings.desktopNotifications,
+              })
+            "
+            class="switch"
+          >
+            <p>Desktop Notifications</p>
+            <p v-if="settings.desktopNotifications">On</p>
+            <p v-if="!settings.desktopNotifications">Off</p>
+          </div>
         </article>
       </section>
       <section>
@@ -230,26 +119,6 @@
           </ul>
         </article>
         <article>
-          <div
-            @click="
-              setSettingValue({
-                property: 'desktopNotifications',
-                newValue: !settings.desktopNotifications,
-              })
-            "
-            class="switch"
-          >
-            <p>Desktop Notifications</p>
-            <p v-if="settings.desktopNotifications">On</p>
-            <p v-if="!settings.desktopNotifications">Off</p>
-          </div>
-        </article>
-        <article>
-          <button @click="resetApp" class="dangerBt bt_block">
-            <h2>Reset FLB 😵</h2>
-          </button>
-        </article>
-        <article>
           <h3>Shortcuts</h3>
           <div class="shortcut">
             <p>Pause/Play</p>
@@ -271,32 +140,26 @@
             <p>Search Tracks</p>
             <pre>Tab</pre>
           </div>
-          <div class="shortcut">
-            <p>Reload App</p>
-            <pre>Ctrl + R</pre>
-          </div>
         </article>
-      </section>
-      <section style="border: none">
         <article>
           <h3>About</h3>
           <div class="infos">
             <div class="info-group">
-              <div class="it">App Version</div>
+              <div class="it">💽 App Version</div>
               <div class="i">{{ appVersion }}</div>
             </div>
             <div class="info-group">
-              <div class="it">Made with 🤍 By</div>
+              <div class="it">🚀 Made with 🤍 By</div>
               <div class="i">Patrick Waweru</div>
             </div>
             <div class="info-group">
-              <div class="it">Twitter 🐦</div>
+              <div class="it">🐦 Twitter</div>
               <a target="_blank" href="https://twitter.com/PnTX10" class="i"
                 >@PnTX10</a
               >
             </div>
             <div class="info-group">
-              <div class="it">Email 📬</div>
+              <div class="it">📬 Email</div>
               <a target="_blank" href="https://mail.google.com" class="i"
                 >pntx200@gmail.com</a
               >
@@ -307,6 +170,13 @@
           </div>
         </article>
       </section>
+      <!-- <section style="border: none">
+        <article>
+          <button @click="resetApp" class="dangerBt bt_block">
+            <h2>Reset FLB 😵</h2>
+          </button>
+        </article>
+      </section> -->
     </main>
   </div>
 </template>
@@ -315,10 +185,38 @@
 import { sendMessageToNode } from "@/RendererProcess/utilities/index";
 import { mapMutations } from "vuex";
 import { ipcRenderer } from "electron";
+import homeIcon from "@/RendererProcess/assets/images/home.svg";
+import tracksIcon from "@/RendererProcess/assets/images/music_note.svg";
+import playlistsIcon from "@/RendererProcess/assets/images/playlist.svg";
+import albumIcon from "@/RendererProcess/assets/images/album.svg";
+import artistIcon from "@/RendererProcess/assets/images/user.svg";
+import folderIcon from "@/RendererProcess/assets/images/folderNormal.svg";
+import BaseButton from "../BaseComponents/BaseButton.vue";
 export default {
+  components: { BaseButton },
   data() {
     return {
       appVersion: "0.0.1",
+      tabs: [
+        { name: "Home", icon: homeIcon },
+        { name: "Tracks", icon: tracksIcon },
+        { name: "Playlists", icon: playlistsIcon },
+        { name: "Artists", icon: artistIcon },
+        { name: "Albums", icon: albumIcon },
+        { name: "Folders", icon: folderIcon },
+      ],
+      accentColors: [
+        "#0066ff",
+        "#7A86CB",
+        "#BA68C6",
+        "#FD8B64",
+        "#ACD580",
+        "#FCD450",
+        "#4DB6AC",
+        "#EE6390",
+        "#E57375",
+        "#FF8A66",
+      ],
     };
   },
   computed: {
@@ -355,14 +253,11 @@ export default {
   background-color: rgba(0, 0, 0, 0.445);
   backdrop-filter: blur(20px);
   overflow: hidden;
-  top: 0px;
+  top: 32px;
   right: 0px;
-  height: 100%;
+  height: 96%;
   width: 100vw;
   z-index: 50;
-  #SettingsTitle {
-    margin: 10px;
-  }
   main {
     display: grid !important;
     grid-template-columns: 1fr 1fr 1fr;
@@ -371,57 +266,55 @@ export default {
     section {
       border-right: 1px solid white;
       height: 90vh;
-      article {
-        margin: 10px;
-        margin-bottom: 20px;
-        background: rgba(255, 255, 255, 0.062);
+
+      p {
+        font-family: roboto-light;
+      }
+      .folderBoxWrapper {
+        max-height: 140px;
+        overflow: hidden;
+        overflow-y: scroll;
         padding: 10px;
-        border-radius: 10px;
-        .folderBoxWrapper {
-          max-height: 140px;
-          overflow: hidden;
-          overflow-y: scroll;
-          padding: 10px;
-          padding-bottom: 0px;
-          padding-top: 0px;
-        }
-        h4 {
-          text-align: center;
-          margin-bottom: 10px;
-          font-size: 1.2rem;
-        }
-        .folderBox {
+        padding-bottom: 0px;
+        padding-top: 0px;
+      }
+      .uselessWrapper {
+        padding: 15px;
+        padding-top: 0px;
+        padding-bottom: 0px;
+      }
+    }
+    article {
+      background: rgba(255, 255, 255, 0.062);
+      margin: 10px;
+      padding: 10px;
+      border-radius: 20px;
+      overflow: hidden;
+      h4 {
+        text-align: center;
+        margin-bottom: 10px;
+        font-size: 1.2rem;
+      }
+      .folderBox {
+        background: rgba(255, 255, 255, 0.096);
+        padding: 10px;
+        margin-bottom: 10px;
+        border-radius: 20px;
+        display: flex;
+        justify-content: space-between;
+      }
+      ul {
+        div {
+          justify-self: center;
           background: rgba(255, 255, 255, 0.096);
-          padding: 10px;
-          margin-bottom: 10px;
-          border-radius: 20px;
+          height: 50px;
+          width: 100%;
           display: flex;
-          justify-content: space-between;
-          button {
-            margin-top: 0px;
-          }
-        }
-        ul {
-          div {
-            justify-self: center;
-            background: rgba(255, 255, 255, 0.096);
-            height: 50px;
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            border-radius: 15px;
-            cursor: pointer;
-          }
-          div:hover {
-            background: var(--accentColorLight);
-          }
-          .activeSetting {
-            background: var(--accentColor) !important;
-          }
-          .activeSetting:hover {
-            background: var(--accentColor);
-          }
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          border-radius: 15px;
+          cursor: pointer;
         }
       }
     }
@@ -443,15 +336,14 @@ export default {
     border-bottom: 1px solid rgba(255, 255, 255, 0.192);
     border-radius: 0px;
     cursor: pointer;
-    p {
-      font-family: roboto-light;
-      margin-right: 5px;
+    &:hover {
+      background-color: #ffffff1e;
+      border-radius: 20px;
+      margin: 5px;
     }
   }
-  .setting:hover {
-    background-color: #ffffff1e;
-    border-radius: 20px;
-    margin: 5px;
+  .activeSetting {
+    background: var(--accentColor) !important;
   }
   .shortcut {
     display: flex;
@@ -462,7 +354,7 @@ export default {
     padding-bottom: 5px;
     font-family: roboto-light;
     pre {
-      background: rgb(0, 0, 0);
+      background: rgba(0, 0, 0, 0.24);
       padding: 5px;
       border-radius: 8px;
     }
@@ -473,17 +365,46 @@ export default {
     margin-bottom: 10px;
     margin-left: 10px;
     font-size: 1.2em;
+    display: flex;
+    justify-content: space-between;
     border-bottom: 1px solid rgba(255, 255, 255, 0.39);
-    .it {
-      font-family: roboto-light;
-      font-weight: 300;
-      font-size: 0.9em;
+    font-family: roboto-light;
+    font-size: var(--baseFontSize);
+  }
+}
+.colorDiv {
+  border-radius: 50% !important;
+  width: 40px !important;
+  height: 40px !important;
+  &:hover {
+    transform: scale(1.1);
+  }
+}
+.tabDiv {
+  width: 70px !important;
+  padding: 10px;
+  &:hover {
+    img {
+      transform: translateY(10px) scale(1.3);
     }
-    .i {
-      font-size: 0.8em;
-      font-family: roboto-thin;
-      font-weight: 300;
+    p {
+      transform: translateY(20px) scale(0);
     }
+  }
+  p {
+    font-family: roboto-thin;
+  }
+  img {
+    width: 25px;
+  }
+}
+.defaultTab {
+  background: var(--accentColor) !important;
+  img {
+    transform: translateY(10px) scale(1.3);
+  }
+  p {
+    transform: translateY(20px) scale(0);
   }
 }
 </style>

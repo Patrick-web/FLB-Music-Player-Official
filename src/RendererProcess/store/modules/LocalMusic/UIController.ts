@@ -9,8 +9,9 @@ interface UIControllerStateInterface {
         showSettings: boolean;
         showTagEditor: boolean;
         showPlaylistWidget: boolean;
+        currentPage: 'My Music' | 'Deezer' | 'Spotify' | 'Podcasts' | 'FLBing';
         currentMainTab: 'Tracks' | 'Recents' | 'Playlists' | 'Home' | 'Albums' | 'Artists';
-        currentSidePaneTab: 'TrackInfo' | 'Lyrics' | 'CustomQueue';
+        currentSidePaneTab: 'Info' | 'Lyrics' | 'Queue';
         multiSelectMode: boolean;
     };
 }
@@ -19,8 +20,9 @@ const state: UIControllerStateInterface = {
         showSettings: false,
         showTagEditor: false,
         showPlaylistWidget: false,
-        currentMainTab: 'Tracks',
-        currentSidePaneTab: 'TrackInfo',
+        currentPage: 'My Music',
+        currentMainTab: 'Home',
+        currentSidePaneTab: 'Info',
         multiSelectMode: false,
     },
 };

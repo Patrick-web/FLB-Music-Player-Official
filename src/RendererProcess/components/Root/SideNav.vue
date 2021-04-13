@@ -2,18 +2,11 @@
   <div class="sideNav" :class="[isCollapsed ? 'collapsed' : '', 'sideNav']">
     <div>
       <div
-        style="width: 25px; padding: 5px"
-        @click="toggleSideNavEpansion"
-        class="sideNav-group"
-        id="menuIcon"
-      >
-        <img src="@/RendererProcess/assets/images/menu.svg" alt />
-      </div>
-      <div
         :class="[
-          $route.path === '/' ? 'active-sideNav-group' : '',
+          currentPage === 'My Music' ? 'active-sideNav-group' : '',
           'sideNav-group',
         ]"
+        @click="switchPage('My Music')"
       >
         <router-link to="/">
           <img
@@ -28,9 +21,10 @@
       <div
         class="sideNav-group"
         :class="[
-          $route.path === '/deezer' ? 'active-sideNav-group' : '',
+          currentPage === 'Deezer' ? 'active-sideNav-group' : '',
           'sideNav-group',
         ]"
+        @click="switchPage('Deezer')"
       >
         <router-link to="/deezer">
           <img
@@ -44,9 +38,10 @@
       </div>
       <div
         :class="[
-          $route.path === '/spotify' ? 'active-sideNav-group' : '',
+          currentPage === 'Spotify' ? 'active-sideNav-group' : '',
           'sideNav-group',
         ]"
+        @click="switchPage('Spotify')"
       >
         <a>
           <span v-if="!isCollapsed">0%</span>
@@ -61,9 +56,10 @@
       </div>
       <div
         :class="[
-          $route.path === '/podcasts' ? 'active-sideNav-group' : '',
+          currentPage === 'Podcasts' ? 'active-sideNav-group' : '',
           'sideNav-group',
         ]"
+        @click="switchPage('Podcasts')"
       >
         <a>
           <span v-if="!isCollapsed">75%</span>
@@ -78,9 +74,10 @@
       </div>
       <div
         :class="[
-          $route.path === '/flbing' ? 'active-sideNav-group' : '',
+          currentPage === 'FLBing' ? 'active-sideNav-group' : '',
           'sideNav-group',
         ]"
+        @click="switchPage('FLBing')"
       >
         <router-link to="/flbing">
           <span v-if="!isCollapsed">80%</span>
@@ -135,19 +132,20 @@ export default {
     };
   },
   computed: {
-    UIcontroller() {
-      return this.$store.state.UIController.UIProperties;
+    currentPage() {
+      return this.$store.state.UIController.UIProperties.currentPage;
     },
   },
   methods: {
-    ...mapMutations(["UIcontrollerToggleProperty"]),
-    toggleSideNavEpansion() {
-      this.isCollapsed = !this.isCollapsed;
-      if (this.isCollapsed) {
-        document.querySelector("#tabsArea").style.width = "70vw";
-      } else {
-        document.querySelector("#tabsArea").style.width = "61.5vw";
-      }
+    ...mapMutations([
+      "UIcontrollerToggleProperty",
+      "UIcontrollerSetPropertyValue",
+    ]),
+    switchPage(page) {
+      this.UIcontrollerSetPropertyValue({
+        property: "currentPage",
+        newValue: page,
+      });
     },
     refresh() {
       document.querySelector("#refreshLib").classList.add("rotateOut");
@@ -163,36 +161,14 @@ export default {
 <style lang="scss">
 .playingPaneLoaded {
   .sideNav {
-    margin-bottom: 110px;
-  }
-}
-.collapsed {
-  min-width: 50px !important;
-  width: 60px !important;
-  #menuIcon {
-    transform: translateX(5px);
-  }
-  .sideNav-group {
-    a {
-      display: flex !important;
-      justify-content: center;
-      align-items: center;
-    }
-  }
-}
-.light_theme {
-  .sideNav {
-    filter: invert(1);
-  }
-  .active-sideNav-group {
-    filter: invert(1);
+    margin-bottom: 115px;
   }
 }
 .sideNav {
   background: rgba(255, 255, 255, 0.083);
-  padding-bottom: 5px;
   min-width: 180px;
   width: 180px;
+  margin-bottom: 15px;
   border-radius: 20px;
   display: flex;
   flex-direction: column;
@@ -201,7 +177,7 @@ export default {
   overflow: hidden;
   .sideNav-group {
     border-radius: 15px;
-    margin: 5px;
+    margin: 8px;
     // border-radius: 10px;
     a {
       padding: 10px;
@@ -214,7 +190,7 @@ export default {
     }
     p {
       text-align: left;
-      font-size: 1rem;
+      font-size: var(--baseFontSize);
     }
     span {
       position: absolute;

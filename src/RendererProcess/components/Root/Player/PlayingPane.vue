@@ -80,63 +80,40 @@
         />
       </div>
       <div class="control play_controls">
-        <button
-          @click="determineNextTrack('prev')"
-          id="prevTrackBt"
-          class="iconBt"
-        >
-          <img
-            style="transform: rotate(-180deg)"
-            src="@/RendererProcess/assets/images/play_arrow.svg"
-            alt=""
-          />
-        </button>
-        <button
-          @click="toggleFromFavorites"
-          id="favorIcon"
-          :class="[isInFavorites ? 'bt_active' : '', 'iconBt']"
-        >
-          <img
-            width="18px"
-            src="@/RendererProcess/assets/images/heart.svg"
-            alt=""
-          />
-        </button>
-        <button
-          id="nextTrackBt"
-          @click="determineNextTrack('next')"
-          class="iconBt"
-        >
-          <img src="@/RendererProcess/assets/images/play_arrow.svg" alt="" />
-        </button>
+        <base-button
+          @click.native="determineNextTrack('prev')"
+          :icon="require('@/RendererProcess/assets/images/play_arrow.svg')"
+          style="transform: rotate(180deg)"
+        />
+
+        <base-button
+          @click.native="toggleFromFavorites"
+          :icon="require('@/RendererProcess/assets/images/heart.svg')"
+          :active="isInFavorites"
+        />
+
+        <base-button
+          @click.native="determineNextTrack('next')"
+          :icon="require('@/RendererProcess/assets/images/play_arrow.svg')"
+        />
       </div>
       <div class="control extra_controls">
-        <button @click="showPlaylistAdder" id="playlistBt" class="iconBt">
-          <img
-            id="plIcon"
-            src="@/RendererProcess/assets/images/playlist_add.svg"
-            alt=""
-          />
-        </button>
-        <button
-          @click="changeRepeat"
-          :class="[audioState.repeat ? 'bt_active' : '', 'iconBt']"
-          id="repeatIcon"
-          title="repeat"
-        >
-          <img
-            id="plIcon"
-            src="@/RendererProcess/assets/images/repeat_one.svg"
-            alt=""
-          />
-        </button>
-        <button
-          @click="shuffler"
-          id="shuffleIcon"
-          :class="[audioState.shuffle ? 'bt_active' : '', 'iconBt']"
-        >
-          <img src="@/RendererProcess/assets/images/shuffle.svg" alt="" />
-        </button>
+        <base-button
+          @click.native="showPlaylistAdder"
+          :icon="require('@/RendererProcess/assets/images/playlist_add.svg')"
+        />
+
+        <base-button
+          @click.native="changeRepeat"
+          :icon="require('@/RendererProcess/assets/images/repeat_one.svg')"
+          :active="audioState.repeat"
+        />
+
+        <base-button
+          @click.native="shuffler"
+          :icon="require('@/RendererProcess/assets/images/shuffle.svg')"
+          :active="audioState.shuffle"
+        />
       </div>
     </div>
   </div>
@@ -145,8 +122,13 @@
 <script>
 import TrackBar from "./TrackBar";
 import { mapActions, mapMutations } from "vuex";
+import BaseButton from "../../BaseComponents/BaseButton.vue";
 
 export default {
+  components: {
+    TrackBar,
+    BaseButton,
+  },
   computed: {
     playingTrack() {
       return this.$store.state.PlaybackManger.playingTrackInfo.track;
@@ -267,11 +249,11 @@ export default {
           return;
         }
         if (e.code === "ArrowLeft") {
-          document.querySelector("#prevTrackBt").click();
+          this.determineNextTrack("prev");
           return;
         }
         if (e.code === "ArrowRight") {
-          document.querySelector("#nextTrackBt").click();
+          this.determineNextTrack("next");
           return;
         }
         if (e.code === "ArrowDown" || e.code === "ArrowUp") {
@@ -285,10 +267,6 @@ export default {
       }
     });
     document.querySelector(".split").classList.add("playingPaneLoaded");
-  },
-  components: {
-    TrackBar,
-    // particleBg,
   },
 };
 </script>
@@ -405,7 +383,7 @@ export default {
   backdrop-filter: blur(10px);
   height: 100px;
   position: fixed;
-  bottom: 0px;
+  bottom: 5px;
   width: 98.5vw;
   margin-left: 10px;
   z-index: 20;

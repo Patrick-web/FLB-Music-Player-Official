@@ -78,7 +78,7 @@ export default {
 #search {
   padding: 5px;
   padding-left: 10px;
-  font-size: 1rem;
+  font-size: var(--baseFontSize);
   border-radius: 20px;
   border: 1px solid transparent;
   outline: none;

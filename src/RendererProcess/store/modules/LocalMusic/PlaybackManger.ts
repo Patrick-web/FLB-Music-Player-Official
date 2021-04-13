@@ -40,7 +40,7 @@ const state: PlaybackManagerStateInterface = {
 };
 const mutations = {
     setPlayingTrack: (state: any, payload: PlayingTrackPayload) => {
-        if (payload.track.defaultTitle) {
+        if (payload?.track?.defaultTitle) {
             state.playingTrackInfo.track = payload.track;
             state.playingTrackIndex = payload.index;
             state.audioState.playing = true;
@@ -71,6 +71,10 @@ const mutations = {
     overWriteCustomQueue(state: any, payload: Array<TrackType>) {
         const copyOfPayload = [...payload];
         copyOfPayload.shift();
+        state.customQueue = copyOfPayload;
+    },
+    reorderQueue(state: any, payload: Array<TrackType>) {
+        const copyOfPayload = [...payload];
         state.customQueue = copyOfPayload;
     },
 };

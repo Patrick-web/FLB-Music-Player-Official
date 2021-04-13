@@ -68,15 +68,6 @@
 	justify-content: space-between;
 	padding-right: 10px;
 }
-.sliverBar .sliverBarActions button {
-	background: white;
-}
-.sliverBar .sliverBarActions p {
-	color: black;
-}
-.sliverBar .sliverBarActions img {
-	filter: invert(1);
-}
 .sliverBar .groupedCard_info {
 	position: absolute;
 	bottom: 0%;
@@ -95,7 +86,7 @@
 }
 
 .sliverBar .groupedCard_info .groupedInfo_subtitle {
-	font-size: 1rem;
+	font-size: var(--baseFontSize);
 	font-family: roboto-thin;
 	width: 100%;
 }

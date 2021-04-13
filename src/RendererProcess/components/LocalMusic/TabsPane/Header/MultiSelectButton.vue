@@ -1,17 +1,18 @@
 <template>
-  <button
+  <base-button
     title="Select Multiple Tracks"
-    @click.stop="toggleMultiSelect"
-    :class="[multiSelectOn ? 'bt_active' : '', 'btWithIcon']"
-  >
-    <p>Select</p>
-    <img src="@/RendererProcess/assets/images/multiselect.svg" alt="" />
-  </button>
+    @click.native="toggleMultiSelect()"
+    :icon="require('@/RendererProcess/assets/images/multiselect.svg')"
+    text="Select"
+    :active="multiSelectOn"
+  />
 </template>
 
 <script>
+import BaseButton from "@/RendererProcess/components/BaseComponents/BaseButton.vue";
 import { mapMutations } from "vuex";
 export default {
+  components: { BaseButton },
   computed: {
     multiSelectOn() {
       return this.$store.state.UIController.UIProperties.multiSelectMode;

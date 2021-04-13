@@ -55,6 +55,8 @@ export default {
   padding: 5px;
   padding-top: 0px;
   -webkit-app-region: drag;
+  position: relative;
+  z-index: 100;
   .leftSide {
     display: flex;
     align-items: center;

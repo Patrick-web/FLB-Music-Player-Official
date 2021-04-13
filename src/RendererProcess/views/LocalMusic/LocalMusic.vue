@@ -77,15 +77,11 @@ export default {
 <style lang="scss">
 .playingPaneLoaded {
   .LocalMusic {
-    margin-bottom: 110px;
-  }
-}
-.light_theme {
-  .LocalMusic {
-    filter: invert(1);
+    margin-bottom: 118px;
   }
 }
 .LocalMusic {
+  margin-bottom: 15px;
   main {
     display: flex;
     height: 100%;

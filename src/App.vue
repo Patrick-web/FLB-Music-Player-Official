@@ -10,7 +10,6 @@
         <SideNav />
         <router-view />
       </section>
-      {{ $route.path }}
       <PlayingPane v-if="playingTrack && $route.path !== '/deezer'" />
     </div>
     <Bg v-if="theme == 'fancy'" />

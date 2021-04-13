@@ -72,11 +72,8 @@ export default {
     transform: scale(1.2);
   }
 }
-.persist {
-  background: rgb(0, 132, 255);
-}
 .normal {
-  background: rgb(0, 132, 255);
+  background: var(--accentColor);
 }
 .danger {
   background: crimson;

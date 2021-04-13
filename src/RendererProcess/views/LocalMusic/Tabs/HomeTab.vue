@@ -104,16 +104,6 @@ export default {
 </script>
 
 <style lang="scss">
-.light_theme {
-  .home {
-    .statCard {
-      filter: invert(1);
-    }
-    img {
-      filter: invert(1);
-    }
-  }
-}
 .home {
   height: 100%;
   overflow: hidden;
@@ -139,7 +129,7 @@ export default {
       justify-content: center;
     }
     .statCard {
-      background: linear-gradient(var(--accentColor), var(--accentColorLight));
+      background: var(--accentColor);
       padding: 10px;
       width: 90%;
       max-width: 200px;
@@ -161,7 +151,7 @@ export default {
         font-size: 1.1rem;
       }
       p {
-        font-size: 1rem;
+        font-size: var(--baseFontSize);
         font-family: roboto-light;
       }
       h2,
@@ -170,15 +160,10 @@ export default {
         white-space: nowrap;
         overflow: hidden;
       }
-    }
-    .statCard:hover {
-      background: linear-gradient(
-        150deg,
-        var(--accentColor),
-        var(--accentColorLight)
-      );
-      border-top-left-radius: 30px;
-      border-bottom-right-radius: 30px;
+      &:hover {
+        border-top-left-radius: 30px;
+        border-bottom-right-radius: 30px;
+      }
     }
   }
 }

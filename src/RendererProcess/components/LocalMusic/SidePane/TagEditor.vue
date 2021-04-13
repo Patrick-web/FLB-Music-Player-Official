@@ -12,34 +12,13 @@
         <p style="margin-top: 10px" v-if="!targetTrack.albumArt">
           No Album Art
         </p>
-        <!-- <button
-					style="max-width:210px;padding-top:8px"
-					@click="importCover"
-					id="selectCoverArt"
-				>
-					<p style="font-family:roboto;font-size:1rem">Import Album Art</p>
-				</button> -->
-        <button
-          v-if="!searchAlbumArt"
-          style="max-width: 210px; padding-top: 8px"
-          @click="searchAlbumArt = true"
-          id="selectCoverArt"
-        >
-          <p style="font-family: roboto; font-size: 1rem">
-            Search Album Art Online
-          </p>
-        </button>
-        <button
-          v-if="searchAlbumArt"
-          style="max-width: 210px; padding-top: 8px"
-          @click="searchAlbumArt = false"
-          class="dangerBt"
-          id="selectCoverArt"
-        >
-          <p style="font-family: roboto; font-size: 1rem">
-            Close Album Searcher
-          </p>
-        </button>
+        <div class="grid2 gap10 tag">
+          <base-button @click.native="importCover" text="Import Picture" />
+          <base-button
+            @click.native="searchAlbumArt = true"
+            text="Search Online"
+          />
+        </div>
       </div>
       <div class="tag">
         <p>Current Title : {{ targetTrack.title || "unknown" }}</p>
@@ -97,14 +76,15 @@
         </div>
       </div>
     </div>
-    <div class="animated faster">
-      <button
-        @click="saveChanges"
-        class="bt_block bt_active"
-        style="margin-left: 5px"
-      >
-        <h3>Save Changes</h3>
-      </button>
+    <div class="tag">
+      <div class="animated faster">
+        <base-button
+          :active="true"
+          :block="true"
+          @click.native="saveChanges"
+          text="Save Changes"
+        />
+      </div>
     </div>
     <p style="margin: 10px">File Name : {{ targetTrack.fileName }}</p>
   </div>
@@ -114,7 +94,9 @@
 import { ipcRenderer } from "electron";
 import { mapMutations } from "vuex";
 import gis from "g-i-s";
+import BaseButton from "../../BaseComponents/BaseButton.vue";
 export default {
+  components: { BaseButton },
   data() {
     return {
       possibleAlbumArt: [],
@@ -163,14 +145,12 @@ export default {
       if (newAlbumArtSrc && this.targetTrack.albumArt != newAlbumArtSrc) {
         tags.APIC = newAlbumArtSrc;
       }
-      console.log(tags);
       const data = {
         track: this.targetTrack,
         tagChanges: tags,
       };
       if (Object.keys(data.tagChanges).length !== 0) {
         this.$emit("changedTags", data);
-        console.log("=======sent======");
         ipcRenderer.send("updateTags", data);
       }
       this.UIcontrollerToggleProperty("showTagEditor");
@@ -219,7 +199,7 @@ export default {
   top: 40px;
   right: 0%;
   z-index: 50;
-  width: 310px;
+  width: 270px;
   color: white;
 
   p {
@@ -229,6 +209,7 @@ export default {
   #coverArtTag {
     width: 140px;
     margin-top: 10px;
+    margin-bottom: 10px;
   }
   .tag {
     padding: 10px;

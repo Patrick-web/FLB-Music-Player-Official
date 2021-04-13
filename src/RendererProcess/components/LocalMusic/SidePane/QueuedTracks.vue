@@ -69,7 +69,7 @@ export default {
         return this.$store.state.PlaybackManger.customQueue;
       },
       set(value) {
-        this.$store.commit("overWriteCustomQueue", value);
+        this.$store.commit("reorderQueue", value);
       },
     },
   },
@@ -132,25 +132,44 @@ export default {
     }
     img {
       position: absolute;
-      top: 50%;
-      right: 15px;
-      transform: translateY(-50%) scale(0);
+      bottom: -5px;
+      left: 50%;
+      transform: translateX(-50%) scale(0);
       width: 10px;
       padding: 5px;
       background: crimson;
       border-radius: 10px;
     }
     img:hover {
-      transform: translateY(-50%) scale(1.2) !important;
+      transform: translateX(-50%) scale(1.2) !important;
+    }
+    &::before,
+    &::after {
+      content: "";
+      position: absolute;
+      height: 3px;
+      width: 20px;
+      right: 10px;
+      cursor: grab;
+      top: 40%;
+    }
+
+    &::before {
+      border-top: 2px solid white;
+    }
+    &::after {
+      border-bottom: 2px solid white;
+      border-top: 2px solid white;
+      transform: translateY(5px);
     }
   }
   .ghost {
-    background: rgba(0, 110, 255, 0.808);
+    background: var(--accentColor);
   }
   .queuedTrack:hover {
     background: rgba(255, 255, 255, 0.158);
     img {
-      transform: translateY(-50%) scale(1);
+      transform: translateX(-50%) scale(1);
     }
   }
   .playingtrack {

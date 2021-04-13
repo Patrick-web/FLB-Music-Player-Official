@@ -22,7 +22,9 @@
 	padding: 0;
 	outline: none;
 	font-family: roboto;
-
+}
+root {
+	--baseFontSize: 1rem;
 }
 body {
 	background: black;
@@ -49,56 +51,10 @@ a {
 .loading .trackBt {
 	cursor: progress !important;
 }
-button {
-	cursor: pointer;
-	border-radius: 20px;
-	background-color: rgba(102, 102, 102, 0.083);
-	backdrop-filter: blur(10px);
-	padding: 5px;
-	padding-right: 10px;
-	padding-left: 10px;
-	font-family: roboto;
-	width: auto;
-	border: none;
-	transition: 0.2s ease;
-}
-button:hover {
-	border-radius: 10px;
-	background: var(--accentColorLight);
-}
-.bt_active {
-	background: var(--accentColor) !important;
-}
-.bt_block {
-	width: 100% !important;
-}
-.iconBt {
-	width: 40px !important;
-	height: 40px;
-	border-radius: 50%;
-	padding: 5px;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-}
-.iconBt img {
-	width: 20px;
-}
-.btWithIcon {
-	width: auto !important;
-	display: flex;
-	gap: 10px;
-	align-items: center;
-	justify-content: space-around;
-	min-width: 80px;
-}
-.btWithIcon img {
-	width: 20px;
-}
-.backToUnfilteredItems {
+#backToUnfilteredItems {
 	position: absolute;
 	z-index: 4;
-	top: -10px;
+	top: 10px;
 	left: 10px;
 }
 .dangerBt:hover {
@@ -262,7 +218,7 @@ input[type="range"]:active::-webkit-slider-thumb {
 }
 input::placeholder {
 	color: rgba(255, 255, 255, 0.548);
-	font-size: 1rem;
+	font-size: var(--baseFontSize);
 	font-family: roboto-thin;
 }
 .gap5 {
@@ -295,16 +251,17 @@ input::placeholder {
 	grid-template-columns: repeat(4, 1fr);
 	row-gap: 10px;
 }
-.grid4_30 {
+.grid5 {
 	display: grid;
-	grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-	row-gap: 30px;
+	grid-template-columns: repeat(5, 1fr);
+	row-gap: 10px;
 }
-.grid3_30 {
+.grid6 {
 	display: grid;
-	grid-template-columns: 1fr 1fr 1fr;
-	gap: 30px;
+	grid-template-columns: repeat(6, 1fr);
+	row-gap: 10px;
 }
+
 .flexBetween {
 	display: flex;
 	justify-content: space-between;

@@ -21,39 +21,23 @@
         if you started playing something
       </pre>
     </div>
-    <div v-if="playingTrack" class="tabber">
+    <div v-if="playingTrack" class="Tabswitcher" style="margin-top: 0px">
       <div
-        @click.stop="switchAidePaneActiveTab('TrackInfo')"
-        :class="[sidePaneActiveTab == 'TrackInfo' ? 'activeSidePaneTab' : '']"
-        title="Track Info"
+        v-for="tab in tabs"
+        :key="tab.name"
+        :class="[sidePaneActiveTab === tab.name ? 'activeTab' : '', 'tabBtn']"
+        @click.stop="switchAidePaneActiveTab(tab.name)"
+        :id="tab.name"
       >
-        <img src="@/RendererProcess/assets/images/music_note.svg" alt="" />
-      </div>
-      <div
-        @click.stop="switchAidePaneActiveTab('CustomQueue')"
-        :class="[sidePaneActiveTab == 'CustomQueue' ? 'activeSidePaneTab' : '']"
-        title="Queued Tracks"
-      >
-        <img src="@/RendererProcess/assets/images/queue-music.svg" alt="" />
-      </div>
-      <div
-        @click.stop="switchAidePaneActiveTab('Lyrics')"
-        :class="[sidePaneActiveTab == 'Lyrics' ? 'activeSidePaneTab' : '']"
-        title="Lyrics"
-        class="lyricsTabIcon"
-      >
-        <img
-          :class="[playingTrackLyrics ? 'tada' : '', 'animated', 'repeat_3']"
-          src="@/RendererProcess/assets/images/lyrics.svg"
-          alt=""
-        />
+        <img :src="tab.icon" alt="" />
+        <p>{{ tab.name }}</p>
       </div>
     </div>
     <TrackInfo
       v-on:targetTrack="emitTargetTrack"
-      v-if="sidePaneActiveTab == 'TrackInfo' && playingTrack"
+      v-if="sidePaneActiveTab == 'Info' && playingTrack"
     />
-    <QueuedTracks v-if="sidePaneActiveTab == 'CustomQueue'" />
+    <QueuedTracks v-if="sidePaneActiveTab == 'Queue'" />
     <Lyrics v-if="sidePaneActiveTab == 'Lyrics'" />
   </div>
 </template>
@@ -63,11 +47,17 @@ import QueuedTracks from "./QueuedTracks";
 import TrackInfo from "./TrackInfo";
 import Lyrics from "./Lyrics";
 import { mapMutations } from "vuex";
-
+import lyricsIcon from "@/RendererProcess/assets/images/lyrics.svg";
+import trackInfoIcon from "@/RendererProcess/assets/images/music_note.svg";
+import queueIcon from "@/RendererProcess/assets/images/queue-music.svg";
 export default {
   data() {
     return {
-      currentTab: "trackInfo",
+      tabs: [
+        { name: "Info", icon: trackInfoIcon },
+        { name: "Queue", icon: queueIcon },
+        { name: "Lyrics", icon: lyricsIcon },
+      ],
     };
   },
   computed: {
@@ -111,54 +101,14 @@ export default {
 </script>
 
 <style lang="scss">
-.light_theme {
-  .activeSidePaneTab {
-    filter: invert(1);
-  }
-}
 .SidePane {
   position: relative;
-  padding-bottom: 110px;
   overflow: hidden;
   background: rgba(255, 255, 255, 0.083);
   padding: 10px;
   border-radius: 20px;
-  max-width: 19.5vw;
-  min-width: 17vw;
-  .tabber {
-    margin: auto;
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    width: 50%;
-    backdrop-filter: blur(10px);
-    background: rgba(255, 255, 255, 0.083);
-    border-radius: 20px;
-    position: sticky;
-    z-index: 10;
-    overflow: hidden;
-    margin-bottom: 10px;
-    div {
-      padding: 5px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-bottom: 0px solid var(--accentColorLight);
-      cursor: pointer;
-    }
-    div:hover {
-      cursor: pointer;
-      background: rgba(79, 111, 255, 0.178);
-    }
-    img {
-      width: 20px;
-    }
-    .activeSidePaneTab {
-      background: linear-gradient(transparent, var(--accentColorLight));
-    }
-    .activeSidePaneTab:hover {
-      background: linear-gradient(transparent, var(--accentColorLight));
-    }
-  }
+  width: 19.5vw;
+  height: 97%;
   @media (max-width: 900px) {
     .SidePane {
       display: none;

@@ -122,9 +122,17 @@ export default {
   }
 }
 .playingTrack {
-  border-left: 4px solid var(--accentColor);
-  border-right: 4px solid var(--accentColor);
   background: rgba(255, 255, 255, 0.137);
+  border-radius: 8px;
+  margin-top: 5px;
+  border-bottom: none !important;
+  position: relative;
+  .trackTitle {
+    transform: translateX(15px);
+  }
+  &::before {
+    height: 75% !important;
+  }
 }
 .TrackCard {
   position: relative;
@@ -133,6 +141,19 @@ export default {
   cursor: pointer;
   padding-left: 0px;
   transition: 0.2s ease;
+  &::before {
+    position: absolute;
+    z-index: -1;
+    content: "";
+    left: 5px;
+    width: 10px;
+    height: 0%;
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--accentColor);
+    border-radius: 10px;
+    transition: 0.3s ease-in-out;
+  }
   .fxSelectBt {
     position: absolute;
     top: 50%;

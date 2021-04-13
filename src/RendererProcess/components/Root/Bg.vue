@@ -8,7 +8,7 @@
     />
     <img
       v-else
-      style="opacity: 0.7"
+      style="opacity: 0.4"
       src="@/RendererProcess/assets/images/FLBDefaultCover.png"
       id="bg_fancy"
       alt=""

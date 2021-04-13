@@ -11,26 +11,23 @@
       leave-active-class="animated fadeOutDown extrafaster"
     >
       <div v-if="selectedGroup" class="selectedGroup">
-        <button
-          @click="deSelectGroup()"
-          class="iconBt backToUnfilteredItems"
-          style="margin-top: 20px"
-        >
-          <img src="@/RendererProcess/assets/images/back.svg" alt="" />
-        </button>
+        <base-button
+          @click.native="deSelectGroup"
+          :icon="require('@/RendererProcess/assets/images/back.svg')"
+          id="backToUnfilteredItems"
+        />
         <div class="sliverBar">
           <div class="sliverBarActions">
-            <button @click="playAll" class="btWithIcon">
-              <img src="@/RendererProcess/assets/images/playnext.svg" alt="" />
-              <p>Play All</p>
-            </button>
-            <button @click="addTracksToQueue" class="btWithIcon">
-              <img
-                src="@/RendererProcess/assets/images/queue-music.svg"
-                alt=""
-              />
-              <p>Add To Queue</p>
-            </button>
+            <base-button
+              @click.native="playAll"
+              :icon="require('@/RendererProcess/assets/images/playnext.svg')"
+              text="Play All"
+            />
+            <base-button
+              @click.native="addTracksToQueue"
+              :icon="require('@/RendererProcess/assets/images/queue-music.svg')"
+              text="Add To Queue"
+            />
           </div>
           <img
             class="coverArt"
@@ -42,7 +39,14 @@
             <p class="groupedInfo_title">
               {{ selectedGroup.name }}
             </p>
-            <p class="groupedInfo_subtitle">{{ selectedGroup.artist }}</p>
+            <p
+              @click="goToArtist(selectedGroup.artist)"
+              title="Go To Artist"
+              class="groupedInfo_subtitle"
+              style="cursor: pointer"
+            >
+              {{ selectedGroup.artist }}
+            </p>
           </div>
         </div>
         <div class="cardsWrapper">
@@ -62,6 +66,7 @@
 import { mapActions, mapMutations } from "vuex";
 import TrackCard from "@/RendererProcess/components/Root/Track/TrackCard.vue";
 import AlbumCard from "@/RendererProcess/components/LocalMusic/TabsPane/AlbumsTab/AlbumCard.vue";
+import BaseButton from "@/RendererProcess/components/BaseComponents/BaseButton.vue";
 
 export default {
   methods: {
@@ -76,11 +81,11 @@ export default {
       "overWriteCustomQueue",
       "pushNotification",
     ]),
-    ...mapActions(["generateAlbumsData"]),
+    ...mapActions(["generateAlbumsData", "findAndGoToArtist"]),
     addTracksToQueue() {
       this.UIcontrollerSetPropertyValue({
         property: "currentSidePaneTab",
-        newValue: "CustomQueue",
+        newValue: "Queue",
       });
       this.clearSelectedTracks();
       this.selectedGroup.tracks.forEach((track) => {
@@ -102,6 +107,10 @@ export default {
         type: "normal",
       });
     },
+    goToArtist(artist) {
+      document.querySelector("#Artists").click();
+      this.findAndGoToArtist(artist);
+    },
   },
   computed: {
     albums() {
@@ -114,6 +123,7 @@ export default {
   components: {
     TrackCard,
     AlbumCard,
+    BaseButton,
   },
   mounted() {
     this.generateAlbumsData();

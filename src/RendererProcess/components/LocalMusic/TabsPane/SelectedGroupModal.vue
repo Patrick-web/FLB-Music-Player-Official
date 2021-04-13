@@ -60,7 +60,7 @@ export default {
     addTracksToQueue() {
       this.UIcontrollerSetPropertyValue({
         property: "currentSidePaneTab",
-        newValue: "CustomQueue",
+        newValue: "Queue",
       });
       this.clearSelectedTracks();
       this.selectedGroup.tracks.forEach((track) => {

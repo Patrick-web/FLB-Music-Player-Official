@@ -39,26 +39,23 @@
       leave-active-class="animated fadeOutDown extrafaster"
     >
       <div v-if="selectedGroup" class="selectedGroup">
-        <button
-          @click="deSelectGroup()"
-          class="iconBt backToUnfilteredItems"
-          style="margin-top: 20px"
-        >
-          <img src="@/RendererProcess/assets/images/back.svg" alt="" />
-        </button>
+        <base-button
+          @click.native="deSelectGroup"
+          :icon="require('@/RendererProcess/assets/images/back.svg')"
+          id="backToUnfilteredItems"
+        />
         <div class="sliverBar">
           <div class="sliverBarActions">
-            <button @click="playAll" class="btWithIcon">
-              <img src="@/RendererProcess/assets/images/playnext.svg" alt="" />
-              <p>Play All</p>
-            </button>
-            <button @click="addTracksToQueue" class="btWithIcon">
-              <img
-                src="@/RendererProcess/assets/images/queue-music.svg"
-                alt=""
-              />
-              <p>Add To Queue</p>
-            </button>
+            <base-button
+              @click.native="playAll"
+              :icon="require('@/RendererProcess/assets/images/playnext.svg')"
+              text="Play All"
+            />
+            <base-button
+              @click.native="addTracksToQueue"
+              :icon="require('@/RendererProcess/assets/images/queue-music.svg')"
+              text="Add To Queue"
+            />
           </div>
           <img
             v-if="selectedGroup.tracks[0].albumArt"
@@ -100,6 +97,7 @@
 <script>
 import { mapActions, mapMutations } from "vuex";
 import TrackCard from "@/RendererProcess/components/Root/Track/TrackCard.vue";
+import BaseButton from "@/RendererProcess/components/BaseComponents/BaseButton.vue";
 
 export default {
   data() {
@@ -121,7 +119,7 @@ export default {
     addTracksToQueue() {
       this.UIcontrollerSetPropertyValue({
         property: "currentSidePaneTab",
-        newValue: "CustomQueue",
+        newValue: "Queue",
       });
       this.clearSelectedTracks();
       this.selectedGroup.tracks.forEach((track) => {
@@ -146,6 +144,7 @@ export default {
   },
   components: {
     TrackCard,
+    BaseButton,
   },
   mounted() {
     this.generateFoldersData();

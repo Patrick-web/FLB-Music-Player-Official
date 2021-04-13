@@ -86,6 +86,7 @@ const mutations = {
             TrackSelector.state.selectedTracks.forEach((track: TrackType) => {
                 state.tabsData.playlists[0].tracks.push(track);
             })
+            sendMessageToNode("updatePlaylists", state.tabsData.playlists);
             return
         }
         state.tabsData.playlists.forEach((playlist: PlaylistType, index: number) => {

@@ -14,9 +14,12 @@
           <h1>Welcome To FLB Music</h1>
           <p>Beauty🌹, Simplicity📃, Functionality🏹</p>
         </div>
-        <button @click="goToSlide2" id="jamBt" class="bt_active iconBt">
-          <img src="@/RendererProcess/assets/images/arrow_back.svg" alt="" />
-        </button>
+        <base-button
+          @click.native="goToSlide2"
+          id="jamBt"
+          :icon="require('@/RendererProcess/assets/images/arrow_back.svg')"
+          :active="true"
+        />
       </div>
       <div class="slide" v-if="currentSlide == 2">
         <article>
@@ -34,26 +37,28 @@
                   {{ folder }}
                 </p>
               </div>
-              <button
-                @click="removeFromScannedFolders(folder)"
-                title="Remove folder"
-                class="iconBt dangerBt"
-              >
-                <img
-                  style="width: 15px"
-                  src="@/RendererProcess/assets/images/x.svg"
-                  alt=""
-                />
-              </button>
+              <base-button
+                :icon="require('@/RendererProcess/assets/images/x.svg')"
+                :active="true"
+                @click.native="removeFromScannedFolders(folder)"
+              />
             </div>
           </div>
-          <button class="bt_active" style="max-width: 200px" @click="addFolder">
-            <h3>Add another Folder</h3>
-          </button>
+          <div style="width: 75%; margin-top: 10px">
+            <base-button
+              :active="true"
+              @click.native="addFolder"
+              text="Add another Folder"
+              :block="true"
+            />
+          </div>
         </article>
-        <button @click="initialize" id="jamBt" class="bt_active iconBt">
-          <img src="@/RendererProcess/assets/images/arrow_back.svg" alt="" />
-        </button>
+        <base-button
+          @click.native="initialize"
+          id="jamBt"
+          :icon="require('@/RendererProcess/assets/images/arrow_back.svg')"
+          :active="true"
+        />
       </div>
       <div class="slide" v-if="currentSlide == 3">
         <h1 class="slideTitle">{{ msgToUser }}</h1>
@@ -65,14 +70,13 @@
           src="@/RendererProcess/assets/images/cat.gif"
           alt=""
         />
-        <button
+        <base-button
           v-if="showOnboardCloseBt"
-          @click="closeOnBoard"
+          @click.native="closeOnBoard"
           id="jamBt"
-          class="bt_active iconBt"
-        >
-          <img src="@/RendererProcess/assets/images/arrow_back.svg" alt="" />
-        </button>
+          :icon="require('@/RendererProcess/assets/images/arrow_back.svg')"
+          :active="true"
+        />
       </div>
     </transition>
   </div>
@@ -82,7 +86,9 @@
 import { mapMutations } from "vuex";
 import { sendMessageToNode } from "@/RendererProcess/utilities/index";
 import { ipcRenderer } from "electron";
+import BaseButton from "../../BaseComponents/BaseButton.vue";
 export default {
+  components: { BaseButton },
   data() {
     return {
       currentSlide: 1,
@@ -220,20 +226,11 @@ export default {
       // filter: invert(1);
     }
     #jamBt {
-      width: 220px;
       right: 0%;
       top: 50%;
       transform: translateX(50%) translateY(-50%) rotate(180deg) scale(1.5);
-      border-radius: 40px;
       bottom: 0px;
       position: absolute;
-      display: flex;
-      justify-content: center;
-      background: rgb(0, 132, 255) !important;
-    }
-    #jamBt:hover {
-      background: rgb(0, 102, 255) !important;
-      border-radius: 10px;
     }
     #parseProgress {
       position: absolute;

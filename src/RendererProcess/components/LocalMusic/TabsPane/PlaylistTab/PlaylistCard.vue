@@ -32,9 +32,11 @@
           v-else
           src="@/RendererProcess/assets/images/FLBDefaultCover.png"
         />
-        <button class="card_playBt iconBt">
-          <img src="@/RendererProcess/assets/images/playButton.svg" />
-        </button>
+        <base-button
+          :icon="require('@/RendererProcess/assets/images/playButton.svg')"
+          id="card_playBt"
+          style="backdrop-filter: blur(20px)"
+        />
         <p class="card_title">{{ track.defaultTitle }}</p>
         <p class="card_subTitle">
           {{ track.defaultArtist || "unknown artist" }}
@@ -42,29 +44,26 @@
       </div>
     </div>
     <div v-if="playlist.tracks.length != 0" class="pl_ActionsWrapper">
-      <button
-        style="margin-top: 10px"
-        class="btWithIcon playlistOption playlist_playBt"
-        @click="openPlaylist"
-      >
-        <img src="@/RendererProcess/assets/images/playlist_add.svg" />
-        <p>Open Playlist</p>
-      </button>
-      <button
-        style="margin-top: 10px"
-        class="btWithIcon playlistOption playlist_playBt"
-        @click="playAll"
-      >
-        <img src="@/RendererProcess/assets/images/playButton.svg" />
-        <p>Play All</p>
-      </button>
+      <base-button
+        :icon="require('@/RendererProcess/assets/images/playlist_add.svg')"
+        @click.native="openPlaylist"
+        text="Open Playlist"
+        style="margin-top: 10px; margin-bottom: 10px"
+      />
+      <base-button
+        :icon="require('@/RendererProcess/assets/images/playButton.svg')"
+        @click.native="playAll"
+        text="Play All"
+      />
     </div>
   </div>
 </template>
 
 <script>
+import BaseButton from "@/RendererProcess/components/BaseComponents/BaseButton.vue";
 import { mapMutations, mapActions } from "vuex";
 export default {
+  components: { BaseButton },
   computed: {
     top5MixTracks() {
       return this.playlist.tracks.slice(0, 5);
@@ -151,17 +150,17 @@ export default {
         margin: auto;
         border-radius: 20px;
       }
-      .card_playBt {
+      #card_playBt {
         position: absolute;
         background: rgba(0, 0, 0, 0.397);
-        top: 45%;
+        top: 40%;
         left: 50%;
         transform: translate(-50%, -50%) scale(0);
       }
     }
     .card:hover {
       transform: translateY(-10px);
-      .card_playBt {
+      #card_playBt {
         transform: translate(-50%, -50%) scale(1.1);
       }
     }

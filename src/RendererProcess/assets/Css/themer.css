@@ -1,35 +1,32 @@
-.accent_blue {
+.accent_0 {
 	--accentColor: #0066ff;
-	--accentColorLight: #0062ffa8;
 }
-.accent_orange {
-	--accentColor: rgb(238, 156, 3);
-	--accentColorLight: rgba(255, 166, 0, 0.645);
+.accent_1 {
+	--accentColor: #7a86cb;
 }
-.accent_purple {
-	--accentColor: purple;
-	--accentColorLight: rgba(128, 0, 128, 0.623);
+.accent_2 {
+	--accentColor: #ba68c6;
 }
-.accent_magenta {
-	--accentColor: magenta;
-	--accentColorLight: rgba(255, 0, 255, 0.603);
+.accent_3 {
+	--accentColor: #fd8b64;
 }
-.accent_cyan {
-	--accentColor: rgb(5, 201, 201);
-	--accentColorLight: rgb(2, 126, 126);
+.accent_4 {
+	--accentColor: #acd580;
 }
-.accent_white {
-	--accentColor: gray;
-	--accentColorLight: rgba(255, 255, 255, 0.083);
+.accent_5 {
+	--accentColor: #fcd450;
 }
-.light_theme {
-	background: rgb(255, 255, 255) !important;
+.accent_6 {
+	--accentColor: #4db6ac;
 }
-.light_theme .bt_active {
-	filter: invert(1);
+.accent_7 {
+	--accentColor: #ee6390;
 }
-.light_theme button:hover {
-	filter: invert(1);
+.accent_8 {
+	--accentColor: #e57375;
+}
+.accent_9 {
+	--accentColor: #ff8a66;
 }
 .dark_theme .searchResults {
 	background: rgb(17, 17, 17) !important;

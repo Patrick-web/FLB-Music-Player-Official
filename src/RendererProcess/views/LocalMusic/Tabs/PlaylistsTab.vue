@@ -12,13 +12,11 @@
       leave-active-class="animated fadeOutDown extrafaster"
     >
       <div v-if="selectedGroup" class="selectedGroup">
-        <button
-          @click="deSelectGroup()"
-          class="iconBt backToUnfilteredItems"
-          style="margin-top: 20px"
-        >
-          <img src="@/RendererProcess/assets/images/back.svg" alt="" />
-        </button>
+        <base-button
+          @click.native="deSelectGroup"
+          :icon="require('@/RendererProcess/assets/images/back.svg')"
+          id="backToUnfilteredItems"
+        />
         <div class="sliverBar">
           <img
             class="coverArt"
@@ -38,32 +36,25 @@
           />
 
           <div class="sliverBarActions">
-            <button @click="addPlaylistToQueue" class="btWithIcon">
-              <img
-                src="@/RendererProcess/assets/images/queue-music.svg"
-                alt=""
-              />
-              <p>Add To Queue</p>
-            </button>
-            <button
+            <base-button
+              @click.native="addTracksToQueue"
+              :icon="require('@/RendererProcess/assets/images/queue-music.svg')"
+              text="Add To Queue"
+            />
+            <base-button
+              @click.native="showPlaylistEditor = !showPlaylistEditor"
+              :icon="require('@/RendererProcess/assets/images/edit.svg')"
+              text="Edit Playlist"
               v-if="selectedGroup.name !== 'Favorites'"
-              @click="showPlaylistEditor = !showPlaylistEditor"
-              class="btWithIcon"
-            >
-              <img src="@/RendererProcess/assets/images/edit.svg" alt="" />
-              <p>Edit Playlist</p>
-            </button>
-            <button
+            />
+            <base-button
+              @click.native="deleteCurrentPlaylist"
+              :icon="
+                require('@/RendererProcess/assets/images/trash-bin-outline.svg')
+              "
+              text="Delete Playlist"
               v-if="selectedGroup.name !== 'Favorites'"
-              @click="deleteCurrentPlaylist"
-              class="btWithIcon dangerBt"
-            >
-              <img
-                src="@/RendererProcess/assets/images/trash-bin-outline.svg"
-                alt=""
-              />
-              <p>Delete Playlist</p>
-            </button>
+            />
           </div>
         </div>
         <div class="cardsWrapper">
@@ -86,6 +77,8 @@ import { mapMutations } from "vuex";
 import TrackCard from "@/RendererProcess/components/Root/Track/TrackCard.vue";
 import PlaylistCard from "@/RendererProcess/components/LocalMusic/TabsPane/PlaylistTab/PlaylistCard.vue";
 import EditPlaylistWidget from "@/RendererProcess/components/LocalMusic/TabsPane/PlaylistTab/EditPlaylistWidget.vue";
+import BaseButton from "@/RendererProcess/components/BaseComponents/BaseButton.vue";
+
 export default {
   data() {
     return {
@@ -106,7 +99,7 @@ export default {
     addPlaylistToQueue() {
       this.UIcontrollerSetPropertyValue({
         property: "currentSidePaneTab",
-        newValue: "CustomQueue",
+        newValue: "Queue",
       });
       this.clearSelectedTracks();
       this.selectedGroup.tracks.forEach((track) => {
@@ -141,6 +134,7 @@ export default {
     TrackCard,
     PlaylistCard,
     EditPlaylistWidget,
+    BaseButton,
   },
 };
 </script>

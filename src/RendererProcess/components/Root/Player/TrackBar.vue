@@ -133,7 +133,7 @@ export default {
       if (playIcon) playIcon.click();
     });
 
-    document.querySelector(".seekBar").addEventListener("dragstart", (e) => {
+    document.querySelector(".seekBar").addEventListener("drag", (e) => {
       console.log("Seeking");
     });
   },
@@ -192,11 +192,7 @@ export default {
 }
 .seekBar:hover {
   .seekProgress {
-    background: linear-gradient(
-      90deg,
-      var(--accentColorLight),
-      var(--accentColor)
-    );
+    background: var(--accentColor);
     .elipse {
       transform: translateX(50%) scale(1);
     }
@@ -251,11 +247,7 @@ export default {
   padding: 2px 5px 2px 5px;
   border-radius: 10px;
   text-align: center;
-  background: linear-gradient(
-    180deg,
-    var(--accentColor),
-    var(--accentColorLight)
-  );
+  background: var(--accentColor);
   pointer-events: none;
 }
 </style>

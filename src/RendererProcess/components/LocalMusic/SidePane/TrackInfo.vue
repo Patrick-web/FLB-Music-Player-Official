@@ -36,21 +36,21 @@
       <pre>File name</pre>
       <p>{{ playingTrack.fileName }}</p>
     </div>
-    <button
-      @click="emitPlayingTrack"
-      class="iconBt"
-      id="toggleTagEditor"
+    <base-button
       title="Edit Tags"
-    >
-      <img src="@/RendererProcess/assets/images/pen.svg" alt="" />
-    </button>
+      id="toggleTagEditor"
+      @click.native="emitPlayingTrack"
+      :icon="require('@/RendererProcess/assets/images/pen.svg')"
+    />
   </div>
 </template>
 
 <script>
 import { mapMutations } from "vuex";
+import BaseButton from "../../BaseComponents/BaseButton.vue";
 
 export default {
+  components: { BaseButton },
   computed: {
     playingTrack() {
       return this.$store.state.PlaybackManger.playingTrackInfo.track;
@@ -86,7 +86,7 @@ export default {
     }
     p {
       margin-top: 5px;
-      font-size: 1rem;
+      font-size: var(--baseFontSize);
       font-family: roboto-thin;
     }
   }

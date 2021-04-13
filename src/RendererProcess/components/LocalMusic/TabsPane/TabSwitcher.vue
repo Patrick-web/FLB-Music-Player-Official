@@ -1,65 +1,43 @@
 <template>
   <div class="Tabswitcher">
-    <p
-      :class="[$route.path === '/' ? 'activeTab' : '']"
-      @click="routeTo('/')"
-      id="Home"
+    <div
+      v-for="tab in tabs"
+      :key="tab.name"
+      :class="[currentTab === tab.name ? 'activeTab' : '', 'tabBtn']"
+      @click="routeTo(tab)"
+      :id="tab.name"
     >
-      Home
-    </p>
-
-    <p
-      :class="[$route.path === '/tracks' ? 'activeTab' : '']"
-      @click="routeTo('/tracks')"
-      id="Tracks"
-    >
-      Tracks
-    </p>
-    <p
-      :class="[$route.path === '/playlists' ? 'activeTab' : '']"
-      @click="routeTo('/playlists')"
-      id="Playlists"
-    >
-      Playlists
-    </p>
-    <p
-      :class="[$route.path === '/recents' ? 'activeTab' : '']"
-      @click="routeTo('/recents')"
-      id="Recents"
-    >
-      Recents
-    </p>
-    <p
-      :class="[$route.path === '/albums' ? 'activeTab' : '']"
-      @click="routeTo('/albums')"
-      id="Albums"
-    >
-      Albums
-    </p>
-    <p
-      :class="[$route.path === '/artists' ? 'activeTab' : '']"
-      @click="routeTo('/artists')"
-      id="Artists"
-    >
-      Artists
-    </p>
-    <p
-      :class="[$route.path === '/folders' ? 'activeTab' : '']"
-      @click="routeTo('/folders')"
-      id="Folders"
-    >
-      Folders
-    </p>
+      <img :src="tab.icon" alt="" />
+      <p>{{ tab.name }}</p>
+    </div>
   </div>
 </template>
 
 <script lang="js">
 	import { mapMutations } from "vuex";
+import homeIcon from "@/RendererProcess/assets/images/home.svg";
+import tracksIcon from "@/RendererProcess/assets/images/music_note.svg";
+import recentsIcon from "@/RendererProcess/assets/images/file.svg";
+import playlistsIcon from "@/RendererProcess/assets/images/playlist.svg";
+import albumIcon from "@/RendererProcess/assets/images/album.svg";
+import artistIcon from "@/RendererProcess/assets/images/user.svg";
+import folderIcon from "@/RendererProcess/assets/images/folderNormal.svg";
 	export default {
 	name: "TabSwitcher",
+  data(){return{
+      tabs: [
+        { name: "Home",path:'/', icon: homeIcon },
+        { name: "Tracks",path:'/Tracks', icon: tracksIcon },
+        { name: "Recents",path:'/Recents', icon: recentsIcon },
+        { name: "Playlists",path:'/Playlists', icon: playlistsIcon },
+        { name: "Artists",path:'/Artists', icon: artistIcon },
+        { name: "Albums",path:'/Albums', icon: albumIcon },
+        { name: "Folders",path:'/Folders', icon: folderIcon },
+      ],
+  }},
 	computed: {
-      curentTab(){
-        return this.$store.state.UIController.currentMainTab
+      currentTab(){
+        return this.$store.state.UIController.UIProperties.currentMainTab
       }
     },
     methods: {
@@ -67,30 +45,15 @@
       routeTo(tab) {
         this.clearSelectedTracks()
         this.deSelectGroup()
-        if(tab!==this.$route.path)
-        this.$router.push(tab)
+        if(tab.path!==this.$route.path)
+        this.$router.push(tab.path)
+        this.UIcontrollerSetPropertyValue({property:'currentMainTab',newValue:tab.name})        
       },
     },
   }
 </script>
 
 <style lang="scss">
-.traditionalLayout {
-  .Tabswitcher {
-    width: 60%;
-    margin: auto;
-    .indicator {
-      width: 100px;
-    }
-  }
-}
-.light_theme {
-  .Tabswitcher {
-    .activeTab {
-      filter: invert(1);
-    }
-  }
-}
 .Tabswitcher {
   display: flex;
   gap: 10px;
@@ -98,27 +61,46 @@
   position: relative;
   z-index: 10;
   margin-bottom: 10px;
-  margin-top: 5px;
-  p {
+  margin-top: 10px;
+  .tabBtn {
     background: rgba(255, 255, 255, 0.083);
     text-align: center;
     position: relative;
     z-index: 2;
+    display: flex;
+    align-items: center;
+    gap: 5px;
     padding: 5px;
+    padding-right: 10px;
+    padding-left: 10px;
     color: white;
-    border-radius: 20px;
-    min-width: 70px;
+    border-radius: 10px;
+    overflow: hidden;
     cursor: pointer;
     transition: 0.2s ease;
-    font-size: 0.9rem;
-    font-family: roboto-light;
-  }
-  p:hover {
-    background: rgba(255, 255, 255, 0.144);
+    p {
+      font-size: 0.9rem;
+      font-family: roboto-light;
+    }
+    img {
+      width: 20px;
+      transition: 0.2s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+    &:hover {
+      background: rgba(255, 255, 255, 0.144);
+    }
   }
   .activeTab {
     background: var(--accentColor);
     font-family: roboto;
+    padding-left: 5px;
+    padding-right: 5px;
+    transform: scale(1.2);
+    p {
+      width: 0px;
+      margin-left: -5px;
+      opacity: 0;
+    }
   }
   .activeTab:hover {
     background: var(--accentColor);

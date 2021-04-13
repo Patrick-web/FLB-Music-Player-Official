@@ -53,7 +53,6 @@ export default {
         .then((response) => response.text())
         .then((result) => {
           this.tracks = JSON.parse(result).data;
-          console.log(JSON.parse(result).data);
         })
         .catch((error) => console.log("error", error));
     },

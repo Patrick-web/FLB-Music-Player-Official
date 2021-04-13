@@ -17,9 +17,11 @@
         v-else
         src="@/RendererProcess/assets/images/FLBDefaultCover.png"
       />
-      <button class="card_playBt iconBt">
-        <img src="@/RendererProcess/assets/images/playButton.svg" />
-      </button>
+      <base-button
+        :icon="require('@/RendererProcess/assets/images/playButton.svg')"
+        id="card_playBt"
+        style="backdrop-filter: blur(20px)"
+      />
       <p class="card_title">{{ track.defaultTitle }}</p>
       <p class="card_subTitle">{{ track.defaultArtist || "unknown artist" }}</p>
     </div>
@@ -27,8 +29,10 @@
 </template>
 
 <script>
+import BaseButton from "@/RendererProcess/components/BaseComponents/BaseButton.vue";
 import { mapMutations, mapActions } from "vuex";
 export default {
+  components: { BaseButton },
   computed: {
     top10MixTracks() {
       return this.tracks.slice(0, 10);
@@ -83,17 +87,16 @@ export default {
       height: 140px;
       margin: auto;
     }
-    .card_playBt {
+    #card_playBt {
       position: absolute;
-      background: rgba(0, 0, 0, 0.397);
-      top: 45%;
+      top: 40%;
       left: 50%;
       transform: translate(-50%, -50%) scale(0);
     }
   }
   .card:hover {
     transform: translateY(-10px);
-    .card_playBt {
+    #card_playBt {
       transform: translate(-50%, -50%) scale(1.1);
     }
   }

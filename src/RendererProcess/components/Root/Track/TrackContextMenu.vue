@@ -73,7 +73,7 @@ export default {
       this.addSelectedTrackToCustomQueue();
       this.UIcontrollerSetPropertyValue({
         property: "currentSidePaneTab",
-        newValue: "CustomQueue",
+        newValue: "Queue",
       });
       this.pushNotification({
         title: "Track(s) added to queue",

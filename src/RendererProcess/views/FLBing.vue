@@ -147,7 +147,7 @@ export default {
       transform: scale(0.8) translateY(-50%) !important;
     }
     .BigSearch {
-      font-size: 1rem;
+      font-size: var(--baseFontSize);
       padding: 10px;
     }
   }

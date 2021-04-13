@@ -3,10 +3,11 @@
     <div class="cardTitle">
       <div class="flex flexBetween">
         <h2>{{ cardTitle }}</h2>
-        <button @click="playMix" class="btWithIcon mix_playBt">
-          <img src="@/RendererProcess/assets/images/playButton.svg" />
-          <p>Play Mashup</p>
-        </button>
+        <base-button
+          @click.native="playMix"
+          :icon="require('@/RendererProcess/assets/images/playButton.svg')"
+          text="Play Mashup"
+        />
       </div>
       <p>{{ cardContent }}</p>
     </div>
@@ -15,10 +16,11 @@
 </template>
 
 <script>
+import BaseButton from "@/RendererProcess/components/BaseComponents/BaseButton.vue";
 import { mapMutations } from "vuex";
 import OverLayedTracks from "./OverLayedTracks.vue";
 export default {
-  components: { OverLayedTracks },
+  components: { OverLayedTracks, BaseButton },
   props: {
     cardTitle: String,
     cardContent: String,
@@ -36,7 +38,7 @@ export default {
       this.overWriteCustomQueue(tracksCopy);
       this.UIcontrollerSetPropertyValue({
         property: "currentSidePaneTab",
-        newValue: "CustomQueue",
+        newValue: "Queue",
       });
     },
   },

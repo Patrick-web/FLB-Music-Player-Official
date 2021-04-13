@@ -14,14 +14,13 @@
         type="text"
         v-model="newPlaylistName"
       />
-      <button
-        class="bt_block bt_active"
+      <base-button
+        text="Create"
+        :active="true"
+        :block="true"
+        @click.native="createNewPlaylist()"
         style="margin-top: 5px"
-        @click="createNewPlaylist()"
-        v-if="newPlaylistName"
-      >
-        <p>Create</p>
-      </button>
+      />
     </div>
     <div class="playlistNamesWrapper">
       <p
@@ -38,7 +37,9 @@
 
 <script>
 import { mapMutations } from "vuex";
+import BaseButton from "../../BaseComponents/BaseButton.vue";
 export default {
+  components: { BaseButton },
   data() {
     return {
       newPlaylistName: "",
@@ -103,7 +104,7 @@ export default {
   margin-top: 10px;
   .playlistName {
     padding: 5px;
-    font-size: 1rem;
+    font-size: var(--baseFontSize);
     font-family: roboto-light;
     transition: 0.2s ease;
     cursor: pointer;

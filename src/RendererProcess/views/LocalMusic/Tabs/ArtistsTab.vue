@@ -18,25 +18,22 @@
       <div v-if="selectedGroup" class="selectedGroup">
         <div class="sliverBar">
           <div class="sliverBarActions">
-            <button @click="playAll" class="btWithIcon">
-              <img src="@/RendererProcess/assets/images/playnext.svg" alt="" />
-              <p>Play All</p>
-            </button>
-            <button @click="addTracksToQueue" class="btWithIcon">
-              <img
-                src="@/RendererProcess/assets/images/queue-music.svg"
-                alt=""
-              />
-              <p>Add To Queue</p>
-            </button>
+            <base-button
+              @click.native="playAll"
+              :icon="require('@/RendererProcess/assets/images/playnext.svg')"
+              text="Play All"
+            />
+            <base-button
+              @click.native="addTracksToQueue"
+              :icon="require('@/RendererProcess/assets/images/queue-music.svg')"
+              text="Add To Queue"
+            />
           </div>
-          <button
-            @click="deSelectGroup()"
-            class="iconBt backToUnfilteredItems"
-            style="margin-top: 20px"
-          >
-            <img src="@/RendererProcess/assets/images/back.svg" alt="" />
-          </button>
+          <base-button
+            @click.native="deSelectGroup"
+            :icon="require('@/RendererProcess/assets/images/back.svg')"
+            id="backToUnfilteredItems"
+          />
           <img v-if="artistPicture" class="coverArt" :src="artistPicture" />
           <img
             v-else
@@ -72,8 +69,12 @@
         <div class="cardsWrapper">
           <div class="grid2 gap10">
             <div class="artistAlbums">
-              <h1>Albums</h1>
-              <div class="grid_auto">
+              <div class="subHeading">
+                <p>Albums</p>
+                <div class="line"></div>
+                <p>{{ removeDuplicateAlbums(selectedGroup.albums).length }}</p>
+              </div>
+              <div class="grid2 content">
                 <AlbumCard
                   v-for="album in removeDuplicateAlbums(selectedGroup.albums)"
                   :album="album"
@@ -84,13 +85,19 @@
             </div>
 
             <div class="artistTracks">
-              <h1>Tracks</h1>
-              <TrackCard
-                v-for="(track, index) in selectedGroup.tracks"
-                :key="track.path"
-                :index="index"
-                :source="track"
-              />
+              <div class="subHeading">
+                <p style="margin-left: -10px">Tracks</p>
+                <div class="line"></div>
+                <p>{{ selectedGroup.tracks.length }}</p>
+              </div>
+              <div class="content">
+                <TrackCard
+                  v-for="(track, index) in selectedGroup.tracks"
+                  :key="track.path"
+                  :index="index"
+                  :source="track"
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -104,7 +111,7 @@ import { mapActions, mapMutations } from "vuex";
 import TrackCard from "@/RendererProcess/components/Root/Track/TrackCard.vue";
 import ArtistCard from "@/RendererProcess/components/LocalMusic/TabsPane/ArtistTab/ArtistCard.vue";
 import AlbumCard from "@/RendererProcess/components/LocalMusic/TabsPane/AlbumsTab/AlbumCard.vue";
-
+import BaseButton from "@/RendererProcess/components/BaseComponents/BaseButton.vue";
 import { removeDuplicates } from "@/sharedUtilities";
 export default {
   data() {
@@ -130,7 +137,7 @@ export default {
     addTracksToQueue() {
       this.UIcontrollerSetPropertyValue({
         property: "currentSidePaneTab",
-        newValue: "CustomQueue",
+        newValue: "Queue",
       });
       this.clearSelectedTracks();
       this.selectedGroup.tracks.forEach((track) => {
@@ -184,6 +191,7 @@ export default {
     ArtistCard,
     TrackCard,
     AlbumCard,
+    BaseButton,
   },
   mounted() {
     this.generateArtistsData();
@@ -207,6 +215,8 @@ export default {
   .cardsWrapper {
     overflow-y: hidden !important;
     height: 60%;
+    padding-left: 10px;
+    padding-right: 10px;
     .grid2 {
       height: 100%;
     }
@@ -214,10 +224,31 @@ export default {
   .artistTracks,
   .artistAlbums {
     height: 100%;
-    overflow: hidden;
-    overflow-y: scroll;
-    h1 {
-      margin: 10px;
+    .content {
+      height: 31vh;
+      overflow: hidden;
+      overflow-y: scroll;
+      position: relative;
+      padding: 10px;
+    }
+    .subHeading {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px;
+      p {
+        font-family: roboto-thin;
+      }
+      div {
+        height: 10px;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          var(--accentColor),
+          transparent
+        );
+        width: 90%;
+      }
     }
   }
 }

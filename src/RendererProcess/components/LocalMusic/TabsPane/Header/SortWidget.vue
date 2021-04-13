@@ -1,18 +1,11 @@
 <template>
   <div class="sortOption actionBt">
-    <button
-      @click="showSortOptions = !showSortOptions"
-      :class="[showSortOptions ? 'bt_active' : '', 'btWithIcon']"
-      title="Sort Tracks"
-      style="min-width: 70px"
-    >
-      <p>Sort</p>
-      <img
-        id="sortIcon"
-        src="@/RendererProcess/assets/images/sort.svg"
-        alt=""
-      />
-    </button>
+    <base-button
+      @click.native="showSortOptions = !showSortOptions"
+      :icon="require('@/RendererProcess/assets/images/sort.svg')"
+      text="Sort"
+      :active="showSortOptions"
+    />
     <transition
       enter-active-class="animated extrafaster fadeInUp"
       leave-active-class="animated extrafaster fadeOutDown"
@@ -31,8 +24,10 @@
 </template>
 
 <script>
+import BaseButton from "@/RendererProcess/components/BaseComponents/BaseButton.vue";
 import { mapActions, mapMutations } from "vuex";
 export default {
+  components: { BaseButton },
   data() {
     return {
       showSortOptions: false,
