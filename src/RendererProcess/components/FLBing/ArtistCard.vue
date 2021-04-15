@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import { mapMutations } from "vuex";
+import { remappedDeezerTracks } from "@/RendererProcess/utilities";
 export default {
   data() {
     return {
@@ -44,7 +44,9 @@ export default {
           )
             .then((response) => response.text())
             .then((result) => {
-              this.artistData.tracks = JSON.parse(result).data;
+              this.artistData.tracks = remappedDeezerTracks(
+                JSON.parse(result).data
+              );
             })
             .catch((error) => console.log("error", error));
           fetch(

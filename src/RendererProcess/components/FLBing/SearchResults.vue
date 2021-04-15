@@ -14,7 +14,7 @@
       <h2>Artists</h2>
       <div class="grid2 contentsWrapper">
         <ArtistCard
-          v-on:selectedArtist="$emit('selectedArtist', artist)"
+          v-on:selectedArtist="bubbleArtist"
           v-for="artist in searchResults.artists"
           :key="artist.id"
           :artistInfo="artist"
@@ -25,7 +25,7 @@
       <h2>Albums</h2>
       <div class="grid2 contentsWrapper">
         <AlbumCard
-          v-on:selectedAlbum="$emit('selectedAlbum', album)"
+          v-on:selectedAlbum="bubbleAlbum"
           v-for="album in searchResults.albums"
           :key="album.id"
           :albumInfo="album"
@@ -41,6 +41,18 @@ import ArtistCard from "./ArtistCard.vue";
 import Track from "./Track.vue";
 export default {
   components: { AlbumCard, ArtistCard, Track },
+  methods: {
+    bubbleArtist(artistData) {
+      this.$emit("selectedArtist", artistData);
+      console.log("Sending...");
+      console.table(artistData);
+    },
+    bubbleAlbum(albumData) {
+      this.$emit("selectedAlbum", albumData);
+      console.log("Sending...");
+      console.table(albumData);
+    },
+  },
   props: {
     searchResults: Object,
   },

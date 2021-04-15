@@ -1,41 +1,39 @@
 <template>
   <div class="bingTrack">
     <div class="info">
-      <img
-        class="coverArt"
-        :src="trackInfo.album_cover || overideCoverArt"
-        alt=""
-      />
-      <p style="font-family: roboto" class="trackTitle">
+      <img class="coverArt" :src="trackInfo.albumArt" alt="" />
+      <p style="font-family: roboto-light" class="trackTitle">
         {{ trackInfo.title }}
       </p>
       <p style="font-size: 0.9rem" @click="getArtistData" class="artist">
-        {{ trackInfo.artist_name }}
+        {{ trackInfo.artist }}
       </p>
     </div>
     <div class="trackActions">
-      <div @click="playPreview" class="trackBt">
-        <img
-          src="@/RendererProcess/assets/images/playButton.svg"
-          style="width: 20px"
-          alt=""
-        />
-      </div>
-      <div @click="downloadTrack" class="trackBt">
-        <img
-          src="@/RendererProcess/assets/images/save_alt.svg"
-          style="width: 20px"
-          alt=""
-        />
-      </div>
+      <base-button
+        @click.native="playPreview"
+        :icon="require('@/RendererProcess/assets/images/play.svg')"
+        :small="true"
+      />
+      <base-button
+        @click.native="downloadTrack"
+        :icon="require('@/RendererProcess/assets/images/save_alt.svg')"
+        :small="true"
+      />
     </div>
   </div>
 </template>
 
 <script>
 import { ipcRenderer } from "electron";
-import { mapGetters, mapMutations } from "vuex";
+import { mapMutations } from "vuex";
+import BaseButton from "@/RendererProcess/components/BaseComponents/BaseButton.vue";
+import { remappedDeezerTracks } from "@/RendererProcess/utilities";
+
 export default {
+  components: {
+    BaseButton,
+  },
   data() {
     return {
       artistData: {
@@ -50,11 +48,8 @@ export default {
       },
     };
   },
-  computed: {
-    ...mapGetters(["bingAlbumInfo"]),
-  },
   methods: {
-    ...mapMutations(["setPlayingTrack", "setBingArtistInfo"]),
+    ...mapMutations(["setPlayingTrack"]),
     playPreview() {
       fetch(
         `https://api.deezer.com/track/${this.trackInfo.id}`,
@@ -63,12 +58,13 @@ export default {
         .then((response) => response.text())
         .then((result) => {
           const res = JSON.parse(result);
+          const remappedTrack = remappedDeezerTracks([res])[0];
+          remappedTrack["defaultTitle"] = remappedTrack["title"];
+          remappedTrack["defaultArtist"] = remappedTrack["artist"];
+          console.log(remappedTrack);
           this.setPlayingTrack({
-            title: this.trackInfo.title,
-            artist: this.trackInfo.artist_name,
-            album: res.album.title,
-            cover: this.trackInfo.album_cover || this.trackInfo.album.cover,
-            path: res.preview,
+            track: remappedTrack,
+            index: -10,
           });
         })
         .catch((error) => {
@@ -129,7 +125,7 @@ export default {
   },
   props: {
     trackInfo: Object,
-    overideCoverArt: String,
+    overrideCoverArt: String,
   },
 };
 </script>

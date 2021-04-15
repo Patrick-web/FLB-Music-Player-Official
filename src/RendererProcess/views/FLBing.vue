@@ -28,8 +28,27 @@
         :searchResults="results"
       />
     </transition>
-    <ArtistPage :artistInfo="selectedArtist" v-if="selectedArtist" />
-    <AlbumPage :albumInfo="selectedAlbum" v-if="selectedAlbum" />
+    <transition
+      enter-active-class="animated slideInUp extrafaster"
+      leave-active-class="animated slideOutDown extrafaster"
+    >
+      <ArtistPage
+        v-on:clearArtistResults="clearSelectedArtistOrAlbum('artist')"
+        v-on:selectedAlbum="setSelectedAlbum"
+        :artistInfo="selectedArtist"
+        v-if="selectedArtist"
+      />
+    </transition>
+    <transition
+      enter-active-class="animated slideInUp extrafaster"
+      leave-active-class="animated slideOutDown extrafaster"
+    >
+      <AlbumPage
+        v-on:clearArtistResults="clearSelectedArtistOrAlbum('album')"
+        :albumInfo="selectedAlbum"
+        v-if="selectedAlbum"
+      />
+    </transition>
   </div>
 </template>
 
@@ -38,6 +57,7 @@ import { mapMutations } from "vuex";
 import ArtistPage from "@/RendererProcess/components/FLBing/ArtistPage.vue";
 import AlbumPage from "@/RendererProcess/components/FLBing/AlbumPage.vue";
 import SearchResults from "@/RendererProcess/components/FLBing/SearchResults.vue";
+import { remappedDeezerTracks } from "../utilities";
 export default {
   data() {
     return {
@@ -62,23 +82,17 @@ export default {
       "setBingAlbumInfo",
     ]),
     setSelectedArtist(payload) {
-      console.log("setSelectedArtis");
       this.selectedArtist = payload;
-      console.table(payload);
     },
     setSelectedAlbum(payload) {
-      console.log("setSelectedAlbum");
       this.selectedAlbum = payload;
-      console.table(payload);
     },
-    reset() {
-      this.setBingArtistInfo(null);
-      this.setBingAlbumInfo(null);
-      this.resultsGotten = false;
-      this.$emit("goFullflbing", false);
-    },
-    hideModal() {
-      document.querySelector(".FLBing").style.display = "none";
+    clearSelectedArtistOrAlbum(target) {
+      if (target === "artist") {
+        this.selectedArtist = null;
+        return;
+      }
+      this.selectedAlbum = null;
     },
     clearResults() {
       this.results.tracks = [];
@@ -98,7 +112,9 @@ export default {
       )
         .then((response) => response.text())
         .then((result) => {
-          this.results.tracks = JSON.parse(result).results;
+          this.results.tracks = remappedDeezerTracks(
+            JSON.parse(result).results
+          );
         })
         .catch((error) => console.log("error", error));
 
@@ -109,6 +125,7 @@ export default {
         .then((response) => response.text())
         .then((result) => {
           this.results.artists = JSON.parse(result).results.slice(0, 6);
+          console.log(this.results.artists[0]);
         })
         .catch((error) => console.log("error", error));
       fetch(
@@ -137,7 +154,7 @@ export default {
   justify-content: center;
   position: relative;
   .shrinkToTop {
-    top: 2% !important;
+    top: 0% !important;
     left: 50% !important;
     transform: translateX(-50%) translateY(0%) !important;
     width: 60% !important;

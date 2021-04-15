@@ -1,27 +1,32 @@
 <template>
-  <div class="APage">
-    <div class="coverArea">
-      <img :src="albumInfo.cover" alt="" class="blurred" />
-      <img class="artistImage" :src="albumInfo.cover" alt="" />
-      <h2>
-        <pre>Album</pre>
-        {{ albumInfo.name }}
-      </h2>
-      <img
-        @click="$emit('closeArtist')"
-        id="closePage"
-        src="@/RendererProcess/assets/images/x.svg"
+  <div class="groupedContentTab bingPage bingAlbumPage">
+    <div class="sliverBar">
+      <img class="coverArt" id="blurred" :src="albumInfo.cover" alt="" />
+      <img class="coverArt" :src="albumInfo.cover" alt="" />
+      <div class="groupedCard_info">
+        <p class="groupedInfo_title">
+          {{ albumInfo.name }}
+        </p>
+      </div>
+      <base-button
+        @click.native="$emit('goBackToResults')"
+        :icon="require('@/RendererProcess/assets/images/back.svg')"
+        id="backToUnfilteredItems"
       />
     </div>
     <div>
       <div class="results trackResults">
-        <h2>Tracks</h2>
-        <div class="column">
+        <div class="subHeading">
+          <p>Tracks</p>
+          <div class="line"></div>
+          <p>{{ albumInfo.tracks.length }}</p>
+        </div>
+        <div class="cardsWrapper">
           <Track
-            v-for="track in tracks"
+            v-for="track in albumInfo.tracks"
             :key="track.id"
             :trackInfo="track"
-            :overideCoverArt="albumInfo.cover"
+            :overrideCoverArt="albumInfo.cover"
           />
         </div>
       </div>
@@ -30,7 +35,7 @@
 </template>
 
 <script>
-// import AlbumCard from "./AlbumCard.vue";
+import BaseButton from "@/RendererProcess/components/BaseComponents/BaseButton.vue";
 import Track from "./Track.vue";
 export default {
   data() {
@@ -39,35 +44,22 @@ export default {
     };
   },
   components: {
-    // AlbumCard,
+    BaseButton,
     Track,
-  },
-  methods: {
-    fetchTracks() {
-      const requestOptions = {
-        method: "GET",
-        redirect: "follow",
-      };
-      console.table(this.albumInfo);
-      fetch(this.albumInfo.tracklist, requestOptions)
-        .then((response) => response.text())
-        .then((result) => {
-          this.tracks = JSON.parse(result).data;
-        })
-        .catch((error) => console.log("error", error));
-    },
   },
   props: {
     albumInfo: Object,
-  },
-  mounted() {
-    this.fetchTracks();
   },
 };
 </script>
 
 <style lang="scss">
-.AlbumPage {
-  // margin-top: -100px;
+.bingAlbumPage {
+  z-index: 5 !important;
+  .cardsWrapper {
+    padding: 40px;
+    padding-right: 60px;
+    padding-top: 10px;
+  }
 }
 </style>

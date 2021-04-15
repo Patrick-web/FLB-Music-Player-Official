@@ -6,10 +6,7 @@
       src="@/RendererProcess/assets/images/arrowDown.svg"
       alt=""
     />
-    <div
-      v-if="!playingTrack.fileName.match(/mp4|mkv/)"
-      class="audioImageResolver"
-    >
+    <div class="audioImageResolver">
       <img
         v-if="playingTrack.albumArt"
         @dblclick="toggleFromFavorites"
@@ -26,14 +23,6 @@
         src="@/RendererProcess/assets/images/FLBDefaultCover.png"
         alt=""
       />
-    </div>
-    <div v-if="playingTrack.fileName.match(/mp4|mkv/)" class="video_resolver">
-      <video
-        autoplay
-        controls
-        muted="true"
-        :src="playingTrack.fileLocation"
-      ></video>
     </div>
     <div @click="toggleIsPlaying" id="pauseBt" class="iconsWrapper">
       <img

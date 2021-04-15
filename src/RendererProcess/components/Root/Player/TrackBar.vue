@@ -1,6 +1,10 @@
 <template>
   <div class="TrackBar">
-    <audio :src="playingTrack.r_fileLocation" id="audioTag" autoplay></audio>
+    <audio
+      :src="playingTrack.r_fileLocation || playingTrack.previewURL"
+      id="audioTag"
+      autoplay
+    ></audio>
     <div @click="goToPosition($event)" class="seekBar">
       <div class="seekProgress">
         <div></div>

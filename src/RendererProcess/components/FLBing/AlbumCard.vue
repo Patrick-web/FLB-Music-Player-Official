@@ -10,6 +10,7 @@
 </template>
 
 <script>
+import { remappedDeezerTracks } from "@/RendererProcess/utilities";
 import { mapMutations } from "vuex";
 export default {
   data() {
@@ -38,9 +39,7 @@ export default {
           this.albumData.name = this.albumInfo.title;
           this.albumData.cover = this.albumInfo.cover;
           this.albumData.tracks = JSON.parse(result).data;
-          this.albumData.tracks.forEach((track) => {
-            track["album_cover"] = this.albumData.cover;
-          });
+          this.albumData.tracks = remappedDeezerTracks(JSON.parse(result).data);
           this.$emit("selectedAlbum", this.albumData);
           document.body.classList.remove("loading");
         })

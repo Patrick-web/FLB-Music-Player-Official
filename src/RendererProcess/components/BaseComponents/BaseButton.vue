@@ -7,6 +7,7 @@
       !icon && text ? 'plainBtn' : '',
       active ? 'activeBtn' : '',
       block ? 'blockBtn' : '',
+      small ? 'smallBtn' : '',
     ]"
   >
     <p v-if="text" class="btnText">{{ text }}</p>
@@ -23,6 +24,7 @@ export default {
     color: String,
     active: Boolean,
     block: Boolean,
+    small: Boolean,
   },
 };
 </script>
@@ -100,5 +102,8 @@ button {
     border-radius: 20px;
     background-color: var(--accentColor) !important;
   }
+}
+.smallBtn {
+  transform: scale(0.8);
 }
 </style>
