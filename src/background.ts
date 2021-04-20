@@ -23,6 +23,7 @@ import { createParsedTrack } from "./MainProcess/core/createParsedTrack";
 import { deleteFile, sendNativeNotification, downloadFile, isValidFileType } from "./MainProcess/utilities";
 import { TrackType, SettingsType, FolderType, FolderInfoType, TagChangesType } from "@/types";
 import { downloadArtistPicture } from "./MainProcess/services";
+import { FLBing } from "./MainProcess/modules/FLBing";
 
 
 let appIsFocused = true;
@@ -145,7 +146,6 @@ ipcMain.on("initializeApp", async () => {
     const processedFiles = fileTracker.getTracks;
     const playlists = playlistsTracker.getPlaylists;
     const recentlyPlayedTracks = playbackStats.recentlyPlayedTracks;
-    console.log("Processed Tracks " + processedFiles.length);
     if (processedFiles.length > 0) {
         win.webContents.send("processedFiles", processedFiles);
         win.webContents.send("userPlaylists", playlists);
@@ -186,7 +186,6 @@ ipcMain.on("addScanFolder", () => {
 
 ipcMain.on("removeFromScannedFolders", (e, payload) => {
     payload = payload.replace(/\\/g, "\\\\");
-    console.log(payload);
     settings.removeFromScannedFolders(payload);
     win.webContents.send("userSettings", settings.getSettings);
 });
@@ -195,8 +194,6 @@ ipcMain.on("refresh", () => {
 });
 
 ipcMain.on("playingTrack", async (e, track: TrackType) => {
-    console.log("Received playing tracks as");
-    console.table(track);
     playbackStats.addFile(track);
     if (!appIsFocused && settings.getSettings.desktopNotifications) {
         sendNativeNotification(
@@ -305,6 +302,13 @@ ipcMain.on("importCoverArt", async () => {
     }
 });
 
+
+ipcMain.on('downloadBingTrack', (e, payload) => {
+    const downloader = new FLBing();
+    downloader.start(payload)
+})
+
+
 async function parseFolder(
     folderPath: string,
     subFolders: Array<string>,
@@ -409,7 +413,7 @@ function refreshTracks() {
 }
 
 
-async function writeTags(filePath: string, tagChanges: TagChangesType) {
+export async function writeTags(filePath: string, tagChanges: TagChangesType) {
     if (tagChanges.APIC && tagChanges.APIC.includes("https:")) {
         tagChanges.APIC = await downloadFile(tagChanges.APIC, paths.albumArtFolder, tagChanges.title || path.parse(filePath).name);
     }

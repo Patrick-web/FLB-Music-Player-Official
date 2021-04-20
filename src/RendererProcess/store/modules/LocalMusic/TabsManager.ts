@@ -251,7 +251,7 @@ const actions: ActionTree<TabsManagerStateInterface, any> = {
             artists.forEach((artist: string) => {
                 if (downloadedArtists.findIndex(artistsInfo => artistsInfo.name == artist) != -1) return
                 fetch(
-                    `https://apiflbdeezer.herokuapp.com/search/?category=artists&query=${artist}`,
+                    `https://flbing.herokuapp.com/search/?category=artists&query=${artist}`,
                     { method: 'GET' }
                 )
                     .then((response) => response.text())

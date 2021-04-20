@@ -36,9 +36,9 @@
 </template>
 
 <script>
-import AlbumCard from "./AlbumCard.vue";
-import ArtistCard from "./ArtistCard.vue";
-import Track from "./Track.vue";
+import AlbumCard from "./BingAlbumCard.vue";
+import ArtistCard from "./BingArtistCard.vue";
+import Track from "./BingTrack.vue";
 export default {
   components: { AlbumCard, ArtistCard, Track },
   methods: {

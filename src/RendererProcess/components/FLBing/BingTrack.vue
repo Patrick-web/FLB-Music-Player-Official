@@ -109,15 +109,38 @@ export default {
     },
     downloadTrack() {
       fetch(
-        "https://apiflbdeezer.herokuapp.com/download/?id=533609232",
+        `https://flbing.herokuapp.com/download/?id=${this.trackInfo.id}`,
         this.requestOptions
       )
         .then((response) => response.text())
         .then((result) => {
           const link = JSON.parse(result).link;
-          fetch(link, this.requestOptions)
+          fetch(
+            `https://api.deezer.com/track/${this.trackInfo.id}`,
+            this.requestOptions
+          )
             .then((response) => response.text())
-            .then((result) => ipcRenderer.send("downloadTrack", result))
+            .then((trackResult) => {
+              const trackRes = JSON.parse(trackResult);
+              const tags = {
+                title: trackRes.title,
+                album: trackRes.album.title,
+                artist: trackRes.artist.name,
+                APIC: trackRes.album.cover_medium,
+                imageUrl: trackRes.album.cover_medium,
+              };
+              const artistInfo = {
+                name: trackRes.artist.name,
+                picture: trackRes.artist.picture_medium,
+              };
+              const payload = {
+                id: trackRes.id,
+                link,
+                tags,
+                artistInfo,
+              };
+              ipcRenderer.send("downloadBingTrack", payload);
+            })
             .catch((error) => console.log("error", error));
         })
         .catch((error) => console.log("error", error));

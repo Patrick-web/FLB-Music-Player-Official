@@ -47,6 +47,7 @@
 	overflow: hidden;
 	overflow-y: scroll;
 	max-height: 65%;
+	padding: 10px;
 }
 
 .sliverBar {
@@ -57,24 +58,24 @@
 	margin-bottom: 10px;
 	background: linear-gradient(rgba(8, 8, 8, 0.219), transparent);
 }
-
-.sliverBar .sliverBarActions {
+.sliverBarFooter {
 	position: absolute;
 	z-index: 4;
-	right: 0px;
-	bottom: 10px;
+	left: 0px;
+	bottom: 0px;
+	width: 98%;
+	padding: 10px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	background: linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.63));
+}
+.sliverBar .sliverBarActions {
 	display: flex;
 	gap: 10px;
-	justify-content: space-between;
-	padding-right: 10px;
 }
 .sliverBar .groupedCard_info {
-	position: absolute;
-	bottom: 0%;
-	padding: 10px;
-	display: block;
-	z-index: 3;
-	width: 40%;
+	/* something might come up */
 }
 
 .sliverBar .groupedCard_info .groupedInfo_title {
@@ -86,7 +87,7 @@
 }
 
 .sliverBar .groupedCard_info .groupedInfo_subtitle {
-	font-size: var(--baseFontSize);
+	font-size: 0.9rem;
 	font-family: roboto-thin;
 	width: 100%;
 }
@@ -110,11 +111,11 @@
 	-webkit-transform: none !important;
 	transform: none !important;
 	width: 100% !important;
-	height: 400% !important;
+	height: 90% !important;
 	z-index: -1;
-	filter: blur(40px);
+	filter: blur(20px);
 	top: 0;
 	left: 0;
-	opacity: 0.2;
+	opacity: 0.7;
 }
 /*# sourceMappingURL=test.css.map */

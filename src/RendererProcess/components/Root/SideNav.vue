@@ -1,5 +1,5 @@
 <template>
-  <div class="sideNav" :class="[isCollapsed ? 'collapsed' : '', 'sideNav']">
+  <div class="sideNav bg2" :class="[isCollapsed ? 'collapsed' : '', 'sideNav']">
     <div>
       <div
         :class="[
@@ -10,6 +10,7 @@
       >
         <router-link to="/">
           <img
+            class="icon"
             title="My Music"
             src="@/RendererProcess/assets/images/music.svg"
             alt
@@ -21,6 +22,24 @@
       <div
         class="sideNav-group"
         :class="[
+          currentPage === 'Podcasts' ? 'active-sideNav-group' : '',
+          'sideNav-group',
+        ]"
+        @click="switchPage('Podcasts')"
+      >
+        <router-link to="/podcasts">
+          <img
+            class="icon"
+            title="Podcasts"
+            src="@/RendererProcess/assets/images/podcast.svg"
+            alt
+          />
+          <p v-if="!isCollapsed">Podcasts</p>
+        </router-link>
+      </div>
+      <div
+        class="sideNav-group"
+        :class="[
           currentPage === 'Deezer' ? 'active-sideNav-group' : '',
           'sideNav-group',
         ]"
@@ -28,8 +47,8 @@
       >
         <router-link to="/deezer">
           <img
+            class="icon"
             title="Deezer"
-            class="whiten"
             src="@/RendererProcess/assets/images/deezer.svg"
             alt
           />
@@ -44,32 +63,14 @@
         @click="switchPage('Spotify')"
       >
         <a>
-          <span v-if="!isCollapsed">0%</span>
+          <span v-if="!isCollapsed">Coming Soon</span>
           <img
             title="Spotify"
-            class="whiten"
+            class="icon"
             src="@/RendererProcess/assets/images/spotify.svg"
             alt
           />
           <p v-if="!isCollapsed">Spotify</p>
-        </a>
-      </div>
-      <div
-        :class="[
-          currentPage === 'Podcasts' ? 'active-sideNav-group' : '',
-          'sideNav-group',
-        ]"
-        @click="switchPage('Podcasts')"
-      >
-        <a>
-          <span v-if="!isCollapsed">75%</span>
-          <img
-            title="Podcasts"
-            class="whiten"
-            src="@/RendererProcess/assets/images/podcast.svg"
-            alt
-          />
-          <p v-if="!isCollapsed">Podcasts</p>
         </a>
       </div>
       <div
@@ -83,7 +84,7 @@
           <span v-if="!isCollapsed">80%</span>
           <img
             title="FLBing"
-            class="whiten"
+            class="icon"
             src="@/RendererProcess/assets/images/flbing.svg"
           />
           <p v-if="!isCollapsed">FLBing</p>
@@ -98,7 +99,7 @@
         <a>
           <img
             title="Settings"
-            class="whiten"
+            class="icon"
             src="@/RendererProcess/assets/images/settings.svg"
             alt
           />
@@ -112,7 +113,7 @@
             src="@/RendererProcess/assets/images/refresh.svg"
             alt
             id="refreshLib"
-            class="animated infinite"
+            class="animated infinite icon"
           />
           <p v-if="!isCollapsed">Refresh</p>
         </a>
@@ -165,10 +166,9 @@ export default {
   }
 }
 .sideNav {
-  background: rgba(255, 255, 255, 0.083);
   min-width: 180px;
   width: 180px;
-  margin-bottom: 15px;
+  height: 92.5vh;
   border-radius: 20px;
   display: flex;
   flex-direction: column;
@@ -204,7 +204,7 @@ export default {
   }
   .sideNav-group:hover {
     cursor: pointer;
-    background: rgba(255, 255, 255, 0.144);
+    background: rgba(255, 255, 255, 0.1);
   }
   .active-sideNav-group {
     background: var(--accentColor);

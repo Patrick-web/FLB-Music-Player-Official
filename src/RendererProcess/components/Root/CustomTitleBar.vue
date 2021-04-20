@@ -6,20 +6,24 @@
     </div>
     <div class="ctrls">
       <div class="ctrl" @click="sendMessage('minimize')">
-        <img src="@/RendererProcess/assets/images/windowMinimize.svg" alt="" />
+        <img
+          class="icon"
+          src="@/RendererProcess/assets/images/windowMinimize.svg"
+          alt=""
+        />
       </div>
       <div @click="sendMessage('maximize')" class="ctrl">
         <img
+          class="icon"
           style="width: 12px"
           src="@/RendererProcess/assets/images/windowMaximize.svg"
-          alt=""
         />
       </div>
       <div id="closeWindow" @click="sendMessage('closeWindow')" class="ctrl">
         <img
+          class="icon"
           style="width: 12px"
           src="@/RendererProcess/assets/images/windowClose.svg"
-          alt=""
         />
       </div>
     </div>
@@ -38,14 +42,6 @@ export default {
 };
 </script>
 <style scoped lang="scss">
-.light_theme {
-  .customTitleBar {
-    filter: invert(1);
-  }
-  #closeWindow:hover {
-    filter: invert(1);
-  }
-}
 .customTitleBar {
   width: 100vw;
   display: flex;

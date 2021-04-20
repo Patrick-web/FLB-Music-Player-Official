@@ -6,7 +6,7 @@
       v-model="searchQuery"
       id="search"
       placeholder="Search"
-      class="inputElem"
+      class="inputElem bg2"
     />
     <SortWidget />
     <SearchResults v-on:closeSearch="searchQuery = ''" v-if="searchQuery" />
@@ -48,13 +48,6 @@ export default {
     background: #0062ff !important;
   }
 }
-.light_theme {
-  .searchResults {
-    background: black !important;
-    border: none !important;
-    box-shadow: 4px 4px 10px rgba(255, 255, 255, 0.322) !important;
-  }
-}
 .Titlebar {
   position: relative;
   display: flex;
@@ -82,7 +75,6 @@ export default {
   border-radius: 20px;
   border: 1px solid transparent;
   outline: none;
-  background: rgba(255, 255, 255, 0.083);
   color: white;
   width: 250px;
   font-family: roboto-light;
@@ -91,12 +83,10 @@ export default {
 
 #search:focus {
   border-radius: 10px;
-  width: 300px;
   background: rgba(255, 255, 255, 0.083);
 }
 #search:hover {
   border-radius: 10px;
-  background: rgba(255, 255, 255, 0.144);
   cursor: pointer;
 }
 

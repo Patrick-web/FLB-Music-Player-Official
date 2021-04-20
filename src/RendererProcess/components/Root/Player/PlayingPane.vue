@@ -1,5 +1,5 @@
 <template>
-  <div class="playingPane animated faster">
+  <div class="playingPane bg1">
     <img
       @click="expandPlayingPane"
       id="expandPlayingPane"
@@ -321,7 +321,7 @@ export default {
     display: none !important;
   }
   .controls {
-    transform: translate(82%, 400%);
+    transform: translate(76%, 400%);
     #playlistBt {
       display: none;
     }
@@ -354,22 +354,8 @@ export default {
     }
   }
 }
-.light_theme {
-  .playingPane {
-    box-shadow: -2px 2px 20px rgba(255, 255, 255, 0.541);
-    background: rgb(34, 34, 34);
-    filter: invert(1);
-    #cover {
-      filter: invert(1);
-    }
-  }
-  .fullScreenPlayingPane {
-    background: rgb(34, 34, 34) !important;
-  }
-}
+
 .playingPane {
-  background: rgba(255, 255, 255, 0.083);
-  backdrop-filter: blur(10px);
   height: 100px;
   position: fixed;
   bottom: 5px;

@@ -1,5 +1,5 @@
 <template>
-  <div>Lorem ipsum dolor sit amet.</div>
+  <div class="DiscoverTab tab"></div>
 </template>
 
 <script>

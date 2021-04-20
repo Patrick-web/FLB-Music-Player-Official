@@ -1,0 +1,87 @@
+.blurred_bg.blur10 {
+	backdrop-filter: blur(10px);
+}
+.blurred_bg.blur20 {
+	backdrop-filter: blur(20px);
+}
+.blurred_bg.blur30 {
+	backdrop-filter: blur(30px);
+}
+.blurred_bg.blur40 {
+	backdrop-filter: blur(40px);
+}
+
+.bg1 {
+	background: rgba(255, 255, 255, 0.05);
+}
+
+.bg2 {
+	background: rgba(255, 255, 255, 0.1);
+}
+.bg3 {
+	background: rgba(255, 255, 255, 0.15);
+}
+.bg4 {
+	background: rgba(255, 255, 255, 0.2);
+}
+
+.flex {
+	display: flex;
+}
+.flex-col {
+	flex-direction: column;
+}
+.flex.center-v {
+	align-items: center;
+}
+.flex_between {
+	justify-content: space-between;
+	align-items: center;
+}
+
+.gap5 {
+	gap: 5px;
+}
+.gap10 {
+	gap: 10px;
+}
+.gap20 {
+	gap: 20px;
+}
+.gap30 {
+	gap: 30px;
+}
+.gap40 {
+	gap: 40px;
+}
+.grid_auto {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+.grid2 {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	row-gap: 10px;
+	align-items: center;
+	justify-content: center;
+}
+.grid3 {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	row-gap: 10px;
+}
+.grid4 {
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	row-gap: 10px;
+}
+.grid5 {
+	display: grid;
+	grid-template-columns: repeat(5, 1fr);
+	row-gap: 10px;
+}
+.grid6 {
+	display: grid;
+	grid-template-columns: repeat(6, 1fr);
+	row-gap: 10px;
+}

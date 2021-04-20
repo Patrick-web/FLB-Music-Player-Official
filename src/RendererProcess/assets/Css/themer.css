@@ -28,38 +28,119 @@
 .accent_9 {
 	--accentColor: #ff8a66;
 }
-.dark_theme .searchResults {
-	background: rgb(17, 17, 17) !important;
+
+.fancy_theme p,
+h1,
+h2,
+h3,
+h4,
+div,
+a,
+pre {
+	color: white;
 }
-.dark_theme .fullScreenPlayingPane {
-	background: rgb(17, 17, 17) !important;
+
+.dark_theme .bg1 {
+	background: rgb(17, 17, 17);
 }
-.dark_theme .MixCard .cardContent {
-	background: rgb(17, 17, 17) !important;
+.dark_theme .bg2 {
+	background: rgb(26, 26, 26);
+}
+.dark_theme .blurred_bg {
+	background: rgb(26, 26, 26) !important;
 }
 .dark_theme .trackOptions {
 	background: rgb(17, 17, 17) !important;
 }
-.dark_theme .Settings {
-	background: rgb(17, 17, 17) !important;
-}
 .dark_theme .PlaylistCard {
-	background: rgb(14, 14, 14) !important;
+	background: rgba(26, 26, 26, 0.301) !important;
 }
-.dark_theme .card {
-	background: rgb(20, 20, 20) !important;
-}
-.dark_theme.playlistOption {
-	background: rgb(10, 10, 10) !important;
-	border: 1px rgb(10, 10, 10) solid;
-}
-.dark_theme.playlistOption img {
-	filter: none !important;
-}
-.dark_theme.playlistOption p {
-	color: white !important;
-}
-
 .dark_theme .sliverBar #blurred {
 	display: none !important;
+}
+.dark_theme .sliverBarFooter {
+	background: transparent;
+}
+
+.black_theme .bg1 {
+	background: black;
+}
+.black_theme .bg2 {
+	background: rgb(8, 8, 8);
+}
+.black_theme .blurred_bg {
+	background: rgb(8, 8, 8) !important;
+}
+.black_theme .PlaylistCard {
+	background: rgb(8, 8, 8) !important;
+}
+.black_theme .sliverBar #blurred {
+	display: none !important;
+}
+.black_theme .sliverBarFooter {
+	background: transparent;
+}
+
+.light_theme {
+	background: rgb(243, 243, 243) !important;
+}
+.light_theme p {
+	color: black;
+}
+.light_theme h1 {
+	color: black;
+}
+.light_theme h2 {
+	color: black;
+}
+.light_theme h3 {
+	color: black;
+}
+.light_theme div {
+	color: black;
+}
+.light_theme a {
+	color: black;
+}
+.light_theme pre {
+	color: black;
+}
+.light_theme .TrackCard p {
+	font-family: roboto;
+	color: black;
+}
+.light_theme .TrackCard:hover {
+	background: var(--accentColor) !important;
+}
+.light_theme .playingTrack {
+	background: var(--accentColor);
+}
+.light_theme .playingTrack .trackTitle {
+	transform: translateX(0px);
+}
+.light_theme ::placeholder {
+	color: black;
+}
+.light_theme button img {
+	filter: invert(1);
+}
+.light_theme .icon {
+	filter: invert(1);
+}
+.light_theme .bg1 {
+	background: rgb(255, 255, 255);
+}
+.light_theme .bg2 {
+	background: rgb(255, 255, 255);
+}
+.light_theme .blurred_bg {
+	background: rgb(248, 248, 248);
+}
+.light_theme .PlaylistCard {
+}
+.light_theme .sliverBar #blurred {
+	display: none !important;
+}
+.light_theme .sliverBarFooter {
+	background: transparent;
 }

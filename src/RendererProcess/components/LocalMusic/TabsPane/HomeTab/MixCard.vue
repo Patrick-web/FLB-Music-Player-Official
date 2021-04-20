@@ -1,7 +1,7 @@
 <template>
-  <div class="MixCard">
+  <div class="MixCard bg1">
     <div class="cardTitle">
-      <div class="flex flexBetween">
+      <div class="flex flex_between">
         <h2>{{ cardTitle }}</h2>
         <base-button
           @click.native="playMix"
@@ -46,18 +46,9 @@ export default {
 </script>
 
 <style lang="scss">
-.light_theme {
-  .MixCard {
-    .cardContent,
-    .cardTitle {
-      background: black;
-    }
-  }
-}
 .MixCard {
   position: relative;
   margin-bottom: 20px;
-  background: rgba(255, 255, 255, 0.041);
   padding: 10px;
   border-radius: 20px;
   #playMixBt {

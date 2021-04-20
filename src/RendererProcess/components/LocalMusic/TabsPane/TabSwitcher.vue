@@ -3,11 +3,11 @@
     <div
       v-for="tab in tabs"
       :key="tab.name"
-      :class="[currentTab === tab.name ? 'activeTab' : '', 'tabBtn']"
+      :class="[currentTab === tab.name ? 'activeTab' : '', 'tabBtn bg2']"
       @click="routeTo(tab)"
       :id="tab.name"
     >
-      <img :src="tab.icon" alt="" />
+      <img :src="tab.icon" class="icon" alt="" />
       <p>{{ tab.name }}</p>
     </div>
   </div>
@@ -63,7 +63,6 @@ import folderIcon from "@/RendererProcess/assets/images/folderNormal.svg";
   margin-bottom: 10px;
   margin-top: 10px;
   .tabBtn {
-    background: rgba(255, 255, 255, 0.083);
     text-align: center;
     position: relative;
     z-index: 2;
@@ -87,11 +86,11 @@ import folderIcon from "@/RendererProcess/assets/images/folderNormal.svg";
       transition: 0.2s cubic-bezier(0.23, 1, 0.32, 1);
     }
     &:hover {
-      background: rgba(255, 255, 255, 0.144);
+      background: rgba(255, 255, 255, 0.062);
     }
   }
   .activeTab {
-    background: var(--accentColor);
+    background: var(--accentColor) !important;
     font-family: roboto;
     padding-left: 5px;
     padding-right: 5px;

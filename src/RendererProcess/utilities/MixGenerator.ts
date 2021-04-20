@@ -52,7 +52,7 @@ export class MixGenerator {
         forgottenTracks = forgottenTracks.splice(0, 10)
         if (forgottenTracks.length > 0) {
             const mix: mixTyping = {
-                name: 'Tracks you might have forgotten 🤯',
+                name: 'Tracks you might have forgotten 😲🤯',
                 info: `Remember 👉 ${forgottenTracks[0].defaultTitle}, ${forgottenTracks[1].defaultTitle} and others...`,
                 tracks: forgottenTracks
             }

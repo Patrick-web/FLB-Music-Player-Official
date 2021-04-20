@@ -17,7 +17,7 @@
     <div class="cardsWrapper">
       <div class="grid2 gap10">
         <div class="results trackResults">
-          <div class="subHeading">
+          <div class="sectionHeading">
             <p>Tracks</p>
             <div class="line"></div>
             <p>{{ artistInfo.tracks.length }}</p>
@@ -31,7 +31,7 @@
           </div>
         </div>
         <div class="results albumResults">
-          <div class="subHeading">
+          <div class="sectionHeading">
             <p>Albums</p>
             <div class="line"></div>
             <p>{{ artistInfo.albums.length }}</p>
@@ -52,8 +52,8 @@
 
 <script>
 import BaseButton from "@/RendererProcess/components/BaseComponents/BaseButton.vue";
-import AlbumCard from "./AlbumCard.vue";
-import Track from "./Track.vue";
+import AlbumCard from "./BingAlbumCard.vue";
+import Track from "./BingTrack.vue";
 export default {
   components: {
     AlbumCard,
@@ -86,25 +86,6 @@ export default {
   // backdrop-filter: blur(40px);
 }
 .bingPage {
-  .subHeading {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 10px;
-    p {
-      font-family: roboto-thin;
-    }
-    div {
-      height: 10px;
-      background: linear-gradient(
-        90deg,
-        transparent,
-        var(--accentColor),
-        transparent
-      );
-      width: 90%;
-    }
-  }
   .content {
     padding: 10px;
     height: 57vh !important;

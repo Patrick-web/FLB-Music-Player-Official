@@ -1,14 +1,18 @@
 <template>
-  <div class="Settings">
+  <div class="Settings blurred_bg blur40">
     <h1 id="SettingsTitle" style="font-size: 1.6rem; margin-top: 5px">
       Settings
     </h1>
-    <p class="modalClose" @click="UIcontrollerToggleProperty('showSettings')">
-      <img src="@/RendererProcess/assets/images/x.svg" alt="" />
-    </p>
+    <base-button
+      @click.native="UIcontrollerToggleProperty('showSettings')"
+      :icon="require('@/RendererProcess/assets/images/x.svg')"
+      extraClass="modalClose"
+      :small="true"
+      :transparent="true"
+    />
     <main>
       <section>
-        <article>
+        <article class="bg1">
           <h4>Library</h4>
           <div class="folderBoxWrapper">
             <div
@@ -37,7 +41,7 @@
             />
           </div>
         </article>
-        <article>
+        <article class="bg1">
           <div class="settingBox">
             <h4>Default Tab</h4>
             <ul class="grid3 gap20">
@@ -53,15 +57,16 @@
                 :class="[
                   settings.defaultTab == tab.name ? 'defaultTab' : '',
                   'tabDiv',
+                  'bg2',
                 ]"
               >
-                <img :src="tab.icon" alt="" />
+                <img class="icon" :src="tab.icon" alt="" />
                 <p>{{ tab.name }}</p>
               </div>
             </ul>
           </div>
         </article>
-        <article>
+        <article class="bg1">
           <h4>Accent Color</h4>
           <ul class="grid5 gap10">
             <div
@@ -86,7 +91,7 @@
                 newValue: !settings.desktopNotifications,
               })
             "
-            class="switch"
+            class="switch bg1"
           >
             <p>Desktop Notifications</p>
             <p v-if="settings.desktopNotifications">On</p>
@@ -95,30 +100,36 @@
         </article>
       </section>
       <section>
-        <article>
-          <h4>Theme</h4>
+        <article class="bg1">
+          <h4>Theme 🎨</h4>
           <ul class="grid2 gap20">
             <div
               @click="setSettingValue({ property: 'theme', newValue: 'fancy' })"
-              :class="[settings.theme == 'fancy' ? 'activeSetting' : '']"
+              :class="[settings.theme == 'fancy' ? 'activeSetting' : '', 'bg2']"
             >
-              <p>Fancy</p>
+              <p>Fancy dancy 🍷</p>
             </div>
             <div
               @click="setSettingValue({ property: 'theme', newValue: 'dark' })"
-              :class="[settings.theme == 'dark' ? 'activeSetting' : '']"
+              :class="[settings.theme == 'dark' ? 'activeSetting' : '', 'bg2']"
             >
-              <p>Dark</p>
+              <p>Fake Black 🏴</p>
             </div>
-            <!-- <div
-              @click="setSettingValue({ property: 'theme', newValue: 'light' })"
-              :class="[settings.theme == 'light' ? 'activeSetting' : '']"
+            <div
+              @click="setSettingValue({ property: 'theme', newValue: 'black' })"
+              :class="[settings.theme == 'black' ? 'activeSetting' : '', 'bg2']"
             >
-              <p>Light</p>
-            </div> -->
+              <p>Utter Black 🏴‍☠️</p>
+            </div>
+            <div
+              @click="setSettingValue({ property: 'theme', newValue: 'light' })"
+              :class="[settings.theme == 'light' ? 'activeSetting' : '', 'bg2']"
+            >
+              <p>Eye Killer 👁‍🗨</p>
+            </div>
           </ul>
         </article>
-        <article>
+        <article class="bg1">
           <h3>Shortcuts</h3>
           <div class="shortcut">
             <p>Pause/Play</p>
@@ -141,7 +152,7 @@
             <pre>Tab</pre>
           </div>
         </article>
-        <article>
+        <article class="bg1">
           <h3>About</h3>
           <div class="infos">
             <div class="info-group">
@@ -250,14 +261,14 @@ export default {
 <style lang="scss">
 .Settings {
   position: fixed;
-  background-color: rgba(0, 0, 0, 0.445);
-  backdrop-filter: blur(20px);
   overflow: hidden;
-  top: 32px;
-  right: 0px;
-  height: 96%;
-  width: 100vw;
+  top: 40px;
+  left: 10px;
+  height: 93.5vh;
+  width: 98.5vw;
   z-index: 50;
+  border: 1px solid rgba(255, 255, 255, 0.315);
+  border-radius: 20px;
   main {
     display: grid !important;
     grid-template-columns: 1fr 1fr 1fr;
@@ -285,7 +296,6 @@ export default {
       }
     }
     article {
-      background: rgba(255, 255, 255, 0.062);
       margin: 10px;
       padding: 10px;
       border-radius: 20px;
@@ -296,7 +306,6 @@ export default {
         font-size: 1.2rem;
       }
       .folderBox {
-        background: rgba(255, 255, 255, 0.096);
         padding: 10px;
         margin-bottom: 10px;
         border-radius: 20px;
@@ -306,7 +315,6 @@ export default {
       ul {
         div {
           justify-self: center;
-          background: rgba(255, 255, 255, 0.096);
           height: 50px;
           width: 100%;
           display: flex;

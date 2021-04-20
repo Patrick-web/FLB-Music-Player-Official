@@ -2,7 +2,12 @@
   <div @click="cleanUp" id="app" :class="[accentColor, theme + '_theme']">
     <CustomTitleBar />
     <IpcListener />
-    <Settings v-if="showSettings" />
+    <transition
+      enter-active-class="animated slideInUp extrafaster"
+      leave-active-class="animated slideOutDown extrafaster"
+    >
+      <Settings v-if="showSettings" />
+    </transition>
     <OnBoard v-on:closeOnBoard="showOnboard = false" v-if="showOnboard" />
     <Notifications />
     <div class="split">
@@ -73,6 +78,7 @@
 @import "./RendererProcess/assets/Css/global.css";
 @import "./RendererProcess/assets/Css/themer.css";
 @import "./RendererProcess/assets/Css/groupedContent.css";
+@import "./RendererProcess/assets/Css/utilityClasses.css";
 * {
   scroll-behavior: smooth;
 }

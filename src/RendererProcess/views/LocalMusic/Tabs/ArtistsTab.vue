@@ -17,29 +17,45 @@
     >
       <div v-if="selectedGroup" class="selectedGroup">
         <div class="sliverBar">
-          <div class="sliverBarActions">
-            <base-button
-              @click.native="playAll"
-              :icon="require('@/RendererProcess/assets/images/playnext.svg')"
-              text="Play All"
-            />
-            <base-button
-              @click.native="addTracksToQueue"
-              :icon="require('@/RendererProcess/assets/images/queue-music.svg')"
-              text="Add To Queue"
-            />
+          <div class="sliverBarFooter">
+            <div class="groupedCard_info">
+              <p class="groupedInfo_title">
+                {{ selectedGroup.name }}
+              </p>
+              <p
+                @click="goToArtist(selectedGroup.tracks.artist)"
+                class="groupedInfo_subtitle"
+              >
+                {{ selectedGroup.tracks.artist }}
+              </p>
+            </div>
+            <div class="sliverBarActions">
+              <base-button
+                @click.native="playAll"
+                :icon="require('@/RendererProcess/assets/images/playnext.svg')"
+                text="Play All"
+              />
+              <base-button
+                @click.native="addTracksToQueue"
+                :icon="
+                  require('@/RendererProcess/assets/images/queue-music.svg')
+                "
+                text="Add To Queue"
+              />
+            </div>
           </div>
+
           <base-button
             @click.native="deSelectGroup"
             :icon="require('@/RendererProcess/assets/images/back.svg')"
             id="backToUnfilteredItems"
           />
-          <img v-if="artistPicture" class="coverArt" :src="artistPicture" />
           <img
-            v-else
-            class="coverArt"
-            src="@/RendererProcess/assets/images/FLBDefaultArtistPic.png"
+            v-if="artistPicture"
+            class="coverArt roundImage"
+            :src="artistPicture"
           />
+          <letter-card v-else :text="selectedGroup.name" />
           <img
             v-if="artistPicture"
             class="coverArt"
@@ -47,29 +63,11 @@
             alt=""
             id="blurred"
           />
-          <img
-            v-else
-            class="coverArt"
-            src="@/RendererProcess/assets/images/FLBDefaultCover.png"
-            alt=""
-            id="blurred"
-          />
-          <div class="groupedCard_info">
-            <p class="groupedInfo_title">
-              {{ selectedGroup.name }}
-            </p>
-            <p
-              @click="goToArtist(selectedGroup.tracks.artist)"
-              class="groupedInfo_subtitle"
-            >
-              {{ selectedGroup.tracks.artist }}
-            </p>
-          </div>
         </div>
         <div class="cardsWrapper">
-          <div class="grid2 gap10">
+          <div class="grid2 gap20">
             <div class="artistAlbums">
-              <div class="subHeading">
+              <div class="sectionHeading">
                 <p>Albums</p>
                 <div class="line"></div>
                 <p>{{ removeDuplicateAlbums(selectedGroup.albums).length }}</p>
@@ -85,7 +83,7 @@
             </div>
 
             <div class="artistTracks">
-              <div class="subHeading">
+              <div class="sectionHeading">
                 <p style="margin-left: -10px">Tracks</p>
                 <div class="line"></div>
                 <p>{{ selectedGroup.tracks.length }}</p>
@@ -113,6 +111,7 @@ import ArtistCard from "@/RendererProcess/components/LocalMusic/TabsPane/ArtistT
 import AlbumCard from "@/RendererProcess/components/LocalMusic/TabsPane/AlbumsTab/AlbumCard.vue";
 import BaseButton from "@/RendererProcess/components/BaseComponents/BaseButton.vue";
 import { removeDuplicates } from "@/sharedUtilities";
+import LetterCard from "@/RendererProcess/components/LocalMusic/TabsPane/ArtistTab/LetterCard.vue";
 export default {
   data() {
     return {
@@ -192,6 +191,7 @@ export default {
     TrackCard,
     AlbumCard,
     BaseButton,
+    LetterCard,
   },
   mounted() {
     this.generateArtistsData();
@@ -212,11 +212,17 @@ export default {
   }
 }
 .ArtistsTab {
+  .sliverBar {
+    .LetterCard {
+      transform: translateY(40px);
+      h1 {
+        font-size: 7rem;
+      }
+    }
+  }
   .cardsWrapper {
     overflow-y: hidden !important;
     height: 60%;
-    padding-left: 10px;
-    padding-right: 10px;
     .grid2 {
       height: 100%;
     }
@@ -230,25 +236,6 @@ export default {
       overflow-y: scroll;
       position: relative;
       padding: 10px;
-    }
-    .subHeading {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 10px;
-      p {
-        font-family: roboto-thin;
-      }
-      div {
-        height: 10px;
-        background: linear-gradient(
-          90deg,
-          transparent,
-          var(--accentColor),
-          transparent
-        );
-        width: 90%;
-      }
     }
   }
 }

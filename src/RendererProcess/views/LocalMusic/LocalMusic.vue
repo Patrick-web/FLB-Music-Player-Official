@@ -8,7 +8,10 @@
       <TagEditor v-if="showTagEditor" :targetTrack="selectedTrack" />
     </transition>
     <main>
-      <section :class="[multiSelectOn ? 'multiSelectMode' : '']" id="tabsArea">
+      <section
+        :class="[multiSelectOn ? 'multiSelectMode' : '', 'bg1']"
+        id="tabsArea"
+      >
         <TrackContextMenu v-on:targetTrack="setTagEditorTrack" />
         <TabsPaneHeader />
         <TabSwitcher />
@@ -95,7 +98,6 @@ export default {
       width: 61.5vw;
       margin-right: 10px;
       border-radius: 20px;
-      background: rgba(255, 255, 255, 0.083);
     }
   }
 }

@@ -45,17 +45,27 @@
           id="backToUnfilteredItems"
         />
         <div class="sliverBar">
-          <div class="sliverBarActions">
-            <base-button
-              @click.native="playAll"
-              :icon="require('@/RendererProcess/assets/images/playnext.svg')"
-              text="Play All"
-            />
-            <base-button
-              @click.native="addTracksToQueue"
-              :icon="require('@/RendererProcess/assets/images/queue-music.svg')"
-              text="Add To Queue"
-            />
+          <div class="sliverBarFooter">
+            <div class="groupedCard_info">
+              <p class="groupedInfo_title">
+                {{ selectedGroup.name }}
+              </p>
+              <p class="groupedInfo_subtitle">{{ selectedGroup.path }}</p>
+            </div>
+            <div class="sliverBarActions">
+              <base-button
+                @click.native="playAll"
+                :icon="require('@/RendererProcess/assets/images/playnext.svg')"
+                text="Play All"
+              />
+              <base-button
+                @click.native="addTracksToQueue"
+                :icon="
+                  require('@/RendererProcess/assets/images/queue-music.svg')
+                "
+                text="Add To Queue"
+              />
+            </div>
           </div>
           <img
             v-if="selectedGroup.tracks[0].albumArt"
@@ -74,12 +84,6 @@
             src="@/RendererProcess/assets/images/folder.svg"
             alt=""
           />
-          <div class="groupedCard_info">
-            <p class="groupedInfo_title">
-              {{ selectedGroup.name }}
-            </p>
-            <p class="groupedInfo_subtitle">{{ selectedGroup.path }}</p>
-          </div>
         </div>
         <div class="cardsWrapper">
           <TrackCard
@@ -155,6 +159,7 @@ export default {
 <style lang="scss">
 .FoldersTab {
   height: 100%;
+  padding-bottom: 0px;
 }
 .folderCards {
   gap: 10px;

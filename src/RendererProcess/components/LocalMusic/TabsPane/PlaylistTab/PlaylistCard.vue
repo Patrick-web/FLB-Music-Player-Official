@@ -1,6 +1,5 @@
 <template>
-  <div class="PlaylistCard">
-    <p class="playlist_name">{{ playlist.name }}</p>
+  <div class="PlaylistCard bg1">
     <div
       @click="openPlaylist"
       style="cursor: pointer"
@@ -14,46 +13,25 @@
       />
       <p style="font-family: roboto-thin">Empty Playlist</p>
     </div>
-    <div class="top4Tracks">
-      <div
-        @click="playTrack(track)"
-        v-for="track in top5MixTracks"
-        :key="track.fileLocation"
-        class="card"
-      >
-        <img
-          class="card_image"
-          v-if="track.albumArt"
-          :src="track.albumArt"
-          alt=""
-        />
-        <img
-          class="card_image"
-          v-else
-          src="@/RendererProcess/assets/images/FLBDefaultCover.png"
+    <div class="playlist_header">
+      <p class="playlist_name">{{ playlist.name }}</p>
+      <div v-if="playlist.tracks.length != 0" class="playlist_actions">
+        <base-button
+          :icon="require('@/RendererProcess/assets/images/playlist_add.svg')"
+          @click.native="openPlaylist"
+          title="Open Playlist"
         />
         <base-button
           :icon="require('@/RendererProcess/assets/images/playButton.svg')"
-          id="card_playBt"
-          style="backdrop-filter: blur(20px)"
+          @click.native="playAll"
+          title="Play All"
         />
-        <p class="card_title">{{ track.defaultTitle }}</p>
-        <p class="card_subTitle">
-          {{ track.defaultArtist || "unknown artist" }}
-        </p>
       </div>
     </div>
-    <div v-if="playlist.tracks.length != 0" class="pl_ActionsWrapper">
-      <base-button
-        :icon="require('@/RendererProcess/assets/images/playlist_add.svg')"
-        @click.native="openPlaylist"
-        text="Open Playlist"
-        style="margin-top: 10px; margin-bottom: 10px"
-      />
-      <base-button
-        :icon="require('@/RendererProcess/assets/images/playButton.svg')"
-        @click.native="playAll"
-        text="Play All"
+    <div class="playlist_body">
+      <over-layed-tracks
+        v-if="playlist.tracks.length !== 0"
+        :tracks="playlist.tracks"
       />
     </div>
   </div>
@@ -62,8 +40,9 @@
 <script>
 import BaseButton from "@/RendererProcess/components/BaseComponents/BaseButton.vue";
 import { mapMutations, mapActions } from "vuex";
+import OverLayedTracks from "../HomeTab/OverLayedTracks.vue";
 export default {
-  components: { BaseButton },
+  components: { BaseButton, OverLayedTracks },
   computed: {
     top5MixTracks() {
       return this.playlist.tracks.slice(0, 5);
@@ -105,71 +84,23 @@ export default {
 .PlaylistCard {
   align-self: flex-start;
   justify-self: center;
-  background: rgba(255, 255, 255, 0.068);
-  padding: 10px;
   border-radius: 20px;
-  .playlist_name {
-    font-size: 1.1rem;
-    margin-bottom: 10px;
-  }
-  .playlistOption {
-    background: white;
-    img {
-      filter: invert(1);
-    }
-    p {
-      color: black;
-    }
-  }
-  .top4Tracks {
+  padding: 10px;
+  .playlist_header {
     display: flex;
-    .card {
-      border-radius: 20px;
-      background: rgba(255, 255, 255, 0.068);
-      backdrop-filter: blur(10px);
-      padding: 10px;
-      box-shadow: -15px 5px 10px rgba(0, 0, 0, 0.39);
-      position: relative;
-      cursor: pointer;
-      p {
-        text-align: left;
-        font-family: roboto-light;
-        width: 120px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-      }
-      .card_title {
-        font-size: 0.9rem;
-      }
-      .card_subTitle {
-        font-size: 0.8rem;
-      }
-      .card_image {
-        height: 120px;
-        margin: auto;
-        border-radius: 20px;
-      }
-      #card_playBt {
-        position: absolute;
-        background: rgba(0, 0, 0, 0.397);
-        top: 40%;
-        left: 50%;
-        transform: translate(-50%, -50%) scale(0);
-      }
-    }
-    .card:hover {
-      transform: translateY(-10px);
-      #card_playBt {
-        transform: translate(-50%, -50%) scale(1.1);
-      }
-    }
-    .card:hover ~ .card {
-      transform: translateX(120px);
-    }
-    .card:not(:first-child) {
-      margin-left: -120px;
-    }
+    gap: 10px;
+    justify-content: space-between;
+    align-items: center;
   }
+  .playlist_name {
+    font-size: 1.2rem;
+  }
+  .playlist_actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  // .playlist_body {
+  // }
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div @click="close" class="trackOptions">
+  <div @click="close" class="trackOptions blurred_bg blur10">
     <div @click.stop="playNext" class="option hideOnMultiSelectMode">
       <img src="@/RendererProcess/assets/images/playnext.svg" alt="" />
       <span>Play Next</span>
@@ -13,7 +13,7 @@
       <span>Add to Favorites</span>
     </div>
     <div
-      v-if="$route.path !== '/playlists'"
+      v-if="currentTab !== 'Playlists'"
       @click.stop="showPlaylistWidget"
       class="option"
     >
@@ -24,7 +24,7 @@
       <span>Add to Playlist</span>
     </div>
     <div
-      v-if="$route.path === '/playlists'"
+      v-if="currentTab === 'Playlists'"
       @click.stop="removeFromPlaylist"
       class="option"
     >
@@ -55,6 +55,9 @@ export default {
     },
     selectedTracks() {
       return this.$store.state.TrackSelector.selectedTracks;
+    },
+    currentTab() {
+      return this.$store.state.UIController.UIProperties.currentMainTab;
     },
   },
   methods: {
@@ -172,8 +175,6 @@ export default {
   border-radius: 20px;
   width: 220px;
   height: 0px;
-  background-color: #00000038;
-  backdrop-filter: blur(10px);
   overflow: hidden;
   box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.597) !important;
   transition: 0.2s ease;

@@ -1,8 +1,13 @@
 <template>
-  <div class="TagEditor">
-    <p class="modalClose" @click="UIcontrollerToggleProperty('showTagEditor')">
-      <img src="@/RendererProcess/assets/images/x.svg" alt="" />
-    </p>
+  <div class="TagEditor blurred_bg blur10">
+    <base-button
+      @click.native="UIcontrollerToggleProperty('showTagEditor')"
+      :icon="require('@/RendererProcess/assets/images/x.svg')"
+      extraClass="modalClose"
+      :small="true"
+      style="transform: translate(5px, -5px) scale(0.8)"
+      :transparent="true"
+    />
     <div class="centerContents">
       <h1 class="modalTitle">Tag Editor</h1>
     </div>
@@ -190,16 +195,14 @@ export default {
 <style lang="scss">
 .TagEditor {
   position: fixed;
-  background-color: rgba(0, 0, 0, 0.39);
-  backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.315);
   border-radius: 20px;
   box-shadow: 0px 0px 50px black;
   padding: 10px;
   top: 40px;
-  right: 0%;
+  right: 10px;
   z-index: 50;
-  width: 270px;
+  width: 260px;
   color: white;
 
   p {

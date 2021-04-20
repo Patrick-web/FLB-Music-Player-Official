@@ -1,6 +1,6 @@
 <template>
   <button
-    :style="{ backgroundColor: color || 'rgba(255, 255, 255, 0.1)' }"
+    :style="{ backgroundColor: color }"
     :class="[
       icon && text ? 'btnWithIcon' : '',
       icon && !text ? 'iconBtn' : '',
@@ -8,6 +8,10 @@
       active ? 'activeBtn' : '',
       block ? 'blockBtn' : '',
       small ? 'smallBtn' : '',
+      tiny ? 'tinyBtn' : '',
+      extraClass,
+      transparent ? 'transparentBt' : '',
+      'bg2',
     ]"
   >
     <p v-if="text" class="btnText">{{ text }}</p>
@@ -25,6 +29,9 @@ export default {
     active: Boolean,
     block: Boolean,
     small: Boolean,
+    tiny: Boolean,
+    extraClass: String,
+    transparent: Boolean,
   },
 };
 </script>
@@ -35,12 +42,16 @@ button {
   font-family: roboto;
   border: none;
   transition: 0.2s ease;
-  background-color: rgba(255, 255, 255, 0.151);
   border: 1px solid rgba(255, 255, 255, 0);
-  &:active {
-    border: none !important;
-    background: var(--accentColor) !important;
+  p {
+    white-space: nowrap;
   }
+  &:active {
+    border: 1.5px solid rgb(255, 255, 255);
+  }
+}
+.transparentBt {
+  background: none !important;
 }
 .activeBtn {
   background: var(--accentColor) !important;
@@ -105,5 +116,8 @@ button {
 }
 .smallBtn {
   transform: scale(0.8);
+}
+.tinyBtn {
+  transform: scale(0.6);
 }
 </style>

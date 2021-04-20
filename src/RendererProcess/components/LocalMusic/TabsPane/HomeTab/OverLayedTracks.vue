@@ -4,7 +4,7 @@
       @click="playTrack(track)"
       v-for="track in top10MixTracks"
       :key="track.fileLocation"
-      class="card"
+      class="card blurred_bg blur20 bg2"
     >
       <img
         class="card_image"
@@ -61,13 +61,13 @@ export default {
   height: 215px;
   padding-bottom: 10px;
   .card {
-    background: rgba(255, 255, 255, 0.068);
-    backdrop-filter: blur(10px);
     padding: 10px;
     box-shadow: -15px 5px 10px rgba(0, 0, 0, 0.39);
     position: relative;
     max-width: 140px;
     overflow: hidden;
+    border-radius: 20px;
+
     cursor: pointer;
     p {
       text-align: left;
@@ -86,6 +86,7 @@ export default {
     .card_image {
       height: 140px;
       margin: auto;
+      border-radius: 20px;
     }
     #card_playBt {
       position: absolute;

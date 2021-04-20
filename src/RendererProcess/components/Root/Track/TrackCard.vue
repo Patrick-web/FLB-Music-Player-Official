@@ -3,7 +3,11 @@
     @contextmenu="showOptions($event)"
     :id="index"
     @click="playTrack"
-    :class="[isCurrentlyPlaying ? 'playingTrack' : '', 'TrackCard']"
+    :class="[
+      isCurrentlyPlaying ? 'playingTrack' : '',
+      isSelected ? 'bulkSelected' : '',
+      'TrackCard',
+    ]"
   >
     <div @click.stop="bulkSelectTrack($event)" class="fxSelectBt"></div>
     <div class="info">
@@ -19,7 +23,7 @@
   </div>
 </template>
 <script>
-import { mapActions, mapMutations } from "vuex";
+import { mapMutations } from "vuex";
 
 export default {
   computed: {
@@ -29,6 +33,13 @@ export default {
         this.$store.state.PlaybackManger.playingTrackInfo.track.fileLocation ==
           this.source.fileLocation
       );
+    },
+    isSelected() {
+      return this.$store.state.TrackSelector.selectedTracks.findIndex(
+        (track) => track.fileLocation === this.source.fileLocation
+      ) == -1
+        ? false
+        : true;
     },
   },
   data() {
@@ -68,7 +79,6 @@ export default {
       this.setPlayingTrack({ track: this.source, index: this.index });
     },
     bulkSelectTrack(e) {
-      e.currentTarget.parentElement.classList.toggle("bulkSelected");
       this.addToSelectedTracks(this.source);
     },
   },
@@ -116,11 +126,7 @@ export default {
     background: var(--accentColor) !important;
   }
 }
-.light_theme {
-  .playingTrack {
-    border: none;
-  }
-}
+
 .playingTrack {
   background: rgba(255, 255, 255, 0.137);
   border-radius: 8px;

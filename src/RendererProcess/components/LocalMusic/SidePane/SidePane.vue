@@ -1,5 +1,5 @@
 <template>
-  <div class="SidePane">
+  <div class="SidePane bg2">
     <div
       v-if="!playingTrack"
       style="width: 19.5vw; height: 100%"
@@ -25,11 +25,14 @@
       <div
         v-for="tab in tabs"
         :key="tab.name"
-        :class="[sidePaneActiveTab === tab.name ? 'activeTab' : '', 'tabBtn']"
+        :class="[
+          sidePaneActiveTab === tab.name ? 'activeTab' : '',
+          'tabBtn bg2',
+        ]"
         @click.stop="switchAidePaneActiveTab(tab.name)"
         :id="tab.name"
       >
-        <img :src="tab.icon" alt="" />
+        <img :src="tab.icon" class="icon" alt="" />
         <p>{{ tab.name }}</p>
       </div>
     </div>
@@ -104,7 +107,6 @@ export default {
 .SidePane {
   position: relative;
   overflow: hidden;
-  background: rgba(255, 255, 255, 0.083);
   padding: 10px;
   border-radius: 20px;
   width: 19.5vw;

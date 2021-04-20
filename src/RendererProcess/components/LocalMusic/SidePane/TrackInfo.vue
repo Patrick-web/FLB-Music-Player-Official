@@ -66,11 +66,6 @@ export default {
 </script>
 
 <style lang="scss">
-.light_theme {
-  #tag_albumArt {
-    filter: invert(1);
-  }
-}
 .TrackInfo {
   padding-top: 10px;
   position: relative;

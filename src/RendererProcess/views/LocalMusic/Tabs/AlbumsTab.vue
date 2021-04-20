@@ -17,17 +17,34 @@
           id="backToUnfilteredItems"
         />
         <div class="sliverBar">
-          <div class="sliverBarActions">
-            <base-button
-              @click.native="playAll"
-              :icon="require('@/RendererProcess/assets/images/playnext.svg')"
-              text="Play All"
-            />
-            <base-button
-              @click.native="addTracksToQueue"
-              :icon="require('@/RendererProcess/assets/images/queue-music.svg')"
-              text="Add To Queue"
-            />
+          <div class="sliverBarFooter">
+            <div class="groupedCard_info">
+              <p class="groupedInfo_title">
+                {{ selectedGroup.name }}
+              </p>
+              <p
+                @click="goToArtist(selectedGroup.artist)"
+                title="Go To Artist"
+                class="groupedInfo_subtitle"
+                style="cursor: pointer"
+              >
+                {{ selectedGroup.artist }}
+              </p>
+            </div>
+            <div class="sliverBarActions">
+              <base-button
+                @click.native="playAll"
+                :icon="require('@/RendererProcess/assets/images/playnext.svg')"
+                text="Play All"
+              />
+              <base-button
+                @click.native="addTracksToQueue"
+                :icon="
+                  require('@/RendererProcess/assets/images/queue-music.svg')
+                "
+                text="Add To Queue"
+              />
+            </div>
           </div>
           <img
             class="coverArt"
@@ -35,19 +52,6 @@
             alt=""
           />
           <img id="blurred" :src="selectedGroup.tracks[0].albumArt" alt="" />
-          <div class="groupedCard_info">
-            <p class="groupedInfo_title">
-              {{ selectedGroup.name }}
-            </p>
-            <p
-              @click="goToArtist(selectedGroup.artist)"
-              title="Go To Artist"
-              class="groupedInfo_subtitle"
-              style="cursor: pointer"
-            >
-              {{ selectedGroup.artist }}
-            </p>
-          </div>
         </div>
         <div class="cardsWrapper">
           <TrackCard

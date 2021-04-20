@@ -16,17 +16,17 @@
           @click.native="deSelectGroup"
           :icon="require('@/RendererProcess/assets/images/back.svg')"
           id="backToUnfilteredItems"
+          extraClass="blurred_bg"
         />
         <div class="sliverBar">
-          <img
-            class="coverArt"
-            src="@/RendererProcess/assets/images/FLBDefaultCover.png"
-            alt=""
-          />
-          <div class="groupedCard_info">
-            <p style="margin-bottom: 10px" class="groupedInfo_title">
-              {{ selectedGroup.name }}
-            </p>
+          <div class="images_flex">
+            <div
+              v-for="albumArt in imageFlex"
+              :key="albumArt"
+              class="flex_image_wrapper"
+            >
+              <img class="flexImage" :src="albumArt" />
+            </div>
           </div>
 
           <EditPlaylistWidget
@@ -34,27 +34,39 @@
             v-on:closeWidget="closeWidget"
             v-if="showPlaylistEditor"
           />
+          <div class="sliverBarFooter">
+            <div class="groupedCard_info">
+              <p style="margin-bottom: 10px" class="groupedInfo_title">
+                {{ selectedGroup.name }}
+              </p>
+            </div>
 
-          <div class="sliverBarActions">
-            <base-button
-              @click.native="addTracksToQueue"
-              :icon="require('@/RendererProcess/assets/images/queue-music.svg')"
-              text="Add To Queue"
-            />
-            <base-button
-              @click.native="showPlaylistEditor = !showPlaylistEditor"
-              :icon="require('@/RendererProcess/assets/images/edit.svg')"
-              text="Edit Playlist"
-              v-if="selectedGroup.name !== 'Favorites'"
-            />
-            <base-button
-              @click.native="deleteCurrentPlaylist"
-              :icon="
-                require('@/RendererProcess/assets/images/trash-bin-outline.svg')
-              "
-              text="Delete Playlist"
-              v-if="selectedGroup.name !== 'Favorites'"
-            />
+            <div class="sliverBarActions">
+              <base-button
+                @click.native="addTracksToQueue"
+                :icon="
+                  require('@/RendererProcess/assets/images/queue-music.svg')
+                "
+                text="Add To Queue"
+                extraClass="blurred_bg"
+              />
+              <base-button
+                @click.native="showPlaylistEditor = !showPlaylistEditor"
+                :icon="require('@/RendererProcess/assets/images/edit.svg')"
+                text="Edit Playlist"
+                v-if="selectedGroup.name !== 'Favorites'"
+                extraClass="blurred_bg"
+              />
+              <base-button
+                @click.native="deleteCurrentPlaylist"
+                :icon="
+                  require('@/RendererProcess/assets/images/trash-bin-outline.svg')
+                "
+                text="Delete Playlist"
+                v-if="selectedGroup.name !== 'Favorites'"
+                extraClass="blurred_bg"
+              />
+            </div>
           </div>
         </div>
         <div class="cardsWrapper">
@@ -78,6 +90,7 @@ import TrackCard from "@/RendererProcess/components/Root/Track/TrackCard.vue";
 import PlaylistCard from "@/RendererProcess/components/LocalMusic/TabsPane/PlaylistTab/PlaylistCard.vue";
 import EditPlaylistWidget from "@/RendererProcess/components/LocalMusic/TabsPane/PlaylistTab/EditPlaylistWidget.vue";
 import BaseButton from "@/RendererProcess/components/BaseComponents/BaseButton.vue";
+import { removeDuplicates } from "@/sharedUtilities";
 
 export default {
   data() {
@@ -129,6 +142,11 @@ export default {
     selectedGroup() {
       return this.$store.state.TrackSelector.selectedGroup;
     },
+    imageFlex() {
+      return removeDuplicates(this.selectedGroup.tracks, "album")
+        .filter((track) => track.albumArt)
+        .map((track) => track.albumArt);
+    },
   },
   components: {
     TrackCard,
@@ -143,14 +161,35 @@ export default {
 .PlaylistsTab {
   height: 100%;
   position: relative;
-}
-
-.playlistCards {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 30px 0px;
-  height: 100%;
-  overflow: hidden;
-  overflow-y: scroll;
+  .playlistCards {
+    display: flex;
+    // flex-direction: column;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+    justify-content: flex-start;
+    height: 100%;
+    overflow: hidden;
+    overflow-y: scroll;
+  }
+  .images_flex {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    // display: grid;
+    // grid-template-columns: repeat(auto-fit, minmax(50px, 1fr));
+    display: flex;
+    .flex_image_wrapper {
+      height: 100%;
+      overflow: hidden;
+      .flexImage {
+        // position: absolute;
+        // display: none;
+        height: 100%;
+      }
+    }
+  }
 }
 </style>

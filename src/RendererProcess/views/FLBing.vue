@@ -53,10 +53,9 @@
 </template>
 
 <script>
-import { mapMutations } from "vuex";
-import ArtistPage from "@/RendererProcess/components/FLBing/ArtistPage.vue";
-import AlbumPage from "@/RendererProcess/components/FLBing/AlbumPage.vue";
-import SearchResults from "@/RendererProcess/components/FLBing/SearchResults.vue";
+import ArtistPage from "@/RendererProcess/components/FLBing/BingArtistPage.vue";
+import AlbumPage from "@/RendererProcess/components/FLBing/BingAlbumPage.vue";
+import SearchResults from "@/RendererProcess/components/FLBing/BingSearchResults.vue";
 import { remappedDeezerTracks } from "../utilities";
 export default {
   data() {
@@ -74,13 +73,6 @@ export default {
     };
   },
   methods: {
-    ...mapMutations([
-      "setBingAlbums",
-      "setBingArtists",
-      "setBingTracks",
-      "setBingArtistInfo",
-      "setBingAlbumInfo",
-    ]),
     setSelectedArtist(payload) {
       this.selectedArtist = payload;
     },
@@ -107,7 +99,7 @@ export default {
         redirect: "follow",
       };
       fetch(
-        `https://apiflbdeezer.herokuapp.com/search/?category=tracks&query=${this.query}`,
+        `https://flbing.herokuapp.com/search/?category=tracks&query=${this.query}`,
         requestOptions
       )
         .then((response) => response.text())
@@ -119,7 +111,7 @@ export default {
         .catch((error) => console.log("error", error));
 
       fetch(
-        `https://apiflbdeezer.herokuapp.com/search/?category=artists&query=${this.query}`,
+        `https://flbing.herokuapp.com/search/?category=artists&query=${this.query}`,
         requestOptions
       )
         .then((response) => response.text())
@@ -129,7 +121,7 @@ export default {
         })
         .catch((error) => console.log("error", error));
       fetch(
-        `https://apiflbdeezer.herokuapp.com/search/?category=albums&query=${this.query}`,
+        `https://flbing.herokuapp.com/search/?category=albums&query=${this.query}`,
         requestOptions
       )
         .then((response) => response.text())

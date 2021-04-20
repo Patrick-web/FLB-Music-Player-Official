@@ -145,16 +145,6 @@ export default {
 </script>
 
 <style lang="scss">
-.light_theme {
-  .seekBar:hover {
-    .seekProgress {
-      filter: invert(1);
-    }
-  }
-  #hoverTime {
-    filter: invert(1);
-  }
-}
 .TrackBar {
   position: relative;
   z-index: 25;

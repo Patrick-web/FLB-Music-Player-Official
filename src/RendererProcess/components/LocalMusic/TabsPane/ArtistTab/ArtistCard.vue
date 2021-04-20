@@ -3,19 +3,14 @@
     @click="goToArtist()"
     :class="[!artistPicture ? 'groupCard_noPicture' : '', 'groupCard']"
   >
-    <img v-if="artistPicture" class="coverArt" :src="artistPicture" />
-    <div v-if="!artistPicture" class="letterDiv">
-      <h1 :style="randomColorGenerator">
-        {{ artist.name.charAt(0) }}
-      </h1>
-    </div>
-    <div class="tracksCount">
-      <p>
-        {{ artist.tracks.length }}
-      </p>
-    </div>
+    <img
+      v-if="artistPicture"
+      class="coverArt roundImage"
+      :src="artistPicture"
+    />
+    <letter-card v-if="!artistPicture" :text="artist.name.charAt(0)" />
     <div class="groupedCard_info">
-      <p class="groupedInfo_title">
+      <p class="groupedInfo_title" style="text-align: center">
         {{ artist.name }}
       </p>
     </div>
@@ -24,29 +19,11 @@
 
 <script>
 import { mapActions } from "vuex";
-import { shuffleArray } from "@/sharedUtilities";
+import LetterCard from "./LetterCard.vue";
 
 export default {
+  components: { LetterCard },
   computed: {
-    randomColorGenerator() {
-      const colors = [
-        "#7A86CB",
-        "#BA68C6",
-        "#FD8B64",
-        "#ACD580",
-        "#FCD450",
-        "#4FC2F6",
-        "#4DB6AC",
-        "#EE6390",
-        "#E57375",
-        "#FF8A66",
-      ];
-      const shuffledColors = shuffleArray(colors);
-      const styleObject = {
-        color: shuffledColors[0],
-      };
-      return styleObject;
-    },
     artistPicture() {
       return (
         this.$store.state.TabsManager.downloadedArtistPictures.filter(
@@ -110,16 +87,6 @@ export default {
   .groupedCard_info {
     p {
       text-align: center;
-    }
-  }
-  .letterDiv {
-    width: 100%;
-    height: 100px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    h1 {
-      font-size: 5rem;
     }
   }
 }

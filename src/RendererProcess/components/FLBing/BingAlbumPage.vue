@@ -16,7 +16,7 @@
     </div>
     <div>
       <div class="results trackResults">
-        <div class="subHeading">
+        <div class="sectionHeading">
           <p>Tracks</p>
           <div class="line"></div>
           <p>{{ albumInfo.tracks.length }}</p>
@@ -36,7 +36,7 @@
 
 <script>
 import BaseButton from "@/RendererProcess/components/BaseComponents/BaseButton.vue";
-import Track from "./Track.vue";
+import Track from "./BingTrack.vue";
 export default {
   data() {
     return {

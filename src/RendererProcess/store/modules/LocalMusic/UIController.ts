@@ -12,6 +12,7 @@ interface UIControllerStateInterface {
         currentPage: 'My Music' | 'Deezer' | 'Spotify' | 'Podcasts' | 'FLBing';
         currentMainTab: 'Tracks' | 'Recents' | 'Playlists' | 'Home' | 'Albums' | 'Artists';
         currentSidePaneTab: 'Info' | 'Lyrics' | 'Queue';
+        currentPodcastsTab: 'Discover' | 'Subscriptions' | 'Downloads';
         multiSelectMode: boolean;
     };
 }
@@ -23,6 +24,7 @@ const state: UIControllerStateInterface = {
         currentPage: 'My Music',
         currentMainTab: 'Home',
         currentSidePaneTab: 'Info',
+        currentPodcastsTab: 'Discover',
         multiSelectMode: false,
     },
 };

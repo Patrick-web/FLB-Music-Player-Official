@@ -1,11 +1,13 @@
 <template>
-  <div id="PlaylistWidget">
-    <p
-      class="modalClose"
-      @click="UIcontrollerToggleProperty('showPlaylistWidget')"
-    >
-      <img src="@/RendererProcess/assets/images/x.svg" alt="" />
-    </p>
+  <div id="PlaylistWidget" class="blurred_bg blur20">
+    <base-button
+      @click.native="UIcontrollerToggleProperty('showPlaylistWidget')"
+      :icon="require('@/RendererProcess/assets/images/x.svg')"
+      extraClass="modalClose"
+      :small="true"
+      style="transform: translate(5px, -5px) scale(0.8)"
+      :transparent="true"
+    />
     <h2 style="text-align: center">Select Playlist</h2>
     <div class="newPlaylistForm">
       <input
@@ -86,9 +88,7 @@ export default {
   min-width: 250px;
   max-width: 250px;
   z-index: 60;
-  background-color: rgba(27, 27, 27, 0.39);
-  backdrop-filter: blur(10px);
-  box-shadow: 0px 0px 50px 10px black;
+  box-shadow: 0px 0px 20px 10px rgba(0, 0, 0, 0.281);
   padding: 10px;
   border-radius: 20px;
   transition: none;

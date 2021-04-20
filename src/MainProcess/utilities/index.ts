@@ -9,7 +9,7 @@ export function writeImageBuffer(imageBuffer: string, savePath: string) {
     fs.writeFileSync(savePath, imageBuffer)
 }
 
-export async function downloadFile(url: string, targetFolder: string, fileName: string | null) {
+export async function downloadFile(url: string, targetFolder: string, fileName: string) {
     return new Promise<string>((resolve, reject) => {
         const dl = new DownloaderHelper(url, targetFolder, { fileName, override: false });
         dl.start();

@@ -1,25 +1,28 @@
 <template>
-  <div class="sortOption actionBt">
+  <div class="sortWidget actionBt">
     <base-button
-      @click.native="showSortOptions = !showSortOptions"
       :icon="require('@/RendererProcess/assets/images/sort.svg')"
       text="Sort"
-      :active="showSortOptions"
+      id="sort_toggle_button"
     />
-    <transition
-      enter-active-class="animated extrafaster fadeInUp"
-      leave-active-class="animated extrafaster fadeOutDown"
-    >
-      <section v-if="showSortOptions" class="sortParams">
-        <p class="param" @click.stop="sortBy($event, 'defaultTitle')">Name</p>
-        <p class="param" @click.stop="sortBy($event, 'defaultArtist')">
-          Artist
-        </p>
-        <!-- <p class="param" @click.stop="sortBy($event, 'duration')">Length</p> -->
-        <p class="param" @click.stop="sortBy($event, 'dateAdded')">Date</p>
-        <p class="param" @click="toggleSortBy">Flip</p>
-      </section>
-    </transition>
+    <section class="sortParamsWrapper blurred_bg blur20">
+      <base-button
+        v-for="option in sortOptions"
+        :key="option.name"
+        extraClass="param"
+        @click.native.stop="sortBy(option.value)"
+        :text="option.name"
+        :active="selectedSortOption == option.name"
+        :transparent="true"
+      />
+      <base-button
+        extraClass="param"
+        @click.native.stop="reverseTracks"
+        text="Flip"
+        :active="tracksAreReversed"
+        :transparent="true"
+      />
+    </section>
   </div>
 </template>
 
@@ -30,32 +33,25 @@ export default {
   components: { BaseButton },
   data() {
     return {
-      showSortOptions: false,
-      ascending: false,
+      sortOptions: [
+        { name: "Title", value: "defaultTitle" },
+        { name: "Artist", value: "defaultArtist" },
+        { name: "Date", value: "dateAdded" },
+      ],
+      selectedSortOption: "Date",
+      tracksAreReversed: false,
     };
   },
   methods: {
     ...mapMutations(["reverseAddedTracksArray"]),
     ...mapActions(["sortTracks", "toggleSortMode"]),
-    toggleHiddenActions() {
-      document
-        .querySelector(".sortOption")
-        .classList.toggle("showHiddenActions");
-      document
-        .querySelectorAll(".hiddenActions")
-        .forEach((e) => e.classList.toggle("slideInUp"));
-    },
-    toggleSortBy() {
-      this.ascending = !this.ascending;
+    reverseTracks() {
+      this.tracksAreReversed = !this.tracksAreReversed;
       this.toggleSortMode();
     },
-    sortBy(e, param) {
-      if (document.querySelector(".selectedParam")) {
-        document
-          .querySelector(".selectedParam")
-          .classList.remove("selectedParam");
-      }
-      e.currentTarget.classList.add("selectedParam");
+    sortBy(param) {
+      console.log(param);
+      this.selectedSortOption = param;
       this.sortTracks(param);
     },
   },
@@ -66,49 +62,26 @@ export default {
 .flipped {
   transform: rotateY(180deg);
 }
-.sortOption {
+.sortWidget {
   position: relative;
-  .toggler {
-    background: rgba(255, 255, 255, 0.083);
-    display: flex;
-    padding: 5px;
-    border-radius: 10px;
-    cursor: pointer;
+  #sort_toggle_button:focus + .sortParamsWrapper {
+    bottom: 0px;
+    opacity: 1;
   }
-  .toggler:hover {
-    background: rgba(255, 255, 255, 0.144);
-  }
-  .sortParams {
+  .sortParamsWrapper {
     position: absolute;
-    bottom: -150px;
+    bottom: -20px;
+    left: 50%;
+    transform: translateY(105%) translateX(-50%);
     border-radius: 15px;
-    right: -6px;
     width: auto !important;
     height: auto;
     padding: 0;
-    backdrop-filter: blur(20px) !important;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.267);
-    overflow: hidden;
+    opacity: 0;
     .param {
-      padding: 5px;
       margin: 5px;
       width: 60px;
-      text-align: center;
-      font-family: roboto-thin;
-      backdrop-filter: blur(10px) !important;
-      cursor: pointer;
-    }
-    .param:hover {
-      background-color: #ffffff13;
-      border-radius: 20px;
-    }
-    .selectedParam {
-      background: #0062ff;
-      border-radius: 20px;
-    }
-    .selectedParam:hover {
-      border-radius: 20px;
-      background: #0062ff;
     }
   }
   .byDesc {
@@ -120,7 +93,7 @@ export default {
     }
   }
   .sortMode:hover {
-    background: #0062ff;
+    background: var(--accentColor);
   }
 
   .sortMode {
