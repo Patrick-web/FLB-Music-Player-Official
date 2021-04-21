@@ -162,7 +162,7 @@ export default {
 <style lang="scss">
 .playingPaneLoaded {
   .sideNav {
-    margin-bottom: 115px;
+    height: 80vh;
   }
 }
 .sideNav {
