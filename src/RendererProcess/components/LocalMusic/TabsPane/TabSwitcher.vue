@@ -94,7 +94,6 @@ import folderIcon from "@/RendererProcess/assets/images/folderNormal.svg";
     font-family: roboto;
     padding-left: 5px;
     padding-right: 5px;
-    transform: scale(1.2);
     p {
       width: 0px;
       margin-left: -5px;

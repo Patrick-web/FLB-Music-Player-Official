@@ -1,11 +1,7 @@
 <template>
   <div class="bingTrack">
     <div class="info">
-      <img
-        class="coverArt"
-        :src="overrideCoverArt || trackInfo.album.cover"
-        alt=""
-      />
+      <img class="coverArt" :src="trackInfo.album.cover" alt="" />
       <p style="font-family: roboto-light" class="trackTitle">
         {{ trackInfo.title }}
       </p>
@@ -121,13 +117,21 @@ export default {
     updateDownloadQueue() {
       const downloadTrack = {
         ...this.trackInfo,
-        progress: "0%",
+        progress: 0,
         downloadURL: "",
         state: "Getting Download Link...",
       };
       this.addTrackToPendingDownloads(downloadTrack);
     },
     getTrackDownloadURL() {
+      if (
+        !document
+          .querySelector(".BingDownloadsWidget")
+          .classList.contains("showDownloadWidget")
+      ) {
+        document.querySelector(".widgetToggleBt").click();
+      }
+
       this.updateDownloadQueue();
       const myHeaders = new Headers();
       myHeaders.append("accept", "application/json");
@@ -195,7 +199,6 @@ export default {
   },
   props: {
     trackInfo: Object,
-    overrideCoverArt: String,
   },
 };
 </script>
@@ -231,10 +234,6 @@ export default {
   }
   .artist {
     font-size: 1em;
-    cursor: pointer;
-  }
-  .artist:hover {
-    text-decoration: underline;
   }
   .trackActions {
     display: flex;

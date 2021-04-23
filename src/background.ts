@@ -84,6 +84,11 @@ async function createWindow() {
         saveAppData()
     })
 
+    win.webContents.on('new-window', function (e, url) {
+        e.preventDefault();
+        require('electron').shell.openExternal(url);
+    });
+
     autoUpdater.checkForUpdatesAndNotify();
 }
 

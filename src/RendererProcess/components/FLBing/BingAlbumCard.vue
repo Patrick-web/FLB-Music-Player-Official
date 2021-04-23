@@ -1,5 +1,5 @@
 <template>
-  <div @click="getAlbumData" class="bing_card groupCard">
+  <div @click="getAlbumTracks" class="bing_card groupCard">
     <img class="coverArt" :src="albumInfo.cover" alt />
     <div class="groupedCard_info">
       <p class="groupedInfo_title">
@@ -25,7 +25,7 @@ export default {
     };
   },
   methods: {
-    getAlbumData() {
+    getAlbumTracks() {
       this.loading = true;
       const requestOptions = {
         method: "GET",
@@ -38,11 +38,18 @@ export default {
       )
         .then((response) => response.text())
         .then((result) => {
-          const tracks = JSON.parse(result).data;
+          const trackResults = JSON.parse(result).data;
+          const tracksWithAlbumInfo = trackResults.map((track) => {
+            return {
+              ...track,
+              album: this.albumInfo,
+            };
+          });
+          console.log(tracksWithAlbumInfo);
           const albumData = {
             name: this.albumInfo.title,
             cover: this.albumInfo.cover,
-            tracks,
+            tracks: tracksWithAlbumInfo,
           };
           this.loading = false;
           this.$emit("selectedAlbum", albumData);

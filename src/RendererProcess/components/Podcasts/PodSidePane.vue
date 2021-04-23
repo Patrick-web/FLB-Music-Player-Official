@@ -1,11 +1,10 @@
 <template>
   <div class="pod_side_pane pod_pane bg2">
-    Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt possimus
-    obcaecati deleniti. Eveniet necessitatibus consectetur, nulla non eaque
-    culpa, reiciendis blanditiis pariatur debitis, quod aspernatur voluptas
-    corrupti totam id eos delectus quaerat? Magnam incidunt eaque assumenda
-    voluptatem libero architecto, velit modi. Eum sapiente neque quasi quidem
-    incidunt aliquam provident rerum!
+    As you can see this feature is still in development🔨⛏. Another banger💣💥
+    of course. FLB Podcast🎙 will be the 🥇first🥇 platform to provide
+    📝Comments📝 for podcasts. The Driving force of FLB Podcast is creating a
+    community. The aspect of communities in Podcasts has been totally ignored by
+    all other platforms creating a gap that you and I will swiftly fill.
   </div>
 </template>
 
@@ -16,5 +15,8 @@ export default {};
 <style>
 .pod_side_pane {
   width: 30vw;
+  line-height: 1.2rem;
+  font-size: 1.1rem;
+  font-family: roboto-light;
 }
 </style>

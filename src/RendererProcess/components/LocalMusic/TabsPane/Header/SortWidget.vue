@@ -67,6 +67,7 @@ export default {
   #sort_toggle_button:focus + .sortParamsWrapper {
     bottom: 0px;
     opacity: 1;
+    pointer-events: all;
   }
   .sortParamsWrapper {
     position: absolute;
@@ -79,6 +80,7 @@ export default {
     padding: 0;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.267);
     opacity: 0;
+    pointer-events: none;
     .param {
       margin: 5px;
       width: 60px;

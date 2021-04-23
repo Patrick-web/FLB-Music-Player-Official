@@ -118,6 +118,8 @@ export default {
       "selectGroup",
       "deSelectGroup",
       "setPlayingTrack",
+      "overWriteCustomQueue",
+      "pushNotification",
     ]),
     ...mapActions(["generateFoldersData"]),
     addTracksToQueue() {
@@ -132,7 +134,13 @@ export default {
       this.addSelectedTrackToCustomQueue();
     },
     playAll() {
-      this.setPlayingTrack(this.renderedTracks[0]);
+      this.setPlayingTrack({ track: this.selectedGroup.tracks[0], index: 0 });
+      this.overWriteCustomQueue(this.selectedGroup.tracks);
+      this.pushNotification({
+        title: "Playing all tracks from",
+        subTitle: this.selectedGroup.name,
+        type: "normal",
+      });
     },
   },
   computed: {

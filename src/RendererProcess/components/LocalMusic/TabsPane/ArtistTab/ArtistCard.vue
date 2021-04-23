@@ -53,7 +53,6 @@ export default {
   border-radius: 10px;
   max-width: 150px;
   max-height: 200px;
-  align-self: center;
   justify-self: center;
   .coverArt {
     height: 150px;

@@ -9,7 +9,7 @@
       @click.native="playTrack"
     />
     <div class="content">
-      <p>{{ track.defaultTitle }}</p>
+      <p class="track_title">{{ track.defaultTitle }}</p>
     </div>
     <p class="track_artist">{{ track.artist }}</p>
   </div>
@@ -39,9 +39,7 @@ export default {
 .BingCompletedTrack {
   padding: 10px;
   background: rgba(255, 255, 255, 0.11);
-  width: 80%;
-  min-height: 150px;
-  margin-bottom: 10px;
+  width: 40%;
   position: relative;
   border-radius: 15px;
   break-inside: avoid;

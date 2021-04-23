@@ -17,6 +17,12 @@
     >
       <div v-if="selectedGroup" class="selectedGroup bg1">
         <div class="sliverBar">
+          <base-button
+            @click.native="bingThisArtist"
+            :icon="require('@/RendererProcess/assets/images/flbing.svg')"
+            id="bingArtistBtn"
+            title="Bing this Artist"
+          />
           <div class="sliverBarFooter">
             <div class="groupedCard_info">
               <p class="groupedInfo_title">
@@ -110,8 +116,9 @@ import TrackCard from "@/RendererProcess/components/Root/Track/TrackCard.vue";
 import ArtistCard from "@/RendererProcess/components/LocalMusic/TabsPane/ArtistTab/ArtistCard.vue";
 import AlbumCard from "@/RendererProcess/components/LocalMusic/TabsPane/AlbumsTab/AlbumCard.vue";
 import BaseButton from "@/RendererProcess/components/BaseComponents/BaseButton.vue";
-import { removeDuplicates } from "@/sharedUtilities";
 import LetterCard from "@/RendererProcess/components/LocalMusic/TabsPane/ArtistTab/LetterCard.vue";
+import { removeDuplicates } from "@/sharedUtilities";
+import { bingAnArtist } from "@/RendererProcess/globalActivities/bingArtist";
 export default {
   data() {
     return {
@@ -167,6 +174,9 @@ export default {
       document.querySelector("#Artists").click();
       this.findAndGoToArtist(this.artist.name);
     },
+    bingThisArtist() {
+      bingAnArtist(this.selectedGroup.name);
+    },
     removeDuplicateAlbums(arr) {
       return removeDuplicates(arr, "name");
     },
@@ -218,6 +228,12 @@ export default {
       h1 {
         font-size: 7rem;
       }
+    }
+    #bingArtistBtn {
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      z-index: 5;
     }
   }
   .cardsWrapper {

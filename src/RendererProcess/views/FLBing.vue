@@ -6,9 +6,11 @@
         placeholder="Search and Download Music"
         type="text"
         class="BigSearch inputElem"
+        id="bingSearch"
         v-model="query"
         v-on:keyup.enter="search"
       />
+      <p id="bingEnter" style="opacity: 0" @click="search"></p>
       <img
         @click.stop="clearResults()"
         src="@/RendererProcess/assets/images/x.svg"
@@ -58,6 +60,8 @@ import ArtistPage from "@/RendererProcess/components/FLBing/BingArtistPage.vue";
 import AlbumPage from "@/RendererProcess/components/FLBing/BingAlbumPage.vue";
 import SearchResults from "@/RendererProcess/components/FLBing/BingSearchResults.vue";
 import DownloadsWidget from "../components/FLBing/DownloadsWidget.vue";
+import { mapMutations } from "vuex";
+import { removeDuplicates } from "@/sharedUtilities";
 export default {
   data() {
     return {
@@ -74,6 +78,7 @@ export default {
     };
   },
   methods: {
+    ...mapMutations(["pushNotification"]),
     setSelectedArtist(payload) {
       this.selectedArtist = payload;
     },
@@ -94,6 +99,7 @@ export default {
       this.resultsGotten = false;
     },
     search() {
+      if (!this.query) this.query = document.querySelector("#bingSearch").value;
       this.searching = true;
       const requestOptions = {
         method: "GET",
@@ -107,26 +113,40 @@ export default {
         .catch((error) => console.log("error", error));
 
       fetch(
-        `https://flbing.herokuapp.com/search/?category=artists&query=${this.query}`,
+        `https://api.deezer.com/search?q=artist:"${this.query}"`,
         requestOptions
       )
         .then((response) => response.text())
         .then((result) => {
-          this.results.artists = JSON.parse(result).results.slice(0, 6);
+          this.results.artists = removeDuplicates(
+            JSON.parse(result).data.map((track) => track.artist),
+            "id"
+          );
         })
         .catch((error) => console.log("error", error));
+      //api.deezer.com/search?q=artist:"aloe blacc"
       fetch(
-        `https://flbing.herokuapp.com/search/?category=albums&query=${this.query}`,
+        `https://api.deezer.com/search?q=album:"${this.query}"`,
         requestOptions
       )
         .then((response) => response.text())
         .then((result) => {
-          this.searching = false;
+          const albums = JSON.parse(result).data.map((track) => track.album);
+          this.results.albums = removeDuplicates(albums, "id");
           this.resultsGotten = true;
-          this.results.albums = JSON.parse(result).results.slice(0, 18);
+          this.searching = false;
         })
         .catch((error) => console.log("error", error));
     },
+  },
+  mounted() {
+    if (!navigator.onLine) {
+      this.pushNotification({
+        title: `No internet connection detected`,
+        subTitle: null,
+        type: "danger",
+      });
+    }
   },
   components: { SearchResults, ArtistPage, AlbumPage, DownloadsWidget },
 };

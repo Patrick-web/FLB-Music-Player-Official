@@ -16,7 +16,7 @@
         id="backToUnfilteredItems"
       />
     </div>
-    <div class="cardsWrapper">
+    <div class="cardsWrapper artist_data_results">
       <div class="grid2 gap10">
         <div class="artist_data">
           <div class="sectionHeading">
@@ -76,17 +76,26 @@ export default {
 </script>
 
 <style lang="scss">
+.playingPaneLoaded {
+  .bingPage {
+    .cardsWrapper {
+      height: 68% !important;
+    }
+    .artist_data_results .grid2 .artist_data {
+      height: 18%;
+    }
+  }
+}
 .bingPage {
   position: absolute;
   top: 0;
-  width: 100%;
+  width: 99.2%;
   z-index: 4;
   border-radius: 20px;
   overflow: hidden;
   height: 93% !important;
   .content {
     padding: 20px;
-    height: 57vh !important;
     overflow: hidden;
     overflow-y: scroll;
   }
@@ -95,11 +104,26 @@ export default {
     margin-left: 10px;
   }
 }
+.artist_data_results {
+  height: 72%;
+  overflow: hidden;
+  .grid2 {
+    height: 100%;
+    align-items: flex-start;
+    .artist_data {
+      .content {
+        height: 43vh;
+      }
+    }
+  }
+}
 .artist_data {
   .albums {
-    display: column;
-    columns: 2;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
     gap: 5px;
+    align-items: flex-start;
+    justify-content: left;
   }
 }
 </style>

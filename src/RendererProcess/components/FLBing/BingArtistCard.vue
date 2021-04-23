@@ -1,5 +1,5 @@
 <template>
-  <div @click="getArtistData" class="bing_card groupCard">
+  <div @click="getArtistData" class="bing_artist bing_card groupCard">
     <img class="coverArt" :src="artistInfo.picture" alt />
     <div class="groupedCard_info">
       <p class="groupedInfo_title">
@@ -70,6 +70,7 @@ export default {
 <style lang="scss">
 .bing_card {
   position: relative;
+  break-inside: avoid;
   .loading {
     background: var(--accentColor);
     position: absolute;

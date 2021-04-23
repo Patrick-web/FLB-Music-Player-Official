@@ -18,7 +18,23 @@
           <p v-if="!isCollapsed">My Music</p>
         </router-link>
       </div>
-
+      <div
+        :class="[
+          currentPage === 'FLBing' ? 'active-sideNav-group' : '',
+          'sideNav-group',
+        ]"
+        id="FLBing"
+        @click="switchPage('FLBing')"
+      >
+        <router-link to="/flbing">
+          <img
+            title="FLBing"
+            class="icon"
+            src="@/RendererProcess/assets/images/flbing.svg"
+          />
+          <p v-if="!isCollapsed">FLBing</p>
+        </router-link>
+      </div>
       <div
         class="sideNav-group"
         :class="[
@@ -73,25 +89,19 @@
           <p v-if="!isCollapsed">Spotify</p>
         </a>
       </div>
-      <div
-        :class="[
-          currentPage === 'FLBing' ? 'active-sideNav-group' : '',
-          'sideNav-group',
-        ]"
-        @click="switchPage('FLBing')"
-      >
-        <router-link to="/flbing">
-          <span v-if="!isCollapsed">80%</span>
-          <img
-            title="FLBing"
-            class="icon"
-            src="@/RendererProcess/assets/images/flbing.svg"
-          />
-          <p v-if="!isCollapsed">FLBing</p>
-        </router-link>
-      </div>
     </div>
     <div>
+      <div class="sideNav-group">
+        <a href="https://flbmusic.kampsite.co/" target="_blank">
+          <img
+            title="Settings"
+            class="icon"
+            src="@/RendererProcess/assets/images/request.svg"
+            alt
+          />
+          <p v-if="!isCollapsed">Request Feature</p>
+        </a>
+      </div>
       <div
         @click="UIcontrollerToggleProperty('showSettings')"
         class="sideNav-group"
@@ -194,8 +204,8 @@ export default {
     }
     span {
       position: absolute;
-      right: 0px;
-      top: 0px;
+      left: 10px;
+      bottom: -10px;
       font-size: 0.6rem;
       background: var(--accentColor);
       padding: 2px 5px 2px 5px;

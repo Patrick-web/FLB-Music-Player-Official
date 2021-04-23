@@ -8,6 +8,9 @@
           <p class="groupedInfo_title">
             {{ albumInfo.name }}
           </p>
+          <p class="groupedInfo_subtitle">
+            by {{ albumInfo.tracks[0].artist.name }}
+          </p>
         </div>
       </div>
       <base-button

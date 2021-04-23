@@ -29,7 +29,7 @@
     </div>
     <div v-else class="tracks_wrapper downloadedTracks">
       <bing-completed-track
-        v-for="track in completedTracks"
+        v-for="track in [...flbingFolderTracks, ...completedTracks]"
         :key="track.fileLocation"
         :track="track"
       />
@@ -56,6 +56,11 @@ export default {
     completedTracks() {
       return this.$store.state.BingDownloadManager.completedDownloads;
     },
+    flbingFolderTracks() {
+      return this.$store.state.TabsManager.tabsData.addedTracks.filter(
+        (track) => track.folderInfo.name == "FLBing"
+      );
+    },
   },
   components: {
     BingPendingTrack,
@@ -76,7 +81,7 @@ export default {
   top: 0px;
   height: 98%;
   width: 20vw;
-  border-radius: 10px;
+  border-radius: 20px;
   background: var(--accentColor);
   box-shadow: -5px 0px 6px rgba(0, 0, 0, 0.308);
   transform: translateX(100%);
@@ -120,11 +125,12 @@ export default {
     overflow: hidden;
     overflow-y: scroll;
     width: 100%;
-    height: 92%;
+    height: 86%;
   }
   .downloadedTracks {
-    display: column;
-    columns: 2;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
     gap: 5px;
     padding-left: 10px;
   }

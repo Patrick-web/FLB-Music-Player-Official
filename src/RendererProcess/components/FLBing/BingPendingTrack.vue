@@ -2,7 +2,7 @@
   <div class="BingDownloadTrack">
     <div class="track_body">
       <div class="track_info">
-        <p>{{ trackInfo.title }}</p>
+        <p class="track_title">{{ trackInfo.title }}</p>
         <p class="track_artist">{{ trackInfo.artist.name }}</p>
       </div>
       <div class="track_progress">{{ trackInfo.progress }}%</div>
@@ -13,7 +13,7 @@
         class="dl_progress"
       ></div>
     </div>
-    <p class="track_state">{{ trackInfo.state.description }}</p>
+    <p class="track_state">×¬{{ trackInfo.state.description }}</p>
   </div>
 </template>
 
@@ -42,6 +42,9 @@ export default {
   justify-content: space-between;
   align-items: center;
 }
+.track_title {
+  font-family: roboto-light;
+}
 .track_artist {
   font-family: roboto-thin;
   font-size: 0.9rem;
@@ -60,6 +63,7 @@ export default {
   }
 }
 .track_state {
+  font-family: roboto-thin;
   font-size: 0.8rem;
 }
 </style>
