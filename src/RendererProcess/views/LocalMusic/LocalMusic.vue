@@ -9,7 +9,7 @@
     </transition>
     <main>
       <section
-        :class="[multiSelectOn ? 'multiSelectMode' : '', 'bg1']"
+        :class="[multiSelectOn ? 'multiSelectMode' : '', 'bg2']"
         id="tabsArea"
       >
         <TrackContextMenu v-on:targetTrack="setTagEditorTrack" />

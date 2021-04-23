@@ -50,7 +50,7 @@ export default {
   background: rgba(255, 255, 255, 0.083);
   padding: 5px;
   padding-top: 0px;
-  -webkit-app-region: drag;
+  // -webkit-app-region: drag;
   position: relative;
   z-index: 100;
   .leftSide {
@@ -69,7 +69,7 @@ export default {
   .ctrls {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
-    -webkit-app-region: no-drag;
+    // -webkit-app-region: no-drag;
     margin-bottom: -5px;
     margin-right: 5px;
     .ctrl {

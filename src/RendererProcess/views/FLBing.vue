@@ -44,11 +44,12 @@
       leave-active-class="animated slideOutDown extrafaster"
     >
       <AlbumPage
-        v-on:clearArtistResults="clearSelectedArtistOrAlbum('album')"
+        v-on:clearAlbumResults="clearSelectedArtistOrAlbum('album')"
         :albumInfo="selectedAlbum"
         v-if="selectedAlbum"
       />
     </transition>
+    <downloads-widget />
   </div>
 </template>
 
@@ -56,7 +57,7 @@
 import ArtistPage from "@/RendererProcess/components/FLBing/BingArtistPage.vue";
 import AlbumPage from "@/RendererProcess/components/FLBing/BingAlbumPage.vue";
 import SearchResults from "@/RendererProcess/components/FLBing/BingSearchResults.vue";
-import { remappedDeezerTracks } from "../utilities";
+import DownloadsWidget from "../components/FLBing/DownloadsWidget.vue";
 export default {
   data() {
     return {
@@ -98,15 +99,10 @@ export default {
         method: "GET",
         redirect: "follow",
       };
-      fetch(
-        `https://flbing.herokuapp.com/search/?category=tracks&query=${this.query}`,
-        requestOptions
-      )
+      fetch(`https://api.deezer.com/search?q=${this.query}`, requestOptions)
         .then((response) => response.text())
         .then((result) => {
-          this.results.tracks = remappedDeezerTracks(
-            JSON.parse(result).results
-          );
+          this.results.tracks = JSON.parse(result).data;
         })
         .catch((error) => console.log("error", error));
 
@@ -117,7 +113,6 @@ export default {
         .then((response) => response.text())
         .then((result) => {
           this.results.artists = JSON.parse(result).results.slice(0, 6);
-          console.log(this.results.artists[0]);
         })
         .catch((error) => console.log("error", error));
       fetch(
@@ -133,11 +128,16 @@ export default {
         .catch((error) => console.log("error", error));
     },
   },
-  components: { SearchResults, ArtistPage, AlbumPage },
+  components: { SearchResults, ArtistPage, AlbumPage, DownloadsWidget },
 };
 </script>
 
 <style lang="scss">
+.playingPaneLoaded {
+  .FLBing {
+    height: 86%;
+  }
+}
 .FLBing {
   width: 100%;
   height: 100%;
@@ -148,7 +148,7 @@ export default {
   .shrinkToTop {
     top: 0% !important;
     left: 50% !important;
-    transform: translateX(-50%) translateY(0%) !important;
+    transform: translateX(-50%) translateY(-5%) !important;
     width: 60% !important;
     #fetchIndicator {
       right: -5px !important;
@@ -174,7 +174,7 @@ export default {
       position: absolute;
       right: 0px;
       width: 15px;
-      bottom: 15px;
+      bottom: 12px;
       cursor: pointer;
       z-index: 4;
     }

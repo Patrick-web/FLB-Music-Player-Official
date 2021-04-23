@@ -1,19 +1,23 @@
 <template>
-  <div @click="getArtistData" class="groupCard">
+  <div @click="getArtistData" class="bing_card groupCard">
     <img class="coverArt" :src="artistInfo.picture" alt />
     <div class="groupedCard_info">
       <p class="groupedInfo_title">
         {{ artistInfo.name }}
       </p>
     </div>
+    <div v-if="loading" class="loading">
+      <div class="loadingIndicator"></div>
+    </div>
   </div>
 </template>
 
 <script>
-import { remappedDeezerTracks } from "@/RendererProcess/utilities";
+import { removeDuplicates } from "@/sharedUtilities";
 export default {
   data() {
     return {
+      loading: false,
       artistData: {
         name: null,
         cover: null,
@@ -24,42 +28,35 @@ export default {
   },
   methods: {
     getArtistData() {
-      document.body.classList.add("loading");
+      this.getTheirTracks();
+    },
+    getTheirTracks() {
+      this.loading = true;
       const requestOptions = {
         method: "GET",
         redirect: "follow",
       };
 
       fetch(
-        `https://api.deezer.com/artist/${this.artistInfo.id}`,
+        `https://api.deezer.com/artist/${this.artistInfo.id}/top?limit=50`,
         requestOptions
       )
         .then((response) => response.text())
         .then((result) => {
-          this.artistData.name = JSON.parse(result).name;
-          this.artistData.cover = JSON.parse(result).picture_big;
-          fetch(
-            `https://api.deezer.com/artist/${this.artistInfo.id}/top?limit=50`,
-            requestOptions
-          )
-            .then((response) => response.text())
-            .then((result) => {
-              this.artistData.tracks = remappedDeezerTracks(
-                JSON.parse(result).data
-              );
-            })
-            .catch((error) => console.log("error", error));
-          fetch(
-            `https://api.deezer.com/artist/${this.artistInfo.id}/albums`,
-            requestOptions
-          )
-            .then((response) => response.text())
-            .then((result) => {
-              this.artistData.albums = JSON.parse(result).data;
-              this.$emit("selectedArtist", this.artistData);
-              document.body.classList.remove("loading");
-            })
-            .catch((error) => console.log("error", error));
+          const tracks = JSON.parse(result).data;
+          const albums = removeDuplicates(
+            tracks.map((track) => track.album),
+            "title"
+          );
+          const artistData = {
+            id: this.artistInfo.id,
+            name: this.artistInfo.name,
+            picture: this.artistInfo.picture,
+            tracks,
+            albums,
+          };
+          this.loading = false;
+          this.$emit("selectedArtist", artistData);
         })
         .catch((error) => console.log("error", error));
     },
@@ -71,4 +68,22 @@ export default {
 </script>
 
 <style lang="scss">
+.bing_card {
+  position: relative;
+  .loading {
+    background: var(--accentColor);
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 15px;
+    div {
+      transform: translate(10px, 10px);
+    }
+  }
+}
 </style>

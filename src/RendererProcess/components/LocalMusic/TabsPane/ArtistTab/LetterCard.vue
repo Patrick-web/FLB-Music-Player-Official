@@ -28,7 +28,6 @@ export default {
       const styleObject = {
         color: shuffledColors[0],
       };
-      console.log(styleObject);
       return styleObject;
     },
   },

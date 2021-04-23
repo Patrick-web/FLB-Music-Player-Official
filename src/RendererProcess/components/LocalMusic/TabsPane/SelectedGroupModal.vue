@@ -1,5 +1,5 @@
 <template>
-  <div class="selectedGroup">
+  <div class="selectedGroup bg1">
     <button
       @click="deSelectGroup()"
       class="iconBt backToUnfilteredItems"

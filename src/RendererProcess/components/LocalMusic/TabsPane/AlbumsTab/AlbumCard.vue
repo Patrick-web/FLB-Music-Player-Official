@@ -40,9 +40,6 @@ export default {
       this.selectGroup(album);
     },
   },
-  mounted() {
-    console.log(this.album);
-  },
   props: {
     album: Object,
     hideArtist: Boolean,

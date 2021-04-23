@@ -88,3 +88,8 @@ export function sendNativeNotification(
         win.maximize();
     });
 }
+
+
+export function sendMessageToRenderer(listener: string, msg: object | string) {
+    win.webContents.send(listener, msg)
+}

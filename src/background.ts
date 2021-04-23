@@ -31,6 +31,7 @@ export const fileTracker = new FilesTracker();
 const playlistsTracker = new PlaylistsTracker();
 const playbackStats = new PlaybackStats();
 const settings = new Settings();
+const downloaderManager = new FLBing();
 
 console.log(paths.appFolder);
 
@@ -47,10 +48,9 @@ async function createWindow() {
     const { width, height } = primaryDisplay.workAreaSize;
     // Create the browser window.
     win = new BrowserWindow({
-        width: width - 100,
-        height: height - 100,
+        width: width - 5,
+        height: height - 5,
         frame: false,
-        transparent: true,
         webPreferences: {
             // Required for Spectron testing
             webSecurity: false,
@@ -63,7 +63,7 @@ async function createWindow() {
         },
     });
 
-    win.maximize();
+    // win.maximize();
 
     if (process.env.WEBPACK_DEV_SERVER_URL) {
         // Load the url of the dev server if in development mode
@@ -304,8 +304,8 @@ ipcMain.on("importCoverArt", async () => {
 
 
 ipcMain.on('downloadBingTrack', (e, payload) => {
-    const downloader = new FLBing();
-    downloader.start(payload)
+    console.log("Sending to download manager");
+    downloaderManager.addToDownloadQueue(payload)
 })
 
 
@@ -414,7 +414,7 @@ function refreshTracks() {
 
 
 export async function writeTags(filePath: string, tagChanges: TagChangesType) {
-    if (tagChanges.APIC && tagChanges.APIC.includes("https:")) {
+    if (tagChanges.APIC && tagChanges.APIC.includes("http")) {
         tagChanges.APIC = await downloadFile(tagChanges.APIC, paths.albumArtFolder, tagChanges.title || path.parse(filePath).name);
     }
     tagChanges.APIC.replace("file:///", "");

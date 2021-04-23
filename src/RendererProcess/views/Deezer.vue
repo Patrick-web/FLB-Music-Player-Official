@@ -10,7 +10,7 @@
       src="https://www.deezer.com/"
       useragent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36"
       disablewebsecurity
-      style="height: 95%; width: 100%"
+      style="height: 94%; width: 84vw"
     >
     </webview>
   </div>

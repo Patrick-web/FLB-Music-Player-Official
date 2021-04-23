@@ -18,6 +18,10 @@ export default {
       "setMostPlayedTracks",
       "popNotification",
       "setDownloadedArtistInfo",
+      "removeTrackFromPendingDownloads",
+      "updateTrackDownloadProgress",
+      "addToCompletedDownloads",
+      "updatePendingTrackState",
     ]),
     ...mapActions([
       "generateAlbumsData",
@@ -100,6 +104,24 @@ export default {
       );
       this.setDownloadedArtistInfo(downloadedArtists);
     });
+
+    //FLBING LISTENERS
+    ipcRenderer.on("bingDownloadProgress", (e, payload) => {
+      this.updateTrackDownloadProgress(payload);
+    });
+    ipcRenderer.on("bingTrackDownloaded", (e, payload) => {
+      this.removeTrackFromPendingDownloads(payload);
+    });
+    ipcRenderer.on("downloadedTrack", (e, payload) => {
+      console.log("I've received the newly downloaded track");
+      this.addToCompletedDownloads(payload);
+    });
+    ipcRenderer.on("updatePendingTrackState", (e, payload) => {
+      console.log("updating Pending Track State to");
+      console.table(payload);
+      this.updatePendingTrackState(payload);
+    });
+
     window.addEventListener("online", () => {
       this.getLyrics();
       this.fetchArtistsInfo();

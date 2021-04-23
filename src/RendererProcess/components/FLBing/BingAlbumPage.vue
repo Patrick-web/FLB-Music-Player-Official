@@ -1,15 +1,17 @@
 <template>
-  <div class="groupedContentTab bingPage bingAlbumPage">
+  <div class="groupedContentTab bingPage blurred_bg blur30 bingAlbumPage">
     <div class="sliverBar">
       <img class="coverArt" id="blurred" :src="albumInfo.cover" alt="" />
       <img class="coverArt" :src="albumInfo.cover" alt="" />
-      <div class="groupedCard_info">
-        <p class="groupedInfo_title">
-          {{ albumInfo.name }}
-        </p>
+      <div class="sliverBarFooter">
+        <div class="groupedCard_info">
+          <p class="groupedInfo_title">
+            {{ albumInfo.name }}
+          </p>
+        </div>
       </div>
       <base-button
-        @click.native="$emit('goBackToResults')"
+        @click.native="$emit('clearAlbumResults')"
         :icon="require('@/RendererProcess/assets/images/back.svg')"
         id="backToUnfilteredItems"
       />
@@ -46,6 +48,9 @@ export default {
   components: {
     BaseButton,
     Track,
+  },
+  mounted() {
+    console.log(this.albumInfo);
   },
   props: {
     albumInfo: Object,

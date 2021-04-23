@@ -1,5 +1,5 @@
 <template>
-  <div class="playingPane bg1">
+  <div class="playingPane bg2">
     <img
       @click="expandPlayingPane"
       id="expandPlayingPane"

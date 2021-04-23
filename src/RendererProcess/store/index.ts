@@ -8,6 +8,7 @@ import StatsManager from "./modules/LocalMusic/StatsManager";
 import TabsManager from "./modules/LocalMusic/TabsManager";
 import TrackSelector from "./modules/LocalMusic/TrackSelector";
 import UIController from "./modules/LocalMusic/UIController";
+import BingDownloadManager from "./modules/FLBing/BingDownloadManager";
 
 import { TrackType } from "@/types";
 import { sortArrayOfObjects } from "@/sharedUtilities";
@@ -46,6 +47,7 @@ const store: StoreOptions<any> = {
 		TabsManager,
 		TrackSelector,
 		UIController,
+		BingDownloadManager
 	},
 };
 

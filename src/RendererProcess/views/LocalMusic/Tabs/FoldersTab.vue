@@ -38,7 +38,7 @@
       enter-active-class="animated fadeInUp extrafaster"
       leave-active-class="animated fadeOutDown extrafaster"
     >
-      <div v-if="selectedGroup" class="selectedGroup">
+      <div v-if="selectedGroup" class="selectedGroup bg1">
         <base-button
           @click.native="deSelectGroup"
           :icon="require('@/RendererProcess/assets/images/back.svg')"

@@ -1,20 +1,22 @@
 <template>
-  <div @click="getAlbumData" class="groupCard">
+  <div @click="getAlbumData" class="bing_card groupCard">
     <img class="coverArt" :src="albumInfo.cover" alt />
     <div class="groupedCard_info">
       <p class="groupedInfo_title">
         {{ albumInfo.title }}
       </p>
     </div>
+    <div v-if="loading" class="loading">
+      <div class="loadingIndicator"></div>
+    </div>
   </div>
 </template>
 
 <script>
-import { remappedDeezerTracks } from "@/RendererProcess/utilities";
-import { mapMutations } from "vuex";
 export default {
   data() {
     return {
+      loading: false,
       albumData: {
         name: null,
         cover: null,
@@ -24,7 +26,7 @@ export default {
   },
   methods: {
     getAlbumData() {
-      document.body.classList.add("loading");
+      this.loading = true;
       const requestOptions = {
         method: "GET",
         redirect: "follow",
@@ -36,12 +38,14 @@ export default {
       )
         .then((response) => response.text())
         .then((result) => {
-          this.albumData.name = this.albumInfo.title;
-          this.albumData.cover = this.albumInfo.cover;
-          this.albumData.tracks = JSON.parse(result).data;
-          this.albumData.tracks = remappedDeezerTracks(JSON.parse(result).data);
-          this.$emit("selectedAlbum", this.albumData);
-          document.body.classList.remove("loading");
+          const tracks = JSON.parse(result).data;
+          const albumData = {
+            name: this.albumInfo.title,
+            cover: this.albumInfo.cover,
+            tracks,
+          };
+          this.loading = false;
+          this.$emit("selectedAlbum", albumData);
         })
         .catch((error) => console.log("error", error));
     },
@@ -53,64 +57,4 @@ export default {
 </script>
 
 <style lang="scss">
-.fetchingInProgress .squareCard {
-  cursor: wait !important;
-}
-.squareCard {
-  height: 200px;
-  width: 200px;
-  margin-right: 10px;
-  overflow: hidden;
-  transition: 0.4s ease;
-  position: relative;
-  .thumbnailArea {
-    max-height: 11vw;
-    // overflow: hidden;
-    img {
-      transform: rotate(0deg) scale(1);
-      transition: transform 0.3s ease;
-      width: 100%;
-    }
-  }
-  .cardInfo {
-    z-index: 3;
-    padding: 8px;
-    position: absolute;
-    bottom: 0px;
-    width: 100%;
-    background-color: rgba(0, 0, 0, 0.521);
-    backdrop-filter: blur(10px);
-    h4 {
-      font-family: roboto-light;
-    }
-  }
-}
-.squareCard:hover {
-  cursor: pointer;
-  .thumbnailArea {
-    img {
-      transform: rotate(5deg) scale(1.1);
-    }
-  }
-}
-#blurred {
-  height: 52px;
-  width: 100%;
-  position: absolute;
-  bottom: -20px;
-  left: 0;
-  filter: blur(10px);
-  z-index: 1;
-}
-.expandCard {
-  max-height: 800px;
-  .expandArrow {
-    transform: rotate(0deg);
-  }
-  .cardInfo {
-    .infoContent {
-      max-height: 800px;
-    }
-  }
-}
 </style>

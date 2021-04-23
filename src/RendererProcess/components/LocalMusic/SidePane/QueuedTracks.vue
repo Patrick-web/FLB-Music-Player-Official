@@ -34,7 +34,7 @@
           <div
             v-for="(track, index) in customQueue"
             :key="track.fileLocation"
-            class="queuedTrack"
+            class="queuedTrack bg1"
             @click.stop="playQueuedTrack($event, index, track)"
           >
             <p class="card_title">{{ track.defaultTitle }}</p>
@@ -116,7 +116,6 @@ export default {
   }
   .queuedTrack {
     position: relative;
-    background: rgba(255, 255, 255, 0.103);
     padding: 10px;
     border-radius: 10px;
     margin-bottom: 10px;

@@ -1,5 +1,5 @@
 <template>
-  <div class="SearchResults">
+  <div class="SearchResults bg2">
     <div v-if="searchResults.tracks.length" class="results trackResults">
       <h2>Tracks</h2>
       <div class="column contentsWrapper">
@@ -44,8 +44,6 @@ export default {
   methods: {
     bubbleArtist(artistData) {
       this.$emit("selectedArtist", artistData);
-      console.log("Sending...");
-      console.table(artistData);
     },
     bubbleAlbum(albumData) {
       this.$emit("selectedAlbum", albumData);
@@ -62,18 +60,21 @@ export default {
 <style lang="scss">
 .SearchResults {
   padding: 10px;
-  padding-top: 50px;
+  margin-top: 30px;
   overflow: hidden;
-  height: 100%;
-  overflow-y: scroll;
+  height: 87%;
+  width: 97.5%;
+  border-radius: 15px;
   position: relative;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   gap: 20px;
 }
 .results {
+  justify-self: start;
+  height: 49%;
   .contentsWrapper {
-    max-height: 80vh;
+    max-height: 100%;
     overflow: hidden;
     overflow-y: scroll;
   }

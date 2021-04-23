@@ -1,12 +1,16 @@
 <template>
   <div class="bingTrack">
     <div class="info">
-      <img class="coverArt" :src="trackInfo.albumArt" alt="" />
+      <img
+        class="coverArt"
+        :src="overrideCoverArt || trackInfo.album.cover"
+        alt=""
+      />
       <p style="font-family: roboto-light" class="trackTitle">
         {{ trackInfo.title }}
       </p>
       <p style="font-size: 0.9rem" @click="getArtistData" class="artist">
-        {{ trackInfo.artist }}
+        {{ trackInfo.artist.name }}
       </p>
     </div>
     <div class="trackActions">
@@ -16,26 +20,36 @@
         :small="true"
       />
       <base-button
-        @click.native="downloadTrack"
+        @click.native="getTrackDownloadURL"
         :icon="require('@/RendererProcess/assets/images/save_alt.svg')"
         :small="true"
+        :loading="isBeingDownloaded"
       />
     </div>
   </div>
 </template>
 
 <script>
-import { ipcRenderer } from "electron";
 import { mapMutations } from "vuex";
 import BaseButton from "@/RendererProcess/components/BaseComponents/BaseButton.vue";
-import { remappedDeezerTracks } from "@/RendererProcess/utilities";
+import { ipcRenderer } from "electron";
 
 export default {
   components: {
     BaseButton,
   },
+  computed: {
+    isBeingDownloaded() {
+      return this.$store.state.BingDownloadManager.pendingDownloads.findIndex(
+        (track) => track.id === this.trackInfo.id
+      ) == -1
+        ? false
+        : true;
+    },
+  },
   data() {
     return {
+      downloadURL: "",
       artistData: {
         name: null,
         cover: null,
@@ -49,28 +63,25 @@ export default {
     };
   },
   methods: {
-    ...mapMutations(["setPlayingTrack"]),
+    ...mapMutations([
+      "setPlayingTrack",
+      "setTrackDownloadURL",
+      "addTrackToPendingDownloads",
+      "updatePendingTrackState",
+      "removeTrackFromPendingDownloads",
+    ]),
     playPreview() {
-      fetch(
-        `https://api.deezer.com/track/${this.trackInfo.id}`,
-        this.requestOptions
-      )
-        .then((response) => response.text())
-        .then((result) => {
-          const res = JSON.parse(result);
-          const remappedTrack = remappedDeezerTracks([res])[0];
-          remappedTrack["defaultTitle"] = remappedTrack["title"];
-          remappedTrack["defaultArtist"] = remappedTrack["artist"];
-          console.log(remappedTrack);
-          this.setPlayingTrack({
-            track: remappedTrack,
-            index: -10,
-          });
-        })
-        .catch((error) => {
-          document.body.classList.remove("loading");
-          console.log("error", error);
-        });
+      const remappedTrack = {};
+      remappedTrack["defaultTitle"] = this.trackInfo.title;
+      remappedTrack["defaultArtist"] = this.trackInfo.artist.name;
+      remappedTrack["album"] = this.trackInfo.album.title;
+      remappedTrack["albumArt"] = this.trackInfo.album.cover;
+      remappedTrack["previewURL"] = this.trackInfo.preview;
+      console.log(remappedTrack);
+      this.setPlayingTrack({
+        track: remappedTrack,
+        index: -10,
+      });
     },
     getArtistData() {
       fetch(
@@ -107,43 +118,79 @@ export default {
           console.log("error", error);
         });
     },
-    downloadTrack() {
+    updateDownloadQueue() {
+      const downloadTrack = {
+        ...this.trackInfo,
+        progress: "0%",
+        downloadURL: "",
+        state: "Getting Download Link...",
+      };
+      this.addTrackToPendingDownloads(downloadTrack);
+    },
+    getTrackDownloadURL() {
+      this.updateDownloadQueue();
+      const myHeaders = new Headers();
+      myHeaders.append("accept", "application/json");
+
+      const requestOptions = {
+        method: "GET",
+        headers: myHeaders,
+        redirect: "follow",
+      };
+      const searchQuery = `${encodeURI(
+        this.trackInfo.title.replace(/(")|(\/)|(\\)|(\.)|(,)|(\))|(\()/g, "")
+      )} ${encodeURI(
+        this.trackInfo.artist.name.replace(
+          /(")|(\/)|(\\)|(\.)|(,)|(\))|(\()/g,
+          ""
+        )
+      )}`;
       fetch(
-        `https://flbing.herokuapp.com/download/?id=${this.trackInfo.id}`,
-        this.requestOptions
+        `https://thearq.tech/deezer?query=${searchQuery}&count=1`,
+        requestOptions
       )
         .then((response) => response.text())
         .then((result) => {
-          const link = JSON.parse(result).link;
-          fetch(
-            `https://api.deezer.com/track/${this.trackInfo.id}`,
-            this.requestOptions
-          )
-            .then((response) => response.text())
-            .then((trackResult) => {
-              const trackRes = JSON.parse(trackResult);
-              const tags = {
-                title: trackRes.title,
-                album: trackRes.album.title,
-                artist: trackRes.artist.name,
-                APIC: trackRes.album.cover_medium,
-                imageUrl: trackRes.album.cover_medium,
-              };
-              const artistInfo = {
-                name: trackRes.artist.name,
-                picture: trackRes.artist.picture_medium,
-              };
-              const payload = {
-                id: trackRes.id,
-                link,
-                tags,
-                artistInfo,
-              };
-              ipcRenderer.send("downloadBingTrack", payload);
-            })
-            .catch((error) => console.log("error", error));
+          if (JSON.parse(result) == "list index out of range") {
+            this.updatePendingTrackState({
+              id: this.trackInfo.id,
+              stateCode: "Download Link Not Found 💀",
+            });
+            return;
+          }
+          console.log(JSON.parse(result));
+          const targetTrack = JSON.parse(result)[0];
+          this.downloadURL = targetTrack.url;
+          this.setTrackDownloadURL({
+            id: this.trackInfo.id,
+            url: this.downloadURL,
+          });
+          this.sendTrackForDownload();
         })
-        .catch((error) => console.log("error", error));
+        .catch((error) => {
+          this.updatePendingTrackState({
+            id: this.trackInfo.id,
+            stateCode: "Please Check Your Internet Connection",
+          });
+        });
+    },
+    sendTrackForDownload() {
+      const tags = {
+        title: this.trackInfo.title.replace(/(")|(\/)/g, ""),
+        artist: this.trackInfo.artist.name,
+        album: this.trackInfo.album.title,
+        APIC: this.trackInfo.album.cover_big,
+      };
+      const artistInfo = {
+        name: this.trackInfo.artist.name,
+        picture: this.trackInfo.artist.picture,
+      };
+      ipcRenderer.send("downloadBingTrack", {
+        trackURL: this.downloadURL,
+        trackID: this.trackInfo.id,
+        tags,
+        artistInfo,
+      });
     },
   },
   props: {

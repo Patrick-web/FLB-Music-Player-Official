@@ -1,22 +1,24 @@
 <template>
-  <div class="groupedContentTab bingArtistPage bingPage">
+  <div class="groupedContentTab blurred_bg blur30 bingArtistPage bingPage">
     <div class="sliverBar">
-      <img class="coverArt" id="blurred" :src="artistInfo.cover" />
-      <img class="coverArt" :src="artistInfo.cover" alt="" />
-      <div class="groupedCard_info">
-        <p class="groupedInfo_title">
-          {{ artistInfo.name }}
-        </p>
+      <img class="coverArt" id="blurred" :src="artistInfo.picture" />
+      <img class="coverArt" :src="artistInfo.picture" alt="" />
+      <div class="sliverBarFooter">
+        <div class="groupedCard_info">
+          <p class="groupedInfo_title">
+            {{ artistInfo.name }}
+          </p>
+        </div>
       </div>
       <base-button
-        @click.native="$emit('goBackToResults')"
+        @click.native="$emit('clearArtistResults')"
         :icon="require('@/RendererProcess/assets/images/back.svg')"
         id="backToUnfilteredItems"
       />
     </div>
     <div class="cardsWrapper">
       <div class="grid2 gap10">
-        <div class="results trackResults">
+        <div class="artist_data">
           <div class="sectionHeading">
             <p>Tracks</p>
             <div class="line"></div>
@@ -30,13 +32,13 @@
             />
           </div>
         </div>
-        <div class="results albumResults">
+        <div class="artist_data">
           <div class="sectionHeading">
             <p>Albums</p>
             <div class="line"></div>
             <p>{{ artistInfo.albums.length }}</p>
           </div>
-          <div class="grid3 content">
+          <div class="content albums">
             <AlbumCard
               v-for="album in artistInfo.albums"
               :key="album.id"
@@ -79,18 +81,25 @@ export default {
   top: 0;
   width: 100%;
   z-index: 4;
-  background: rgb(14, 14, 14);
   border-radius: 20px;
   overflow: hidden;
   height: 93% !important;
-  // backdrop-filter: blur(40px);
-}
-.bingPage {
   .content {
-    padding: 10px;
+    padding: 20px;
     height: 57vh !important;
     overflow: hidden;
     overflow-y: scroll;
+  }
+  .sectionHeading {
+    margin-right: 20px;
+    margin-left: 10px;
+  }
+}
+.artist_data {
+  .albums {
+    display: column;
+    columns: 2;
+    gap: 5px;
   }
 }
 </style>

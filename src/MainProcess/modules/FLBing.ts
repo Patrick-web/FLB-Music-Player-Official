@@ -1,105 +1,113 @@
 import fs from "fs";
 import path from "path";
 import https from "https";
-import crypto from "crypto";
 
-import { writeTags } from "../../background";
-import { TagChangesType } from '@/types';
+import { win, writeTags } from "../../background";
 import { paths } from './Paths';
+import { deleteFile, sendMessageToRenderer } from "../utilities";
+import { createParsedTrack } from "../core/createParsedTrack";
 
 export class FLBing {
-    trackID = '';
-    url = '';
-    saveLocation = '';
-    tags: TagChangesType = {
-        title: '',
-        album: '',
-        artist: '',
-        APIC: '',
-        imageUrl: '',
-    };
-    start(payload: any) {
-        this.trackID = payload.id
-        // this.url = payload.link
-        this.url = "https://e-cdns-proxy-0.dzcdn.net/mobile/1/765031febfcf2f565da002cc8aa54feb5b117898a768a96b8b67da219a1065609b1f6b0b4cee99bda5e41a869dc68649bf320c977f6cb9ea37d75dce4b89c1096d66a70d2001ef56e4b03e4fb5cd2709"
-        this.saveLocation = path.join(paths.flbingFolder, payload.tags.title) + '.mp3'
-        this.tags = payload.tags
-        console.table(payload);
-        this.downloadTrack()
-            .then((res) => {
-                console.log("Track downloaded 🚀");
-                console.log(res);
-                this.writeTrackTags()
-            }).catch((err) => {
-                console.log("Error in downloading track");
-                console.log(err);
-            });
+    downloadQueue: Array<any> = []
+    downloadState: 'downloading' | 'empty' = 'empty'
+    addToDownloadQueue(payload: any) {
+        const newTrackToDownload = {
+            payload,
+            trackLocation: path.join(paths.flbingFolder, payload.tags.title) + '.mp3'
+        }
+        this.downloadQueue.push(newTrackToDownload)
+        if (this.downloadState == 'empty') {
+            sendMessageToRenderer('updatePendingTrackState', { id: payload.trackID, stateCode: 3 })
+            console.log("Queue is empty, beginning download");
+            this.downloadFirstTrackInTheQueue()
+        } else {
+            sendMessageToRenderer('updatePendingTrackState', { id: payload.trackID, stateCode: 4 })
+            console.log("There's something downloading let me wait");
+        }
     }
-    downloadTrack() {
-        return new Promise<string>((resolve) => {
-            const fileStream = fs.createWriteStream(this.saveLocation);
-            https.get(this.url, (response: any) => {
-                let i = 0;
-                let percent = 0;
-                response.on("readable", () => {
-                    const bfKey = getBlowfishKey(this.trackID.toString());
+    downloadFirstTrackInTheQueue() {
+        const trackToDownload = this.downloadQueue[0];
 
+        this.downloadQueue.shift()
+
+        win.webContents.send('normalMsg', `Downloading ${trackToDownload.payload.tags.title} by ${trackToDownload.payload.tags.artist}`)
+
+        const fileStream = fs.createWriteStream(trackToDownload.trackLocation);
+
+        console.log("Downloading...");
+
+        this.downloadState = 'downloading'
+        https.get(
+            trackToDownload.payload.trackURL,
+            (response) => {
+                let fileSize = 0
+                let percent = 0;
+                let downloaded = 0;
+
+                sendMessageToRenderer('updatePendingTrackState', { id: trackToDownload.payload.trackID, stateCode: 5 })
+
+                response.on("readable", () => {
+                    fileSize = parseInt(response.headers["content-length"]!);
                     let chunk;
                     while ((chunk = response.read(2048))) {
-                        if (
-                            (100 * 2048 * i) / response.headers["content-length"] >=
-                            percent + 1
-                        ) {
-                            percent++;
-                        }
-                        if (i % 3 > 0 || chunk.length < 2048) {
-                            fileStream.write(chunk);
-                        } else {
-                            const bfDecrypt = crypto.createDecipheriv(
-                                "bf-cbc",
-                                bfKey,
-                                "\x00\x01\x02\x03\x04\x05\x06\x07"
-                            );
-                            bfDecrypt.setAutoPadding(false);
-
-                            let chunkDec = bfDecrypt.update(
-                                chunk.toString("hex"),
-                                "hex",
-                                "hex"
-                            );
-                            chunkDec += bfDecrypt.final("hex");
-                            fileStream.write(chunkDec, "hex");
-                        }
-                        i++;
-                        console.log("Chunk written");
+                        fileStream.write(chunk);
+                        downloaded += 2048;
+                        percent = Math.trunc((downloaded / fileSize) * 100);
+                        this.sendDownloadProgress(trackToDownload.payload.trackID, percent)
+                        console.log("Downloaded " + percent + '%');
                     }
                 });
                 response.on("end", () => {
                     fileStream.end();
+                    this.writeTrackTags(trackToDownload.trackLocation, trackToDownload.payload.tags)
+                    win.webContents.send('successMsg', `${trackToDownload.payload.tags.title} by ${trackToDownload.payload.tags.artist} Downloaded 🚀`)
+                    win.webContents.send('bingTrackDownloaded', trackToDownload.trackID)
                     console.log("Track Downloaded 🚀");
-                    resolve(`Track saved to ${this.saveLocation}`);
+                    if (this.downloadQueue[0]) {
+                        this.downloadFirstTrackInTheQueue()
+                        console.log("Moving on to the next track");
+                    } else {
+                        this.downloadState = 'empty'
+                    }
                 });
-            });
-        });
+                response.on('error', () => {
+                    sendMessageToRenderer('updatePendingTrackState', { id: trackToDownload.payload.trackID, stateCode: 7 })
+                    console.log("Error in Downloading");
+                    fileStream.end();
+                    deleteFile(trackToDownload.trackLocation, true)
+                    win.webContents.send('dangerMsg', `Error Downloading ${trackToDownload.payload.tags.title} by ${trackToDownload.payload.tags.artist}`)
+                })
+            }
+        ).on('error', () => {
+            sendMessageToRenderer('updatePendingTrackState', { id: trackToDownload.payload.trackID, stateCode: 7 })
+            console.log("Error in Downloading");
+            fileStream.end();
+            deleteFile(trackToDownload.trackLocation, true)
+            win.webContents.send('dangerMsg', `Error Downloading ${trackToDownload.payload.tags.title} by ${trackToDownload.payload.tags.artist}`)
+        })
+
     }
 
-
-    writeTrackTags() {
-        writeTags(this.saveLocation, this.tags)
+    sendDownloadProgress(trackID: any, progress: any) {
+        win.webContents.send('bingDownloadProgress', {
+            id: trackID,
+            progress
+        })
     }
-}
-
-function getBlowfishKey(trackID: string) {
-    const SECRET = "g4el58wc0zvf9na1";
-    const idMd5 = crypto.createHash("md5").update(trackID, "ascii").digest("hex");
-    let bfKey = "";
-
-    for (let i = 0; i < 16; i++) {
-        bfKey += String.fromCharCode(
-            idMd5.charCodeAt(i) ^ idMd5.charCodeAt(i + 16) ^ SECRET.charCodeAt(i)
-        );
+    async writeTrackTags(location: any, tags: any) {
+        const success = writeTags(location, tags)
+        console.log("Writing tags first");
+        console.log(tags);
+        console.log(location);
+        console.log("Tag write is " + success);
+        if (await success == true) {
+            createParsedTrack(location)
+                .then((track) => {
+                    console.log("Sending Downloaded track");
+                    win.webContents.send('downloadedTrack', track)
+                }).catch((err) => {
+                    console.log("Some error while parsing the downloaded track");
+                });
+        }
     }
-    console.log("bfKey 👇");
-    console.log(bfKey);
-    return bfKey;
 }

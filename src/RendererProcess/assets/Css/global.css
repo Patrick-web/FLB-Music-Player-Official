@@ -39,18 +39,6 @@ a {
 	text-decoration: none;
 }
 
-.loading div {
-	cursor: progress;
-}
-.loading p {
-	cursor: progress;
-}
-.loading .track {
-	cursor: progress !important;
-}
-.loading .trackBt {
-	cursor: progress !important;
-}
 #backToUnfilteredItems {
 	position: absolute;
 	z-index: 4;

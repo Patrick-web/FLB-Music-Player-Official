@@ -12,10 +12,14 @@
       extraClass,
       transparent ? 'transparentBt' : '',
       'bg2',
+      loading ? 'disabledBtn' : '',
     ]"
   >
-    <p v-if="text" class="btnText">{{ text }}</p>
-    <img v-if="icon" :src="icon" class="btnIcon" />
+    <p v-if="text && !loading" class="btnText">{{ text }}</p>
+    <img v-if="icon && !loading" :src="icon" class="btnIcon" />
+    <div v-if="loading" class="btnLoaderWrapper">
+      <div class="loadingIndicator"></div>
+    </div>
   </button>
 </template>
 
@@ -32,6 +36,7 @@ export default {
     tiny: Boolean,
     extraClass: String,
     transparent: Boolean,
+    loading: Boolean,
   },
 };
 </script>
@@ -49,6 +54,19 @@ button {
   &:active {
     border: 1.5px solid rgb(255, 255, 255);
   }
+  .btnLoaderWrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .loadingIndicator {
+      transform: scale(0.8) translateY(15px);
+    }
+  }
+}
+.disabledBtn {
+  pointer-events: none;
 }
 .transparentBt {
   background: none !important;
