@@ -2,7 +2,6 @@ import { getSong } from "genius-lyrics-api";
 import { ActionTree } from "vuex";
 import UIController from './UIController';
 import TabsManager from "./TabsManager";
-import NotificationManager from "./NotificationManager";
 import TrackSelector from "./TrackSelector";
 import { sendMessageToNode } from "@/RendererProcess/utilities";
 import { removeDuplicates, shuffleArray } from "@/sharedUtilities";
@@ -44,7 +43,7 @@ const mutations = {
             state.playingTrackInfo.track = payload.track;
             state.playingTrackIndex = payload.index;
             state.audioState.playing = true;
-            if (UIController.state.UIProperties.currentMainTab != "Recents") {
+            if (UIController.state.UIProperties.currentMainTab != "Recents" && UIController.state.UIProperties.currentPage == 'My Music') {
                 TabsManager.state.tabsData.recentlyPlayedTracks.unshift(payload.track);
                 TabsManager.state.tabsData.recentlyPlayedTracks = TabsManager.state.tabsData.recentlyPlayedTracks.splice(0, 20);
                 TabsManager.state.tabsData.recentlyPlayedTracks = removeDuplicates(TabsManager.state.tabsData.recentlyPlayedTracks, 'defaultTitle')

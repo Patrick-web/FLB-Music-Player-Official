@@ -13,7 +13,7 @@
         class="dl_progress"
       ></div>
     </div>
-    <p class="track_state">×¬{{ trackInfo.state.description }}</p>
+    <!-- <p class="track_state">×¬{{ trackInfo.state.description }}</p> -->
   </div>
 </template>
 

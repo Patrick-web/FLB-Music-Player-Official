@@ -1,11 +1,39 @@
 <template>
   <div class="FLBing">
-    <h1 v-if="!resultsGotten" style="font-size: 2.5rem">FLBING</h1>
+    <svg
+      v-if="!resultsGotten"
+      xmlns="http://www.w3.org/2000/svg"
+      xmlns:xlink="http://www.w3.org/1999/xlink"
+      style="isolation: isolate"
+      viewBox="225.466 681.25 29.5 25.5"
+      width="29.5pt"
+      height="25.5pt"
+      id="flbingLogo"
+    >
+      <path
+        d=" M 226.216 682 L 237.216 682 L 242.216 682 L 242.216 700 L 250 696 L 247 695 L 244.716 690 L 254.216 693 L 254.216 699 L 242.216 706 L 237.216 703 L 237.216 694 L 232.216 694 L 233.216 691 L 237.216 691 L 237.216 686 L 229.216 686 L 226.216 682 Z "
+        fill="none"
+        vector-effect="non-scaling-stroke"
+        stroke-width="1.5"
+        stroke="rgb(255,255,255)"
+        stroke-linejoin="round"
+        stroke-linecap="round"
+        stroke-miterlimit="3"
+        id="flbingLogoOutline"
+      />
+    </svg>
+    <h1
+      v-if="!resultsGotten"
+      style="font-size: 2.5rem"
+      class="animated fadeInUp"
+    >
+      FLBING
+    </h1>
     <div :class="[resultsGotten ? 'shrinkToTop' : '', 'SearchArea']">
       <input
         placeholder="Search and Download Music"
         type="text"
-        class="BigSearch inputElem"
+        class="BigSearch inputElem animated fadeInUp delay-1s"
         id="bingSearch"
         v-model="query"
         v-on:keyup.enter="search"
@@ -239,6 +267,27 @@ export default {
     .activeScroll {
       background: rgb(0, 68, 255);
     }
+  }
+}
+
+#flbingLogo {
+  position: absolute;
+  top: 25%;
+  left: 50%;
+  transform: translateX(-50%) scale(1.5);
+}
+#flbingLogoOutline {
+  stroke-dasharray: 174;
+  stroke-dashoffset: 174;
+  animation-name: animatedash;
+  animation-fill-mode: forwards;
+  animation-duration: 4s;
+  animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+}
+@keyframes animatedash {
+  to {
+    stroke-dashoffset: 0;
+    stroke-dasharray: 0;
   }
 }
 </style>
