@@ -89,7 +89,15 @@ async function createWindow() {
         require('electron').shell.openExternal(url);
     });
 
-    autoUpdater.checkForUpdatesAndNotify();
+    autoUpdater.checkForUpdatesAndNotify()
+        .then((result) => {
+            if (result) {
+                win.webContents.send("normalMsg", 'An Update is available🚀')
+                win.webContents.send("normalMsg", 'Downloading it now..🗡🌼')
+            }
+        }).catch((err) => {
+
+        });
 }
 
 // Quit when all windows are closed.
