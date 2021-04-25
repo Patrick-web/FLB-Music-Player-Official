@@ -13,7 +13,7 @@
     <main>
       <section>
         <article class="bg1">
-          <h4>Library</h4>
+          <h4>Library 💿</h4>
           <div class="folderBoxWrapper">
             <div
               v-for="folder in settings.foldersToScan"
@@ -43,7 +43,7 @@
         </article>
         <article class="bg1">
           <div class="settingBox">
-            <h4>Default Tab</h4>
+            <h4>Default Tab 🚪</h4>
             <ul class="grid3 gap20">
               <div
                 v-for="tab in tabs"
@@ -67,7 +67,7 @@
           </div>
         </article>
         <article class="bg1">
-          <h4>Accent Color</h4>
+          <h4>Accent Color 🖌</h4>
           <ul class="grid5 gap10">
             <div
               v-for="(color, index) in accentColors"
@@ -130,7 +130,7 @@
           </ul>
         </article>
         <article class="bg1">
-          <h3>Shortcuts</h3>
+          <h3>Shortcuts ✂</h3>
           <div class="shortcut">
             <p>Pause/Play</p>
             <pre>Space</pre>
@@ -153,7 +153,7 @@
           </div>
         </article>
         <article class="bg1">
-          <h3>About</h3>
+          <h3>About 🐲</h3>
           <div class="infos">
             <div class="info-group">
               <div class="it">💽 App Version</div>
@@ -181,13 +181,9 @@
           </div>
         </article>
       </section>
-      <!-- <section style="border: none">
-        <article>
-          <button @click="resetApp" class="dangerBt bt_block">
-            <h2>Reset FLB 😵</h2>
-          </button>
-        </article>
-      </section> -->
+      <section style="border: none">
+        <base-button text="Check for Update 🚀" />
+      </section>
     </main>
   </div>
 </template>
