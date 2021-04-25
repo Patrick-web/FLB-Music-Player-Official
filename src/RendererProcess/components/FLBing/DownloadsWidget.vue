@@ -29,7 +29,7 @@
     </div>
     <div v-else class="tracks_wrapper downloadedTracks">
       <bing-completed-track
-        v-for="track in [...flbingFolderTracks, ...completedTracks]"
+        v-for="track in [...completedTracks, ...flbingFolderTracks]"
         :key="track.fileLocation"
         :track="track"
       />
