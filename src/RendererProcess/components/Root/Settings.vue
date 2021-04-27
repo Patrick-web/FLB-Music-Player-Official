@@ -183,6 +183,11 @@
       </section>
       <section style="border: none">
         <base-button text="Check for Update 🚀" />
+        <br />
+        <br />
+        <a target="_blank" href="https://t.me/flbmusiccommunity">
+          <base-button text="Join Us on Telegram 🦅" />
+        </a>
       </section>
     </main>
   </div>
@@ -243,6 +248,9 @@ export default {
       localStorage.removeItem("downloadedArtists");
       localStorage.removeItem("lyrics");
       sendMessageToNode("resetApp");
+    },
+    checkForUpdate() {
+      sendMessageToNode("checkForUpdate");
     },
   },
   mounted() {
