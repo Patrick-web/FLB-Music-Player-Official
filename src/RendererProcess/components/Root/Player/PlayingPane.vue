@@ -263,6 +263,7 @@ export default {
 <style lang="scss">
 .fullScreenPlayingPane {
   background-color: rgba(0, 0, 0, 0.301) !important;
+  backdrop-filter: blur(10px);
   height: 100vh !important;
   width: 100vw !important;
   left: 0;
