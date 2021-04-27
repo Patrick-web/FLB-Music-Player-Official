@@ -34,7 +34,7 @@ export default {
       if (this.notification.type !== "persist") {
         this.popNotification();
       }
-    }, 1800);
+    }, 3000);
     ipcRenderer.on("parsingProgress", (e, [currentIndex, total]) => {
       this.currentNotification.subTitle = `${currentIndex}/${total}`;
     });
