@@ -276,18 +276,18 @@ export default {
   left: 50%;
   transform: translateX(-50%) scale(1.5);
 }
-#flbingLogoOutline {
-  stroke-dasharray: 174;
-  stroke-dashoffset: 174;
-  animation-name: animatedash;
-  animation-fill-mode: forwards;
-  animation-duration: 4s;
-  animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
-}
-@keyframes animatedash {
-  to {
-    stroke-dashoffset: 0;
-    stroke-dasharray: 0;
-  }
-}
+// #flbingLogoOutline {
+//   stroke-dasharray: 174;
+//   stroke-dashoffset: 174;
+//   // animation-name: animatedash;
+//   animation-fill-mode: forwards;
+//   animation-duration: 4s;
+//   animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+// }
+// @keyframes animatedash {
+//   to {
+//     stroke-dashoffset: 0;
+//     stroke-dasharray: 0;
+//   }
+// }
 </style>
