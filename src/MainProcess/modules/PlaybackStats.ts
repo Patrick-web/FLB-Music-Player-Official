@@ -6,7 +6,7 @@ import { sortArrayOfObjects, removeDuplicates } from "@/sharedUtilities";
 export class PlaybackStats {
 	playedFiles: Array<TrackType> = [];
 	tracksStats: Array<TrackStatType> = [];
-
+	mostPlayedTracks: Array<TrackType> = [];
 	constructor() {
 		if (fs.existsSync(paths.playbackStatsLocation)) {
 			try {
@@ -25,10 +25,10 @@ export class PlaybackStats {
 	public addFile(file: TrackType) {
 		this.playedFiles.unshift(file);
 		this.playedFiles = this.playedFiles.slice(0, 100);
-		this.generateMostPlayedTracks();
+		this.generateStats()
 	}
 
-	private generateMostPlayedTracks() {
+	private generateStats() {
 		this.playedFiles.forEach((playedFile) => {
 			const arrOfTrackPaths: Array<string> = this.playedFiles.map(
 				(file) => file.defaultTitle
@@ -38,7 +38,7 @@ export class PlaybackStats {
 				new RegExp(playedFile.defaultTitle, "g")
 			);
 			const trackStatObj: TrackStatType = {
-				track: playedFile,
+				trackLocation: playedFile.fileLocation,
 				numberOfPlays: 0,
 			};
 			if (!duplicates) {
@@ -48,7 +48,7 @@ export class PlaybackStats {
 			}
 			this.tracksStats.push(trackStatObj);
 		});
-		// sortArrayOfObjects(this.tracksStats, "numberOfPlays");
+		this.saveChanges()
 	}
 	public saveChanges() {
 		const stats = {
@@ -67,16 +67,7 @@ export class PlaybackStats {
 		return tracks;
 	}
 
-	public get mostPlayedTracks(): Array<TrackType> {
-		return removeDuplicates(
-			this.tracksStats.map((trackStatObj) => trackStatObj.track),
-			"fileLocation"
-		).slice(0, 20);
-	}
-	public get mostPlayedArtists(): string {
-		return removeDuplicates(
-			this.tracksStats.slice(0, 50).map((track) => track.track.artist),
-			"defaultArtist"
-		);
+	public get getPlayStats(): Array<TrackStatType> {
+		return this.tracksStats;
 	}
 }
