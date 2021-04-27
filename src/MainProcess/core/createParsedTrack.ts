@@ -30,7 +30,7 @@ export function createParsedTrack(
                 path: path.parse(fileLocation).dir
             }
         };
-        path.parse(fileLocation);
+        console.log("Parsing " + fileLocation);
         track.fileLocation = fileLocation;
         track.r_fileLocation = "file://" + fileLocation;
         track.fileName = path.parse(fileLocation).name;

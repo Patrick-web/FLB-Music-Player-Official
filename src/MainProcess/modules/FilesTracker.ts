@@ -30,6 +30,7 @@ export class FilesTracker {
         this.saveChanges();
     }
     checkForDeletedTracks() {
+        console.log("Checking for deleted tracks");
         const deletedTracks = this.processedFiles.filter((track) => !fs.existsSync(track.fileLocation))
         deletedTracks.map(track => track.fileLocation).forEach(path => this.deleteFile(path))
     }

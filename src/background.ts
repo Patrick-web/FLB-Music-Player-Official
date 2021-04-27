@@ -12,7 +12,7 @@ import { createProtocol } from "vue-cli-plugin-electron-builder/lib";
 import fs from "fs";
 import path from "path";
 import { autoUpdater } from "electron-updater";
-
+import os from 'os';
 import NodeID3 from "node-id3";
 import { paths } from "./MainProcess/modules/Paths";
 import { PlaylistsTracker } from "./MainProcess/modules/PlaylistTracker";
@@ -88,16 +88,26 @@ async function createWindow() {
         e.preventDefault();
         require('electron').shell.openExternal(url);
     });
-
+    autoUpdater.on('checking-for-update', () => {
+        win.webContents.send('normalMsg', 'Checking for update...');
+    })
+    autoUpdater.on('update-available', (info) => {
+        win.webContents.send('normalMsg', 'Update available.');
+    })
+    autoUpdater.on('update-not-available', (info) => {
+        win.webContents.send('normalMsg', 'Update not available.');
+    })
+    autoUpdater.on('error', (err) => {
+        win.webContents.send('dangerMsg', 'Error in auto-updater. ' + err);
+    })
+    autoUpdater.on('update-downloaded', (info) => {
+        win.webContents.send('normalMsg', 'Update downloaded');
+    });
     autoUpdater.checkForUpdatesAndNotify()
-        .then((result) => {
-            if (result) {
-                win.webContents.send("normalMsg", 'An Update is available🚀')
-                win.webContents.send("normalMsg", 'Downloading it now..🗡🌼')
-            }
-        }).catch((err) => {
+}
 
-        });
+if (process.platform === 'win32') {
+    app.setAppUserModelId(app.getName());
 }
 
 // Quit when all windows are closed.
@@ -163,8 +173,8 @@ ipcMain.on("initializeApp", async () => {
         win.webContents.send("processedFiles", processedFiles);
         win.webContents.send("userPlaylists", playlists);
         win.webContents.send("recentlyPlayed", recentlyPlayedTracks);
-        win.webContents.send("mostPlayedTracks", playbackStats.mostPlayedTracks);
         refreshTracks();
+        win.webContents.send("playStats", playbackStats.getPlayStats);
     }
 });
 
@@ -322,6 +332,12 @@ ipcMain.on('downloadBingTrack', (e, payload) => {
 })
 
 
+ipcMain.on('checkForUpdate', () => {
+    checkForUpdates()
+})
+
+
+
 async function parseFolder(
     folderPath: string,
     subFolders: Array<string>,
@@ -445,4 +461,21 @@ function saveAppData() {
     fileTracker.saveChanges();
     settings.saveSettings();
     playbackStats.saveChanges();
+}
+
+function checkForUpdates() {
+    autoUpdater.checkForUpdatesAndNotify();
+}
+
+function sendUsageStatistics() {
+    const deviceInfo = {
+        architecture: os.arch(),
+        noOfCPUs: os.cpus(),
+        freeMemory: os.freemem(),
+        hostname: os.hostname(),
+        osRelease: os.release(),
+        osType: os.type(),
+    }
+    const userName = os.userInfo.name
+    const numberOfFilesRead = fileTracker.getTracks.length
 }

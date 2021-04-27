@@ -16,7 +16,7 @@ export interface TrackType {
     folderInfo: FolderInfoType
 }
 export interface TrackStatType {
-    track: TrackType;
+    trackLocation: string;
     numberOfPlays: number;
 }
 export interface geniusSongType {
