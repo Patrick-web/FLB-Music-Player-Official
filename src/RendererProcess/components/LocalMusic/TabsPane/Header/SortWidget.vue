@@ -69,6 +69,11 @@ export default {
     opacity: 1;
     pointer-events: all;
   }
+  .sortParamsWrapper:hover {
+    bottom: 0px;
+    opacity: 1;
+    pointer-events: all;
+  }
   .sortParamsWrapper {
     position: absolute;
     bottom: -20px;
