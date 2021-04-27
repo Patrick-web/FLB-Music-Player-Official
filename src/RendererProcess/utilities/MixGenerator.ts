@@ -1,32 +1,38 @@
 import { removeDuplicates, shuffleArray, sortArrayOfObjects } from "@/sharedUtilities";
-import { TrackType, mixTyping } from "@/types";
+import { TrackType, mixTyping, TrackStatType } from "@/types";
 
 export class MixGenerator {
-    mostPlayedTracks: TrackType[];
     allTracks: TrackType[];
     mixes: mixTyping[] = [];
     recentlyPlayedTracks: TrackType[];
-    constructor(mostPlayedTracks: Array<TrackType>, allTracks: Array<TrackType>, recentlyPlayedTracks: Array<TrackType>) {
-        this.mostPlayedTracks = [...mostPlayedTracks]
+    playStats: TrackStatType[];
+    constructor(playStats: Array<TrackStatType>, allTracks: Array<TrackType>, recentlyPlayedTracks: Array<TrackType>) {
+        this.playStats = playStats
         this.allTracks = [...allTracks]
         this.recentlyPlayedTracks = [...recentlyPlayedTracks]
         this.favoriteTracks()
+        this.recentlyAddedTracks()
         this.twoArtistMashUp()
         this.tenForgottenTracks()
-        this.recentlyAddedTracks()
     }
     favoriteTracks() {
-        if (this.mostPlayedTracks[1]) {
-            const mix: mixTyping = {
-                name: "Tracks you've fallen for 💘💘",
-                info: `Your Most Played tracks like 👉 💖${this.mostPlayedTracks[0].defaultTitle}💖  and  💖${this.mostPlayedTracks[1].defaultTitle}💖`,
-                tracks: removeDuplicates(this.mostPlayedTracks, 'defaultTitle')
+        if (this.playStats) {
+            const topTwentyPlays = this.playStats.slice(0, 20).map(playStat => playStat.trackLocation).join(',');
+            const favoriteTracks = this.allTracks.filter(track => topTwentyPlays.includes(track.fileLocation))
+            if (favoriteTracks[0] && favoriteTracks[1]) {
+                const mix: mixTyping = {
+                    name: "Tracks you've fallen for 💘",
+                    info: `Your Most Played tracks like 👉 | ${favoriteTracks[0].defaultTitle} |  and  | ${favoriteTracks[1].defaultTitle} |`,
+                    tracks: removeDuplicates(favoriteTracks, 'defaultTitle')
+                }
+                this.mixes.push(mix)
             }
-            this.mixes.push(mix)
         }
     }
     twoArtistMashUp() {
-        const favoriteArtists = this.mostPlayedTracks.map(track => track.defaultArtist);
+        const topTwentyPlays = this.playStats.slice(0, 20).map(playStat => playStat.trackLocation).join(',');
+        const favoriteTracks = this.allTracks.filter(track => topTwentyPlays.includes(track.fileLocation))
+        const favoriteArtists = favoriteTracks.map(track => track.defaultArtist);
         const twoRandomArtists = shuffleArray(favoriteArtists).slice(0, 2)
         if (twoRandomArtists[1] && twoRandomArtists[1] != twoRandomArtists[0]) {
             const firstArtistTracks = this.allTracks.filter(track => track.defaultArtist == twoRandomArtists[0])
@@ -52,7 +58,7 @@ export class MixGenerator {
         forgottenTracks = forgottenTracks.splice(0, 10)
         if (forgottenTracks.length > 0) {
             const mix: mixTyping = {
-                name: 'Tracks you might have forgotten 😲🤯',
+                name: 'Tracks you might have forgotten 🤯',
                 info: `Remember 👉 ${forgottenTracks[0].defaultTitle}, ${forgottenTracks[1].defaultTitle} and others...`,
                 tracks: forgottenTracks
             }
@@ -66,7 +72,7 @@ export class MixGenerator {
         const topTenRecentlyAddedTracks = allTracksCopy.splice(0, 10)
         if (topTenRecentlyAddedTracks.length > 0) {
             const mix: mixTyping = {
-                name: 'Fresh and Juicy 🧃🧃',
+                name: 'Fresh and Juicy 🧃',
                 info: `Newly added tracks like 👉 ${topTenRecentlyAddedTracks[0].defaultTitle}, ${topTenRecentlyAddedTracks[1].defaultTitle} and others...`,
                 tracks: removeDuplicates(topTenRecentlyAddedTracks, 'defaultTitle')
             }
@@ -75,7 +81,6 @@ export class MixGenerator {
     }
     clearDataToSaveRam() {
         setTimeout(() => {
-            this.mostPlayedTracks = []
             this.recentlyPlayedTracks = []
             this.allTracks = []
         }, 2000);

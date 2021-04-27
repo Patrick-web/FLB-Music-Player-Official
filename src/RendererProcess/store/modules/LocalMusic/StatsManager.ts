@@ -1,13 +1,13 @@
-import { TrackType } from "@/types";
+import { TrackStatType } from "@/types";
 
 const state = {
     stats: {
-        mostPlayedTracks: []
+        playStats: []
     }
 };
 const mutations = {
-    setMostPlayedTracks(state: any, payload: TrackType[]) {
-        state.stats.mostPlayedTracks = payload
+    setPlayStats(state: any, payload: TrackStatType[]) {
+        state.stats.playStats = payload
     }
 };
 

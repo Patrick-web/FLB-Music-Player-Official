@@ -15,7 +15,7 @@ export default {
       "restoreRecentlyPlayed",
       "restorePlaylists",
       "restoreSettings",
-      "setMostPlayedTracks",
+      "setPlayStats",
       "popNotification",
       "setDownloadedArtistInfo",
       "removeTrackFromPendingDownloads",
@@ -56,8 +56,8 @@ export default {
         this.getLyrics();
       }
     });
-    ipcRenderer.on("mostPlayedTracks", (e, tracks) => {
-      this.setMostPlayedTracks(tracks);
+    ipcRenderer.on("playStats", (e, tracks) => {
+      this.setPlayStats(tracks);
     });
     ipcRenderer.on("recentlyPlayed", (e, tracks) => {
       this.restoreRecentlyPlayed(tracks);
@@ -126,6 +126,19 @@ export default {
       this.getLyrics();
       this.fetchArtistsInfo();
     });
+
+    //Record that the app has been launched
+
+    if (localStorage.getItem("launches")) {
+      let launches = localStorage.getItem("launches");
+      launches += 1;
+      localStorage.setItem("launches", launches);
+    } else {
+      localStorage.setItem("launches", 1);
+    }
+    // navigator.geolocation.getCurrentPosition((res) => {
+    //   console.log(res);
+    // });
   },
 };
 </script>
