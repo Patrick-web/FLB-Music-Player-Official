@@ -5,7 +5,7 @@
         <h1>Library Stats</h1>
       </div>
       <div class="statsWrapper">
-        <div @click="routeTo('/tracks')" class="statCard">
+        <div @click="routeTo('Tracks')" class="statCard">
           <h2>{{ tabsData.addedTracks.length }}</h2>
           <p>Tracks</p>
           <img
@@ -14,7 +14,7 @@
             alt=""
           />
         </div>
-        <div @click="routeTo('/albums')" class="statCard">
+        <div @click="routeTo('Albums')" class="statCard">
           <h2>{{ tabsData.albums.length }}</h2>
           <p>Albums</p>
           <img
@@ -23,7 +23,7 @@
             alt=""
           />
         </div>
-        <div @click="routeTo('/artists')" class="statCard">
+        <div @click="routeTo('Artists')" class="statCard">
           <h2>{{ tabsData.artists.length }}</h2>
           <p>Artists</p>
           <img
@@ -32,7 +32,7 @@
             alt=""
           />
         </div>
-        <div @click="routeTo('/folders')" class="statCard">
+        <div @click="routeTo('Folders')" class="statCard">
           <h2>{{ tabsData.folders.length }}</h2>
           <p>Folders</p>
           <img src="@/RendererProcess/assets/images/folder.svg" alt="" />
@@ -70,8 +70,8 @@ export default {
     tabsData() {
       return this.$store.state.TabsManager.tabsData;
     },
-    mostPlayedTracks() {
-      return this.$store.state.StatsManager.stats.mostPlayedTracks;
+    playStats() {
+      return this.$store.state.StatsManager.stats.playStats;
     },
   },
   data() {
@@ -85,15 +85,21 @@ export default {
       "addToSelectedTracks",
       "clearSelectedTracks",
       "overWriteCustomQueue",
+      "UIcontrollerSetPropertyValue",
     ]),
     routeTo(tab) {
-      if (tab !== this.$route.path) this.$router.push(tab);
+      this.UIcontrollerSetPropertyValue({
+        property: "currentMainTab",
+        newValue: tab,
+      });
+      const path = tab == "Home" ? "/" : `/${tab}`;
+      this.$router.push(path);
     },
   },
   mounted() {
     setTimeout(() => {
       const mixGen = new MixGenerator(
-        this.mostPlayedTracks,
+        this.playStats,
         this.tabsData.addedTracks,
         this.tabsData.recentlyPlayedTracks
       );
