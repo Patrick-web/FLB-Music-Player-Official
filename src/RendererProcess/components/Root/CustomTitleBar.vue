@@ -1,5 +1,5 @@
 <template>
-  <div class="customTitleBar">
+  <div class="customTitleBar bg1">
     <div class="leftSide">
       <img id="logo" src="@/RendererProcess/assets/images/Logo.png" alt="" />
       <p>LB Music</p>
@@ -47,7 +47,6 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: rgba(255, 255, 255, 0.083);
   padding: 5px;
   padding-top: 0px;
   -webkit-app-region: drag;
