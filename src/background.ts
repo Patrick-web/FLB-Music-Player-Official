@@ -24,6 +24,7 @@ import { deleteFile, sendNativeNotification, downloadFile, isValidFileType } fro
 import { TrackType, SettingsType, FolderType, FolderInfoType, TagChangesType } from "@/types";
 import { downloadArtistPicture } from "./MainProcess/services";
 import { FLBing } from "./MainProcess/modules/FLBing";
+import { SUPPORTED_FORMATS } from "./MainProcess/constants/constants";
 
 
 let appIsFocused = true;
@@ -244,7 +245,8 @@ ipcMain.on("processDroppedFiles", (e, droppedFiles) => {
     else {
         console.log("User dropped file(s)");
         droppedFiles.forEach(async (file: string) => {
-            if (file.match(/\.mp3|\.webm|\.m4a|\.ogg/gi)) {
+            const fileType = path.parse(file).ext
+            if (SUPPORTED_FORMATS.includes(fileType)) {
                 const newTrack = await createParsedTrack(file);
                 win.webContents.send("newTrack", newTrack);
                 fileTracker.saveChanges();
@@ -364,7 +366,7 @@ async function parseFolder(
                 );
                 subFolders = [...subFolders, ...newSubFolders];
                 const audioFiles = files.filter((file) =>
-                    file.match(/\.mp3|\.webm|\.m4a|\.ogg|\.wav/gi)
+                    SUPPORTED_FORMATS.includes(path.parse(file).ext)
                 );
                 const videoFiles = files.filter((file) => file.match(/\.mp4|\.mkv/gi));
                 folderObject_notParsed.tracks = audioFiles;
