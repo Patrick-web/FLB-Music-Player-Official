@@ -68,6 +68,8 @@ export default {
     padding: 40px;
     padding-right: 60px;
     padding-top: 10px;
+    overflow: hidden;
+    overflow-y: scroll;
   }
 }
 </style>
