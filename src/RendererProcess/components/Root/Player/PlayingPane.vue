@@ -1,11 +1,11 @@
 <template>
   <div class="playingPane bg2">
-    <img
+    <!-- <img
       @click="expandPlayingPane"
       id="expandPlayingPane"
       src="@/RendererProcess/assets/images/arrowDown.svg"
       alt=""
-    />
+    /> -->
     <div class="audioImageResolver">
       <img
         v-if="playingTrack.albumArt"
