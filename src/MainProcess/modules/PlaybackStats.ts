@@ -6,7 +6,6 @@ import { sortArrayOfObjects, removeDuplicates } from "@/sharedUtilities";
 export class PlaybackStats {
 	playedFiles: Array<TrackType> = [];
 	tracksStats: Array<TrackStatType> = [];
-	mostPlayedTracks: Array<TrackType> = [];
 	constructor() {
 		if (fs.existsSync(paths.playbackStatsLocation)) {
 			try {
@@ -29,25 +28,24 @@ export class PlaybackStats {
 	}
 
 	private generateStats() {
-		this.playedFiles.forEach((playedFile) => {
-			const arrOfTrackPaths: Array<string> = this.playedFiles.map(
-				(file) => file.defaultTitle
-			);
-			let arrayAsString = arrOfTrackPaths.join();
-			let duplicates = arrayAsString.match(
-				new RegExp(playedFile.defaultTitle, "g")
-			);
-			const trackStatObj: TrackStatType = {
-				trackLocation: playedFile.fileLocation,
-				numberOfPlays: 0,
-			};
-			if (!duplicates) {
-				trackStatObj.numberOfPlays = 1
-			} else {
-				trackStatObj.numberOfPlays = duplicates.length
-			}
-			this.tracksStats.push(trackStatObj);
+		const duplicatesCounter: any = {};
+		this.playedFiles.forEach((track) => {
+			duplicatesCounter[track.fileLocation] =
+				(duplicatesCounter[track.fileLocation] || 0) + 1;
 		});
+		console.log(duplicatesCounter);
+		let stats: TrackStatType[] = []
+		Object.entries(duplicatesCounter).forEach((entry) => {
+			const playStats: TrackStatType = {
+				trackLocation: entry[0],
+				numberOfPlays: entry[1] as number
+			}
+			stats.push(playStats);
+		})
+		this.tracksStats = stats
+		sortArrayOfObjects(this.tracksStats, 'numberOfPlays')
+		// console.log("Stats");
+		// console.log(this.tracksStats[0]);
 		this.saveChanges()
 	}
 	public saveChanges() {
