@@ -152,7 +152,7 @@ const actions: ActionTree<PlaybackManagerStateInterface, any> = {
             }
             //when command is playPrevious
             else if (direction == 'prev') {
-                commit('setPlayingTrack', { track: targetArray[indexOfPlayingTrack - 1], index: [indexOfPlayingTrack - 1] })
+                commit('setPlayingTrack', { track: targetArray[indexOfPlayingTrack - 1] || targetArray[targetArray.length - 1], index: [indexOfPlayingTrack - 1] })
                 if (playingFromCustomQueue) commit('removeTrackFromCustomQueue', [indexOfPlayingTrack - 1])
             }
         }
