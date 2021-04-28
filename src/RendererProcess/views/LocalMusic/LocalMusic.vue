@@ -62,7 +62,8 @@ export default {
     },
   },
   mounted() {
-    document.querySelector("#tabsArea").addEventListener("drop", (event) => {
+    const tabsArea = document.querySelector("#tabsArea");
+    tabsArea.addEventListener("drop", (event) => {
       event.preventDefault();
       event.stopPropagation();
       const filePaths = Array.from(event.dataTransfer.files).map(
@@ -70,17 +71,33 @@ export default {
       );
       ipcRenderer.send("processDroppedFiles", filePaths);
     });
-    document.querySelector("#tabsArea").addEventListener("dragover", (e) => {
+    tabsArea.addEventListener("dragover", (e) => {
       e.preventDefault();
       e.stopPropagation();
+      // document.body.classList.add("droppingAFile");
     });
+    // tabsArea.addEventListener("dragleave", () => {
+    //   document.body.classList.remove("droppingAFile");
+    // });
   },
 };
 </script>
 <style lang="scss">
+@import "@/RendererProcess/assets/sass/mixins.scss";
 .playingPaneLoaded {
   .LocalMusic {
     margin-bottom: 118px;
+  }
+}
+.droppingAFile {
+  .LocalMusic {
+    main {
+      #tabsArea {
+        &::before {
+          display: flex;
+        }
+      }
+    }
   }
 }
 .LocalMusic {
@@ -89,6 +106,7 @@ export default {
     display: flex;
     height: 100%;
     #tabsArea {
+      position: relative;
       height: 97%;
       display: flex;
       flex-direction: column;
@@ -98,6 +116,22 @@ export default {
       width: 61.5vw;
       margin-right: 10px;
       border-radius: 20px;
+      &::before {
+        content: "💧Drop it, Right Here 🛒";
+        position: absolute;
+        z-index: 100;
+        border-radius: 15px;
+        font-size: 2rem;
+        @include center-flex;
+        display: none;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        @include blur-bg(20px);
+        cursor: copy;
+        // pointer-events: none;
+      }
     }
   }
 }
