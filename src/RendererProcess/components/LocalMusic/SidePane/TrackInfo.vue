@@ -30,7 +30,7 @@
     </div>
     <div class="tag">
       <pre>Date Added</pre>
-      <p>{{ Date(playingTrack.dateAdded) }}</p>
+      <p>{{ new Date(playingTrack.dateAdded).toDateString() }}</p>
     </div>
     <div class="tag">
       <pre>File name</pre>
