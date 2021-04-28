@@ -43,7 +43,7 @@
 
             <div class="sliverBarActions">
               <base-button
-                @click.native="addTracksToQueue"
+                @click.native="addPlaylistToQueue"
                 :icon="
                   require('@/RendererProcess/assets/images/queue-music.svg')
                 "
@@ -53,7 +53,7 @@
               <base-button
                 @click.native="showPlaylistEditor = !showPlaylistEditor"
                 :icon="require('@/RendererProcess/assets/images/edit.svg')"
-                text="Edit Playlist"
+                text="Edit"
                 v-if="selectedGroup.name !== 'Favorites'"
                 extraClass="blurred_bg"
               />
@@ -62,7 +62,7 @@
                 :icon="
                   require('@/RendererProcess/assets/images/trash-bin-outline.svg')
                 "
-                text="Delete Playlist"
+                text="Delete"
                 v-if="selectedGroup.name !== 'Favorites'"
                 extraClass="blurred_bg"
               />
@@ -158,6 +158,8 @@ export default {
 </script>
 
 <style lang="scss">
+@import "@/RendererProcess/assets/sass/mixins.scss";
+
 .PlaylistsTab {
   height: 100%;
   position: relative;
@@ -189,6 +191,12 @@ export default {
         // display: none;
         height: 100%;
       }
+    }
+  }
+  .selectedGroup {
+    button {
+      @include blur-bg(10px);
+      background: rgba(0, 0, 0, 0.24);
     }
   }
 }
