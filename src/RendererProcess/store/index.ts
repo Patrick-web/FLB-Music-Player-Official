@@ -18,7 +18,6 @@ Vue.use(Vuex);
 
 const store: StoreOptions<any> = {
 	state: {
-		renderedTracks: [],
 	},
 	mutations: {
 
