@@ -6,7 +6,7 @@
         <base-button
           @click.native="playMix"
           :icon="require('@/RendererProcess/assets/images/playButton.svg')"
-          text="Play Mashup"
+          text="Play Mix"
         />
       </div>
       <p>{{ cardContent }}</p>

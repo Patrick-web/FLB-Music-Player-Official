@@ -42,7 +42,7 @@
     <hr />
     <div class="stats">
       <div class="stats_title">
-        <h1>Daily Mashups</h1>
+        <h1>Daily Mixes</h1>
       </div>
       <div class="mixesWrapper">
         <MixCard
