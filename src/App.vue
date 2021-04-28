@@ -74,11 +74,12 @@
 	});
 </script>
 <style lang="scss">
-@import "./RendererProcess/assets/Css/animate.css";
-@import "./RendererProcess/assets/Css/global.css";
-@import "./RendererProcess/assets/Css/themer.css";
-@import "./RendererProcess/assets/Css/groupedContent.css";
-@import "./RendererProcess/assets/Css/utilityClasses.css";
+@import "./RendererProcess/assets/css/animate.css";
+@import "./RendererProcess/assets/css/global.css";
+@import "./RendererProcess/assets/css/themer.css";
+@import "./RendererProcess/assets/css/groupedContent.css";
+@import "./RendererProcess/assets/css/utilityClasses.css";
+@import "@/RendererProcess/assets/sass/mixins.scss";
 * {
   scroll-behavior: smooth;
 }
@@ -121,22 +122,10 @@ body {
     cursor: pointer;
   }
   section {
-    // background: rgb(110, 110, 0);
     height: 95%;
     padding: 10px;
   }
 }
-// @media (max-width: 700px) {
-//   .MainGrid {
-//     grid-template-columns: 4fr 1fr;
-//   }
-//   .featuresSwitcherArea {
-//     display: none !important;
-//   }
-//   #logo {
-//     display: none !important;
-//   }
-// }
 .featuresSwitcherArea {
   display: flex;
   align-items: center;
