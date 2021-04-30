@@ -20,7 +20,7 @@
 		"test:unit": "vue-cli-service test:unit",
 		"lint": "vue-cli-service lint",
 		"e:build": "vue-cli-service electron:build",
-		"publish": "e:build -- -p always",
+		"update": "e:build -- -p always",
 		"postinstall": "electron-builder install-app-deps",
 		"postuninstall": "electron-builder install-app-deps"
 	},
@@ -37,7 +37,8 @@
 		"vue-router": "^3.2.0",
 		"vue-virtual-scroll-list": "^2.3.2",
 		"vuedraggable": "^2.24.3",
-		"vuex": "^3.4.0"
+		"vuex": "^3.4.0",
+		"ytdl-core": "^4.5.0"
 	},
 	"devDependencies": {
 		"@types/electron-devtools-installer": "^2.2.0",

@@ -50,7 +50,7 @@ export default {
   position: relative;
   cursor: pointer;
   padding: 10px;
-  border-radius: 10px;
+  border-radius: 20px;
   max-width: 150px;
   max-height: 200px;
   justify-self: center;

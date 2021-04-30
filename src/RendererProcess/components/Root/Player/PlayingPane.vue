@@ -169,6 +169,7 @@ export default {
     expandPlayingPane() {
       const pane = document.querySelector(".playingPane");
       pane.classList.toggle("fullScreenPlayingPane");
+      document.querySelector(".split").classList.toggle("playingPaneLoaded");
     },
     adjustVolume() {
       document.querySelector("audio").volume = this.volume;
@@ -280,10 +281,7 @@ export default {
     z-index: 5;
   }
   #cover {
-    position: fixed;
-    top: 60px;
-    left: 50%;
-    transform: translateX(-50%);
+    transform: translateX(120%) translateY(-30%);
     max-width: 400px !important;
     width: 50vw;
     min-width: 200px !important;
@@ -305,15 +303,11 @@ export default {
     width: 99%;
   }
   #artistName {
-    position: absolute;
-    bottom: 120px;
-    left: 25px;
+    transform: translateX(-200%) translateY(450%);
     font-size: 3vw;
   }
   #pauseBt {
-    position: absolute;
-    bottom: 50px;
-    left: 50%;
+    transform: translateY(1000%) translateX(850%);
     img {
       width: 50px;
     }
@@ -322,7 +316,7 @@ export default {
     display: none !important;
   }
   .controls {
-    transform: translate(76%, 400%);
+    transform: translate(0%, 400%);
     #playlistBt {
       display: none;
     }

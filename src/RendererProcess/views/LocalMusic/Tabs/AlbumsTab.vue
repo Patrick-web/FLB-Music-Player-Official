@@ -4,7 +4,12 @@
       <div class="loadingIndicator"></div>
     </div>
     <div v-if="!selectedGroup" class="groupCards grid_auto">
-      <AlbumCard v-for="album in albums" :key="album.name" :album="album" />
+      <AlbumCard
+        v-on:playAlbum="playAlbum"
+        v-for="album in albums"
+        :key="album.name"
+        :album="album"
+      />
     </div>
     <transition
       enter-active-class="animated fadeInUp extrafaster"
@@ -34,15 +39,17 @@
             <div class="sliverBarActions">
               <base-button
                 @click.native="playAll"
-                :icon="require('@/RendererProcess/assets/images/playnext.svg')"
-                text="Play All"
+                :icon="
+                  require('@/RendererProcess/assets/images/playButton.svg')
+                "
+                text="Play"
               />
               <base-button
                 @click.native="addTracksToQueue"
                 :icon="
                   require('@/RendererProcess/assets/images/queue-music.svg')
                 "
-                text="Add To Queue"
+                text="Queue"
               />
             </div>
           </div>
@@ -107,6 +114,15 @@ export default {
       this.overWriteCustomQueue(this.selectedGroup.tracks);
       this.pushNotification({
         title: `Playing ${this.selectedGroup.name} album`,
+        subTitle: null,
+        type: "normal",
+      });
+    },
+    playAlbum(album) {
+      this.setPlayingTrack({ track: album.tracks[0], index: 0 });
+      this.overWriteCustomQueue(album.tracks);
+      this.pushNotification({
+        title: `Playing ${album.name} album`,
         subTitle: null,
         type: "normal",
       });

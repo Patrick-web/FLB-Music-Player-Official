@@ -33,7 +33,6 @@ export class PlaybackStats {
 			duplicatesCounter[track.fileLocation] =
 				(duplicatesCounter[track.fileLocation] || 0) + 1;
 		});
-		console.log(duplicatesCounter);
 		let stats: TrackStatType[] = []
 		Object.entries(duplicatesCounter).forEach((entry) => {
 			const playStats: TrackStatType = {

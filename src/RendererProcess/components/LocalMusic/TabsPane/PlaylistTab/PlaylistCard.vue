@@ -17,7 +17,7 @@
       <p class="playlist_name">{{ playlist.name }}</p>
       <div v-if="playlist.tracks.length != 0" class="playlist_actions">
         <base-button
-          :icon="require('@/RendererProcess/assets/images/playlist_add.svg')"
+          :icon="require('@/RendererProcess/assets/images/open.svg')"
           @click.native="openPlaylist"
           title="Open Playlist"
         />

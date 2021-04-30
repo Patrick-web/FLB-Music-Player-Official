@@ -47,7 +47,7 @@
                 :icon="
                   require('@/RendererProcess/assets/images/queue-music.svg')
                 "
-                text="Add To Queue"
+                text="Queue"
                 extraClass="blurred_bg"
               />
               <base-button

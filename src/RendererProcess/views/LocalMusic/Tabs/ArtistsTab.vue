@@ -38,15 +38,17 @@
             <div class="sliverBarActions">
               <base-button
                 @click.native="playAll"
-                :icon="require('@/RendererProcess/assets/images/playnext.svg')"
-                text="Play All"
+                :icon="
+                  require('@/RendererProcess/assets/images/playButton.svg')
+                "
+                text="Play"
               />
               <base-button
                 @click.native="addTracksToQueue"
                 :icon="
                   require('@/RendererProcess/assets/images/queue-music.svg')
                 "
-                text="Add To Queue"
+                text="Queue"
               />
             </div>
           </div>
