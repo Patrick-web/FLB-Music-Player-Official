@@ -178,9 +178,17 @@ export default {
     justify-self: center;
     align-self: center;
   }
+  .trackTitle {
+    font-family: roboto-light;
+    opacity: 1;
+  }
   p {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
     font-size: 0.95rem;
     font-family: roboto-thin;
+    opacity: 0.8;
   }
   .info {
     padding: 5px;
