@@ -28,6 +28,7 @@ root {
 }
 body {
 	background: black;
+	perspective: 70em;
 }
 .tab {
 	overflow: hidden;
@@ -86,38 +87,6 @@ input {
 	font-family: roboto-thin;
 	color: white;
 }
-input[type="range"] {
-	-webkit-appearance: none;
-	vertical-align: middle;
-	outline: none;
-	border: none;
-	padding: 0;
-	background: none;
-}
-
-input[type="range"]::-webkit-slider-runnable-track {
-	background-color: #ffffff;
-	height: 2px;
-	border-radius: 3px;
-	border: 1px solid transparent;
-}
-
-input[type="range"]::-webkit-slider-thumb {
-	-webkit-appearance: none !important;
-	background-color: #ffffff;
-	border-radius: 20px;
-	height: 10px;
-	width: 10px;
-	margin-top: -5px;
-}
-.input[type="range"]::-webkit-range-progress {
-	background: var(--accentColor);
-}
-
-input[type="range"]:active::-webkit-slider-thumb {
-	outline: none;
-}
-
 .roundImage {
 	border-radius: 50%;
 }
