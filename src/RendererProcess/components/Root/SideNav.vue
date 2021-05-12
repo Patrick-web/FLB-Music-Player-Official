@@ -53,7 +53,7 @@
           <p v-if="!isCollapsed">Podcasts</p>
         </router-link>
       </div>
-      <div
+      <!-- <div
         class="sideNav-group"
         :class="[
           currentPage === 'Deezer' ? 'active-sideNav-group' : '',
@@ -70,8 +70,8 @@
           />
           <p v-if="!isCollapsed">Deezer</p>
         </router-link>
-      </div>
-      <div
+      </div> -->
+      <!-- <div
         :class="[
           currentPage === 'Spotify' ? 'active-sideNav-group' : '',
           'sideNav-group',
@@ -88,7 +88,7 @@
           />
           <p v-if="!isCollapsed">Spotify</p>
         </a>
-      </div>
+      </div> -->
     </div>
     <div>
       <div class="sideNav-group">
