@@ -333,6 +333,20 @@ ipcMain.on('downloadBingTrack', (e, payload) => {
     downloaderManager.addToDownloadQueue(payload)
 })
 
+ipcMain.on('cancelBingDownload', (e) => {
+    downloaderManager.cancelCurrentDownload()
+})
+
+ipcMain.on('removeFromDownloadQueue', (e, payload) => {
+    downloaderManager.removeFromDownloadQueue(payload)
+})
+
+ipcMain.on('internetConnectionLost', (e) => {
+    console.log("internetConnectionLost");
+    downloaderManager.handleInternetLost()
+})
+
+
 
 ipcMain.on('checkForUpdate', () => {
     checkForUpdates()
