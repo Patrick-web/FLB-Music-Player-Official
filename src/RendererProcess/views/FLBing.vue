@@ -1,27 +1,11 @@
 <template>
   <div class="FLBing">
-    <svg
-      v-if="!resultsGotten"
-      xmlns="http://www.w3.org/2000/svg"
-      xmlns:xlink="http://www.w3.org/1999/xlink"
-      style="isolation: isolate"
-      viewBox="225.466 681.25 29.5 25.5"
-      width="29.5pt"
-      height="25.5pt"
+    <img
+      class="animated fadeInUp"
+      src="@/RendererProcess/assets/images/flbing.svg"
       id="flbingLogo"
-    >
-      <path
-        d=" M 226.216 682 L 237.216 682 L 242.216 682 L 242.216 700 L 250 696 L 247 695 L 244.716 690 L 254.216 693 L 254.216 699 L 242.216 706 L 237.216 703 L 237.216 694 L 232.216 694 L 233.216 691 L 237.216 691 L 237.216 686 L 229.216 686 L 226.216 682 Z "
-        fill="none"
-        vector-effect="non-scaling-stroke"
-        stroke-width="1.5"
-        stroke="rgb(255,255,255)"
-        stroke-linejoin="round"
-        stroke-linecap="round"
-        stroke-miterlimit="3"
-        id="flbingLogoOutline"
-      />
-    </svg>
+      v-if="!resultsGotten"
+    />
     <h1
       v-if="!resultsGotten"
       style="font-size: 2.5rem"
@@ -33,7 +17,7 @@
       <input
         placeholder="Search and Download Music"
         type="text"
-        class="BigSearch inputElem animated fadeInUp delay-1s"
+        class="BigSearch inputElem animated fadeInUp"
         id="bingSearch"
         v-model="query"
         v-on:keyup.enter="search"
@@ -175,6 +159,15 @@ export default {
         type: "danger",
       });
     }
+    window.addEventListener("offline", () => {
+      this.pushNotification({
+        title: `No internet connection detected`,
+        subTitle: null,
+        type: "danger",
+      });
+      this.resultsGotten = true;
+      this.searching = false;
+    });
   },
   components: { SearchResults, ArtistPage, AlbumPage, DownloadsWidget },
 };
@@ -272,9 +265,9 @@ export default {
 
 #flbingLogo {
   position: absolute;
-  top: 25%;
-  left: 50%;
-  transform: translateX(-50%) scale(1.5);
+  top: 28%;
+  left: 47%;
+  width: 50px;
 }
 // #flbingLogoOutline {
 //   stroke-dasharray: 174;
