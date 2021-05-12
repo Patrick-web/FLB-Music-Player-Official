@@ -86,6 +86,7 @@
                   :album="album"
                   :hideArtist="true"
                   :key="album.name"
+                  v-on:playAlbum="playAlbum"
                 />
               </div>
             </div>
@@ -171,6 +172,15 @@ export default {
       document.querySelector("#Albums").click();
       this.selectGroup(album);
       this.query = "";
+    },
+    playAlbum(album) {
+      this.setPlayingTrack({ track: album.tracks[0], index: 0 });
+      this.overWriteCustomQueue(album.tracks);
+      this.pushNotification({
+        title: `Playing ${album.name} album`,
+        subTitle: null,
+        type: "normal",
+      });
     },
     goToArtist() {
       document.querySelector("#Artists").click();
