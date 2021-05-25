@@ -6,7 +6,7 @@
 		"name": "Patrick Waweru",
 		"email": "pntxall100@gmail.com"
 	},
-	"version": "1.0.3",
+	"version": "1.0.7",
 	"description": "The next generation in Music Player Technology",
 	"private": true,
 	"repository": {
@@ -20,12 +20,13 @@
 		"test:unit": "vue-cli-service test:unit",
 		"lint": "vue-cli-service lint",
 		"e:build": "vue-cli-service electron:build",
-		"update": "e:build -- -p always",
+		"push-update": "vue-cli-service electron:build -- -p always",
 		"postinstall": "electron-builder install-app-deps",
 		"postuninstall": "electron-builder install-app-deps"
 	},
 	"main": "background.js",
 	"dependencies": {
+		"@types/wicg-mediasession": "^1.1.0",
 		"electron-updater": "^4.3.8",
 		"g-i-s": "^2.1.6",
 		"genius-lyrics-api": "^3.0.6",
@@ -33,6 +34,7 @@
 		"node-downloader-helper": "^1.0.17",
 		"node-id3": "^0.2.2",
 		"util": "^0.12.3",
+		"uuidv4": "^6.2.8",
 		"vue": "^2.6.11",
 		"vue-router": "^3.2.0",
 		"vue-virtual-scroll-list": "^2.3.2",

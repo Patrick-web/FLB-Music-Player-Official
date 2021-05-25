@@ -47,12 +47,12 @@ button {
   font-family: roboto;
   border: none;
   transition: 0.2s ease;
-  border: 1px solid rgba(255, 255, 255, 0);
   p {
     white-space: nowrap;
   }
   &:active {
-    border: 1.5px solid rgb(255, 255, 255);
+    border-top: 1.5px solid rgb(255, 255, 255);
+    border-bottom: 1.5px solid rgb(255, 255, 255);
   }
   .btnLoaderWrapper {
     width: 100%;
@@ -74,7 +74,7 @@ button {
 .activeBtn {
   background: var(--accentColor) !important;
   &:hover {
-    border: 1px solid var(--accentColor) !important;
+    background: var(--accentColor) !important;
   }
 }
 .blockBtn {
@@ -92,7 +92,11 @@ button {
   }
   &:hover {
     border-radius: 20px;
-    background-color: var(--accentColor) !important;
+    background: linear-gradient(
+      200deg,
+      transparent,
+      var(--accentColor)
+    ) !important;
   }
 }
 .iconBtn {
@@ -107,7 +111,11 @@ button {
   }
   &:hover {
     border-radius: 50%;
-    background-color: var(--accentColor) !important;
+    background: linear-gradient(
+      200deg,
+      transparent,
+      var(--accentColor)
+    ) !important;
   }
 }
 .btnWithIcon {
@@ -129,7 +137,11 @@ button {
   }
   &:hover {
     border-radius: 20px;
-    background-color: var(--accentColor) !important;
+    background: linear-gradient(
+      200deg,
+      transparent,
+      var(--accentColor)
+    ) !important;
   }
 }
 .smallBtn {

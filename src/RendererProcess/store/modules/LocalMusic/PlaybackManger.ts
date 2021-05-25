@@ -6,6 +6,7 @@ import TrackSelector from "./TrackSelector";
 import { sendMessageToNode } from "@/RendererProcess/utilities";
 import { removeDuplicates, shuffleArray } from "@/sharedUtilities";
 import { TrackType, geniusSongType, TrackLyricsType } from "@/types";
+import { updateMediaInfo } from "@/RendererProcess/globalActivities/updateWindowsMediaInfo";
 
 interface PlayingTrackPayload {
     track: TrackType;
@@ -49,6 +50,7 @@ const mutations = {
                 TabsManager.state.tabsData.recentlyPlayedTracks = removeDuplicates(TabsManager.state.tabsData.recentlyPlayedTracks, 'defaultTitle')
             }
             sendMessageToNode("playingTrack", payload.track);
+            updateMediaInfo(payload.track)
         }
     },
     setSelectedTrackToPlayNext(state: any) {
@@ -75,6 +77,15 @@ const mutations = {
     reorderQueue(state: any, payload: Array<TrackType>) {
         const copyOfPayload = [...payload];
         state.customQueue = copyOfPayload;
+    },
+    setPlayState(state: any, payload: 'play' | 'pause') {
+        if (payload == 'play') {
+            state.audioState.playing = true;
+            document.querySelector("audio")?.play();
+        } else {
+            state.audioState.playing = false;
+            document.querySelector("audio")?.pause();
+        }
     },
 };
 const actions: ActionTree<PlaybackManagerStateInterface, any> = {

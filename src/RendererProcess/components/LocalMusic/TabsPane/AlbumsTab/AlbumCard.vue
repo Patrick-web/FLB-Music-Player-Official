@@ -21,7 +21,7 @@
       :icon="require('@/RendererProcess/assets/images/playButton.svg')"
       id="card_playBt"
       style="backdrop-filter: blur(20px)"
-      @click.native="$emit('playAlbum', album)"
+      @click.native.stop="$emit('playAlbum', album)"
     />
     <div class="groupedCard_info">
       <div>

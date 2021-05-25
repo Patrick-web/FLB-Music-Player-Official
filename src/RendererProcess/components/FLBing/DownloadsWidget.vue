@@ -1,38 +1,52 @@
 <template>
   <div
-    :class="[showWidget ? 'showDownloadWidget' : '', 'BingDownloadsWidget ']"
+    :class="[
+      showWidget ? 'showDownloadWidget' : '',
+      'BingDownloadsWidget',
+      'bg2',
+    ]"
   >
-    <h3>Downloads</h3>
-    <div class="tab_switcher">
-      <div
-        @click="tab = 'Pending'"
-        :class="[tab == 'Pending' ? 'activeSwitcher' : '', 'switcher']"
-      >
-        Pending
+    <div class="content_wrapper">
+      <h3>Downloads</h3>
+      <div class="tab_switcher">
+        <div
+          @click="tab = 'Pending'"
+          :class="[tab == 'Pending' ? 'activeSwitcher' : '', 'switcher']"
+        >
+          Pending ⏲
+        </div>
+        <div
+          @click="tab = 'Completed'"
+          :class="[tab == 'Completed' ? 'activeSwitcher' : '', 'switcher']"
+        >
+          Completed 🧱
+        </div>
       </div>
-      <div
-        @click="tab = 'Completed'"
-        :class="[tab == 'Completed' ? 'activeSwitcher' : '', 'switcher']"
+      <transition
+        enter-active-class="animated slideInLeft faster"
+        leave-active-class="animated slideOutLeft"
       >
-        Completed
-      </div>
-    </div>
-    <div class="widgetToggleBt" @click="showWidget = !showWidget">
-      <img src="@/RendererProcess/assets/images/arrowDown.svg" />
-    </div>
-    <div v-if="tab == 'Pending'" class="pending_tracks tracks_wrapper">
-      <bing-pending-track
-        v-for="track in downloadQueue"
-        :key="track.id"
-        :trackInfo="track"
-      />
-    </div>
-    <div v-else class="tracks_wrapper downloadedTracks">
-      <bing-completed-track
-        v-for="track in [...completedTracks, ...flbingFolderTracks]"
-        :key="track.fileLocation"
-        :track="track"
-      />
+        <div v-if="tab == 'Pending'" class="pending_tracks tracks_wrapper">
+          <bing-pending-track
+            v-for="track in downloadQueue"
+            :key="track.id"
+            :trackInfo="track"
+          />
+        </div>
+      </transition>
+
+      <transition
+        enter-active-class="animated slideInRight faster"
+        leave-active-class="animated slideOutRight"
+      >
+        <div v-if="tab !== 'Pending'" class="tracks_wrapper downloadedTracks">
+          <bing-completed-track
+            v-for="track in [...completedTracks, ...flbingFolderTracks]"
+            :key="track.fileLocation"
+            :track="track"
+          />
+        </div>
+      </transition>
     </div>
   </div>
 </template>
@@ -74,50 +88,62 @@ export default {
 </script>
 
 <style lang="scss">
+.playingPaneLoaded {
+  .BingDownloadsWidget {
+    height: 98%;
+    border-radius: 15px;
+    margin-right: 10px;
+    margin-top: 10px;
+  }
+}
+.widgetVisible {
+  .BingDownloadsWidget {
+    width: 370px !important;
+  }
+}
 .BingDownloadsWidget {
-  z-index: 10;
-  position: absolute;
-  right: 0px;
-  top: 0px;
-  height: 98%;
-  width: 20vw;
-  border-radius: 20px;
-  background: var(--accentColor);
-  box-shadow: -5px 0px 6px rgba(0, 0, 0, 0.308);
-  transform: translateX(100%);
-
+  height: 102%;
+  transform: translateY(-10px) translateX(10px);
+  width: 0px;
+  position: relative;
+  overflow: hidden;
+  .content_wrapper {
+    width: 280px;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
   h3 {
     text-align: center;
     font-size: 1.3rem;
     padding: 8px;
-    background: var(--accentColor);
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
   }
   .tab_switcher {
-    width: 100%;
+    width: 95%;
+    margin: auto;
     display: flex;
     align-items: center;
-    justify-content: center;
-    gap: 10px;
+    justify-content: space-evenly;
     margin-bottom: 10px;
+    // border-bottom-right-radius: 15px;
+    border-radius: 15px;
+    overflow: hidden;
     .switcher {
       background: rgba(255, 255, 255, 0.158);
-      width: 35%;
-      text-align: center;
+      border-radius: 15px;
       padding: 5px;
-      border-radius: 20px;
+      padding-right: 12px;
+      padding-left: 12px;
+      text-align: center;
       cursor: pointer;
       &:hover {
         background: rgba(255, 255, 255, 0.274);
       }
     }
     .activeSwitcher {
-      background: white;
-      color: black;
-      &:hover {
-        background: white;
-      }
+      background: var(--accentColor);
+      pointer-events: none;
     }
   }
 
@@ -139,19 +165,14 @@ export default {
   }
 }
 .showDownloadWidget {
+  height: 0%;
   transform: translateX(0%);
-  .widgetToggleBt {
-    transform: translate(-40%, -50%) rotate(90deg);
-    img {
-      transform: translateY(0px);
-    }
-  }
 }
 .widgetToggleBt {
-  position: absolute;
-  top: 50%;
-  left: 0%;
-  transform: translate(-40%, -50%) rotate(-90deg);
+  position: fixed;
+  bottom: -12.5%;
+  right: 5%;
+  transform: translate(-40%, -50%);
   height: 40px;
   width: 40px;
   background: var(--accentColor);
@@ -166,7 +187,6 @@ export default {
   }
   img {
     width: 50%;
-    transform: translateY(-5px);
   }
 }
 </style>

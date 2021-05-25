@@ -62,8 +62,14 @@ export default {
 </script>
 
 <style lang="scss">
+.widgetVisible {
+  .bingAlbumPage {
+    width: 76%;
+  }
+}
 .bingAlbumPage {
   z-index: 5 !important;
+  width: 100%;
   .cardsWrapper {
     padding: 40px;
     padding-right: 60px;

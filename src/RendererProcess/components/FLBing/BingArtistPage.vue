@@ -2,7 +2,7 @@
   <div class="groupedContentTab blurred_bg blur30 bingArtistPage bingPage">
     <div class="sliverBar">
       <img class="coverArt" id="blurred" :src="artistInfo.picture" />
-      <img class="coverArt" :src="artistInfo.picture" alt="" />
+      <img class="coverArt roundImage" :src="artistInfo.picture" alt="" />
       <div class="sliverBarFooter">
         <div class="groupedCard_info">
           <p class="groupedInfo_title">
@@ -89,7 +89,6 @@ export default {
 .bingPage {
   position: absolute;
   top: 0;
-  width: 99.2%;
   z-index: 4;
   border-radius: 20px;
   overflow: hidden;

@@ -25,6 +25,7 @@ import { TrackType, SettingsType, FolderType, FolderInfoType, TagChangesType } f
 import { downloadArtistPicture } from "./MainProcess/services";
 import { FLBing } from "./MainProcess/modules/FLBing";
 import { SUPPORTED_FORMATS } from "./MainProcess/constants/constants";
+import { DownloadManager } from "./MainProcess/modules/BingDownloader";
 
 
 let appIsFocused = true;
@@ -32,7 +33,7 @@ export const fileTracker = new FilesTracker();
 const playlistsTracker = new PlaylistsTracker();
 const playbackStats = new PlaybackStats();
 const settings = new Settings();
-const downloaderManager = new FLBing();
+const downloaderManager = new DownloadManager();
 
 console.log(paths.appFolder);
 
@@ -96,7 +97,7 @@ async function createWindow() {
         win.webContents.send('normalMsg', 'Update available.');
     })
     autoUpdater.on('update-not-available', (info) => {
-        win.webContents.send('normalMsg', 'Update not available.');
+        win.webContents.send('normalMsg', 'No Update available.');
     })
     autoUpdater.on('error', (err) => {
         win.webContents.send('dangerMsg', 'Error in auto-updater. ' + err);
@@ -330,21 +331,21 @@ ipcMain.on("importCoverArt", async () => {
 
 ipcMain.on('downloadBingTrack', (e, payload) => {
     console.log("Sending to download manager");
-    downloaderManager.addToDownloadQueue(payload)
+    downloaderManager.downloadTrack(payload)
 })
 
-ipcMain.on('cancelBingDownload', (e) => {
-    downloaderManager.cancelCurrentDownload()
-})
+// ipcMain.on('cancelBingDownload', (e) => {
+//     downloaderManager.cancelCurrentDownload()
+// })
 
-ipcMain.on('removeFromDownloadQueue', (e, payload) => {
-    downloaderManager.removeFromDownloadQueue(payload)
-})
+// ipcMain.on('removeFromDownloadQueue', (e, payload) => {
+//     downloaderManager.removeFromDownloadQueue(payload)
+// })
 
-ipcMain.on('internetConnectionLost', (e) => {
-    console.log("internetConnectionLost");
-    downloaderManager.handleInternetLost()
-})
+// ipcMain.on('internetConnectionLost', (e) => {
+//     console.log("internetConnectionLost");
+//     downloaderManager.handleInternetLost()
+// })
 
 
 

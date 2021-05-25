@@ -5,6 +5,7 @@
 import { ipcRenderer } from "electron";
 import { mapActions, mapMutations } from "vuex";
 import { removeDuplicates } from "@/sharedUtilities";
+import { sendMessageToNode } from "@/RendererProcess/utilities";
 export default {
   methods: {
     ...mapMutations([
@@ -22,6 +23,7 @@ export default {
       "updateTrackDownloadProgress",
       "addToCompletedDownloads",
       "updatePendingTrackState",
+      "seIstOnlineState",
     ]),
     ...mapActions([
       "generateAlbumsData",
@@ -136,9 +138,16 @@ export default {
     } else {
       localStorage.setItem("launches", 1);
     }
-    // navigator.geolocation.getCurrentPosition((res) => {
-    //   console.log(res);
-    // });
+
+    window.addEventListener("offline", () => {
+      this.seIstOnlineState(false);
+    });
+    window.addEventListener("online", () => {
+      this.seIstOnlineState(true);
+    });
+    if (navigator.onLine) {
+      this.seIstOnlineState(true);
+    }
   },
 };
 </script>

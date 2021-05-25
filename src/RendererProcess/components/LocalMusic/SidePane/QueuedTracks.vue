@@ -121,9 +121,16 @@ export default {
     margin-bottom: 10px;
     margin-right: 10px;
     cursor: pointer;
+    p {
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      font-size: 0.95rem;
+    }
     .card_title {
       font-family: roboto-light;
       font-size: 0.9rem;
+      width: 90%;
     }
     .card_subTitle {
       font-family: roboto-thin;

@@ -1,16 +1,14 @@
 <template>
-  <div class="VolumeRocker bg1">
+  <div class="base_slider bg1">
     <input
-      v-on:input="sendNewVolume($event)"
-      min="0"
-      value="1"
-      max="1"
-      step="0.1"
+      v-on:input="updateInput($event)"
+      value="0"
+      min="-15"
+      max="15"
       type="range"
     />
-    <!-- <div class="base_slider_progress"></div> -->
     <div
-      :style="{ width: progressBarWidth }"
+      :style="{ height: progressBarHeight }"
       class="base_slider_progress"
     ></div>
   </div>
@@ -20,36 +18,39 @@
 export default {
   data() {
     return {
-      volume: 1,
+      newFilterValue: 15,
     };
   },
   computed: {
-    progressBarWidth() {
-      return `${Math.trunc(this.volume * 100)}%`;
-    },
-    userSetVolume() {
-      return this.$store.state.SettingsManager.settings.volume;
+    progressBarHeight() {
+      let absoluteValue = 15;
+      absoluteValue = 15 + this.filterValue;
+      return `${Math.trunc((absoluteValue / 30) * 100)}%`;
     },
   },
   methods: {
-    sendNewVolume(e) {
-      this.volume = e.srcElement.value;
-      console.log(this.volume);
-      this.$emit("newVolume", this.volume);
+    updateInput(e) {
+      this.newFilterValue = parseInt(e.srcElement.value);
+      this.$emit("rangeUpdated", {
+        targetBandIndex: this.bandIndex,
+        newValue: this.newFilterValue * -1,
+      });
     },
   },
-  mounted() {
-    this.volume = this.userSetVolume;
+  props: {
+    filterValue: Number,
+    targetBand: String,
+    bandIndex: Number,
   },
 };
 </script>
 
 <style lang="scss">
-.VolumeRocker {
+.base_slider {
   position: relative;
-  width: 130px;
-  height: 10px;
-  border-radius: 5px;
+  width: 30px;
+  height: 200px;
+  border-radius: 10px;
   cursor: pointer;
   overflow: hidden;
   input {
@@ -60,13 +61,12 @@ export default {
     z-index: 2;
     top: 0px;
     left: 0px;
-    height: 20px;
-    width: 100px;
-    // background: wheat;
+    height: 10px;
+    width: 190px;
+    background: none;
     transform-origin: center center;
-    // transform: rotate(90deg) translateX(90px) translateY(90px);
+    transform: rotate(90deg) translateX(90px) translateY(90px);
     &::-webkit-range-progress {
-      background: rgb(179, 237, 245);
       -webkit-appearance: none;
       width: 90px;
     }
@@ -76,17 +76,17 @@ export default {
     }
     &::-webkit-slider-thumb {
       -webkit-appearance: none !important;
-      background: rgb(179, 237, 245);
+      background: none;
       height: 100%;
       width: 10px;
     }
   }
   .base_slider_progress {
     position: absolute;
-    border-radius: 5px;
+    border-radius: 10px;
     bottom: 0px;
     left: 0px;
-    height: 100%;
+    height: 50%;
     background: var(--accentColor);
     width: 100%;
   }

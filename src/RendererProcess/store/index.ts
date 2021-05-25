@@ -8,6 +8,7 @@ import StatsManager from "./modules/LocalMusic/StatsManager";
 import TabsManager from "./modules/LocalMusic/TabsManager";
 import TrackSelector from "./modules/LocalMusic/TrackSelector";
 import UIController from "./modules/LocalMusic/UIController";
+import EqualizerManager from "./modules/LocalMusic/EqualizerManager";
 import BingDownloadManager from "./modules/FLBing/BingDownloadManager";
 
 import { TrackType } from "@/types";
@@ -18,9 +19,12 @@ Vue.use(Vuex);
 
 const store: StoreOptions<any> = {
 	state: {
+		appIsOnline: false
 	},
 	mutations: {
-
+		seIstOnlineState(state: any, payload: boolean) {
+			state.appIsOnline = payload
+		}
 	},
 	actions: {
 		sortTracks({ commit, state }, payload: string) {
@@ -45,6 +49,7 @@ const store: StoreOptions<any> = {
 		StatsManager,
 		TabsManager,
 		TrackSelector,
+		EqualizerManager,
 		UIController,
 		BingDownloadManager
 	},

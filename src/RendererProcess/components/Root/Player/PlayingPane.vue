@@ -1,95 +1,69 @@
 <template>
   <div class="playingPane bg2">
-    <!-- <img
-      @click="expandPlayingPane"
-      id="expandPlayingPane"
-      src="@/RendererProcess/assets/images/arrowDown.svg"
-      alt=""
-    /> -->
-    <div class="audioImageResolver">
-      <img
-        v-if="playingTrack.albumArt"
-        @dblclick="toggleFromFavorites"
-        @click="expandPlayingPane"
-        id="cover"
-        :src="playingTrack.albumArt"
-        alt=""
-      />
-      <img
-        v-if="!playingTrack.albumArt"
-        @dblclick="toggleFromFavorites"
-        @click="expandPlayingPane"
-        id="cover"
-        src="@/RendererProcess/assets/images/FLBDefaultCover.png"
-        alt=""
-      />
-    </div>
-    <div @click="toggleIsPlaying" id="pauseBt" class="iconsWrapper">
-      <img
-        v-if="!audioState.playing"
-        class="toggleIcons playIcon"
-        src="@/RendererProcess/assets/images/playButton.svg"
-        alt
-      />
-      <img
-        v-if="audioState.playing"
-        class="toggleIcons pauseIcon"
-        src="@/RendererProcess/assets/images/pause.svg"
-        alt
-      />
-    </div>
-    <div class="trackData">
-      <div class="trackInfo">
-        <p id="trackName">
+    <div class="left_pane_section">
+      <div class="album_art_resolver">
+        <img
+          v-if="playingTrack.albumArt"
+          @dblclick="toggleFromFavorites"
+          @click="expandPlayingPane"
+          class="album_art"
+          :src="playingTrack.albumArt"
+          alt=""
+        />
+        <img
+          v-if="!playingTrack.albumArt"
+          @dblclick="toggleFromFavorites"
+          @click="expandPlayingPane"
+          class="album_art"
+          src="@/RendererProcess/assets/images/FLBDefaultCover.png"
+          alt=""
+        />
+      </div>
+
+      <div class="track_info">
+        <p class="track_title">
           {{ playingTrack.defaultTitle }}
         </p>
         <p
           @click="goToArtist(playingTrack.defaultArtist)"
           title="Go To Artist"
-          id="artistName"
+          class="track_artist"
         >
           {{ playingTrack.defaultArtist }}
         </p>
       </div>
-      <TrackBar />
     </div>
-
-    <div class="controls">
-      <div class="volumeRockerArea">
-        <img src="@/RendererProcess/assets/images/volume_down.svg" alt="" />
-        <input
-          id="volume"
-          @change="adjustVolume"
-          v-model="volume"
-          type="range"
-          min="0"
-          max="1"
-          step="0.1"
-          name=""
+    <div class="center_pane_section">
+      <div class="flex center-v gap20">
+        <base-button
+          @click.native="shuffler"
+          :icon="require('@/RendererProcess/assets/images/shuffle.svg')"
+          :active="audioState.shuffle"
         />
-      </div>
-      <div class="control play_controls">
         <base-button
           @click.native="determineNextTrack('prev')"
-          :icon="require('@/RendererProcess/assets/images/play_arrow.svg')"
-          style="transform: rotate(180deg)"
+          :icon="require('@/RendererProcess/assets/images/play-previous.svg')"
+          extraClass="scale_icon"
         />
-
-        <base-button
-          @click.native="toggleFromFavorites"
-          :icon="require('@/RendererProcess/assets/images/heart.svg')"
-          :active="isInFavorites"
-        />
+        <div @click="toggleIsPlaying" id="toggle_play" class="iconsWrapper">
+          <img
+            v-if="!audioState.playing"
+            class="toggleIcons playIcon"
+            src="@/RendererProcess/assets/images/playButton.svg"
+            alt
+          />
+          <img
+            v-if="audioState.playing"
+            class="toggleIcons pauseIcon"
+            src="@/RendererProcess/assets/images/pause.svg"
+            alt
+          />
+        </div>
 
         <base-button
           @click.native="determineNextTrack('next')"
-          :icon="require('@/RendererProcess/assets/images/play_arrow.svg')"
-        />
-      </div>
-      <div class="control extra_controls">
-        <base-button
-          @click.native="showPlaylistAdder"
-          :icon="require('@/RendererProcess/assets/images/playlist_add.svg')"
+          :icon="require('@/RendererProcess/assets/images/play-next.svg')"
+          extraClass="scale_icon"
         />
 
         <base-button
@@ -97,14 +71,41 @@
           :icon="require('@/RendererProcess/assets/images/repeat_one.svg')"
           :active="audioState.repeat"
         />
+      </div>
+      <div class="trackData"></div>
+      <TrackBar />
+    </div>
 
+    <div class="right_pane_section">
+      <div class="flex center-v gap20">
         <base-button
-          @click.native="shuffler"
-          :icon="require('@/RendererProcess/assets/images/shuffle.svg')"
-          :active="audioState.shuffle"
+          @click.native="toggleFromFavorites"
+          :icon="require('@/RendererProcess/assets/images/heart.svg')"
+          :active="isInFavorites"
+        />
+        <base-button
+          @click.native="showPlaylistAdder"
+          :icon="require('@/RendererProcess/assets/images/playlist.svg')"
+          :active="showPlaylistWidget"
+        />
+        <base-button
+          @click.native="UIcontrollerToggleProperty('showEqualizerWidget')"
+          :icon="require('@/RendererProcess/assets/images/equalizer.svg')"
+          :active="showEqualizerWidget"
         />
       </div>
+      <div class="flex center-v">
+        <img src="@/RendererProcess/assets/images/volume_down.svg" alt="" />
+        <volume-rocker v-on:newVolume="adjustVolume" />
+      </div>
     </div>
+
+    <transition
+      enter-active-class="animated fadeInUp extrafaster"
+      leave-active-class="animated fadeOutDown extrafaster"
+    >
+      <equalizer v-if="showEqualizerWidget" />
+    </transition>
   </div>
 </template>
 
@@ -112,11 +113,15 @@
 import TrackBar from "./TrackBar";
 import { mapActions, mapMutations } from "vuex";
 import BaseButton from "../../BaseComponents/BaseButton.vue";
+import Equalizer from "../Equalizer/Equalizer.vue";
+import VolumeRocker from "./VolumeRocker.vue";
 
 export default {
   components: {
     TrackBar,
     BaseButton,
+    Equalizer,
+    VolumeRocker,
   },
   computed: {
     playingTrack() {
@@ -127,6 +132,9 @@ export default {
     },
     showPlaylistWidget() {
       return this.$store.state.UIController.UIProperties.showPlaylistWidget;
+    },
+    showEqualizerWidget() {
+      return this.$store.state.UIController.UIProperties.showEqualizerWidget;
     },
     isInFavorites() {
       return this.$store.state.TabsManager.tabsData.playlists[0].tracks.some(
@@ -167,13 +175,12 @@ export default {
       "findAndGoToArtist",
     ]),
     expandPlayingPane() {
-      const pane = document.querySelector(".playingPane");
-      pane.classList.toggle("fullScreenPlayingPane");
-      document.querySelector(".split").classList.toggle("playingPaneLoaded");
+      document.body.classList.toggle("fullScreenPlayingPane");
+      // document.querySelector(".split").classList.toggle("playingPaneLoaded");
     },
-    adjustVolume() {
-      document.querySelector("audio").volume = this.volume;
-      this.setSettingValue({ property: "volume", newValue: this.volume });
+    adjustVolume(newVolume) {
+      document.querySelector("audio").volume = newVolume;
+      this.setSettingValue({ property: "volume", newValue: newVolume });
     },
     goToArtist() {
       document.querySelector("#Artists").click();
@@ -195,9 +202,9 @@ export default {
       }
       setTimeout(() => {
         const playlistWidget = document.querySelector("#PlaylistWidget");
-        playlistWidget.style.bottom = "100px";
+        playlistWidget.style.bottom = "120px";
         document.querySelector("#PlaylistWidget").style.top = "initial";
-        document.querySelector("#PlaylistWidget").style.left = "78%";
+        document.querySelector("#PlaylistWidget").style.left = "79%";
       }, 0);
     },
     toggleFromFavorites() {
@@ -229,13 +236,12 @@ export default {
     },
   },
   mounted() {
-    this.volume = this.userSetVolume;
-    this.adjustVolume();
+    this.adjustVolume(this.userSetVolume);
     window.addEventListener("keydown", (e) => {
       if (!document.activeElement.classList.contains("inputElem")) {
         if (e.code === "Space") {
           e.preventDefault();
-          document.querySelector("#pauseBt img").click();
+          document.querySelector("#toggle_play").click();
           return;
         }
         if (e.code === "ArrowLeft") {
@@ -246,10 +252,6 @@ export default {
           this.determineNextTrack("next");
           return;
         }
-        if (e.code === "ArrowDown" || e.code === "ArrowUp") {
-          document.querySelector("#volume").focus();
-          return;
-        }
         if (e.code === "Tab") {
           e.preventDefault();
           document.querySelector("#search").focus();
@@ -257,99 +259,48 @@ export default {
       }
     });
     document.querySelector(".split").classList.add("playingPaneLoaded");
+
+    const actionHandlers = [
+      [
+        "play",
+        () => {
+          this.toggleIsPlaying();
+        },
+      ],
+      [
+        "pause",
+        () => {
+          this.toggleIsPlaying();
+        },
+      ],
+      [
+        "previoustrack",
+        () => {
+          this.determineNextTrack("prev");
+        },
+      ],
+      [
+        "nexttrack",
+        () => {
+          this.determineNextTrack("next");
+        },
+      ],
+    ];
+
+    for (const [action, handler] of actionHandlers) {
+      try {
+        navigator.mediaSession.setActionHandler(action, handler);
+      } catch (error) {
+        console.log(
+          `The media session action "${action}" is not supported yet.`
+        );
+      }
+    }
   },
 };
 </script>
 
 <style lang="scss">
-.fullScreenPlayingPane {
-  background-color: rgba(0, 0, 0, 0.301) !important;
-  backdrop-filter: blur(10px);
-  height: 100vh !important;
-  width: 100vw !important;
-  left: 0;
-  margin-left: 0 !important;
-  width: 100vw;
-  z-index: 60 !important;
-  border-radius: 0px !important;
-  bottom: 0px !important;
-  #expandPlayingPane {
-    position: fixed;
-    left: 50%;
-    top: 40px;
-    transform: rotate(180deg);
-    z-index: 5;
-  }
-  #cover {
-    transform: translateX(120%) translateY(-30%);
-    max-width: 400px !important;
-    width: 50vw;
-    min-width: 200px !important;
-    max-height: 800px !important;
-  }
-  #blurred {
-    height: 100vh !important;
-    top: 0% !important;
-  }
-  #trackName {
-    position: absolute;
-    bottom: 200px;
-    left: 20px;
-    font-size: 6vw;
-    font-family: roboto-thick;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
-    width: 99%;
-  }
-  #artistName {
-    transform: translateX(-200%) translateY(450%);
-    font-size: 3vw;
-  }
-  #pauseBt {
-    transform: translateY(1000%) translateX(850%);
-    img {
-      width: 50px;
-    }
-  }
-  .volumeRockerArea {
-    display: none !important;
-  }
-  .controls {
-    transform: translate(0%, 400%);
-    #playlistBt {
-      display: none;
-    }
-    button {
-      transform: scale(1.1);
-      margin: 10px;
-      margin-bottom: 10px;
-      margin-top: 10px;
-    }
-    .play_controls {
-      border: none;
-    }
-  }
-  .TrackBar {
-    position: absolute;
-    bottom: 0px;
-    left: 20px;
-    width: 98%;
-    .seekBar {
-      background: rgba(255, 255, 255, 0.082);
-      border-radius: 10px;
-      height: 6px;
-      .seekProgress {
-        border-radius: 10px;
-        border-radius: 0;
-      }
-    }
-    .seekBar:hover {
-      height: 8px;
-    }
-  }
-}
-
 .playingPane {
   height: 100px;
   position: fixed;
@@ -358,130 +309,79 @@ export default {
   margin-left: 10px;
   z-index: 20;
   border-radius: 20px;
-  display: grid;
-  gap: 10px;
-  grid-template-columns: 0.5fr 0.1fr 4fr 2fr;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  transition: 0.4s cubic-bezier(0.19, 1, 0.22, 1);
-  #cover {
-    max-width: 150px;
-    border-radius: 10px;
-    max-height: 85px;
-    margin: auto;
-    margin-top: 2px;
-    margin-left: 10px;
-    align-self: center;
-    cursor: pointer;
-  }
-  #cover:hover {
-    border-radius: 20px;
-  }
-  .video_resolver {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 150px;
-    margin-left: 10px;
-    background: black;
-    video {
-      width: 98%;
-      cursor: pointer;
-    }
-  }
-  .trackInfo {
-    display: flex;
-    justify-content: space-between;
-    #artistName {
-      font-family: roboto-thin;
-    }
-    #artistName:hover {
-      text-decoration: underline;
-      cursor: pointer;
-    }
-  }
-
-  #blurred {
-    position: absolute;
-    top: -20px;
-    left: 0;
-    width: 100%;
-    height: 120%;
-    filter: blur(40px);
-    opacity: 0.4;
-    z-index: -1;
-    pointer-events: none;
-  }
-  .bordered {
-    border: 2px solid white;
-    border-radius: 15px;
-    border-bottom-right-radius: 0px;
-    padding: 5px;
-  }
-}
-.controls {
-  position: relative;
   display: flex;
+  gap: 10px;
+}
+.left_pane_section {
+  display: flex;
+  gap: 10px;
   align-items: center;
-  justify-content: center;
-  button {
-    margin-left: 5px;
-    margin-right: 5px;
-  }
-  .control {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    overflow: hidden;
-    transition: 0.2s ease;
-  }
-  .play_controls {
-    border-right: 1px solid white;
-  }
-  .volumeRockerArea {
-    position: absolute;
-    left: 35px;
-    bottom: -2px;
-    width: 200px;
-    transform: translate(0, 95%);
-    z-index: 3;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 10px;
-    input {
-      width: 65%;
-      height: 2px;
-      cursor: pointer;
-      filter: grayscale(0.9);
-    }
-  }
-  .volumeRockerArea:hover {
-    input {
-      opacity: 1;
-    }
+  width: 20%;
+  padding-left: 10px;
+}
+.album_art_resolver {
+  .album_art {
+    width: 80px;
+    border-radius: 15px;
   }
 }
-#expandPlayingPane {
-  position: absolute;
-  top: 8px;
-  left: 97%;
-  width: 20px;
-  cursor: pointer;
-}
-.noMusicPlaying {
-  position: absolute;
-  z-index: 4;
-  top: 0;
-  left: 0;
-  width: 100%;
+.track_info {
   height: 100%;
-  background: black;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  .track_title,
+  .track_artist {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-size: 0.95rem;
+    font-family: roboto-thin;
+  }
+  .track_title {
+    font-size: 0.9rem;
+    font-family: roboto-light;
+  }
+  .track_artist {
+    font-size: 0.8rem;
+    font-family: roboto-thin;
+    cursor: pointer;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
 }
-@media (min-height: 900px) {
-  .playingPane {
-    bottom: 10px;
+
+.center_pane_section {
+  width: 55%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  button {
+    transform: scale(0.8);
+  }
+  #toggle_play {
+    img {
+      width: 3rem;
+      transform: scale(1.2);
+      &:hover {
+        transform: scale(1.25) perspective(1px);
+      }
+    }
+  }
+}
+.right_pane_section {
+  width: 20%;
+  justify-self: flex-end;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+}
+.scale_icon {
+  img {
+    transform: scale(1.5);
   }
 }
 </style>

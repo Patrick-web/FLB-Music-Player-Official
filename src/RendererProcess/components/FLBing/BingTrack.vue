@@ -2,12 +2,14 @@
   <div class="bingTrack">
     <div class="info">
       <img class="coverArt" :src="trackInfo.album.cover" alt="" />
-      <p style="font-family: roboto-light" class="trackTitle">
-        {{ trackInfo.title }}
-      </p>
-      <p style="font-size: 0.9rem" @click="getArtistData" class="artist">
-        {{ trackInfo.artist.name }}
-      </p>
+      <div class="flex-col">
+        <p style="font-family: roboto-light" class="trackTitle">
+          {{ trackInfo.title }}
+        </p>
+        <p style="font-size: 0.9rem" @click="getArtistData" class="artist">
+          {{ trackInfo.artist.name }}
+        </p>
+      </div>
     </div>
     <div class="trackActions">
       <base-button
@@ -20,6 +22,12 @@
         :icon="require('@/RendererProcess/assets/images/save_alt.svg')"
         :small="true"
         :loading="isBeingDownloaded"
+        v-if="!trackAlreadyDownloaded"
+      />
+      <base-button
+        :icon="require('@/RendererProcess/assets/images/check.svg')"
+        :small="true"
+        v-else
       />
     </div>
   </div>
@@ -41,6 +49,18 @@ export default {
       ) == -1
         ? false
         : true;
+    },
+    trackAlreadyDownloaded() {
+      const index = this.$store.state.TabsManager.tabsData.addedTracks.findIndex(
+        (track) =>
+          track.defaultTitle == this.trackInfo.title &&
+          track.defaultArtist == this.trackInfo.artist.name
+      );
+      if (index > -1) {
+        return true;
+      } else {
+        return false;
+      }
     },
   },
   data() {
@@ -114,67 +134,58 @@ export default {
           console.log("error", error);
         });
     },
-    updateDownloadQueue() {
-      const downloadTrack = {
-        ...this.trackInfo,
-        progress: 0,
-        downloadURL: "",
-        state: "Getting Download Link...",
-      };
-      this.addTrackToPendingDownloads(downloadTrack);
-    },
     getTrackDownloadURL() {
-      if (
-        !document
-          .querySelector(".BingDownloadsWidget")
-          .classList.contains("showDownloadWidget")
-      ) {
-        document.querySelector(".widgetToggleBt").click();
-      }
+      // this.openDownloadsWidget();
+      this.addTrackToPendingDownloads({
+        ...this.trackInfo,
+        progressInfo: {
+          speed: 0,
+          total: 0,
+          progress: 0,
+        },
+        downloadURL: "",
+      });
 
-      this.updateDownloadQueue();
+      const searchQuery = `${encodeURI(
+        this.cleanText(this.trackInfo.title)
+      )} ${encodeURI(this.cleanText(this.trackInfo.artist.name))}`;
+
       const myHeaders = new Headers();
       myHeaders.append("accept", "application/json");
-
+      myHeaders.append("X-API-KEY", "RPHGBA-YTUUDP-FUZWMW-YBAEGW-ARQ");
       const requestOptions = {
         method: "GET",
         headers: myHeaders,
         redirect: "follow",
       };
-      const searchQuery = `${encodeURI(
-        this.trackInfo.title.replace(/(")|(\/)|(\\)|(\.)|(,)|(\))|(\()/g, "")
-      )} ${encodeURI(
-        this.trackInfo.artist.name.replace(
-          /(")|(\/)|(\\)|(\.)|(,)|(\))|(\()/g,
-          ""
-        )
-      )}`;
+
       fetch(
         `https://thearq.tech/deezer?query=${searchQuery}&count=1`,
         requestOptions
       )
         .then((response) => response.text())
         .then((result) => {
-          if (JSON.parse(result) == "list index out of range") {
+          const responseRes = JSON.parse(result);
+          if (responseRes.result == "list index out of range") {
             this.updatePendingTrackState({
               id: this.trackInfo.id,
-              stateCode: "Download Link Not Found 💀",
+              stateCode: 1,
             });
-            return;
+          } else {
+            const targetTrack = responseRes.result[0];
+            this.downloadURL = targetTrack.url;
+            this.setTrackDownloadURL({
+              id: this.trackInfo.id,
+              url: this.downloadURL,
+            });
+
+            this.sendTrackForDownload();
           }
-          console.log(JSON.parse(result));
-          const targetTrack = JSON.parse(result)[0];
-          this.downloadURL = targetTrack.url;
-          this.setTrackDownloadURL({
-            id: this.trackInfo.id,
-            url: this.downloadURL,
-          });
-          this.sendTrackForDownload();
         })
         .catch((error) => {
           this.updatePendingTrackState({
             id: this.trackInfo.id,
-            stateCode: "Please Check Your Internet Connection",
+            stateCode: 2,
           });
         });
     },
@@ -195,6 +206,18 @@ export default {
         tags,
         artistInfo,
       });
+    },
+    cleanText(text) {
+      return text.replace(/(")|(\/)|(\\)|(\.)|(,)|(\))|(\()/g, "");
+    },
+    openDownloadsWidget() {
+      if (
+        !document
+          .querySelector(".BingDownloadsWidget")
+          .classList.contains("showDownloadWidget")
+      ) {
+        document.querySelector(".widgetToggleBt").click();
+      }
     },
   },
   props: {

@@ -61,15 +61,23 @@ export interface BingTrackSearchResult {
     next: string;
 }
 
+export interface DownloadProgressInfo {
+    total: number;
+    name: string;
+    downloaded: number;
+    progress: number;
+    speed: number;
+}
+
 export interface BingPendingTrack extends BingTrack {
     downloadURL: string
-    progress: number;
+    progressInfo: DownloadProgressInfo;
     state: BingTrackState;
 }
 
 export interface BingTrackDownloadProgress {
     id: number;
-    progress: number;
+    progressInfo: DownloadProgressInfo;
 }
 
 export interface BingTrackStatePayload {
@@ -80,4 +88,9 @@ export interface BingTrackStatePayload {
 export interface BingTrackURLPayload {
     id: number;
     url: string;
+}
+
+export interface BingDownloadingTrack {
+    fileStream: any;
+    trackInfo: any;
 }

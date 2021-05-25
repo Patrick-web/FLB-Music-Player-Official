@@ -25,7 +25,7 @@
 
 <script>
 import { mapMutations, mapActions } from "vuex";
-
+import "@/RendererProcess/components/Root/Equalizer/Equalizer";
 export default {
   computed: {
     playingTrack() {

@@ -80,6 +80,7 @@
 @import "./RendererProcess/assets/css/groupedContent.css";
 @import "./RendererProcess/assets/css/utilityClasses.css";
 @import "@/RendererProcess/assets/sass/mixins.scss";
+@import "@/RendererProcess/assets/sass/fun.scss";
 * {
   scroll-behavior: smooth;
 }

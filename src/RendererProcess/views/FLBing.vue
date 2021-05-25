@@ -1,69 +1,81 @@
 <template>
   <div class="FLBing">
-    <img
-      class="animated fadeInUp"
-      src="@/RendererProcess/assets/images/flbing.svg"
-      id="flbingLogo"
-      v-if="!resultsGotten"
-    />
-    <h1
-      v-if="!resultsGotten"
-      style="font-size: 2.5rem"
-      class="animated fadeInUp"
-    >
-      FLBING
-    </h1>
-    <div :class="[resultsGotten ? 'shrinkToTop' : '', 'SearchArea']">
-      <input
-        placeholder="Search and Download Music"
-        type="text"
-        class="BigSearch inputElem animated fadeInUp"
-        id="bingSearch"
-        v-model="query"
-        v-on:keyup.enter="search"
-      />
-      <p id="bingEnter" style="opacity: 0" @click="search"></p>
-      <img
-        @click.stop="clearResults()"
-        src="@/RendererProcess/assets/images/x.svg"
-        v-if="resultsGotten"
-        id="clearResultsIcon"
-      />
-      <div id="fetchIndicator" v-if="searching" class="loadingIndicator"></div>
+    <div class="main_content">
+      <div class="filler"></div>
+      <div :class="[resultsGotten ? 'shrinkToTop' : '', 'SearchArea']">
+        <img
+          class="animated fadeInUp"
+          src="@/RendererProcess/assets/images/flbing.svg"
+          id="flbingLogo"
+          v-if="!resultsGotten"
+        />
+        <h1
+          v-if="!resultsGotten"
+          style="font-size: 2.5rem"
+          class="animated fadeInUp"
+        >
+          FLBING
+        </h1>
+        <input
+          placeholder="Search and Download Music"
+          type="text"
+          class="BigSearch inputElem animated fadeInUp"
+          id="bingSearch"
+          v-model="query"
+          v-on:keyup.enter="search"
+        />
+        <p id="bingEnter" style="opacity: 0" @click="search"></p>
+        <img
+          @click.stop="clearResults()"
+          src="@/RendererProcess/assets/images/x.svg"
+          v-if="resultsGotten"
+          id="clearResultsIcon"
+        />
+        <div
+          id="fetchIndicator"
+          v-if="searching"
+          class="loadingIndicator"
+        ></div>
+        <bing-recommender
+          v-on:selectedRecommendedArtist="setSelectedRecommendedArtist"
+          v-if="!resultsGotten"
+        />
+      </div>
+      <transition
+        enter-active-class="animated slideInUp extrafaster"
+        leave-active-class="animated slideOutDown extrafaster"
+      >
+        <SearchResults
+          v-on:selectedArtist="setSelectedArtist"
+          v-on:selectedAlbum="setSelectedAlbum"
+          v-if="resultsGotten"
+          :searchResults="results"
+        />
+      </transition>
+      <transition
+        enter-active-class="animated slideInUp extrafaster"
+        leave-active-class="animated slideOutDown extrafaster"
+      >
+        <ArtistPage
+          v-on:clearArtistResults="clearSelectedArtistOrAlbum('artist')"
+          v-on:selectedAlbum="setSelectedAlbum"
+          :artistInfo="selectedArtist"
+          v-if="selectedArtist"
+        />
+      </transition>
+      <transition
+        enter-active-class="animated slideInUp extrafaster"
+        leave-active-class="animated slideOutDown extrafaster"
+      >
+        <AlbumPage
+          v-on:clearAlbumResults="clearSelectedArtistOrAlbum('album')"
+          :albumInfo="selectedAlbum"
+          v-if="selectedAlbum"
+        />
+      </transition>
     </div>
-    <transition
-      enter-active-class="animated slideInUp extrafaster"
-      leave-active-class="animated slideOutDown extrafaster"
-    >
-      <SearchResults
-        v-on:selectedArtist="setSelectedArtist"
-        v-on:selectedAlbum="setSelectedAlbum"
-        v-if="resultsGotten"
-        :searchResults="results"
-      />
-    </transition>
-    <transition
-      enter-active-class="animated slideInUp extrafaster"
-      leave-active-class="animated slideOutDown extrafaster"
-    >
-      <ArtistPage
-        v-on:clearArtistResults="clearSelectedArtistOrAlbum('artist')"
-        v-on:selectedAlbum="setSelectedAlbum"
-        :artistInfo="selectedArtist"
-        v-if="selectedArtist"
-      />
-    </transition>
-    <transition
-      enter-active-class="animated slideInUp extrafaster"
-      leave-active-class="animated slideOutDown extrafaster"
-    >
-      <AlbumPage
-        v-on:clearAlbumResults="clearSelectedArtistOrAlbum('album')"
-        :albumInfo="selectedAlbum"
-        v-if="selectedAlbum"
-      />
-    </transition>
     <downloads-widget />
+    <download-widget-toggle />
   </div>
 </template>
 
@@ -74,6 +86,8 @@ import SearchResults from "@/RendererProcess/components/FLBing/BingSearchResults
 import DownloadsWidget from "../components/FLBing/DownloadsWidget.vue";
 import { mapMutations } from "vuex";
 import { removeDuplicates } from "@/sharedUtilities";
+import DownloadWidgetToggle from "../components/FLBing/DownloadWidgetToggle.vue";
+import BingRecommender from "../components/FLBing/BingRecommender.vue";
 export default {
   data() {
     return {
@@ -89,9 +103,17 @@ export default {
       selectedAlbum: null,
     };
   },
+  computed: {
+    appIsOnline() {
+      return this.$store.state.appIsOnline;
+    },
+  },
   methods: {
     ...mapMutations(["pushNotification"]),
     setSelectedArtist(payload) {
+      this.selectedArtist = payload;
+    },
+    setSelectedRecommendedArtist(payload) {
       this.selectedArtist = payload;
     },
     setSelectedAlbum(payload) {
@@ -111,6 +133,14 @@ export default {
       this.resultsGotten = false;
     },
     search() {
+      if (!this.appIsOnline) {
+        this.pushNotification({
+          title: `No internet connection detected`,
+          subTitle: null,
+          type: "danger",
+        });
+        return;
+      }
       if (!this.query) this.query = document.querySelector("#bingSearch").value;
       this.searching = true;
       const requestOptions = {
@@ -151,25 +181,14 @@ export default {
         .catch((error) => console.log("error", error));
     },
   },
-  mounted() {
-    if (!navigator.onLine) {
-      this.pushNotification({
-        title: `No internet connection detected`,
-        subTitle: null,
-        type: "danger",
-      });
-    }
-    window.addEventListener("offline", () => {
-      this.pushNotification({
-        title: `No internet connection detected`,
-        subTitle: null,
-        type: "danger",
-      });
-      this.resultsGotten = true;
-      this.searching = false;
-    });
+  components: {
+    SearchResults,
+    ArtistPage,
+    AlbumPage,
+    DownloadsWidget,
+    DownloadWidgetToggle,
+    BingRecommender,
   },
-  components: { SearchResults, ArtistPage, AlbumPage, DownloadsWidget },
 };
 </script>
 
@@ -183,18 +202,18 @@ export default {
   width: 100%;
   height: 100%;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
   position: relative;
+  .filler {
+    height: 20%;
+  }
   .shrinkToTop {
-    top: 0% !important;
-    left: 50% !important;
-    transform: translateX(-50%) translateY(-5%) !important;
-    width: 60% !important;
+    transform: translateY(-140px) !important;
+    margin-bottom: -160px;
+
     #fetchIndicator {
       right: -5px !important;
       top: 60% !important;
-      transform: scale(0.8) translateY(-50%) !important;
+      transform: scale(0.8) translateY(-40px) !important;
     }
     .BigSearch {
       font-size: var(--baseFontSize);
@@ -202,15 +221,11 @@ export default {
     }
   }
   .SearchArea {
-    position: absolute;
-    z-index: 3;
-    top: 50%;
-    left: 50%;
-    transform: translateY(-50%) translateX(-50%);
-    width: 50%;
+    width: 60%;
     display: flex;
     flex-direction: column;
     align-items: center;
+    transform: translateY(-50px);
     #clearResultsIcon {
       position: absolute;
       right: 0px;
@@ -223,16 +238,16 @@ export default {
       position: absolute;
       right: -15px;
       top: 70%;
-      transform: scale(1) translateY(-50%);
+      transform: scale(1) translateY(-10px) translateX(20px);
+      opacity: 0.7;
     }
   }
   h1 {
-    margin-top: -140px;
     text-shadow: 2px 2px 0px rgba(255, 255, 255, 0.295);
     text-align: center;
   }
   .BigSearch {
-    width: 90%;
+    width: 100%;
     padding: 20px;
     border-radius: 40px;
     outline: none;
@@ -264,10 +279,15 @@ export default {
 }
 
 #flbingLogo {
-  position: absolute;
-  top: 28%;
-  left: 47%;
   width: 50px;
+}
+.main_content {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
 }
 // #flbingLogoOutline {
 //   stroke-dasharray: 174;

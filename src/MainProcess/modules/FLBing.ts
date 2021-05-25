@@ -6,10 +6,16 @@ import { win, writeTags } from "../../background";
 import { paths } from './Paths';
 import { deleteFile, sendMessageToRenderer } from "../utilities";
 import { createParsedTrack } from "../core/createParsedTrack";
+import { BingDownloadingTrack } from "@/types/FLBing/BingTypes";
 
 export class FLBing {
     downloadQueue: Array<any> = []
     downloadState: 'downloading' | 'empty' = 'empty'
+    downloadCanceled: boolean = false
+    currentlyDownloadingTrackInfo: BingDownloadingTrack = {
+        fileStream: null,
+        trackInfo: null,
+    }
     addToDownloadQueue(payload: any) {
         const newTrackToDownload = {
             payload,
@@ -25,18 +31,24 @@ export class FLBing {
             console.log("There's something downloading let me wait");
         }
     }
+    removeFromDownloadQueue(id: string) {
+        this.downloadQueue = this.downloadQueue.filter(track => track.id !== id)
+    }
     downloadFirstTrackInTheQueue() {
+        //get download info from the first track in the queue
         const trackToDownload = this.downloadQueue[0];
-
+        //remove the task from the queue after its download starts
         this.downloadQueue.shift()
-
-        win.webContents.send('normalMsg', `Downloading ${trackToDownload.payload.tags.title} by ${trackToDownload.payload.tags.artist}`)
+        //Notify the user download has started
+        sendMessageToRenderer('normalMsg', `Downloading ${trackToDownload.payload.tags.title} by ${trackToDownload.payload.tags.artist}`)
 
         const fileStream = fs.createWriteStream(trackToDownload.trackLocation);
-
-        console.log("Downloading...");
-
+        this.currentlyDownloadingTrackInfo.trackInfo = trackToDownload
+        this.currentlyDownloadingTrackInfo.fileStream = fileStream
         this.downloadState = 'downloading'
+
+        this.downloadCanceled = false
+
         https.get(
             trackToDownload.payload.trackURL,
             (response) => {
@@ -50,42 +62,57 @@ export class FLBing {
                     fileSize = parseInt(response.headers["content-length"]!);
                     let chunk;
                     while ((chunk = response.read(2048))) {
-                        fileStream.write(chunk);
-                        downloaded += 2048;
-                        percent = Math.trunc((downloaded / fileSize) * 100);
-                        this.sendDownloadProgress(trackToDownload.payload.trackID, percent)
-                        console.log("Downloaded " + percent + '%');
+                        if (this.downloadCanceled) {
+                            break;
+                        } else {
+                            fileStream.write(chunk);
+                            downloaded += 2048;
+                            percent = Math.trunc((downloaded / fileSize) * 100);
+                            this.sendDownloadProgress(trackToDownload.payload.trackID, percent)
+                            console.log("Downloaded " + percent + '%');
+                        }
                     }
                 });
                 response.on("end", () => {
                     fileStream.end();
+                    fileStream.close()
                     this.writeTrackTags(trackToDownload.trackLocation, trackToDownload.payload.tags)
-                    win.webContents.send('successMsg', `${trackToDownload.payload.tags.title} by ${trackToDownload.payload.tags.artist} Downloaded 🚀`)
-                    win.webContents.send('bingTrackDownloaded', trackToDownload.trackID)
+                    sendMessageToRenderer('successMsg', `${trackToDownload.payload.tags.title} by ${trackToDownload.payload.tags.artist} Downloaded 🚀`)
+                    sendMessageToRenderer('bingTrackDownloaded', trackToDownload.trackID)
                     console.log("Track Downloaded 🚀");
-                    if (this.downloadQueue[0]) {
-                        this.downloadFirstTrackInTheQueue()
-                        console.log("Moving on to the next track");
-                    } else {
-                        this.downloadState = 'empty'
-                    }
+                    this.moveToNextDownload()
                 });
                 response.on('error', () => {
                     sendMessageToRenderer('updatePendingTrackState', { id: trackToDownload.payload.trackID, stateCode: 7 })
                     console.log("Error in Downloading");
                     fileStream.end();
+                    fileStream.close()
                     deleteFile(trackToDownload.trackLocation, true)
-                    win.webContents.send('dangerMsg', `Error Downloading ${trackToDownload.payload.tags.title} by ${trackToDownload.payload.tags.artist}`)
+                    sendMessageToRenderer('dangerMsg', `Error Downloading ${trackToDownload.payload.tags.title} by ${trackToDownload.payload.tags.artist}`)
+                    this.moveToNextDownload()
                 })
             }
         ).on('error', () => {
             sendMessageToRenderer('updatePendingTrackState', { id: trackToDownload.payload.trackID, stateCode: 7 })
-            console.log("Error in Downloading");
-            fileStream.end();
-            deleteFile(trackToDownload.trackLocation, true)
             win.webContents.send('dangerMsg', `Error Downloading ${trackToDownload.payload.tags.title} by ${trackToDownload.payload.tags.artist}`)
+            console.log("Error in Downloading");
+            this.cancelCurrentDownload()
         })
 
+        fileStream.on('error', () => {
+            console.log("Error while downloading");
+            sendMessageToRenderer('dangerMsg', `An Error occurred while downloading ${trackToDownload.payload.tags.title}`)
+            this.cancelCurrentDownload()
+        })
+
+    }
+    moveToNextDownload() {
+        if (this.downloadQueue[0]) {
+            this.downloadFirstTrackInTheQueue()
+            console.log("Moving on to the next track");
+        } else {
+            this.downloadState = 'empty'
+        }
     }
 
     sendDownloadProgress(trackID: any, progress: any) {
@@ -105,9 +132,23 @@ export class FLBing {
                 .then((track) => {
                     console.log("Sending Downloaded track");
                     win.webContents.send('downloadedTrack', track)
+                    win.webContents.send('newTrack', track)
                 }).catch((err) => {
                     console.log("Some error while parsing the downloaded track");
                 });
         }
+    }
+    handleInternetLost() {
+        this.cancelCurrentDownload()
+        sendMessageToRenderer('updatePendingTrackState', { id: this.currentlyDownloadingTrackInfo.trackInfo.trackID || 0, stateCode: 2 })
+    }
+    cancelCurrentDownload() {
+        this.downloadCanceled = true
+        if (this.currentlyDownloadingTrackInfo.fileStream) {
+            this.currentlyDownloadingTrackInfo.fileStream.end()
+            this.currentlyDownloadingTrackInfo.fileStream.close()
+            deleteFile(this.currentlyDownloadingTrackInfo.trackInfo.trackLocation, true)
+        }
+        // this.moveToNextDownload()
     }
 }

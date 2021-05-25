@@ -94,6 +94,8 @@ export default {
     height: 100%;
     overflow: hidden;
     overflow-y: scroll;
+    align-items: center;
+    justify-content: center;
   }
   h2 {
     font-size: 1.2rem;

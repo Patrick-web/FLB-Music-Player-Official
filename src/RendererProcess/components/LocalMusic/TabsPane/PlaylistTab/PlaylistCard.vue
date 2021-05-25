@@ -31,7 +31,7 @@
     <div class="playlist_body">
       <over-layed-tracks
         v-if="playlist.tracks.length !== 0"
-        :tracks="playlist.tracks"
+        :tracks="playlist.tracks.slice(0, 4)"
       />
     </div>
   </div>
