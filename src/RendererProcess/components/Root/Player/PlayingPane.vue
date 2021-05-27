@@ -337,6 +337,7 @@ export default {
     text-overflow: ellipsis;
     font-size: 0.95rem;
     font-family: roboto-thin;
+    max-width: 13vw;
   }
   .track_title {
     font-size: 0.9rem;

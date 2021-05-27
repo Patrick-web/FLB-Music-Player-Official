@@ -37,6 +37,7 @@
 import { mapMutations } from "vuex";
 import BaseButton from "@/RendererProcess/components/BaseComponents/BaseButton.vue";
 import { ipcRenderer } from "electron";
+import { cleanUpText } from "@/sharedUtilities";
 
 export default {
   components: {
@@ -147,7 +148,7 @@ export default {
       });
 
       const searchQuery = `${encodeURI(
-        this.cleanText(this.trackInfo.title)
+        cleanUpText(this.trackInfo.title)
       )} ${encodeURI(this.cleanText(this.trackInfo.artist.name))}`;
 
       const myHeaders = new Headers();
@@ -206,9 +207,6 @@ export default {
         tags,
         artistInfo,
       });
-    },
-    cleanText(text) {
-      return text.replace(/(")|(\/)|(\\)|(\.)|(,)|(\))|(\()/g, "");
     },
     openDownloadsWidget() {
       if (

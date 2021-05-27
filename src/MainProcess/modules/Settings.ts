@@ -8,7 +8,7 @@ export class Settings {
 		desktopNotifications: true,
 		defaultTab: "Home",
 		theme: "fancy",
-		accentColor: "accent_blue",
+		accentColor: "accent_0",
 		volume: 1,
 		foldersToScan: [paths.musicFolder],
 	};

@@ -114,12 +114,7 @@ export interface SettingsType {
     desktopNotifications: boolean;
     defaultTab: tabType;
     theme: "fancy" | "dark" | "light";
-    accentColor:
-    | "accent_blue"
-    | "accent_white"
-    | "accent_orange"
-    | "accent_purple"
-    | "accent_magenta";
+    accentColor: string;
     volume: 1;
     foldersToScan: Array<string>;
 }

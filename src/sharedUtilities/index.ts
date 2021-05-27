@@ -37,3 +37,8 @@ export function removeDuplicates(targetArray: any, prop: any) {
         return arr.map((mapObj: any) => mapObj[prop]).indexOf(obj[prop]) === index;
     });
 }
+
+export function cleanUpText(text: string) {
+    // return text.replace(/[$-\\/:-?{-~!"^_`\\[\]()@#]/g, " ");
+    return text.replace(/[\\/:*?<>|]/g, " ");
+}

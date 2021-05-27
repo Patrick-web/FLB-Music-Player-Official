@@ -74,6 +74,10 @@
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
 }
+.grid_auto_big {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
 .grid2 {
 	display: grid;
 	grid-template-columns: repeat(2, 1fr);
@@ -109,6 +113,16 @@
 	font-family: roboto-light;
 }
 
+.text-small-1 {
+	font-size: 0.9rem;
+}
+.text-small-2 {
+	font-size: 0.8rem;
+}
+.text-small-3 {
+	font-size: 0.7rem;
+}
+
 .fade_to_8 {
 	opacity: 0.8;
 }
@@ -117,4 +131,12 @@
 }
 .fade_to_6 {
 	opacity: 0.6;
+}
+
+.bg_active {
+	background: var(--accentColor);
+}
+
+.hide_this {
+	display: none;
 }

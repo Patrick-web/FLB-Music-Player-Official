@@ -10,6 +10,7 @@
         <p class="text-thin">Check your Internet Connection 📶</p>
       </div>
     </div>
+    <h2 class="bingRecommenderTitle" v-if="appIsOnline">Similar artists to</h2>
     <div class="artistRecommendations">
       <div
         class="recommend bg1"
@@ -17,14 +18,13 @@
         :key="recommend.sourceArtist"
       >
         <div class="recommend_title flex center-v">
-          <p>Similar artists to</p>
           <h1>🎙{{ recommend.sourceArtist }}🎙</h1>
         </div>
 
         <div class="flex_auto contentsWrapper">
           <ArtistCard
             v-on:selectedArtist="bubbleArtist"
-            v-for="artist in recommend.similarArtists"
+            v-for="artist in recommend.similarArtists.slice(0, 2)"
             :key="artist.id"
             :artistInfo="artist"
           />
@@ -148,10 +148,29 @@ export default {
   width: 150%;
   overflow: hidden;
   overflow-y: scroll;
+  .bingRecommenderTitle {
+    position: sticky;
+    z-index: 3;
+    top: 0px;
+    width: 100%;
+    padding: 10px;
+    padding-right: 15px;
+    backdrop-filter: blur(10px);
+  }
+  .artistRecommendations {
+    display: flex;
+    flex-wrap: wrap;
+  }
   .recommend {
     border-radius: 15px;
     padding: 10px;
     margin: 10px;
+    .contentsWrapper {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+    }
     .recommend_title {
       p {
         font-size: 1.2rem;

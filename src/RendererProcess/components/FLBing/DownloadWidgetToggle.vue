@@ -17,7 +17,7 @@
       :icon="require('@/RendererProcess/assets/images/cloud-download.svg')"
       @click.native="toggleWidget"
       v-else
-      :text="downloadQueue.length"
+      :text="downloadQueue.length.toString()"
       extraClass="animated pulse infinite slower"
     />
   </div>

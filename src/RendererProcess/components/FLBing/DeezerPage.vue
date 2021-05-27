@@ -1,5 +1,5 @@
 <template>
-  <div class="SearchResults bg2">
+  <div class="deezerResults">
     <div
       v-if="
         !searchResults.tracks.length &&
@@ -48,11 +48,22 @@
 </template>
 
 <script>
+import { removeDuplicates } from "@/sharedUtilities";
 import AlbumCard from "./BingAlbumCard.vue";
 import ArtistCard from "./BingArtistCard.vue";
 import Track from "./BingTrack.vue";
+
 export default {
   components: { AlbumCard, ArtistCard, Track },
+  data() {
+    return {
+      searchResults: {
+        tracks: [],
+        artists: [],
+        albums: [],
+      },
+    };
+  },
   methods: {
     bubbleArtist(artistData) {
       this.$emit("selectedArtist", artistData);
@@ -62,36 +73,68 @@ export default {
       console.log("Sending...");
       console.table(albumData);
     },
-  },
-  props: {
-    searchResults: Object,
+    searchInDeezer(query) {
+      this.notifySearchInProgress();
+      const requestOptions = {
+        method: "GET",
+        redirect: "follow",
+      };
+      fetch(`https://api.deezer.com/search?q=${query}`, requestOptions)
+        .then((response) => response.text())
+        .then((result) => {
+          this.searchResults.tracks = JSON.parse(result).data;
+        })
+        .catch((error) => console.log("error", error));
+
+      fetch(`https://api.deezer.com/search?q=artist:"${query}"`, requestOptions)
+        .then((response) => response.text())
+        .then((result) => {
+          this.searchResults.artists = removeDuplicates(
+            JSON.parse(result).data.map((track) => track.artist),
+            "id"
+          );
+          console.log(this.searchResults);
+        })
+        .catch((error) => console.log("error", error));
+      //api.deezer.com/search?q=artist:"aloe blacc"
+      fetch(`https://api.deezer.com/search?q=album:"${query}"`, requestOptions)
+        .then((response) => response.text())
+        .then((result) => {
+          const albums = JSON.parse(result).data.map((track) => track.album);
+          this.searchResults.albums = removeDuplicates(albums, "id");
+          this.notifySearchFinished();
+        })
+        .catch((error) => {
+          this.notifySearchFinished();
+        });
+    },
+    notifySearchInProgress() {
+      this.$emit("searchInProgress");
+    },
+    notifySearchFinished() {
+      this.$emit("searchDone");
+    },
   },
 };
 </script>
 
 <style lang="scss">
-.SearchResults {
-  padding: 10px;
-  margin-top: 30px;
-  overflow: hidden;
-  height: 87%;
-  width: 97.5%;
-  border-radius: 15px;
-  position: relative;
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 20px;
-  align-items: flex-start;
-}
 .playingPaneLoaded {
   .results {
     height: 68vh;
   }
 }
+.deezerResults {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 20px;
+  align-items: flex-start;
+}
 .results {
   height: 78vh;
+  padding-top: 30px;
   .contentsWrapper {
-    height: 100%;
+    height: 93%;
     overflow: hidden;
     overflow-y: scroll;
     align-items: center;
@@ -101,9 +144,7 @@ export default {
     font-size: 1.2rem;
     padding: 5px;
     padding-left: 10px;
-    position: sticky;
     z-index: 3;
-    top: 0px;
     text-align: center;
   }
 }

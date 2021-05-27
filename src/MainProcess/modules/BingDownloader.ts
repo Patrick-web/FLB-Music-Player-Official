@@ -1,7 +1,5 @@
 import { win, writeTags } from "@/background";
 import { DownloadProgressInfo } from "@/types/FLBing/BingTypes";
-import path from "path";
-import { uuid } from "uuidv4";
 import { createParsedTrack } from "../core/createParsedTrack";
 import { sendMessageToRenderer } from "../utilities";
 const { DownloaderHelper } = require('node-downloader-helper');
@@ -40,19 +38,14 @@ class SparkDownload {
         this.newDownload = new DownloaderHelper(source, paths.flbingFolder, dConfig);
 
         this.newDownload.on('start', () => {
-            console.log("Starting " + this.payloadInfo.tags.title);
             sendMessageToRenderer('updatePendingTrackState', { id: this.id, stateCode: 5 })
         })
 
         this.newDownload.on('progress', (progressData: any) => {
-            console.log("Progress Data");
-            console.log(progressData);
             sendDownloadProgress(this.id, progressData)
         })
 
         this.newDownload.on('end', (downloadInfo: any) => {
-            console.log("Download Complete");
-            console.log(downloadInfo);
             writeTrackTags(downloadInfo.filePath, this.payloadInfo.tags)
             sendMessageToRenderer('successMsg', `${this.payloadInfo.tags.title} by ${this.payloadInfo.tags.artist} Downloaded 🚀`)
             sendMessageToRenderer('updatePendingTrackState', { id: this.id, stateCode: 6 })
@@ -63,12 +56,10 @@ class SparkDownload {
         })
 
         this.newDownload.on('retry', () => {
-            console.log("Retrying" + this.payloadInfo.tags.title);
             sendMessageToRenderer('successMsg', `🔁Retrying ${this.payloadInfo.tags.title} by ${this.payloadInfo.tags.artist} Downloaded 🚀`)
         })
 
         this.newDownload.on('stop', () => {
-            console.log("Retrying" + this.payloadInfo.tags.title);
             sendMessageToRenderer('dangerMsg', `💀 Failed to download ${this.payloadInfo.tags.title} by ${this.payloadInfo.tags.artist} Downloaded 🚀`)
             sendMessageToRenderer('updatePendingTrackState', { id: this.id, stateCode: 7 })
         })

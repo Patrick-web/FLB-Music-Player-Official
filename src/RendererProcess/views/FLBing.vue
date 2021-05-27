@@ -1,57 +1,37 @@
 <template>
   <div class="FLBing">
     <div class="main_content">
-      <div class="filler"></div>
-      <div :class="[resultsGotten ? 'shrinkToTop' : '', 'SearchArea']">
-        <img
-          class="animated fadeInUp"
-          src="@/RendererProcess/assets/images/flbing.svg"
-          id="flbingLogo"
-          v-if="!resultsGotten"
+      <div :class="['SearchArea']">
+        <bing-search-bar
+          ref="searchBar"
+          :searchInProgress="searchInProgress"
+          :searchIsComplete="searchDone"
+          v-on:searchQuery="makeSearch"
+          v-on:clearSearch="clearSearchResults"
         />
-        <h1
-          v-if="!resultsGotten"
-          style="font-size: 2.5rem"
-          class="animated fadeInUp"
-        >
-          FLBING
-        </h1>
-        <input
-          placeholder="Search and Download Music"
-          type="text"
-          class="BigSearch inputElem animated fadeInUp"
-          id="bingSearch"
-          v-model="query"
-          v-on:keyup.enter="search"
-        />
-        <p id="bingEnter" style="opacity: 0" @click="search"></p>
-        <img
-          @click.stop="clearResults()"
-          src="@/RendererProcess/assets/images/x.svg"
-          v-if="resultsGotten"
-          id="clearResultsIcon"
-        />
-        <div
-          id="fetchIndicator"
-          v-if="searching"
-          class="loadingIndicator"
-        ></div>
         <bing-recommender
           v-on:selectedRecommendedArtist="setSelectedRecommendedArtist"
-          v-if="!resultsGotten"
+          v-if="!searchDone"
         />
       </div>
-      <transition
-        enter-active-class="animated slideInUp extrafaster"
-        leave-active-class="animated slideOutDown extrafaster"
-      >
-        <SearchResults
-          v-on:selectedArtist="setSelectedArtist"
-          v-on:selectedAlbum="setSelectedAlbum"
-          v-if="resultsGotten"
-          :searchResults="results"
-        />
-      </transition>
+      <tabs-view :class="[!searchDone ? 'hide_this' : '', 'SearchResults']">
+        <tab-wrapper title="Deezex">
+          <deezer-page
+            v-on:selectedArtist="setSelectedArtist"
+            v-on:selectedAlbum="setSelectedAlbum"
+            v-on:searchDone="searchDone = true"
+            v-on:searchInProgress="searchInProgress = true"
+            ref="deezerPage"
+          />
+        </tab-wrapper>
+        <tab-wrapper title="YouTube">
+          <youtube-page
+            v-on:searchDone="searchDone = true"
+            v-on:searchInProgress="searchInProgress = true"
+            ref="youtubePage"
+          />
+        </tab-wrapper>
+      </tabs-view>
       <transition
         enter-active-class="animated slideInUp extrafaster"
         leave-active-class="animated slideOutDown extrafaster"
@@ -82,23 +62,20 @@
 <script>
 import ArtistPage from "@/RendererProcess/components/FLBing/BingArtistPage.vue";
 import AlbumPage from "@/RendererProcess/components/FLBing/BingAlbumPage.vue";
-import SearchResults from "@/RendererProcess/components/FLBing/BingSearchResults.vue";
+import DeezerPage from "@/RendererProcess/components/FLBing/DeezerPage.vue";
 import DownloadsWidget from "../components/FLBing/DownloadsWidget.vue";
 import { mapMutations } from "vuex";
-import { removeDuplicates } from "@/sharedUtilities";
 import DownloadWidgetToggle from "../components/FLBing/DownloadWidgetToggle.vue";
 import BingRecommender from "../components/FLBing/BingRecommender.vue";
+import YoutubePage from "../components/FLBing/YoutubePage.vue";
+import TabsView from "../components/BaseComponents/BaseTabView/TabsView.vue";
+import TabWrapper from "../components/BaseComponents/BaseTabView/TabWrapper.vue";
+import BingSearchBar from "../components/FLBing/BingSearchBar.vue";
 export default {
   data() {
     return {
-      query: "",
-      resultsGotten: false,
-      searching: false,
-      results: {
-        tracks: [],
-        albums: [],
-        artists: [],
-      },
+      searchDone: false,
+      searchInProgress: false,
       selectedArtist: null,
       selectedAlbum: null,
     };
@@ -110,6 +87,10 @@ export default {
   },
   methods: {
     ...mapMutations(["pushNotification"]),
+    clearSearchResults() {
+      this.searchDone = false;
+      this.searchInProgress = false;
+    },
     setSelectedArtist(payload) {
       this.selectedArtist = payload;
     },
@@ -132,62 +113,22 @@ export default {
       this.results.albums = [];
       this.resultsGotten = false;
     },
-    search() {
-      if (!this.appIsOnline) {
-        this.pushNotification({
-          title: `No internet connection detected`,
-          subTitle: null,
-          type: "danger",
-        });
-        return;
-      }
-      if (!this.query) this.query = document.querySelector("#bingSearch").value;
-      this.searching = true;
-      const requestOptions = {
-        method: "GET",
-        redirect: "follow",
-      };
-      fetch(`https://api.deezer.com/search?q=${this.query}`, requestOptions)
-        .then((response) => response.text())
-        .then((result) => {
-          this.results.tracks = JSON.parse(result).data;
-        })
-        .catch((error) => console.log("error", error));
-
-      fetch(
-        `https://api.deezer.com/search?q=artist:"${this.query}"`,
-        requestOptions
-      )
-        .then((response) => response.text())
-        .then((result) => {
-          this.results.artists = removeDuplicates(
-            JSON.parse(result).data.map((track) => track.artist),
-            "id"
-          );
-        })
-        .catch((error) => console.log("error", error));
-      //api.deezer.com/search?q=artist:"aloe blacc"
-      fetch(
-        `https://api.deezer.com/search?q=album:"${this.query}"`,
-        requestOptions
-      )
-        .then((response) => response.text())
-        .then((result) => {
-          const albums = JSON.parse(result).data.map((track) => track.album);
-          this.results.albums = removeDuplicates(albums, "id");
-          this.resultsGotten = true;
-          this.searching = false;
-        })
-        .catch((error) => console.log("error", error));
+    makeSearch(query) {
+      this.$refs.youtubePage.searchInYoutube(query);
+      this.$refs.deezerPage.searchInDeezer(query);
     },
   },
   components: {
-    SearchResults,
     ArtistPage,
     AlbumPage,
     DownloadsWidget,
     DownloadWidgetToggle,
     BingRecommender,
+    DeezerPage,
+    YoutubePage,
+    TabWrapper,
+    TabsView,
+    BingSearchBar,
   },
 };
 </script>
@@ -203,59 +144,17 @@ export default {
   height: 100%;
   display: flex;
   position: relative;
-  .filler {
-    height: 20%;
-  }
-  .shrinkToTop {
-    transform: translateY(-140px) !important;
-    margin-bottom: -160px;
-
-    #fetchIndicator {
-      right: -5px !important;
-      top: 60% !important;
-      transform: scale(0.8) translateY(-40px) !important;
-    }
-    .BigSearch {
-      font-size: var(--baseFontSize);
-      padding: 10px;
-    }
-  }
   .SearchArea {
     width: 60%;
     display: flex;
     flex-direction: column;
     align-items: center;
-    transform: translateY(-50px);
-    #clearResultsIcon {
-      position: absolute;
-      right: 0px;
-      width: 15px;
-      bottom: 12px;
-      cursor: pointer;
-      z-index: 4;
-    }
-    #fetchIndicator {
-      position: absolute;
-      right: -15px;
-      top: 70%;
-      transform: scale(1) translateY(-10px) translateX(20px);
-      opacity: 0.7;
-    }
   }
   h1 {
     text-shadow: 2px 2px 0px rgba(255, 255, 255, 0.295);
     text-align: center;
   }
-  .BigSearch {
-    width: 100%;
-    padding: 20px;
-    border-radius: 40px;
-    outline: none;
-    border: none;
-    background: rgba(255, 255, 255, 0.103);
-    font-size: 1.2em;
-    font-family: roboto-thin;
-  }
+
   .scroller {
     position: fixed;
     z-index: 5;
@@ -289,18 +188,14 @@ export default {
   align-items: center;
   width: 100%;
 }
-// #flbingLogoOutline {
-//   stroke-dasharray: 174;
-//   stroke-dashoffset: 174;
-//   // animation-name: animatedash;
-//   animation-fill-mode: forwards;
-//   animation-duration: 4s;
-//   animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
-// }
-// @keyframes animatedash {
-//   to {
-//     stroke-dashoffset: 0;
-//     stroke-dasharray: 0;
-//   }
-// }
+.SearchResults {
+  height: 90%;
+  width: 100%;
+  border-radius: 15px;
+  position: relative;
+  .tab {
+    width: 97%;
+    height: 85.5%;
+  }
+}
 </style>
