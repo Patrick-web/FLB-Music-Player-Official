@@ -103,34 +103,27 @@ const mutations = {
         sendMessageToNode("updatePlaylists", state.tabsData.playlists);
     },
     deleteSelectedTrackFromPlaylist(state: TabsManagerStateInterface, payload?: TrackType) {
+        //Deletes from the favorites playlist
         if (payload) {
-            state.tabsData.playlists[0].tracks.forEach((track: TrackType, tindex: number) => {
-                if (payload.fileLocation === track.fileLocation) {
-                    state.tabsData.playlists[0].tracks.splice(tindex, 1);
-                }
+            state.tabsData.playlists[0].tracks.forEach((track: TrackType) => {
+                const tindex = state.tabsData.playlists[0].tracks.findIndex(track => track.fileLocation == payload.fileLocation);
+                state.tabsData.playlists[0].tracks.splice(tindex, 1);
             });
             sendMessageToNode("updatePlaylists", state.tabsData.playlists);
             return
         }
+        //deletes from other playlists
         state.tabsData.playlists.forEach((playlist: PlaylistType, pindex: number) => {
             if (playlist.name === TrackSelector.state.selectedGroup?.name) {
-                playlist.tracks.forEach((track: TrackType, tindex: number) => {
+                playlist.tracks.forEach((track: TrackType) => {
                     TrackSelector.state.selectedTracks.forEach((selectedTrack: TrackType) => {
-                        if (selectedTrack.fileLocation === track.fileLocation) {
-                            state.tabsData.playlists[pindex].tracks.splice(tindex, 1);
-                        }
+                        const tindex = playlist.tracks.findIndex(track => track.fileLocation == selectedTrack.fileLocation);
+                        state.tabsData.playlists[pindex].tracks.splice(tindex, 1);
                     });
                 });
             }
         });
         sendMessageToNode("updatePlaylists", state.tabsData.playlists);
-    },
-    deleteSelectedTrackFromFavorites(state: TabsManagerStateInterface) {
-        state.tabsData.playlists[0].tracks.forEach((track: TrackType, index: number) => {
-            if (TrackSelector.state.selectedTracks[0].fileLocation === track.fileLocation) {
-                state.tabsData.playlists[0].tracks.splice(index, 1);
-            }
-        });
     },
     setDownloadedArtistInfo(state: TabsManagerStateInterface, payload: ArtistInfoInterface[]) {
         state.downloadedArtistPictures = payload;
