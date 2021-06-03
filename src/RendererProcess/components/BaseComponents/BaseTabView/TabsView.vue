@@ -50,6 +50,12 @@ export default {
 <style lang="scss">
 .tabsView {
   width: 100%;
+  .tab {
+    display: inline-block;
+    padding: 20px;
+    border-radius: 15px;
+    border-top-left-radius: 0px;
+  }
 }
 .tabs_header {
   border-top-left-radius: 10px;
@@ -62,12 +68,5 @@ export default {
     display: inline-block;
     cursor: pointer;
   }
-}
-
-.tab {
-  display: inline-block;
-  padding: 20px;
-  border-radius: 15px;
-  border-top-left-radius: 0px;
 }
 </style>
