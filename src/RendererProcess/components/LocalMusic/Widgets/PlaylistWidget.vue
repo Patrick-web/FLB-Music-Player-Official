@@ -1,14 +1,14 @@
 <template>
-  <div id="PlaylistWidget" class="blurred_bg blur20">
-    <base-button
-      @click.native="UIcontrollerToggleProperty('showPlaylistWidget')"
-      :icon="require('@/RendererProcess/assets/images/x.svg')"
-      extraClass="modalClose"
-      :small="true"
-      style="transform: translate(5px, -5px) scale(0.8)"
-      :transparent="true"
-    />
-    <h2 style="text-align: center">Select Playlist</h2>
+  <div class="PlaylistWidget blurred_bg blur20 widget">
+    <div class="widget_header">
+      <h1 class="widget_title">Select Playlist</h1>
+      <base-button
+        @click.native="UIcontrollerToggleProperty('showPlaylistWidget')"
+        :icon="require('@/RendererProcess/assets/images/x.svg')"
+        extraClass="widget_close shrink_icon circle"
+        :small="true"
+      />
+    </div>
     <div class="newPlaylistForm">
       <input
         class="inputElem"
@@ -21,7 +21,7 @@
         :active="true"
         :block="true"
         @click.native="createNewPlaylist()"
-        style="margin-top: 5px"
+        style="margin-top: 10px"
       />
     </div>
     <div class="playlistNamesWrapper">
@@ -82,19 +82,11 @@ export default {
 </script>
 
 <style lang="scss">
-#PlaylistWidget {
-  position: fixed;
-  top: 700px;
-  min-width: 250px;
-  max-width: 250px;
-  z-index: 60;
-  box-shadow: 0px 0px 20px 10px rgba(0, 0, 0, 0.281);
-  padding: 10px;
-  border-radius: 20px;
-  transition: none;
+.PlaylistWidget {
+  z-index: 40;
 }
 .newPlaylistForm {
-  margin-top: 5px;
+  margin-top: 10px;
   display: flex;
   flex-direction: column;
   align-items: center;

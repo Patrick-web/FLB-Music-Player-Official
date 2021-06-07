@@ -9,33 +9,30 @@
           <h2>{{ tabsData.addedTracks.length }}</h2>
           <p>Tracks</p>
           <img
-            style="opacity: 40%"
+            class="fade_to_7"
             src="@/RendererProcess/assets/images/music_note.svg"
-            alt=""
           />
         </div>
         <div @click="routeTo('Albums')" class="statCard">
           <h2>{{ tabsData.albums.length }}</h2>
           <p>Albums</p>
           <img
-            style="opacity: 40%"
+            class="fade_to_7"
             src="@/RendererProcess/assets/images/album.svg"
-            alt=""
           />
         </div>
         <div @click="routeTo('Artists')" class="statCard">
           <h2>{{ tabsData.artists.length }}</h2>
           <p>Artists</p>
           <img
-            style="width: 30px"
-            src="@/RendererProcess/assets/images/FLBDefaultArtistPic.png"
-            alt=""
+            src="@/RendererProcess/assets/images/user.svg"
+            class="fade_to_7"
           />
         </div>
         <div @click="routeTo('Folders')" class="statCard">
           <h2>{{ tabsData.folders.length }}</h2>
           <p>Folders</p>
-          <img src="@/RendererProcess/assets/images/folder.svg" alt="" />
+          <img src="@/RendererProcess/assets/images/folder.svg" />
         </div>
       </div>
     </div>
@@ -111,7 +108,6 @@ export default {
 
 <style lang="scss">
 .home {
-  height: 100%;
   overflow: hidden;
   overflow-y: scroll;
   padding-right: 10px;

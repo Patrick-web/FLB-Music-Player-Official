@@ -8,7 +8,6 @@
           @click="expandPlayingPane"
           class="album_art"
           :src="playingTrack.albumArt"
-          alt=""
         />
         <img
           v-if="!playingTrack.albumArt"
@@ -16,7 +15,6 @@
           @click="expandPlayingPane"
           class="album_art"
           src="@/RendererProcess/assets/images/FLBDefaultCover.png"
-          alt=""
         />
       </div>
 
@@ -72,7 +70,6 @@
           :active="audioState.repeat"
         />
       </div>
-      <div class="trackData"></div>
       <TrackBar />
     </div>
 
@@ -95,7 +92,7 @@
         />
       </div>
       <div class="flex center-v">
-        <img src="@/RendererProcess/assets/images/volume_down.svg" alt="" />
+        <img src="@/RendererProcess/assets/images/volume_down.svg" />
         <volume-rocker v-on:newVolume="adjustVolume" />
       </div>
     </div>
@@ -115,6 +112,7 @@ import { mapActions, mapMutations } from "vuex";
 import BaseButton from "../../BaseComponents/BaseButton.vue";
 import Equalizer from "../Equalizer/Equalizer.vue";
 import VolumeRocker from "./VolumeRocker.vue";
+import { setupEqualizer } from "../Equalizer/Equalizer";
 
 export default {
   components: {
@@ -200,12 +198,6 @@ export default {
       if (!this.showPlaylistWidget) {
         this.UIcontrollerToggleProperty("showPlaylistWidget");
       }
-      setTimeout(() => {
-        const playlistWidget = document.querySelector("#PlaylistWidget");
-        playlistWidget.style.bottom = "120px";
-        document.querySelector("#PlaylistWidget").style.top = "initial";
-        document.querySelector("#PlaylistWidget").style.left = "79%";
-      }, 0);
     },
     toggleFromFavorites() {
       this.addToSelectedTracks(this.playingTrack);
@@ -236,6 +228,7 @@ export default {
     },
   },
   mounted() {
+    setupEqualizer();
     this.adjustVolume(this.userSetVolume);
     window.addEventListener("keydown", (e) => {
       if (!document.activeElement.classList.contains("inputElem")) {
@@ -258,7 +251,7 @@ export default {
         }
       }
     });
-    document.querySelector(".split").classList.add("playingPaneLoaded");
+    document.querySelector("body").classList.add("playingPaneLoaded");
 
     const actionHandlers = [
       [
@@ -302,26 +295,22 @@ export default {
 
 <style lang="scss">
 .playingPane {
-  height: 100px;
-  position: fixed;
-  bottom: 5px;
-  width: 98.5vw;
-  margin-left: 10px;
+  width: 100%;
   z-index: 20;
   border-radius: 20px;
   display: flex;
   gap: 10px;
 }
 .left_pane_section {
+  padding: 10px;
   display: flex;
   gap: 10px;
   align-items: center;
   width: 20%;
-  padding-left: 10px;
 }
 .album_art_resolver {
   .album_art {
-    width: 80px;
+    width: 70px;
     border-radius: 15px;
   }
 }
@@ -359,6 +348,8 @@ export default {
   flex-direction: column;
   align-items: center;
   justify-content: flex-end;
+  padding: 10px;
+
   button {
     transform: scale(0.8);
   }

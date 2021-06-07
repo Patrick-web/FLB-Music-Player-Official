@@ -11,24 +11,11 @@
           <img
             class="folderIcon"
             src="@/RendererProcess/assets/images/folder.svg"
-            alt=""
           />
           <div class="top3">
-            <img
-              v-if="folder.tracks[0]"
-              :src="folder.tracks[0].albumArt"
-              alt=""
-            />
-            <img
-              v-if="folder.tracks[1]"
-              :src="folder.tracks[1].albumArt"
-              alt=""
-            />
-            <img
-              v-if="folder.tracks[2]"
-              :src="folder.tracks[2].albumArt"
-              alt=""
-            />
+            <img v-if="folder.tracks[0]" :src="folder.tracks[0].albumArt" />
+            <img v-if="folder.tracks[1]" :src="folder.tracks[1].albumArt" />
+            <img v-if="folder.tracks[2]" :src="folder.tracks[2].albumArt" />
           </div>
         </div>
         <p>{{ folder.name }}</p>
@@ -73,18 +60,15 @@
             v-if="selectedGroup.tracks[0].albumArt"
             id="blurred"
             :src="selectedGroup.tracks[0].albumArt"
-            alt=""
           />
           <img
             v-if="!selectedGroup.tracks[0].albumArt"
             id="blurred"
             src="@/RendererProcess/assets/images/FLBDefaultCover.png"
-            alt=""
           />
           <img
             class="coverArt"
             src="@/RendererProcess/assets/images/folder.svg"
-            alt=""
           />
         </div>
         <div class="cardsWrapper">
@@ -167,13 +151,9 @@ export default {
 </script>
 
 <style lang="scss">
-.FoldersTab {
-  height: 100%;
-  padding-bottom: 0px;
-}
 .folderCards {
   gap: 10px;
-  height: 100%;
+  height: 105%;
   overflow: hidden;
   overflow-y: scroll;
   .folderCard {

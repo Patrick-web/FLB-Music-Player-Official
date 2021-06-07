@@ -70,9 +70,11 @@ export default {
 .bingSearchBar {
   position: relative;
   width: 100%;
-  transform: translateY(-15px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
   .BigSearch {
-    width: 100%;
+    width: 60%;
     border-radius: 40px;
     outline: none;
     border: none;
@@ -83,7 +85,7 @@ export default {
   }
   #clearResultsIcon {
     position: absolute;
-    right: -18px;
+    right: 19.5%;
     bottom: 2px;
     cursor: pointer;
     z-index: 4;

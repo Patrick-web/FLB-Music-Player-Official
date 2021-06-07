@@ -8,7 +8,6 @@
       <img
         style="width: 19vw; margin: auto"
         src="@/RendererProcess/assets/images/empty_Illustration.svg"
-        alt=""
       />
       <pre
         style="
@@ -27,12 +26,12 @@
         :key="tab.name"
         :class="[
           sidePaneActiveTab === tab.name ? 'activeTab' : '',
-          'tabBtn bg2',
+          'tabBtn bg1',
         ]"
         @click.stop="switchAidePaneActiveTab(tab.name)"
         :id="tab.name"
       >
-        <img :src="tab.icon" class="icon" alt="" />
+        <img :src="tab.icon" class="icon" />
         <p>{{ tab.name }}</p>
       </div>
     </div>

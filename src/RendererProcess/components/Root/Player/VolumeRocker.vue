@@ -47,9 +47,9 @@ export default {
 <style lang="scss">
 .VolumeRocker {
   position: relative;
-  width: 130px;
+  width: 135px;
   height: 10px;
-  border-radius: 5px;
+  border-radius: 10px;
   cursor: pointer;
   overflow: hidden;
   input {
@@ -83,7 +83,7 @@ export default {
   }
   .base_slider_progress {
     position: absolute;
-    border-radius: 5px;
+    border-radius: 10px;
     bottom: 0px;
     left: 0px;
     height: 100%;

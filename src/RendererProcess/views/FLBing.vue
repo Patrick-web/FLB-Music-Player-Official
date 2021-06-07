@@ -134,18 +134,14 @@ export default {
 </script>
 
 <style lang="scss">
-.playingPaneLoaded {
-  .FLBing {
-    height: 86%;
-  }
-}
 .FLBing {
   width: 100%;
   height: 100%;
   display: flex;
   position: relative;
   .SearchArea {
-    width: 60%;
+    height: 100%;
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;

@@ -1,7 +1,7 @@
 <template>
   <div class="customTitleBar bg1">
     <div class="leftSide">
-      <img id="logo" src="@/RendererProcess/assets/images/Logo.png" alt="" />
+      <img id="logo" src="@/RendererProcess/assets/images/Logo.png" />
       <p>LB Music</p>
     </div>
     <div class="ctrls">

@@ -6,7 +6,7 @@
       v-model="searchQuery"
       id="search"
       placeholder="Search"
-      class="inputElem bg2"
+      class="inputElem bg1"
     />
     <SortWidget />
     <SearchResults v-on:closeSearch="searchQuery = ''" v-if="searchQuery" />

@@ -68,12 +68,11 @@
             v-if="artistPicture"
             class="coverArt"
             :src="artistPicture"
-            alt=""
             id="blurred"
           />
         </div>
         <div class="cardsWrapper">
-          <div class="grid2 gap20">
+          <div class="grid2 gap20 al_t">
             <div class="artistAlbums">
               <div class="sectionHeading">
                 <p>Albums</p>
@@ -228,11 +227,6 @@ export default {
 </script>
 
 <style lang="scss">
-.playingPaneLoaded {
-  .cardsWrapper {
-    height: 60% !important;
-  }
-}
 .ArtistsTab {
   .sliverBar {
     .LetterCard {
@@ -250,16 +244,21 @@ export default {
   }
   .cardsWrapper {
     overflow-y: hidden !important;
-    height: 60%;
-    .grid2 {
+    height: 59%;
+    .al_t {
       height: 100%;
+      position: relative;
+      align-items: flex-start;
+      .grid2 {
+        height: 100%;
+      }
     }
   }
   .artistTracks,
   .artistAlbums {
-    height: 100%;
+    height: 50%;
     .content {
-      height: 31vh;
+      height: 88%;
       overflow: hidden;
       overflow-y: scroll;
       position: relative;

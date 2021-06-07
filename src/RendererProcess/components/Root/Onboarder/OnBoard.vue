@@ -5,11 +5,7 @@
       leave-active-class="animated slideOutLeft faster"
     >
       <div class="slide" v-if="currentSlide == 1">
-        <img
-          id="lamma"
-          src="@/RendererProcess/assets/images/lamma.gif"
-          alt=""
-        />
+        <img id="lamma" src="@/RendererProcess/assets/images/lamma.gif" />
         <div class="intro">
           <h1>Welcome To FLB Music</h1>
           <p>Beauty🌹, Simplicity📃, Functionality🏹</p>
@@ -65,11 +61,7 @@
         <h3 style="position: absolute; bottom: 100px; z-index: 2">
           Tip {{ tips[currentTip] }}
         </h3>
-        <img
-          id="loadingCat"
-          src="@/RendererProcess/assets/images/cat.gif"
-          alt=""
-        />
+        <img id="loadingCat" src="@/RendererProcess/assets/images/cat.gif" />
         <base-button
           v-if="showOnboardCloseBt"
           @click.native="closeOnBoard"

@@ -35,7 +35,7 @@
           <p v-if="!isCollapsed">FLBing</p>
         </router-link>
       </div>
-      <div
+      <!-- <div
         class="sideNav-group"
         :class="[
           currentPage === 'Podcasts' ? 'active-sideNav-group' : '',
@@ -52,7 +52,7 @@
           />
           <p v-if="!isCollapsed">Podcasts</p>
         </router-link>
-      </div>
+      </div> -->
       <!-- <div
         class="sideNav-group"
         :class="[
@@ -170,15 +170,9 @@ export default {
 </script>
 
 <style lang="scss">
-.playingPaneLoaded {
-  .sideNav {
-    height: 80vh;
-  }
-}
 .sideNav {
   min-width: 180px;
   width: 180px;
-  height: 92.5vh;
   border-radius: 20px;
   display: flex;
   flex-direction: column;

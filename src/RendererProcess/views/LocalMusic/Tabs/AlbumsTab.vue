@@ -53,12 +53,8 @@
               />
             </div>
           </div>
-          <img
-            class="coverArt"
-            :src="selectedGroup.tracks[0].albumArt"
-            alt=""
-          />
-          <img id="blurred" :src="selectedGroup.tracks[0].albumArt" alt="" />
+          <img class="coverArt" :src="selectedGroup.tracks[0].albumArt" />
+          <img id="blurred" :src="selectedGroup.tracks[0].albumArt" />
         </div>
         <div class="cardsWrapper">
           <TrackCard

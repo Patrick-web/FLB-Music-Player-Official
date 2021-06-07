@@ -2,7 +2,7 @@
   <div class="groupedContentTab blurred_bg blur30 bingArtistPage bingPage">
     <div class="sliverBar">
       <img class="coverArt" id="blurred" :src="artistInfo.picture" />
-      <img class="coverArt roundImage" :src="artistInfo.picture" alt="" />
+      <img class="coverArt roundImage" :src="artistInfo.picture" />
       <div class="sliverBarFooter">
         <div class="groupedCard_info">
           <p class="groupedInfo_title">
@@ -76,23 +76,13 @@ export default {
 </script>
 
 <style lang="scss">
-.playingPaneLoaded {
-  .bingPage {
-    .cardsWrapper {
-      height: 68% !important;
-    }
-    .artist_data_results .grid2 .artist_data {
-      height: 18%;
-    }
-  }
-}
 .bingPage {
   position: absolute;
   top: 0;
   z-index: 4;
   border-radius: 20px;
   overflow: hidden;
-  height: 93% !important;
+  height: 96% !important;
   .content {
     padding: 20px;
     overflow: hidden;

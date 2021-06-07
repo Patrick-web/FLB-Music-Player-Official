@@ -65,7 +65,9 @@ export default {
       this.$emit("selectedRecommendedArtist", artistData);
     },
     generateArtistsToSearchFor() {
-      const allArtists = this.allTracks.map((track) => track.defaultArtist);
+      const allArtists = this.allTracks
+        .map((track) => track.defaultArtist)
+        .filter((artist) => artist != "unkmown" || artist != "");
       this.selectedArtists = shuffleArray(new Set(allArtists));
       setTimeout(() => {
         this.fetchRecommendedArtists();
@@ -116,8 +118,8 @@ export default {
             if (similarArtistObj) {
               recommend.similarArtists.push(similarArtistObj);
               const index = this.deezerRecommendedArtists.findIndex(
-                (existingRecommend) =>
-                  existingRecommend.sourceArtist == recommend.sourceArtist
+                (existingRecommendation) =>
+                  existingRecommendation.sourceArtist == recommend.sourceArtist
               );
               if (index >= 0) {
                 this.deezerRecommendedArtists[index].similarArtists =
@@ -143,9 +145,9 @@ export default {
 
 <style lang="scss">
 .BingRecommender {
-  max-height: 450px;
+  max-height: 84%;
   transform: translateY(40px);
-  width: 150%;
+  width: 100%;
   overflow: hidden;
   overflow-y: scroll;
   .bingRecommenderTitle {
@@ -155,16 +157,18 @@ export default {
     width: 100%;
     padding: 10px;
     padding-right: 15px;
+    text-align: center;
     backdrop-filter: blur(10px);
   }
   .artistRecommendations {
     display: flex;
+    gap: 10px;
     flex-wrap: wrap;
+    justify-content: center;
   }
   .recommend {
     border-radius: 15px;
     padding: 10px;
-    margin: 10px;
     .contentsWrapper {
       display: flex;
       flex-wrap: wrap;

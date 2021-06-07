@@ -1,6 +1,6 @@
 <template>
   <div class="Settings blurred_bg blur40">
-    <h1 id="SettingsTitle" style="font-size: 1.6rem; margin-top: 5px">
+    <!-- <h1 id="SettingsTitle" style="font-size: 1.6rem; margin-top: 5px">
       Settings
     </h1>
     <base-button
@@ -9,7 +9,16 @@
       extraClass="modalClose"
       :small="true"
       :transparent="true"
-    />
+    /> -->
+    <div class="widget_header">
+      <h1 class="widget_title">Settings</h1>
+      <base-button
+        @click.native="UIcontrollerToggleProperty('showSettings')"
+        :icon="require('@/RendererProcess/assets/images/x.svg')"
+        extraClass="widget_close shrink_icon circle"
+        :small="true"
+      />
+    </div>
     <main>
       <section>
         <article class="bg1">
@@ -18,7 +27,7 @@
             <div
               v-for="folder in settings.foldersToScan"
               :key="folder"
-              class="folderBox"
+              class="folderBox bg1"
             >
               <div>
                 <p>{{ folder.replace(/(.*)[\/\\]/, "") }}</p>
@@ -29,6 +38,8 @@
               <base-button
                 @click.native="removeFromScannedFolders(folder)"
                 :icon="require('@/RendererProcess/assets/images/x.svg')"
+                extraClass="shrink_icon circle"
+                :small="true"
               />
             </div>
           </div>
@@ -60,7 +71,7 @@
                   'bg2',
                 ]"
               >
-                <img class="icon" :src="tab.icon" alt="" />
+                <img class="icon" :src="tab.icon" />
                 <p>{{ tab.name }}</p>
               </div>
             </ul>
@@ -268,16 +279,17 @@ export default {
   overflow: hidden;
   top: 40px;
   left: 10px;
-  height: 93.5vh;
-  width: 98.5vw;
+  height: 90%;
+  width: 97%;
   z-index: 50;
   border: 1px solid rgba(255, 255, 255, 0.315);
   border-radius: 20px;
+  padding: 10px;
   main {
     display: grid !important;
     grid-template-columns: 1fr 1fr 1fr;
-    gap: 10px;
     width: 100%;
+    gap: 10px;
     section {
       border-right: 1px solid white;
       height: 90vh;

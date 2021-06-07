@@ -105,7 +105,7 @@ export default {
   .TrackCard {
     margin-left: 30px;
     .fxSelectBt {
-      opacity: 1;
+      display: block;
     }
   }
   .TrackCard:hover {
@@ -129,15 +129,19 @@ export default {
 
 .playingTrack {
   background: rgba(255, 255, 255, 0.137);
-  border-radius: 8px;
+  border-radius: 20px;
   margin-top: 5px;
   border-bottom: none !important;
   position: relative;
   .trackTitle {
-    transform: translateX(15px);
+    // transform: translateX(25px);
+    margin-left: 25px;
   }
   &::before {
-    height: 75% !important;
+    transform: translateY(-50%) scale(1) !important;
+  }
+  &::after {
+    transform: translateY(-50%) scale(1) !important;
   }
 }
 .TrackCard {
@@ -146,19 +150,31 @@ export default {
   color: white;
   cursor: pointer;
   padding-left: 0px;
+  padding: 5px;
   transition: 0.2s ease;
   &::before {
     position: absolute;
-    z-index: -1;
     content: "";
     left: 5px;
-    width: 10px;
-    height: 0%;
+    width: 20px;
+    height: 70%;
     top: 50%;
-    transform: translateY(-50%);
+    transform: translateY(-50%) scale(0);
     background: var(--accentColor);
     border-radius: 10px;
-    transition: 0.3s ease-in-out;
+    transition: none;
+  }
+  &::after {
+    position: absolute;
+    content: "";
+    right: 5px;
+    width: 20px;
+    height: 70%;
+    top: 50%;
+    transform: translateY(-50%) scale(0);
+    background: var(--accentColor);
+    border-radius: 10px;
+    transition: none;
   }
   .fxSelectBt {
     position: absolute;
@@ -170,7 +186,7 @@ export default {
     border: 1px solid rgba(255, 255, 255, 0.452);
     width: 20px;
     height: 20px;
-    opacity: 0;
+    display: none;
   }
   .cover {
     width: 35px;
@@ -189,12 +205,14 @@ export default {
     font-size: 0.95rem;
     font-family: roboto-thin;
     opacity: 0.8;
+    align-self: center;
   }
   .info {
-    padding: 5px;
     width: 100%;
     display: grid;
     grid-template-columns: 3fr 1fr 2fr;
+    justify-content: center;
+    align-items: center;
     align-items: center;
   }
   .delIcon {

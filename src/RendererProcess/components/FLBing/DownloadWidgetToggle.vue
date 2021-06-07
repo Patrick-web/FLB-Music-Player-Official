@@ -5,7 +5,7 @@
         :icon="require('@/RendererProcess/assets/images/x.svg')"
         @click.native="toggleWidget"
         v-if="widgetIsVisible"
-        extraClass="shrinkIconImage"
+        extraClass="shrink_icon"
       />
       <base-button
         :icon="require('@/RendererProcess/assets/images/cloud-download.svg')"
@@ -57,11 +57,6 @@ export default {
     transform: scale(0.8);
     &:hover {
       background: var(--accentColor) !important;
-    }
-  }
-  .shrinkIconImage {
-    img {
-      transform: scale(0.7);
     }
   }
 }

@@ -3,11 +3,11 @@
     <div
       v-for="tab in tabs"
       :key="tab.name"
-      :class="[currentTab === tab.name ? 'activeTab' : '', 'tabBtn bg2']"
+      :class="[currentTab === tab.name ? 'activeTab' : '', 'tabBtn bg1']"
       @click="routeTo(tab)"
       :id="tab.name"
     >
-      <img :src="tab.icon" class="icon" alt="" />
+      <img :src="tab.icon" class="icon" />
       <p>{{ tab.name }}</p>
     </div>
   </div>
@@ -69,14 +69,12 @@ import folderIcon from "@/RendererProcess/assets/images/folderNormal.svg";
     display: flex;
     align-items: center;
     gap: 5px;
-    padding: 5px;
-    padding-right: 10px;
-    padding-left: 10px;
+    padding: 5px 8px;
     color: white;
     border-radius: 10px;
     overflow: hidden;
     cursor: pointer;
-    transition: 0.2s ease;
+    transition: 0.4s ease border-radius;
     p {
       font-size: 0.9rem;
       font-family: roboto-light;
@@ -91,14 +89,14 @@ import folderIcon from "@/RendererProcess/assets/images/folderNormal.svg";
   }
   .activeTab {
     background: var(--accentColor) !important;
-    font-family: roboto;
-    padding-left: 5px;
-    padding-right: 5px;
-    p {
-      width: 0px;
-      margin-left: -5px;
-      opacity: 0;
-    }
+    border-radius: 20px;
+    // padding-left: 5px;
+    // padding-right: 5px;
+    // p {
+    //   width: 0px;
+    //   margin-left: -5px;
+    //   opacity: 0;
+    // }
   }
   .activeTab:hover {
     background: var(--accentColor);

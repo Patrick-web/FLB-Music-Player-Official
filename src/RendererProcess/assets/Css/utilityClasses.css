@@ -140,3 +140,11 @@
 .hide_this {
 	display: none;
 }
+
+.circle {
+	border-radius: 50%;
+}
+
+.shrink_icon img {
+	transform: scale(0.7);
+}

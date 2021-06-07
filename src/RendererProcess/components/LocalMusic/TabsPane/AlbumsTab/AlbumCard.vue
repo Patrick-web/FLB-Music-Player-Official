@@ -4,13 +4,11 @@
       class="coverArt"
       v-if="album.tracks[0].albumArt"
       :src="album.tracks[0].albumArt"
-      alt=""
     />
     <img
       class="coverArt"
       v-if="!album.tracks[0].albumArt"
       src="@/RendererProcess/assets/images/FLBDefaultCover.png"
-      alt=""
     />
     <div class="tracksCount">
       <p>

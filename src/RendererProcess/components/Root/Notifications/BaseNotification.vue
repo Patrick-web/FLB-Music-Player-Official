@@ -12,7 +12,6 @@
     <img
       class="closeNotification"
       src="@/RendererProcess/assets/images/x.svg"
-      alt=""
     />
   </div>
 </template>

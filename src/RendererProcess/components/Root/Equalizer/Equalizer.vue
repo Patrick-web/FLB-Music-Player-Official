@@ -1,15 +1,13 @@
 <template>
-  <div class="Equalizer blurred_bg blur20">
-    <base-button
-      @click.native="UIcontrollerToggleProperty('showEqualizerWidget')"
-      :icon="require('@/RendererProcess/assets/images/x.svg')"
-      extraClass="modalClose"
-      :small="true"
-      style="transform: translate(5px, -5px) scale(0.8)"
-      :transparent="true"
-    />
-    <div class="centerContents">
-      <h1 style="font-size: 1.5rem" class="modalTitle">Equalizer</h1>
+  <div class="Equalizer widget blurred_bg blur20">
+    <div class="widget_header">
+      <h1 class="widget_title">Equalizer</h1>
+      <base-button
+        @click.native="UIcontrollerToggleProperty('showEqualizerWidget')"
+        :icon="require('@/RendererProcess/assets/images/x.svg')"
+        extraClass="widget_close shrink_icon circle"
+        :small="true"
+      />
     </div>
     <div class="presets grid3 gap10">
       <base-button
@@ -61,18 +59,11 @@ export default {
       "loadPreset",
     ]),
   },
-  mounted() {
-    setupEqualizer();
-  },
 };
 </script>
 
 <style lang="scss">
 .Equalizer {
-  position: fixed;
-  bottom: 120px;
-  right: 15px;
-  border-radius: 20px;
   padding: 10px;
   padding-top: 5px;
   box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.582);

@@ -44,7 +44,7 @@ pre {
 	background: rgb(17, 17, 17);
 }
 .dark_theme .bg2 {
-	background: rgb(26, 26, 26);
+	background: rgb(14, 14, 14);
 }
 .dark_theme .blurred_bg {
 	background: rgb(26, 26, 26) !important;
@@ -63,7 +63,7 @@ pre {
 }
 
 .black_theme .bg1 {
-	background: black;
+	background: rgb(5, 5, 5);
 }
 .black_theme .bg2 {
 	background: rgb(8, 8, 8);

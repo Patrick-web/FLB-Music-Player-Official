@@ -46,7 +46,7 @@
 	z-index: 5;
 	overflow: hidden;
 	overflow-y: scroll;
-	max-height: 65%;
+	height: 56%;
 	padding: 10px;
 }
 

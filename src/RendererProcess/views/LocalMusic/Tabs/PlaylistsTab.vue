@@ -161,16 +161,18 @@ export default {
 @import "@/RendererProcess/assets/sass/mixins.scss";
 
 .PlaylistsTab {
-  height: 100%;
   position: relative;
+  height: 100%;
   .playlistCards {
-    display: flex;
+    padding: 10px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
     // flex-direction: column;
     flex-wrap: wrap;
     gap: 10px;
     align-items: center;
-    justify-content: flex-start;
-    height: 100%;
+    justify-content: space-between;
+    height: 95%;
     overflow: hidden;
     overflow-y: scroll;
   }

@@ -5,21 +5,21 @@
       class="iconBt backToUnfilteredItems"
       style="margin-top: 20px"
     >
-      <img src="@/RendererProcess/assets/images/back.svg" alt="" />
+      <img src="@/RendererProcess/assets/images/back.svg" />
     </button>
     <div class="sliverBar">
       <div class="sliverBarActions">
         <button @click="playAll" class="btWithIcon">
-          <img src="@/RendererProcess/assets/images/playnext.svg" alt="" />
+          <img src="@/RendererProcess/assets/images/playnext.svg" />
           <p>Play All</p>
         </button>
         <button @click="addTracksToQueue" class="btWithIcon">
-          <img src="@/RendererProcess/assets/images/queue-music.svg" alt="" />
+          <img src="@/RendererProcess/assets/images/queue-music.svg" />
           <p>Add To Queue</p>
         </button>
       </div>
-      <img class="coverArt" :src="selectedGroup.tracks[0].albumArt" alt="" />
-      <img id="blurred" :src="selectedGroup.tracks[0].albumArt" alt="" />
+      <img class="coverArt" :src="selectedGroup.tracks[0].albumArt" />
+      <img id="blurred" :src="selectedGroup.tracks[0].albumArt" />
       <div class="groupedCard_info">
         <p class="groupedInfo_title">
           {{ selectedGroup.name }}

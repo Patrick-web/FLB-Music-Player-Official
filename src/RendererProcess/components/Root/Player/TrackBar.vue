@@ -5,13 +5,6 @@
       id="audioTag"
       autoplay
     ></audio>
-    <div @click="goToPosition($event)" class="seekBar">
-      <div class="seekProgress">
-        <div></div>
-        <div class="elipse"></div>
-      </div>
-      <p id="hoverTime">{{ hoverTime }}</p>
-    </div>
     <div class="progressInfoCard">
       <p>
         {{ currentTime }}
@@ -19,6 +12,13 @@
       <p>
         {{ duration }}
       </p>
+    </div>
+    <div @click="goToPosition($event)" class="seekBar">
+      <div class="seekProgress">
+        <div></div>
+        <div class="elipse"></div>
+      </div>
+      <p id="hoverTime">{{ hoverTime }}</p>
     </div>
   </div>
 </template>
@@ -149,11 +149,11 @@ export default {
   position: relative;
   z-index: 25;
   width: 100%;
-  height: 50px;
   display: flex;
+  flex-direction: column;
+  gap: 5px;
   align-items: center;
   justify-content: space-between;
-  transform: translateY(20%);
 }
 
 .seekBar {
@@ -216,7 +216,6 @@ export default {
   width: 25px;
 }
 .progressInfoCard {
-  position: absolute;
   display: flex;
   justify-content: space-between;
   transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);

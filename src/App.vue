@@ -10,13 +10,13 @@
     </transition>
     <OnBoard v-on:closeOnBoard="showOnboard = false" v-if="showOnboard" />
     <Notifications />
-    <div class="split">
-      <section style="display: flex">
+    <section id="main-view">
+      <div class="flex" id="sub-view-1">
         <SideNav />
         <router-view />
-      </section>
-      <PlayingPane v-if="playingTrack && $route.path !== '/deezer'" />
-    </div>
+      </div>
+      <PlayingPane v-if="playingTrack" />
+    </section>
     <Bg v-if="theme == 'fancy'" />
   </div>
 </template>
@@ -90,42 +90,42 @@ body {
 }
 #app {
   height: 100vh;
-  background: black;
+  display: flex;
+  flex-direction: column;
+  background: rgb(8, 8, 8);
 }
 ::-webkit-scrollbar {
-  background: rgba(0, 0, 0, 0.199);
+  background: rgba(0, 0, 0, 0);
   width: 8px;
   height: 6px;
 }
 ::-webkit-scrollbar-track-piece {
-  background: rgba(255, 255, 255, 0.083);
+  background: rgba(255, 255, 255, 0);
   border-radius: 10px;
 }
 ::-webkit-scrollbar-thumb {
-  background: rgb(255, 255, 255);
+  background: var(--accentColor);
   border-radius: 10px;
 }
-.split {
+.playingPaneLoaded {
+  #main-view {
+    height: 94%;
+  }
+  #sub-view-1 {
+    height: 85%;
+  }
+}
+#main-view {
+  position: relative;
+  z-index: 2;
   height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: start;
-  position: relative;
-  z-index: 2;
-  #logo {
-    position: fixed;
-    width: 40px;
-    top: 25px;
-    left: 15px;
-    z-index: 20;
-  }
-  #logo:hover {
-    cursor: pointer;
-  }
-  section {
-    height: 95%;
-    padding: 10px;
-  }
+  gap: 10px;
+  padding: 10px;
+}
+#sub-view-1 {
+  height: 100%;
 }
 .featuresSwitcherArea {
   display: flex;

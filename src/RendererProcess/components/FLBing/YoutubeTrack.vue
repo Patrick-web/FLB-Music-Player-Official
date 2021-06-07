@@ -5,7 +5,11 @@
       <p class="yt_title">
         {{ ytTrack.title }}
       </p>
-      <div>
+      <div v-if="ytTrack.publish_time == 0" class="live_indicator">
+        <p class="text-light text-small-1">🎙 {{ ytTrack.channel }}</p>
+        <h4>Live 🔴</h4>
+      </div>
+      <div v-if="ytTrack.publish_time != 0">
         <div class="flex fade_to_8 flex_between">
           <p class="text-light text-small-1">🎙 {{ ytTrack.channel }}</p>
           <p class="text-light text-small-1">📅 {{ ytTrack.publish_time }}</p>
@@ -24,7 +28,7 @@
       />
       <base-button
         :icon="require('@/RendererProcess/assets/images/cloud-download.svg')"
-        v-if="!trackAlreadyDownloaded"
+        v-if="!trackAlreadyDownloaded && ytTrack.publish_time != 0"
         @click.native="downloadVideoAudioFeed"
         :loading="isBeingDownloaded"
       />
@@ -47,11 +51,12 @@ export default {
   },
   computed: {
     trackAlreadyDownloaded() {
-      const index = this.$store.state.TabsManager.tabsData.addedTracks.findIndex(
-        (track) =>
-          track.defaultTitle == cleanUpText(this.ytTrack.title) &&
-          track.defaultArtist == this.ytTrack.artist
-      );
+      const index =
+        this.$store.state.TabsManager.tabsData.addedTracks.findIndex(
+          (track) =>
+            track.defaultTitle == cleanUpText(this.ytTrack.title) &&
+            track.defaultArtist == this.ytTrack.artist
+        );
       if (index > -1) {
         return true;
       } else {
@@ -126,7 +131,7 @@ export default {
       const tags = {
         title: cleanUpText(trackInfo.title),
         artist: trackInfo.artist.name,
-        album: "Unknown",
+        album: "YouTube",
         APIC: this.ytTrack.thumbnails[this.ytTrack.thumbnails.length - 1],
       };
       const artistInfo = {
@@ -185,6 +190,21 @@ export default {
       //   height: 50px;
       margin: 10px;
     }
+  }
+  .live_indicator {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transform: translateY(5px);
+    h4 {
+      background: rgb(220, 20, 60);
+      padding: 4px;
+      border-radius: 10px;
+      font-size: 0.9rem;
+    }
+    box-shadow: 5px 5px solid black;
+    border-radius: 20px;
   }
 }
 </style>

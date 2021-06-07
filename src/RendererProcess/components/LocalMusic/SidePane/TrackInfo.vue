@@ -8,32 +8,31 @@
         v-if="playingTrack.albumArt"
         :src="playingTrack.albumArt"
         id="tag_albumArt"
-        alt=""
       />
       <p v-if="!playingTrack.albumArt">No Album Art</p>
     </div>
     <div class="tag">
-      <pre>Title</pre>
+      <pre class="bg1">Title</pre>
       <p>{{ playingTrack.title || "unknown" }}</p>
     </div>
     <div class="tag">
-      <pre>Artist</pre>
+      <pre class="bg1">Artist</pre>
       <p>{{ playingTrack.artist || "unknown" }}</p>
     </div>
     <div class="tag">
-      <pre>Album</pre>
+      <pre class="bg1">Album</pre>
       <p>{{ playingTrack.album }}</p>
     </div>
     <div v-if="playingTrack.duration" class="tag">
-      <pre>Length</pre>
+      <pre class="bg1">Length</pre>
       <p>{{ playingTrack.formattedLength }}</p>
     </div>
     <div class="tag">
-      <pre>Date Added</pre>
+      <pre class="bg1">Date Added</pre>
       <p>{{ new Date(playingTrack.dateAdded).toDateString() }}</p>
     </div>
     <div class="tag">
-      <pre>File name</pre>
+      <pre class="bg1">File name</pre>
       <p>{{ playingTrack.fileName }}</p>
     </div>
     <base-button
@@ -41,6 +40,8 @@
       id="toggleTagEditor"
       @click.native="emitPlayingTrack"
       :icon="require('@/RendererProcess/assets/images/pen.svg')"
+      extraClass="shrink_icon"
+      :small="true"
     />
   </div>
 </template>
@@ -74,10 +75,9 @@ export default {
     padding: 10px;
     pre {
       font-size: 0.8rem;
-      background: rgba(0, 0, 0, 0.411);
-      padding: 3px;
-      border-left: 1px solid white;
+      padding: 4px 7px;
       display: inline;
+      border-radius: 15px;
     }
     p {
       margin-top: 5px;
@@ -87,12 +87,13 @@ export default {
   }
   #tag_albumArt {
     width: 150px;
+    border-radius: 15px;
   }
   #toggleTagEditor {
     position: absolute;
     top: 0px;
     left: 10%;
-    transform: translateX(-50%);
+    backdrop-filter: blur(10px);
   }
 }
 </style>

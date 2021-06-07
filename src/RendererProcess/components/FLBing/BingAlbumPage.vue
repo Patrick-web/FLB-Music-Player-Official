@@ -1,8 +1,8 @@
 <template>
   <div class="groupedContentTab bingPage blurred_bg blur30 bingAlbumPage">
     <div class="sliverBar">
-      <img class="coverArt" id="blurred" :src="albumInfo.cover" alt="" />
-      <img class="coverArt" :src="albumInfo.cover" alt="" />
+      <img class="coverArt" id="blurred" :src="albumInfo.cover" />
+      <img class="coverArt" :src="albumInfo.cover" />
       <div class="sliverBarFooter">
         <div class="groupedCard_info">
           <p class="groupedInfo_title">
@@ -71,6 +71,7 @@ export default {
   z-index: 5 !important;
   width: 100%;
   .cardsWrapper {
+    height: 50%;
     padding: 40px;
     padding-right: 60px;
     padding-top: 10px;

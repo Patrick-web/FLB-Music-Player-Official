@@ -27,7 +27,7 @@ root {
 	--baseFontSize: 1rem;
 }
 body {
-	background: black;
+	background: rgb(0, 1, 14);
 	perspective: 70em;
 }
 .tab {
@@ -190,4 +190,27 @@ input::placeholder {
 	color: rgba(255, 255, 255, 0.548);
 	font-size: var(--baseFontSize);
 	font-family: roboto-thin;
+}
+.widget {
+	position: fixed;
+	bottom: 108px;
+	width: 240px;
+	right: 13px;
+	border-radius: 20px;
+	padding: 10px;
+	box-shadow: 0px 0px 20px 10px rgba(0, 0, 0, 0.281);
+}
+.widget_header {
+	position: relative;
+	width: 100%;
+}
+.widget_close {
+	position: absolute;
+	right: -5px;
+	top: -5px;
+}
+.widget_title {
+	font-size: 1.5rem;
+	text-align: center;
+	/* transform: translateY(5px); */
 }

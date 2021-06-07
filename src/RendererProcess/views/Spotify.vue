@@ -9,7 +9,6 @@
       <img
         class="animated infinite fast"
         src="@/RendererProcess/assets/images/refresh.svg"
-        alt=""
       />
     </button>
     <webview

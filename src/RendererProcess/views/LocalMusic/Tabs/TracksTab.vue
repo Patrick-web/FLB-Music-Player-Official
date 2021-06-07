@@ -52,10 +52,9 @@ export default {
 .addedTracksTab {
   position: relative;
   overflow: hidden;
-  height: 100%;
   #tracksTabVirtualList,
   .tracksWrapper {
-    height: 100%;
+    height: 99%;
     overflow: hidden;
     overflow-y: scroll;
   }

@@ -9,22 +9,24 @@
       <img
         style="width: 140px"
         src="@/RendererProcess/assets/images/addIllustration.svg"
-        alt=""
       />
       <p style="font-family: roboto-thin">Empty Playlist</p>
     </div>
     <div class="playlist_header">
-      <p class="playlist_name">{{ playlist.name }}</p>
+      <p class="playlist_name bg1">{{ playlist.name }}</p>
+
       <div v-if="playlist.tracks.length != 0" class="playlist_actions">
         <base-button
           :icon="require('@/RendererProcess/assets/images/open.svg')"
           @click.native="openPlaylist"
           title="Open Playlist"
+          text="Open"
         />
         <base-button
           :icon="require('@/RendererProcess/assets/images/playButton.svg')"
           @click.native="playAll"
           title="Play All"
+          text="Play"
         />
       </div>
     </div>
@@ -32,6 +34,7 @@
       <over-layed-tracks
         v-if="playlist.tracks.length !== 0"
         :tracks="playlist.tracks.slice(0, 4)"
+        :vertical="true"
       />
     </div>
   </div>
@@ -82,23 +85,23 @@ export default {
 
 <style lang="scss">
 .PlaylistCard {
-  align-self: flex-start;
+  align-self: center;
   justify-self: center;
   border-radius: 20px;
-  padding: 10px;
-  .playlist_header {
-    display: flex;
-    gap: 10px;
-    justify-content: space-between;
-    align-items: center;
-  }
   .playlist_name {
-    font-size: 1.2rem;
+    font-size: 1rem;
+    font-family: roboto-light;
+    margin-bottom: 5px;
+    text-align: center;
+    padding: 10px 0px;
+    border-radius: 20px 20px 0px 0px;
   }
   .playlist_actions {
     display: flex;
     align-items: center;
     gap: 10px;
+    margin-bottom: 5px;
+    justify-content: center;
   }
   // .playlist_body {
   // }

@@ -11,7 +11,7 @@
       tiny ? 'tinyBtn' : '',
       extraClass,
       transparent ? 'transparentBt' : '',
-      'bg2',
+      'bg1',
       loading ? 'disabledBtn' : '',
     ]"
   >

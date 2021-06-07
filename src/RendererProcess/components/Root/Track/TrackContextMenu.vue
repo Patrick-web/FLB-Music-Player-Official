@@ -1,15 +1,15 @@
 <template>
   <div @click="close" class="trackOptions blurred_bg blur10">
     <div @click.stop="playNext" class="option hideOnMultiSelectMode">
-      <img src="@/RendererProcess/assets/images/playnext.svg" alt="" />
+      <img src="@/RendererProcess/assets/images/playnext.svg" />
       <span>Play Next</span>
     </div>
     <div @click.stop="queueTrack" class="option">
-      <img src="@/RendererProcess/assets/images/queue-music.svg" alt="" />
+      <img src="@/RendererProcess/assets/images/queue-music.svg" />
       <span>Add to Queue</span>
     </div>
     <div @click.stop="addToFavorites" class="option">
-      <img src="@/RendererProcess/assets/images/heart.svg" alt="" />
+      <img src="@/RendererProcess/assets/images/heart.svg" />
       <span>Add to Favorites</span>
     </div>
     <div
@@ -17,10 +17,7 @@
       @click.stop="showPlaylistWidget"
       class="option"
     >
-      <img
-        src="@/RendererProcess/assets/images/list-circle-outline.png"
-        alt=""
-      />
+      <img src="@/RendererProcess/assets/images/list-circle-outline.png" />
       <span>Add to Playlist</span>
     </div>
     <div
@@ -28,15 +25,15 @@
       @click.stop="removeFromPlaylist"
       class="option"
     >
-      <img src="@/RendererProcess/assets/images/cancel.svg" alt="" />
+      <img src="@/RendererProcess/assets/images/cancel.svg" />
       <span>Remove from Playlist</span>
     </div>
     <div @click.stop="deleteSelectedTracks" class="option">
-      <img src="@/RendererProcess/assets/images/trash-bin-outline.svg" alt="" />
+      <img src="@/RendererProcess/assets/images/trash-bin-outline.svg" />
       <span>Delete Permanently</span>
     </div>
     <div @click.stop="showTagEditor" class="option hideOnMultiSelectMode">
-      <img src="@/RendererProcess/assets/images/edit.svg" alt="" />
+      <img src="@/RendererProcess/assets/images/edit.svg" />
       <span>Edit Tags</span>
     </div>
   </div>
@@ -114,14 +111,6 @@ export default {
           window.getComputedStyle(optionsWidget).top.replace("px", "")
         ),
       };
-      setTimeout(() => {
-        const playlistWidget = document.querySelector("#PlaylistWidget");
-        playlistWidget.style.bottom = "initial";
-        document.querySelector("#PlaylistWidget").style.top =
-          cordinates.y + "px";
-        document.querySelector("#PlaylistWidget").style.left =
-          cordinates.x + 250 + "px";
-      }, 0);
       this.close();
     },
     removeFromPlaylist() {

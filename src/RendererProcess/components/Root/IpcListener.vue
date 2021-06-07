@@ -24,6 +24,7 @@ export default {
       "addToCompletedDownloads",
       "updatePendingTrackState",
       "seIstOnlineState",
+      "setPlayingTrack",
     ]),
     ...mapActions([
       "generateAlbumsData",
@@ -41,6 +42,13 @@ export default {
     ipcRenderer.on("newTrack", (e, newTrack) => {
       this.addTrack(newTrack);
     });
+    ipcRenderer.on("playThisTrack", (e, track) => {
+      if (document.querySelector("audio")) {
+        document.querySelector("audio").muted = false;
+      }
+      this.setPlayingTrack({ track: track, index: 0 });
+    });
+
     ipcRenderer.on("updatedTrack", (e, updatedTrack) => {
       this.updateTrack(updatedTrack);
     });

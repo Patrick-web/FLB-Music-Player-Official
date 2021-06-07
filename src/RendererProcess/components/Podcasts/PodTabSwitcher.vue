@@ -7,7 +7,7 @@
       @click="routeTo(tab)"
       :id="tab.name"
     >
-      <img :src="tab.icon" class="icon" alt="" />
+      <img :src="tab.icon" class="icon" />
       <p>{{ tab.name }}</p>
     </div>
   </div>

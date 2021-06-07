@@ -84,11 +84,6 @@ export default {
 </script>
 <style lang="scss">
 @import "@/RendererProcess/assets/sass/mixins.scss";
-.playingPaneLoaded {
-  .LocalMusic {
-    margin-bottom: 118px;
-  }
-}
 .droppingAFile {
   .LocalMusic {
     main {
@@ -101,19 +96,19 @@ export default {
   }
 }
 .LocalMusic {
-  margin-bottom: 15px;
+  height: 100%;
+  width: 100%;
   main {
-    display: flex;
     height: 100%;
+    display: flex;
     #tabsArea {
       position: relative;
-      height: 97%;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      min-width: 60vw;
-      max-width: 70vw;
-      width: 61.5vw;
+      padding: 10px;
+      height: 97%;
+      width: 80%;
       margin-right: 10px;
       border-radius: 20px;
       &::before {

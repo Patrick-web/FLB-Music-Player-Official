@@ -38,7 +38,7 @@ const mutations = {
                 .slice(0, 8);
             state.searchResults.artists = TabsManager.state.tabsData.artists
                 .filter((artist: ArtistType) =>
-                    artist.name.toLowerCase()?.includes(query.toLocaleLowerCase())
+                    artist.name.toLowerCase()?.startsWith(query.toLocaleLowerCase())
                 )
                 .slice(0, 5);
             state.searchResults.albums = TabsManager.state.tabsData.albums

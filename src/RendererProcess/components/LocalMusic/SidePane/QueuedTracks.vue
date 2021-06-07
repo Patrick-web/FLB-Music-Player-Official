@@ -42,7 +42,6 @@
             <img
               @click.stop="removeTrackFromCustomQueue(index)"
               src="@/RendererProcess/assets/images/x.svg"
-              alt=""
             />
           </div>
         </transition-group>

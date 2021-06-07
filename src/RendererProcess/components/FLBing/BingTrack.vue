@@ -1,7 +1,7 @@
 <template>
   <div class="bingTrack">
     <div class="info">
-      <img class="coverArt" :src="trackInfo.album.cover" alt="" />
+      <img class="coverArt" :src="trackInfo.album.cover" />
       <div class="flex-col">
         <p style="font-family: roboto-light" class="trackTitle">
           {{ trackInfo.title }}
@@ -52,11 +52,12 @@ export default {
         : true;
     },
     trackAlreadyDownloaded() {
-      const index = this.$store.state.TabsManager.tabsData.addedTracks.findIndex(
-        (track) =>
-          track.defaultTitle == this.trackInfo.title &&
-          track.defaultArtist == this.trackInfo.artist.name
-      );
+      const index =
+        this.$store.state.TabsManager.tabsData.addedTracks.findIndex(
+          (track) =>
+            track.defaultTitle == this.trackInfo.title &&
+            track.defaultArtist == this.trackInfo.artist.name
+        );
       if (index > -1) {
         return true;
       } else {
@@ -149,7 +150,7 @@ export default {
 
       const searchQuery = `${encodeURI(
         cleanUpText(this.trackInfo.title)
-      )} ${encodeURI(this.cleanText(this.trackInfo.artist.name))}`;
+      )} ${encodeURI(cleanUpText(this.trackInfo.artist.name))}`;
 
       const myHeaders = new Headers();
       myHeaders.append("accept", "application/json");

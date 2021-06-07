@@ -1,5 +1,5 @@
 <template>
-  <div class="editPlForm">
+  <div class="editPlForm blurred_bg blur20">
     <input
       class="inputElem"
       type="text"
@@ -44,8 +44,6 @@ export default {
 <style lang="scss">
 .editPlForm {
   position: absolute;
-  background: rgba(255, 255, 255, 0.123);
-  backdrop-filter: blur(10px);
   padding: 15px;
   border-radius: 20px;
   bottom: 50px;

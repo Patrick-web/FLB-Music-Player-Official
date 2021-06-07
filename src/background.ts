@@ -166,7 +166,7 @@ ipcMain.on("initializeApp", async () => {
             process.argv[1],
         );
         win.webContents.send("newTrack", newTrack);
-        win.webContents.send("playFirstTrack");
+        win.webContents.send("playThisTrack", newTrack);
     }
     const processedFiles = fileTracker.getTracks;
     const playlists = playlistsTracker.getPlaylists;

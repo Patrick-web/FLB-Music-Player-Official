@@ -9,11 +9,11 @@
       :transparent="true"
     />
     <div class="centerContents">
-      <h1 class="modalTitle">Tag Editor</h1>
+      <h1>Tag Editor</h1>
     </div>
     <div class="trackTags">
       <div class="centerContents">
-        <img id="coverArtTag" :src="targetTrack.albumArt" alt="" />
+        <img id="coverArtTag" :src="targetTrack.albumArt" />
         <p style="margin-top: 10px" v-if="!targetTrack.albumArt">
           No Album Art
         </p>
@@ -75,7 +75,6 @@
             v-for="cover in possibleAlbumArt"
             :key="cover.url"
             :src="cover.url"
-            alt=""
             @click="selectCover(cover.url)"
           />
         </div>

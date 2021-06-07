@@ -124,7 +124,7 @@ export default {
   box-shadow: 0px 0px 50px black;
   #closeSearch {
     position: absolute;
-    left: 62.2%;
+    left: 63%;
     top: -42px;
     border-radius: 50%;
     img {
