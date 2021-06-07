@@ -74,11 +74,11 @@
 	});
 </script>
 <style lang="scss">
-@import "./RendererProcess/assets/css/animate.css";
-@import "./RendererProcess/assets/css/global.css";
-@import "./RendererProcess/assets/css/themer.css";
-@import "./RendererProcess/assets/css/groupedContent.css";
-@import "./RendererProcess/assets/css/utilityClasses.css";
+@import "./RendererProcess/assets/cssAssets/animate.css";
+@import "./RendererProcess/assets/cssAssets/global.css";
+@import "./RendererProcess/assets/cssAssets/themer.css";
+@import "./RendererProcess/assets/cssAssets/groupedContent.css";
+@import "./RendererProcess/assets/cssAssets/utilityClasses.css";
 @import "@/RendererProcess/assets/sass/mixins.scss";
 @import "@/RendererProcess/assets/sass/fun.scss";
 * {
