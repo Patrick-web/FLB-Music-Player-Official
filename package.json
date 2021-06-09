@@ -6,7 +6,7 @@
 		"name": "Patrick Waweru",
 		"email": "pntxall100@gmail.com"
 	},
-	"version": "1.1.4",
+	"version": "1.1.5",
 	"description": "A Music Player where Beauty meets Functionality",
 	"private": true,
 	"repository": {
@@ -22,7 +22,8 @@
 		"e:build": "vue-cli-service electron:build",
 		"push-update": "vue-cli-service electron:build -- -p always",
 		"postinstall": "electron-builder install-app-deps",
-		"postuninstall": "electron-builder install-app-deps"
+		"postuninstall": "electron-builder install-app-deps",
+		"deploy:steps": "git commit -am vx.x.x && git tag vx.x.x && git push --tags"
 	},
 	"main": "background.js",
 	"dependencies": {

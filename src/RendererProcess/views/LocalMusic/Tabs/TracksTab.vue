@@ -1,13 +1,16 @@
 <template>
   <div class="tab addedTracksTab">
-    <div v-if="1" class="flex-col center-a" style="height: 100%; width: 100%">
+    <div
+      v-if="addedTracks.length == 0"
+      class="flex-col center-a"
+      style="height: 100%; width: 100%"
+    >
       <p>💬 I did not Find🔎 Any Tracks💨</p>
       <p>
         💬 Head over to ⚙Settings⚙ and Add➕ the Folder📂 where your music is at
       </p>
       <p>💬 Or Just Download⬇ some with FLBing💎</p>
     </div>
-
     <!-- <virtual-list
       id="tracksTabVirtualList"
       scrollable
@@ -15,7 +18,7 @@
       :data-sources="addedTracks"
       :data-component="card"
     /> -->
-    <div v-if="0" class="tracksWrapper">
+    <div class="tracksWrapper">
       <TrackCard
         v-for="(track, index) in addedTracks"
         :key="track.fileLocation"
