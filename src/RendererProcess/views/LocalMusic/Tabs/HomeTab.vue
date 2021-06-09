@@ -49,7 +49,7 @@
           :cardContent="mix.info"
           :tracks="mix.tracks"
         />
-        <div style="margin: 10px; font-size: 0.8rem; font-family: roboto-thin">
+        <div style="font-size: 0.8rem; font-family: roboto-thin">
           * More Daily Mashups will come as you keep on listening *
         </div>
       </div>

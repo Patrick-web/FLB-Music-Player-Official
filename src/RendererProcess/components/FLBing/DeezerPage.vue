@@ -132,7 +132,6 @@ export default {
 }
 .results {
   height: 78vh;
-  padding-top: 30px;
   .contentsWrapper {
     height: 93%;
     overflow: hidden;

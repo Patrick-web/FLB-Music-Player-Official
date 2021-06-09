@@ -32,6 +32,7 @@ body {
 }
 .tab {
 	overflow: hidden;
+	height: 100%;
 }
 img {
 	-webkit-user-drag: none;

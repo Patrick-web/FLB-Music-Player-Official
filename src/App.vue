@@ -112,7 +112,8 @@ body {
     height: 94%;
   }
   #sub-view-1 {
-    height: 85%;
+    min-height: 85%;
+    max-height: 0vh;
   }
 }
 #main-view {
@@ -126,6 +127,8 @@ body {
 }
 #sub-view-1 {
   height: 100%;
+  min-height: 100%;
+  max-height: 0vh;
 }
 .featuresSwitcherArea {
   display: flex;

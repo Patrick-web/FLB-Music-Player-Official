@@ -53,6 +53,7 @@ export default {
   .tab {
     display: inline-block;
     padding: 20px;
+    padding-top: 10px;
     border-radius: 15px;
     border-top-left-radius: 0px;
   }

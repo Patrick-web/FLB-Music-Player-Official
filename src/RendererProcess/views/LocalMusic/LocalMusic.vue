@@ -105,7 +105,6 @@ export default {
       position: relative;
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
       padding: 10px;
       height: 97%;
       width: 80%;

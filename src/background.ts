@@ -20,13 +20,18 @@ import { FilesTracker } from "./MainProcess/modules/FilesTracker";
 import { PlaybackStats } from "./MainProcess/modules/PlaybackStats";
 import { Settings } from "./MainProcess/modules/Settings";
 import { createParsedTrack } from "./MainProcess/core/createParsedTrack";
-import { deleteFile, sendNativeNotification, downloadFile, isValidFileType } from "./MainProcess/utilities";
+import { deleteFile, sendNativeNotification, downloadFile, isValidFileType, sendMessageToRenderer } from "./MainProcess/utilities";
 import { TrackType, SettingsType, FolderType, FolderInfoType, TagChangesType } from "@/types";
 import { downloadArtistPicture } from "./MainProcess/services";
 import { FLBing } from "./MainProcess/modules/FLBing";
 import { SUPPORTED_FORMATS } from "./MainProcess/constants/constants";
 import { DownloadManager } from "./MainProcess/modules/BingDownloader";
 
+dialog.showErrorBox = function (title, content) {
+    sendMessageToRenderer(`dangerMsg`, `⚠Error⚠ 👉${title} ${content}`)
+    console.log(`An Error Occurred ⚠`);
+    console.log(`${title}\n ${content}`);
+};
 
 let appIsFocused = true;
 export const fileTracker = new FilesTracker();

@@ -140,7 +140,7 @@ export default {
   display: flex;
   position: relative;
   .SearchArea {
-    height: 100%;
+    max-height: 100%;
     width: 100%;
     display: flex;
     flex-direction: column;
