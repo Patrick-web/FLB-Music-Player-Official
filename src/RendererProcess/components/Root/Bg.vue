@@ -1,15 +1,10 @@
 <template>
   <div class="bg">
     <img
-      v-if="theme == 'fancy' && playingTrack && playingTrack.albumArt"
-      :src="playingTrack.albumArt"
-      id="bg_fancy"
-      alt=""
-    />
-    <img
-      v-else
-      style="opacity: 0.4"
-      src="@/RendererProcess/assets/images/FLBDefaultCover.png"
+      :src="
+        playingTrack.albumArt ||
+        require('@/RendererProcess/assets/images/FLBDefaultCover.png')
+      "
       id="bg_fancy"
       alt=""
     />
@@ -37,7 +32,15 @@ export default {
   left: 0;
   width: 120%;
   height: 100vh;
+  .hideImage {
+    border-radius: 50% !important;
+    height: 0% !important;
+    width: 0% !important;
+  }
   #bg_fancy {
+    border-radius: 0%;
+    position: fixed;
+    top: 0%;
     width: 100%;
     height: 100%;
     filter: blur(50px);

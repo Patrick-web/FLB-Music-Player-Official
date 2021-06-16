@@ -2,16 +2,16 @@
   <div class="BingCompletedTrack">
     <img id="cover" :src="track.albumArt" />
 
+    <div class="content">
+      <p class="track_title">{{ track.defaultTitle }}</p>
+      <p class="track_artist">{{ track.artist }}</p>
+    </div>
     <base-button
       id="playBt"
       :icon="require('@/RendererProcess/assets/images/play.svg')"
       :small="true"
       @click.native="playTrack"
     />
-    <div class="content">
-      <p class="track_title">{{ track.defaultTitle }}</p>
-    </div>
-    <p class="track_artist">{{ track.artist }}</p>
   </div>
 </template>
 
@@ -39,21 +39,29 @@ export default {
 .BingCompletedTrack {
   padding: 10px;
   background: rgba(255, 255, 255, 0.11);
-  width: 40%;
+  width: 90%;
   position: relative;
   border-radius: 15px;
   break-inside: avoid;
+  display: flex;
+  justify-content: left;
+  gap: 10px;
+  margin: 10px 0px;
   #playBt {
     background: rgba(255, 255, 255, 0.11);
     backdrop-filter: blur(10px);
+    width: 40px;
     position: absolute;
-    top: 40%;
-    left: 50%;
-    transform: translate(-50%, -50%) scale(0.8);
+    right: 5px;
+    top: 50%;
+    transform: translateY(-50%) scale(0.8);
   }
   #cover {
-    width: 100%;
-    border-radius: 15px;
+    width: 20%;
+    border-radius: 10px;
+  }
+  .content {
+    width: 60%;
   }
 }
 </style>

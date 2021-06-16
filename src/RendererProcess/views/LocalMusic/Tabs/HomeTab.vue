@@ -1,5 +1,5 @@
 <template>
-  <div class="home">
+  <div class="home tab">
     <div class="stats">
       <div class="stats_title">
         <h1>Library Stats</h1>

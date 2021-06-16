@@ -1,9 +1,9 @@
 <template>
   <div class="VolumeRocker bg1">
     <input
-      v-on:input="sendNewVolume($event)"
+      v-on:input="changeVolume($event)"
       min="0"
-      value="1"
+      value=".5"
       max="1"
       step="0.1"
       type="range"
@@ -17,29 +17,36 @@
 </template>
 
 <script>
+import { mapMutations } from "vuex";
+import { gainNode } from "../Equalizer/Equalizer";
+
 export default {
   data() {
     return {
-      volume: 1,
+      volume: 0.5,
     };
   },
   computed: {
     progressBarWidth() {
-      return `${Math.trunc(this.volume * 100)}%`;
+      return `${Math.trunc(this.userSetVolume * 100)}%`;
     },
     userSetVolume() {
       return this.$store.state.SettingsManager.settings.volume;
     },
   },
   methods: {
-    sendNewVolume(e) {
+    ...mapMutations(["setSettingValue"]),
+    changeVolume(e) {
       this.volume = e.srcElement.value;
-      console.log(this.volume);
-      this.$emit("newVolume", this.volume);
+      gainNode.gain.value = this.volume;
+      this.setSettingValue({ property: "volume", newValue: this.volume });
     },
   },
   mounted() {
     this.volume = this.userSetVolume;
+    setTimeout(() => {
+      gainNode.gain.value = this.volume;
+    }, 0);
   },
 };
 </script>
@@ -48,10 +55,17 @@ export default {
 .VolumeRocker {
   position: relative;
   width: 135px;
-  height: 10px;
+  height: 8px;
   border-radius: 10px;
   cursor: pointer;
-  overflow: hidden;
+  &:active {
+    height: 12px;
+  }
+  &:hover {
+    .base_slider_progress {
+      background: var(--accentColor);
+    }
+  }
   input {
     cursor: pointer;
     -webkit-appearance: none;
@@ -62,33 +76,17 @@ export default {
     left: 0px;
     height: 20px;
     width: 100px;
-    // background: wheat;
-    transform-origin: center center;
-    // transform: rotate(90deg) translateX(90px) translateY(90px);
-    &::-webkit-range-progress {
-      background: rgb(179, 237, 245);
-      -webkit-appearance: none;
-      width: 90px;
-    }
-    &::-webkit-slider-runnable-track {
-      height: 100%;
-      border-radius: 3px;
-    }
-    &::-webkit-slider-thumb {
-      -webkit-appearance: none !important;
-      background: rgb(179, 237, 245);
-      height: 100%;
-      width: 10px;
-    }
   }
   .base_slider_progress {
     position: absolute;
     border-radius: 10px;
-    bottom: 0px;
+    top: 50%;
+    transform: translateY(-50%);
     left: 0px;
-    height: 100%;
-    background: var(--accentColor);
+    height: 150%;
+    background: white;
     width: 100%;
+    max-width: 100%;
   }
 }
 </style>

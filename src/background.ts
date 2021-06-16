@@ -41,6 +41,7 @@ const settings = new Settings();
 const downloaderManager = new DownloadManager();
 
 console.log(paths.appFolder);
+console.log(__dirname);
 
 const isDevelopment = process.env.NODE_ENV !== "production";
 // Scheme must be registered before the app is ready
@@ -100,6 +101,9 @@ async function createWindow() {
     })
     autoUpdater.on('update-available', (info) => {
         win.webContents.send('normalMsg', 'Update available.');
+        setTimeout(() => {
+            win.webContents.send('normalMsg', 'Downloading available.');
+        }, 1000);
     })
     autoUpdater.on('update-not-available', (info) => {
         win.webContents.send('normalMsg', 'No Update available.');
@@ -108,7 +112,10 @@ async function createWindow() {
         win.webContents.send('dangerMsg', 'Error in auto-updater. ' + err);
     })
     autoUpdater.on('update-downloaded', (info) => {
-        win.webContents.send('normalMsg', 'Update downloaded');
+        win.webContents.send('normalMsg', 'Update Downloaded 🚀');
+    });
+    autoUpdater.on('download-progress', (info) => {
+        win.webContents.send('downloadingUpdate', '');
     });
     autoUpdater.checkForUpdatesAndNotify()
 }
@@ -355,6 +362,7 @@ ipcMain.on('downloadBingTrack', (e, payload) => {
 
 
 ipcMain.on('checkForUpdate', () => {
+    sendMessageToRenderer('normalMsg', 'Checking For Update')
     checkForUpdates()
 })
 

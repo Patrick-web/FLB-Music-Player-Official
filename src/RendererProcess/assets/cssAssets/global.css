@@ -192,6 +192,10 @@ input::placeholder {
 	font-size: var(--baseFontSize);
 	font-family: roboto-thin;
 }
+.fullScreenPlayingPane .widget {
+	right: initial;
+	left: 100px;
+}
 .widget {
 	position: fixed;
 	bottom: 108px;

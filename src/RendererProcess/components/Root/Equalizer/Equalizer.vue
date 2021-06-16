@@ -31,14 +31,22 @@
         <p>{{ band.frequency }}</p>
       </div>
     </div>
+    <div class="b_t">
+      <triangle-slider v-on:newGainValues="changeBandGains" filterName="Bass" />
+      <triangle-slider
+        v-on:newGainValues="changeBandGains"
+        filterName="Treble"
+      />
+      <triangle-slider filterName="VBoost" title="Boost Volume" />
+    </div>
   </div>
 </template>
 
 <script>
 import FilterSlider from "./FilterSlider.vue";
 import BaseButton from "../../BaseComponents/BaseButton.vue";
-import { setupEqualizer } from "./Equalizer";
 import { mapMutations } from "vuex";
+import TriangleSlider from "./TriangleSlider.vue";
 export default {
   computed: {
     bands() {
@@ -51,11 +59,12 @@ export default {
       return this.$store.state.EqualizerManager.currentPreset;
     },
   },
-  components: { FilterSlider, BaseButton },
+  components: { FilterSlider, BaseButton, TriangleSlider },
   methods: {
     ...mapMutations([
       "UIcontrollerToggleProperty",
       "updateBandFilter",
+      "changeBandGains",
       "loadPreset",
     ]),
   },
@@ -89,6 +98,14 @@ export default {
         font-family: roboto-light;
       }
     }
+  }
+  .b_t {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 0px;
   }
 }
 </style>

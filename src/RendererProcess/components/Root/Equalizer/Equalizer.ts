@@ -1,8 +1,11 @@
 export let createdFilters = [] as any;
+export let gainNode: any = null;
 export function setupEqualizer() {
 	const context = new window.AudioContext;
 	const mediaElement = document.querySelector("audio") as HTMLAudioElement;
 	const source = context.createMediaElementSource(mediaElement);
+
+	gainNode = new GainNode(context, { gain: 0.5 })
 
 	const band1Filter = context.createBiquadFilter();
 	const band2Filter = context.createBiquadFilter();
@@ -42,12 +45,12 @@ export function setupEqualizer() {
 		band4Filter,
 		band5Filter,
 	];
-
 	source.connect(band1Filter);
 	band1Filter.connect(band2Filter);
 	band2Filter.connect(band3Filter);
 	band3Filter.connect(band4Filter);
-	band4Filter.connect(context.destination);
+	band4Filter.connect(gainNode);
+	gainNode.connect(context.destination);
 
 	createdFilters = filters;
 	// [band1, band2, band3, band4].forEach((band, index) => {

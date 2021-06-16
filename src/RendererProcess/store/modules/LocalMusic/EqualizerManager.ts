@@ -1,5 +1,5 @@
 import { presets } from "@/RendererProcess/components/Root/Equalizer/equalizerPresets";
-import { createdFilters, setupEqualizer } from "@/RendererProcess/components/Root/Equalizer/Equalizer";
+import { createdFilters } from "@/RendererProcess/components/Root/Equalizer/Equalizer";
 const state = {
     currentPreset: "Normal",
     customPreset: null,
@@ -47,6 +47,11 @@ const mutations = {
             createdFilters[index].gain.value = bandValue;
         });
     },
+    changeBandGains(state: any, payload: any) {
+        console.log("Updating bands");
+        state.bands.map((band: any, index: number) => band.value = payload[index])
+        createdFilters.map((filter: any, index: number) => filter.gain.value = payload[index])
+    }
 };
 
 export default {

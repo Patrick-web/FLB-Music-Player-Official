@@ -79,7 +79,7 @@
                 <div class="line"></div>
                 <p>{{ removeDuplicateAlbums(selectedGroup.albums).length }}</p>
               </div>
-              <div class="grid2 content">
+              <div class="grid2 content al">
                 <AlbumCard
                   v-for="album in removeDuplicateAlbums(selectedGroup.albums)"
                   :album="album"
@@ -264,6 +264,9 @@ export default {
       position: relative;
       padding: 10px;
     }
+  }
+  .al {
+    min-height: 200px;
   }
 }
 </style>

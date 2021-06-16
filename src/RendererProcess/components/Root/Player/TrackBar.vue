@@ -14,9 +14,15 @@
       </p>
     </div>
     <div @click="goToPosition($event)" class="seekBar">
-      <div class="seekProgress">
+      <input
+        v-on:input="seek($event)"
+        type="range"
+        value="0"
+        min="0"
+        max="100"
+      />
+      <div :style="{ width: seekBarWidth }" class="seekProgress">
         <div></div>
-        <div class="elipse"></div>
       </div>
       <p id="hoverTime">{{ hoverTime }}</p>
     </div>
@@ -37,6 +43,8 @@ export default {
       currentTime: "00:00",
       duration: "00:00",
       hoverTime: "00:00",
+      seekPercent: 0,
+      seekBarWidth: "0%",
     };
   },
 
@@ -50,7 +58,13 @@ export default {
       document.querySelector("video").pause();
       document.querySelector("audio").pause();
     },
-    seekBack() {
+    seek(e) {
+      const audio = document.querySelector("#audioTag");
+      this.seekPercent = parseInt(e.srcElement.value);
+      this.seekBarWidth = `${this.seekPercent}%`;
+      audio.currentTime = (this.seekPercent * audio.duration) / 100;
+    },
+    seekBack(e) {
       const audio = document.querySelector("#audioTag");
       audio.currentTime = audio.currentTime - 30;
       const video = document.querySelector("video");
@@ -77,15 +91,6 @@ export default {
       const audio = document.querySelector("#audioTag");
 
       audio.currentTime = (percentageSeek * audio.duration) / 100;
-      const video = document.querySelector("video");
-      if (video) {
-        video.currentTime = audio.currentTime;
-        video.play();
-      }
-      audio.play();
-    },
-    seekPlayback(e) {
-      console.log("Dragging");
     },
     timeFormatter(duration) {
       // Hours, minutes and seconds
@@ -107,13 +112,12 @@ export default {
   },
   mounted() {
     const progressBar = document.querySelector(".seekBar");
-    const seekProgress = document.querySelector(".seekProgress");
     const audio = document.querySelector("audio");
     document.querySelector("audio").addEventListener("timeupdate", (e) => {
       this.currentTime = this.timeFormatter(audio.currentTime);
       this.duration = this.timeFormatter(audio.duration);
       const percent = Math.floor((audio.currentTime / audio.duration) * 100);
-      seekProgress.style.width = `${percent}%`;
+      this.seekBarWidth = `${percent}%`;
       if (audio.currentTime == audio.duration) {
         this.determineNextTrack("next");
       }
@@ -136,10 +140,6 @@ export default {
       const playIcon = document.querySelector("#playIcon");
       if (playIcon) playIcon.click();
     });
-
-    document.querySelector(".seekBar").addEventListener("drag", (e) => {
-      console.log("Seeking");
-    });
   },
 };
 </script>
@@ -148,48 +148,56 @@ export default {
 .TrackBar {
   position: relative;
   z-index: 25;
+  height: 30px;
   width: 100%;
   display: flex;
   flex-direction: column;
   gap: 5px;
   align-items: center;
   justify-content: space-between;
+  cursor: pointer;
+  input {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 3;
+    top: 0px;
+    cursor: pointer;
+    opacity: 0;
+  }
 }
 
 .seekBar {
   background: #ffffff21;
   width: 100%;
-  height: 10px;
+  height: 8px;
   position: relative;
   border-radius: 10px;
+  &:active {
+    height: 10px;
+  }
+  &:hover {
+    .seekProgress {
+      background: var(--accentColor);
+    }
+  }
   .seekProgress {
     border-radius: 10px;
     position: absolute;
-    height: 100%;
-    max-height: 100%;
+    height: 150%;
+    bottom: -2px;
     width: 0%;
     background: #ffffff;
     transition: 0.2s linear;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    .elipse {
-      border-radius: 50%;
-      height: 15px;
-      min-width: 15px;
-      background: var(--accentColor);
-      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.527);
-      transform-origin: center;
-      transform: translateX(50%) scale(0);
-    }
+    // pointer-events: none;
   }
 }
 .seekBar:hover {
   .seekProgress {
     background: var(--accentColor);
-    .elipse {
-      transform: translateX(50%) scale(1);
-    }
   }
   cursor: pointer;
   .progressInfoCard {

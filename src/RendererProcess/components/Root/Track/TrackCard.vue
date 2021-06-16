@@ -134,8 +134,10 @@ export default {
   border-bottom: none !important;
   position: relative;
   .trackTitle {
-    // transform: translateX(25px);
     margin-left: 25px;
+  }
+  .album {
+    margin-right: 15px;
   }
   &::before {
     transform: translateY(-50%) scale(1) !important;
@@ -198,6 +200,7 @@ export default {
     font-family: roboto-light;
     opacity: 1;
   }
+
   p {
     overflow: hidden;
     white-space: nowrap;

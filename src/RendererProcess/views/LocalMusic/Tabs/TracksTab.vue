@@ -11,33 +11,55 @@
       </p>
       <p>💬 Or Just Download⬇ some with FLBing💎</p>
     </div>
-    <!-- <virtual-list
+    <virtual-list
       id="tracksTabVirtualList"
       scrollable
       :data-key="'fileLocation'"
       :data-sources="addedTracks"
       :data-component="card"
-    /> -->
-    <div class="tracksWrapper">
+      :estimateSize="280"
+      v-if="0"
+    />
+    <div class="tracksWrapper" @scroll="virtualize($event)">
       <TrackCard
-        v-for="(track, index) in addedTracks"
+        v-for="(track, index) in tracksToRender"
         :key="track.fileLocation"
         :source="track"
         :index="index"
       />
     </div>
-    <!-- <TrackCard v-if="0" /> -->
+    <div class="customScrollBar">
+      <div class="l" :style="{ top: scrollPercent }"></div>
+      <div class="wrpper" style="height: 100%">
+        <input
+          @input="scrollContainer($event)"
+          type="range"
+          value="0"
+          min="0"
+          max="100"
+        />
+      </div>
+    </div>
+    <TrackCard v-if="0" />
   </div>
 </template>
 
 <script>
-// import VirtualList from "vue-virtual-scroll-list";
+import VirtualList from "vue-virtual-scroll-list";
 import TrackCard from "@/RendererProcess/components/Root/Track/TrackCard.vue";
 import { mapMutations } from "vuex";
+import { removeDuplicates } from "@/sharedUtilities";
 export default {
   data() {
     return {
       card: TrackCard,
+      tracksToRender: [],
+      scrollTop: 0,
+      startingIndexForTracksNotRendered: 50,
+      scrollDirection: "Down",
+      removedChucks: [],
+      scrollAmountNotRepeated: 0,
+      scrollPercent: "0%",
     };
   },
   computed: {
@@ -47,15 +69,109 @@ export default {
   },
   methods: {
     ...mapMutations(["updatePlayingQueue", "setRenderedTrack"]),
+    virtualize(e) {
+      const scrollInfo = {
+        scrollHeight: e.srcElement.scrollHeight,
+        scrollTop: e.srcElement.scrollTop,
+      };
+      const scrollAmount = Math.trunc(
+        (scrollInfo.scrollTop / scrollInfo.scrollHeight) * 100
+      );
+      if (this.scrollAmountNotRepeated == scrollAmount) {
+        return;
+      } else {
+        this.scrollAmountNotRepeated = scrollAmount;
+      }
+      if (scrollInfo.scrollTop > this.scrollTop) {
+        if (scrollAmount > 50) {
+          //1. Remove top Ten items from  tracksToRender
+          this.removedChucks.unshift([...this.tracksToRender.slice(0, 5)]);
+          this.tracksToRender.splice(0, 5);
+
+          //2. Get 5 items from addedTracks and add them to the end of tracksRendered
+          const tenNotRenderedTracks = this.addedTracks.slice(
+            this.startingIndexForTracksNotRendered,
+            this.startingIndexForTracksNotRendered + 5
+          );
+          this.startingIndexForTracksNotRendered += 5;
+          setTimeout(() => {
+            this.tracksToRender = removeDuplicates(
+              [...this.tracksToRender, ...tenNotRenderedTracks],
+              "fileLocation"
+            );
+          }, 0);
+        }
+      } else {
+        if (scrollAmount < 20 && this.removedChucks.length) {
+          //1. Remove last Ten items from  tracksToRender
+          this.tracksToRender.splice(40, 5);
+
+          //2. Get the last removed chunk of ten and add it to the start of tracksRendered
+          // setTimeout(() => {
+          const tracksToReturnBack = this.removedChucks[0];
+          this.removedChucks.shift();
+          this.startingIndexForTracksNotRendered -= 5;
+          this.tracksToRender = removeDuplicates(
+            [...tracksToReturnBack, ...this.tracksToRender],
+            "fileLocation"
+          );
+          // }, 0);
+        }
+      }
+      this.scrollTop = scrollInfo.scrollTop;
+      if (this.tracksToRender.length > 50) {
+        this.tracksToRender.splice(50, this.tracksToRender["length"]);
+      }
+      this.percentageOfRenderedTracks();
+    },
+    percentageOfRenderedTracks() {
+      let am = Math.trunc(
+        (this.startingIndexForTracksNotRendered / this.addedTracks["length"]) *
+          100
+      );
+      am += 10;
+      this.scrollPercent = `${am - 25}%`;
+    },
   },
   components: {
     TrackCard,
-    // VirtualList,
+    VirtualList,
+  },
+  mounted() {
+    this.tracksToRender = this.addedTracks.slice(0, 50);
   },
 };
 </script>
 
 <style lang="scss">
+.customScrollBar {
+  height: 100%;
+  width: 8px;
+  position: absolute;
+  right: 0px;
+  top: 0px;
+  cursor: f;
+  .wrpper {
+    position: relative;
+  }
+  .l {
+    background: var(--accentColor);
+    height: 10%;
+    width: 100%;
+    border-radius: 10px;
+    position: absolute;
+  }
+  input {
+    position: absolute;
+    width: 5600%;
+    right: 0px;
+    bottom: 280px;
+    right: -280px;
+    transform: rotate(90deg);
+    opacity: 0;
+    pointer-events: none;
+  }
+}
 .addedTracksTab {
   position: relative;
   overflow: hidden;
@@ -64,6 +180,8 @@ export default {
     height: 99%;
     overflow: hidden;
     overflow-y: scroll;
+    margin-right: -20px;
+    padding-right: 30px;
   }
   .showHiddenActions {
     background: #0062ff !important;

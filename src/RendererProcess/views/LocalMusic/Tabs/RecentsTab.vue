@@ -41,5 +41,6 @@ export default {
   overflow: hidden;
   overflow-y: scroll;
   height: 100%;
+  padding-right: 10px;
 }
 </style>

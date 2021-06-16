@@ -17,7 +17,7 @@
       </div>
       <PlayingPane v-if="playingTrack" />
     </section>
-    <Bg v-if="theme == 'fancy'" />
+    <Bg />
   </div>
 </template>
 <script lang="js"> 

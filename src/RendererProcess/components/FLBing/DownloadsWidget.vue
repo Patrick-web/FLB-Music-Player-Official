@@ -8,24 +8,21 @@
   >
     <div class="content_wrapper">
       <h3>Downloads</h3>
-      <div class="tab_switcher">
+      <div class="tab_switcher bg1">
         <div
           @click="tab = 'Pending'"
           :class="[tab == 'Pending' ? 'activeSwitcher' : '', 'switcher']"
         >
-          Pending ⏲
+          Pending
         </div>
         <div
           @click="tab = 'Completed'"
           :class="[tab == 'Completed' ? 'activeSwitcher' : '', 'switcher']"
         >
-          Completed 🧱
+          Completed
         </div>
       </div>
-      <transition
-        enter-active-class="animated slideInLeft faster"
-        leave-active-class="animated slideOutLeft"
-      >
+      <div class="tab_content bg1">
         <div v-if="tab == 'Pending'" class="pending_tracks tracks_wrapper">
           <bing-pending-track
             v-for="track in downloadQueue"
@@ -33,12 +30,6 @@
             :trackInfo="track"
           />
         </div>
-      </transition>
-
-      <transition
-        enter-active-class="animated slideInRight faster"
-        leave-active-class="animated slideOutRight"
-      >
         <div v-if="tab !== 'Pending'" class="tracks_wrapper downloadedTracks">
           <bing-completed-track
             v-for="track in [...completedTracks, ...flbingFolderTracks]"
@@ -46,7 +37,7 @@
             :track="track"
           />
         </div>
-      </transition>
+      </div>
     </div>
   </div>
 </template>
@@ -102,17 +93,23 @@ export default {
   }
 }
 .BingDownloadsWidget {
-  height: 102%;
+  height: 100%;
   transform: translateY(-10px) translateX(10px);
   width: 0px;
   position: relative;
   overflow: hidden;
+  .tab_content {
+    margin: 0px 10px;
+    border-radius: 15px;
+    border-top-left-radius: 0px;
+    overflow: hidden;
+    overflow-y: scroll;
+    height: 100%;
+    width: 94%;
+  }
   .content_wrapper {
     width: 280px;
     height: 100%;
-    position: absolute;
-    top: 0;
-    right: 0;
   }
   h3 {
     text-align: center;
@@ -120,25 +117,19 @@ export default {
     padding: 8px;
   }
   .tab_switcher {
-    width: 95%;
-    margin: auto;
+    width: 64%;
     display: flex;
     align-items: center;
-    justify-content: space-evenly;
-    margin-bottom: 10px;
-    // border-bottom-right-radius: 15px;
-    border-radius: 15px;
+    justify-content: left;
+    margin: 0px 10px;
+    border-radius: 15px 15px 0px 0px;
     overflow: hidden;
     .switcher {
-      background: rgba(255, 255, 255, 0.158);
-      border-radius: 15px;
-      padding: 5px;
-      padding-right: 12px;
-      padding-left: 12px;
+      padding: 8px 12px;
       text-align: center;
       cursor: pointer;
       &:hover {
-        background: rgba(255, 255, 255, 0.274);
+        background: rgba(255, 255, 255, 0.055);
       }
     }
     .activeSwitcher {
@@ -154,9 +145,6 @@ export default {
     height: 86%;
   }
   .downloadedTracks {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
     gap: 5px;
     padding-left: 10px;
   }

@@ -193,11 +193,14 @@
         </article>
       </section>
       <section style="border: none">
-        <base-button text="Check for Update 🚀" />
+        <base-button
+          @click.native="checkForUpdate"
+          text="Check for Update 🚀"
+        />
         <br />
         <br />
         <a target="_blank" href="https://t.me/flbmusiccommunity">
-          <base-button text="Join Us on Telegram 🦅" />
+          <base-button text="Join the Community on Telegram 🦅" />
         </a>
       </section>
     </main>
@@ -261,6 +264,7 @@ export default {
       sendMessageToNode("resetApp");
     },
     checkForUpdate() {
+      console.log("Checking");
       sendMessageToNode("checkForUpdate");
     },
   },
