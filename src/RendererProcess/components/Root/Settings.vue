@@ -155,10 +155,6 @@
             <pre>Left Arrow</pre>
           </div>
           <div class="shortcut">
-            <p>Volume</p>
-            <pre>Up / Down Arrow</pre>
-          </div>
-          <div class="shortcut">
             <p>Search Tracks</p>
             <pre>Tab</pre>
           </div>
