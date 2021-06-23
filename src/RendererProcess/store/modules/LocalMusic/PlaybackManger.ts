@@ -39,22 +39,25 @@ const state: PlaybackManagerStateInterface = {
     customQueue: []
 };
 const mutations = {
-    setPlayingTrack: (state: any, payload: PlayingTrackPayload) => {
+    setPlayingTrack: (state: PlaybackManagerStateInterface, payload: PlayingTrackPayload) => {
         if (payload?.track?.defaultTitle) {
             state.playingTrackInfo.track = payload.track;
-            state.playingTrackIndex = payload.index;
             state.audioState.playing = true;
             if (UIController.state.UIProperties.currentMainTab != "Recents" && UIController.state.UIProperties.currentPage == 'My Music') {
                 TabsManager.state.tabsData.recentlyPlayedTracks.unshift(payload.track);
                 TabsManager.state.tabsData.recentlyPlayedTracks = TabsManager.state.tabsData.recentlyPlayedTracks.splice(0, 20);
                 TabsManager.state.tabsData.recentlyPlayedTracks = removeDuplicates(TabsManager.state.tabsData.recentlyPlayedTracks, 'defaultTitle')
             }
+            if (state.customQueue.length === 0) {
+                state.customQueue.push(state.playingTrackInfo.track)
+            }
             sendMessageToNode("playingTrack", payload.track);
             updateMediaInfo(payload.track)
         }
     },
-    setSelectedTrackToPlayNext(state: any) {
-        state.customQueue.unshift(TrackSelector.state.selectedTracks[0]);
+    setSelectedTrackToPlayNext(state: PlaybackManagerStateInterface) {
+        const indexOfPlayingTrack = state.customQueue.findIndex(track => track.fileLocation === state.playingTrackInfo.track?.fileLocation)
+        state.customQueue = removeDuplicates([...state.customQueue.slice(0, indexOfPlayingTrack + 1), TrackSelector.state.selectedTracks[0], ...state.customQueue.slice(indexOfPlayingTrack + 1)], 'fileLocation')
         TrackSelector.state.selectedTracks.shift();
     },
     addSelectedTrackToCustomQueue(state: any) {
@@ -71,7 +74,6 @@ const mutations = {
     },
     overWriteCustomQueue(state: any, payload: Array<TrackType>) {
         const copyOfPayload = [...payload];
-        copyOfPayload.shift();
         state.customQueue = copyOfPayload;
     },
     reorderQueue(state: any, payload: Array<TrackType>) {
@@ -136,38 +138,36 @@ const actions: ActionTree<PlaybackManagerStateInterface, any> = {
         })
     },
     determineNextTrack({ state, commit }, direction) {
-        const playingTrackInfo = state.playingTrackInfo;
-        let targetArray: TrackType[] = [];
-        let playingFromCustomQueue = false
-        if (state.customQueue.length) {
-            targetArray = state.customQueue
-            playingFromCustomQueue = true
+        const indexOfPlayingTrack = state.customQueue.findIndex(track => track.fileLocation === state.playingTrackInfo.track?.fileLocation)
+        if (state.audioState.repeat) {
+            const audio = document.querySelector('audio') as HTMLAudioElement
+            audio.currentTime = 0;
+            return
         }
-        else if (TrackSelector.state.selectedGroup?.tracks.length) {
-            targetArray = TrackSelector.state.selectedGroup?.tracks;
-        }
-        else if (UIController.state.UIProperties.currentMainTab == 'Recents') {
-            targetArray = TabsManager.state.tabsData.recentlyPlayedTracks
-        }
-        else if (UIController.state.UIProperties.currentMainTab == 'Tracks') {
-            targetArray = TabsManager.state.tabsData.addedTracks;
-        }
-        const indexOfPlayingTrack = targetArray.findIndex((track) => track.defaultTitle == state.playingTrackInfo.track?.defaultTitle)
-
         if (state.audioState.shuffle) {
-            commit('setPlayingTrack', { track: shuffleArray(targetArray)[0], index: 0 })
-        } else {
-            if (direction == 'next') {
-                commit('setPlayingTrack', { track: targetArray[indexOfPlayingTrack + 1], index: [indexOfPlayingTrack + 1] })
-                if (playingFromCustomQueue) commit('removeTrackFromCustomQueue', [indexOfPlayingTrack + 1])
+            let randomIndex = Math.floor(Math.random() * state.customQueue.length)
+            if (indexOfPlayingTrack == randomIndex) {
+                randomIndex = Math.floor(Math.random() * state.customQueue.length)
             }
-            //when command is playPrevious
-            else if (direction == 'prev') {
-                commit('setPlayingTrack', { track: targetArray[indexOfPlayingTrack - 1] || targetArray[targetArray.length - 1], index: [indexOfPlayingTrack - 1] })
-                if (playingFromCustomQueue) commit('removeTrackFromCustomQueue', [indexOfPlayingTrack - 1])
-            }
+            commit('setPlayingTrack', { track: state.customQueue[randomIndex], index: randomIndex })
+            return
         }
-
+        if (direction == 'next') {
+            if (indexOfPlayingTrack === state.customQueue['length'] - 1) {
+                return
+            }
+            const nextTrack = state.customQueue[indexOfPlayingTrack + 1]
+            commit('setPlayingTrack', { track: nextTrack, index: indexOfPlayingTrack + 1 })
+            return
+        }
+        if (direction == 'prev') {
+            if (indexOfPlayingTrack === 0) {
+                return
+            }
+            const nextTrack = state.customQueue[indexOfPlayingTrack - 1]
+            commit('setPlayingTrack', { track: nextTrack, index: indexOfPlayingTrack - 1 })
+            return
+        }
     }
 }
 export default {

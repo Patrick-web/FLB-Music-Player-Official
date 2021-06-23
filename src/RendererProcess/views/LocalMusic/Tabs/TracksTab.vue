@@ -20,7 +20,11 @@
       :estimateSize="280"
       v-if="0"
     />
-    <div class="tracksWrapper" @scroll="virtualize($event)">
+    <div
+      class="tracksWrapper"
+      @click="addTracksToQueue"
+      @scroll="virtualize($event)"
+    >
       <TrackCard
         v-for="(track, index) in tracksToRender"
         :key="track.fileLocation"
@@ -68,7 +72,14 @@ export default {
     },
   },
   methods: {
-    ...mapMutations(["updatePlayingQueue", "setRenderedTrack"]),
+    ...mapMutations([
+      "updatePlayingQueue",
+      "setRenderedTrack",
+      "overWriteCustomQueue",
+    ]),
+    addTracksToQueue() {
+      this.overWriteCustomQueue(this.addedTracks);
+    },
     virtualize(e) {
       const scrollInfo = {
         scrollHeight: e.srcElement.scrollHeight,
