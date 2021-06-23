@@ -22,6 +22,8 @@ import playlistsIcon from "@/RendererProcess/assets/images/playlist.svg";
 import albumIcon from "@/RendererProcess/assets/images/album.svg";
 import artistIcon from "@/RendererProcess/assets/images/user.svg";
 import folderIcon from "@/RendererProcess/assets/images/folderNormal.svg";
+import { ipcRenderer } from "electron";
+
 	export default {
 	name: "TabSwitcher",
   data(){return{
@@ -38,6 +40,9 @@ import folderIcon from "@/RendererProcess/assets/images/folderNormal.svg";
 	computed: {
       currentTab(){
         return this.$store.state.UIController.UIProperties.currentMainTab
+      },
+      defaultTab(){
+      return this.$store.state.SettingsManager.settings.defaultTab;
       }
     },
     methods: {
@@ -50,6 +55,14 @@ import folderIcon from "@/RendererProcess/assets/images/folderNormal.svg";
         this.UIcontrollerSetPropertyValue({property:'currentMainTab',newValue:tab.name})        
       },
     },
+    mounted(){
+    ipcRenderer.on("userSettings", (e, payload) => {
+      setTimeout(() => {
+          const defaultTabIndex = this.tabs.findIndex(tab=>tab.name==this.defaultTab)
+          this.routeTo(this.tabs[defaultTabIndex])
+        }, 100);
+    }); 
+  }
   }
 </script>
 
