@@ -42,6 +42,14 @@ export default {
 };
 </script>
 <style scoped lang="scss">
+.miniMode {
+  .customTitleBar {
+    opacity: 0;
+  }
+  .ctrls {
+    pointer-events: none;
+  }
+}
 .customTitleBar {
   width: 100vw;
   display: flex;
