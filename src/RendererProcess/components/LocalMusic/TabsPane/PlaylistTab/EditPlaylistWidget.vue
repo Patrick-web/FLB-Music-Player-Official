@@ -6,25 +6,21 @@
       v-model="newPlaylistName"
       placeholder="New Playlist Name"
     />
-    <button
-      style="margin-top: 10px; width: 100%"
-      @click="emitNewPlaylistName"
+    <base-button
       v-if="newPlaylistName"
-    >
-      <p>Save</p>
-    </button>
-    <button
-      style="margin-top: 10px; width: 100%"
-      class="dangerBt"
-      @click="closeWidget"
-    >
-      Cancel
-    </button>
+      @click.native="emitNewPlaylistName"
+      text="Save"
+    />
+    <base-button @click.native="closeWidget" text="Cancel" />
   </div>
 </template>
 
 <script>
+import BaseButton from "@/RendererProcess/components/BaseComponents/BaseButton.vue";
 export default {
+  components: {
+    BaseButton,
+  },
   data() {
     return {
       newPlaylistName: "",
@@ -44,14 +40,17 @@ export default {
 <style lang="scss">
 .editPlForm {
   position: absolute;
-  padding: 15px;
   border-radius: 20px;
   bottom: 50px;
-  height: 80px;
   right: 100px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  gap: 10px;
+  padding: 10px;
+  input {
+    width: 90%;
+  }
 }
 </style>
