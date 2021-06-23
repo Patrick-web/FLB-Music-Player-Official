@@ -1,0 +1,98 @@
+<template>
+  <div class="image_searcher blurred_bg blur20 widget">
+    <div class="widget_header">
+      <h1 class="widget_title">Image Searcher</h1>
+      <base-button
+        @click.native="UIcontrollerToggleProperty('showImageSearcher')"
+        :icon="require('@/RendererProcess/assets/images/x.svg')"
+        extraClass="widget_close shrink_icon circle"
+        :small="true"
+      />
+    </div>
+    <div class="centerContents">
+      <input
+        type="text"
+        v-model="query"
+        @keyup.enter="searchImage"
+        class="inputElem"
+        placeholder="Search"
+      />
+      <base-button
+        :active="true"
+        :block="true"
+        @click.native="searchImage"
+        text="Search"
+      />
+    </div>
+    <div v-if="imageResults.length == 0 && searching" class="loadingArea">
+      <div class="loadingIndicator"></div>
+    </div>
+    <div class="image_results">
+      <img
+        v-for="cover in imageResults"
+        :key="cover.url"
+        :src="cover.url"
+        @click="selectImage(cover.url)"
+      />
+    </div>
+  </div>
+</template>
+
+<script>
+import gis from "g-i-s";
+import BaseButton from "../../BaseComponents/BaseButton.vue";
+import { mapMutations } from "vuex";
+
+export default {
+  components: { BaseButton },
+  data() {
+    return {
+      query: "",
+      imageResults: [],
+      searching: false,
+      selectedImage: "",
+    };
+  },
+  methods: {
+    ...mapMutations(["UIcontrollerToggleProperty"]),
+    searchImage() {
+      this.imageResults = [];
+      this.searching = true;
+      gis(this.query, (error, results) => {
+        console.log("logging results");
+        if (error) {
+          console.log(error);
+        } else {
+          if (results.length > 1) {
+            this.imageResults = results.slice(0, 10);
+          }
+        }
+      });
+    },
+    selectImage(url) {
+      this.selectedImage = url;
+    },
+  },
+};
+</script>
+
+<style lang='scss'>
+.image_searcher {
+  z-index: 51;
+  right: 330px;
+  border: 1px solid rgba(255, 255, 255, 0.315);
+  .widget_header {
+    margin-bottom: 10px;
+  }
+  input {
+    margin-bottom: 10px;
+  }
+  .image_results {
+    max-width: 100%;
+    border-radius: 15px;
+    &:hover {
+      transform: scale(0.8);
+    }
+  }
+}
+</style>

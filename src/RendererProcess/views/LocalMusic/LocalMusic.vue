@@ -7,6 +7,12 @@
       <PlaylistWidget v-if="showPlaylistWidget" />
       <TagEditor v-if="showTagEditor" :targetTrack="selectedTrack" />
     </transition>
+    <transition
+      enter-active-class="animated fadeInUp extrafaster"
+      leave-active-class="animated fadeOutDown extrafaster"
+    >
+      <ImageSearch v-if="showImageSearcher" />
+    </transition>
     <main>
       <section
         :class="[multiSelectOn ? 'multiSelectMode' : '', 'bg2']"
@@ -30,6 +36,7 @@ import TagEditor from "@/RendererProcess/components/LocalMusic/SidePane/TagEdito
 import TrackContextMenu from "@/RendererProcess/components/Root/Track/TrackContextMenu";
 import PlaylistWidget from "@/RendererProcess/components/LocalMusic/Widgets/PlaylistWidget";
 import { ipcRenderer } from "electron";
+import ImageSearch from "@/RendererProcess/components/LocalMusic/Widgets/ImageSearch.vue";
 
 export default {
   data() {
@@ -44,6 +51,9 @@ export default {
     showTagEditor() {
       return this.$store.state.UIController.UIProperties.showTagEditor;
     },
+    showImageSearcher() {
+      return this.$store.state.UIController.UIProperties.showImageSearcher;
+    },
     multiSelectOn() {
       return this.$store.state.UIController.UIProperties.multiSelectMode;
     },
@@ -55,6 +65,7 @@ export default {
     PlaylistWidget,
     TagEditor,
     TrackContextMenu,
+    ImageSearch,
   },
   methods: {
     setTagEditorTrack(track) {

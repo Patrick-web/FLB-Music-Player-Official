@@ -10,6 +10,8 @@ interface UIControllerStateInterface {
         showTagEditor: boolean;
         showPlaylistWidget: boolean;
         showEqualizerWidget: boolean;
+        showImageSearcher: boolean;
+        miniMode: boolean;
         currentPage: 'My Music' | 'Deezer' | 'Spotify' | 'Podcasts' | 'FLBing';
         currentMainTab: 'Tracks' | 'Recents' | 'Playlists' | 'Home' | 'Albums' | 'Artists';
         currentSidePaneTab: 'Info' | 'Lyrics' | 'Queue';
@@ -23,6 +25,8 @@ const state: UIControllerStateInterface = {
         showTagEditor: false,
         showPlaylistWidget: false,
         showEqualizerWidget: false,
+        showImageSearcher: false,
+        miniMode: false,
         currentPage: 'My Music',
         currentMainTab: 'Home',
         currentSidePaneTab: 'Info',
