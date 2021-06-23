@@ -20,7 +20,7 @@
         </pre>
       </div>
     </div>
-    <div class="lyr_controls">
+    <div class="lyr_controls" v-if="playingTrackLyrics">
       <base-button
         @click.native="offset += 10"
         :icon="require('@/RendererProcess/assets/images/x.svg')"

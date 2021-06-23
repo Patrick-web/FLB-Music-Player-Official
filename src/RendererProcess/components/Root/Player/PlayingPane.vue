@@ -354,6 +354,7 @@ export default {
   // transition: none;
   .album_art {
     width: 70px;
+    margin: 5px;
     border-radius: 15px;
     cursor: pointer;
     transition: none;

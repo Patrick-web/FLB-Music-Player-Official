@@ -94,21 +94,6 @@
             ></div>
           </ul>
         </article>
-        <article>
-          <div
-            @click="
-              setSettingValue({
-                property: 'desktopNotifications',
-                newValue: !settings.desktopNotifications,
-              })
-            "
-            class="switch bg1"
-          >
-            <p>Desktop Notifications</p>
-            <p v-if="settings.desktopNotifications">On</p>
-            <p v-if="!settings.desktopNotifications">Off</p>
-          </div>
-        </article>
       </section>
       <section>
         <article class="bg1">
@@ -140,64 +125,103 @@
             </div>
           </ul>
         </article>
-        <article class="bg1">
-          <h3>Shortcuts ✂</h3>
-          <div class="shortcut">
-            <p>Pause/Play</p>
-            <pre>Space</pre>
-          </div>
-          <div class="shortcut">
-            <p>Next Track</p>
-            <pre>Right Arrow</pre>
-          </div>
-          <div class="shortcut">
-            <p>Previous Track</p>
-            <pre>Left Arrow</pre>
-          </div>
-          <div class="shortcut">
-            <p>Search Tracks</p>
-            <pre>Tab</pre>
-          </div>
-        </article>
-        <article class="bg1">
-          <h3>About 🐲</h3>
-          <div class="infos">
-            <div class="info-group">
-              <div class="it">💽 App Version</div>
-              <div class="i">{{ appVersion }}</div>
+        <div class="grid2">
+          <article class="bg1">
+            <h3 class="mb5">Shortcuts ✂</h3>
+            <div class="pb5 mb5 border_split">
+              <p class="text-small-0">Pause and Play</p>
+              <pre class="text-small-1">Space🔘</pre>
             </div>
-            <div class="info-group">
-              <div class="it">🚀 Made with 🤍 By</div>
-              <div class="i">Patrick Waweru</div>
+            <div class="pb5 mb5 border_split">
+              <p class="text-small-0">Next and Previous Track</p>
+              <pre class="text-small-1">Arrows ◀▶   </pre>
             </div>
-            <div class="info-group">
-              <div class="it">🐦 Twitter</div>
-              <a target="_blank" href="https://twitter.com/PnTX10" class="i"
-                >@PnTX10</a
-              >
+            <div class="pb5 mb5 border_split">
+              <p class="text-small-0">Search Tracks</p>
+              <pre class="text-small-1">Tab 🧈</pre>
             </div>
-            <div class="info-group">
-              <div class="it">📬 Email</div>
-              <a target="_blank" href="https://mail.google.com" class="i"
-                >pntx200@gmail.com</a
-              >
+          </article>
+          <article class="bg1">
+            <h3 class="mb5">About 🐲</h3>
+            <div class="infos">
+              <div class="pb5 border_split mb5">
+                <p class="text-small-0">App Version 💽</p>
+                <p class="text-small-1">{{ appVersion }}</p>
+              </div>
+              <!-- <div class="pb5 border_split mb5">
+              <p class="text-small-0">Made with 🤍 By</p>
+              <p class="text-small-1">Patrick Waweru</p>
+            </div> -->
+              <div class="pb5 border_split mb5">
+                <p class="text-small-0">Twitter🐦</p>
+                <a
+                  target="_blank"
+                  class="text-small-1"
+                  href="https://twitter.com/PnTX10"
+                  >@PnTX10</a
+                >
+              </div>
+              <div class="">
+                <p class="text-small-0">Email📬</p>
+                <a
+                  target="_blank"
+                  class="text-small-1"
+                  href="https://mail.google.com"
+                  >pntx200@gmail.com</a
+                >
+              </div>
             </div>
-            <div class="info-group">
-              <p class="it">🦧 Don't be shy, go ahead and contact me.</p>
-            </div>
+          </article>
+        </div>
+        <div class="grid2 gap10 pa10 border_split">
+          <div
+            @click="
+              setSettingValue({
+                property: 'desktopNotifications',
+                newValue: !settings.desktopNotifications,
+              })
+            "
+            :class="[
+              settings.desktopNotifications ? 'activeBtn' : '',
+              'switch bg1',
+            ]"
+          >
+            <p>Notifications💬</p>
+            <p v-if="settings.desktopNotifications">On</p>
+            <p v-if="!settings.desktopNotifications">Off</p>
           </div>
-        </article>
+          <div
+            @click="toggleVideoSupport"
+            :class="[settings.videoSupport ? 'activeBtn' : '', 'switch bg1']"
+          >
+            <p>Video Support ß</p>
+            <p v-if="settings.videoSupport">On</p>
+            <p v-if="!settings.videoSupport">Off</p>
+          </div>
+        </div>
+        <div class="grid2 gap10 pa10">
+          <div @click="checkForUpdate" class="switch bg1">
+            <p>Check for Update 🚀</p>
+          </div>
+          <div class="switch bg1">
+            <a target="_blank" href="https://t.me/flbmusiccommunity">
+              <p>Join us on Telegram 🦅</p>
+            </a>
+          </div>
+          <div class="switch bg1">
+            <a target="_blank" href="https://flbmusic.kampsite.co/">
+              <p>Request a Feature 💎</p>
+            </a>
+          </div>
+          <div class="switch bg1">
+            <a target="_blank" href="https://t.me/flbmusiccommunity">
+              <p>Report a Bug 🐜</p>
+            </a>
+          </div>
+        </div>
       </section>
       <section style="border: none">
-        <base-button
-          @click.native="checkForUpdate"
-          text="Check for Update 🚀"
-        />
-        <br />
-        <br />
-        <a target="_blank" href="https://t.me/flbmusiccommunity">
-          <base-button text="Join the Community on Telegram 🦅" />
-        </a>
+        <div class="grid2 gap10"></div>
       </section>
     </main>
   </div>
@@ -262,6 +286,14 @@ export default {
     checkForUpdate() {
       console.log("Checking");
       sendMessageToNode("checkForUpdate");
+    },
+    toggleVideoSupport() {
+      this.setSettingValue({
+        property: "videoSupport",
+        newValue: !this.settings.videoSupport,
+      });
+      console.log(this.settings.videoSupport);
+      sendMessageToNode("toggleVideoSupport");
     },
   },
   mounted() {
@@ -394,6 +426,9 @@ export default {
     border-bottom: 1px solid rgba(255, 255, 255, 0.39);
     font-family: roboto-light;
     font-size: var(--baseFontSize);
+    p {
+      font-size: 0.9rem;
+    }
   }
 }
 .colorDiv {

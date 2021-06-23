@@ -30,78 +30,13 @@
           <img
             title="FLBing"
             class="icon"
-            src="@/RendererProcess/assets/images/flbing.svg"
+            src="@/RendererProcess/assets/images/meld.svg"
           />
           <p v-if="!isCollapsed">FLBing</p>
         </router-link>
       </div>
-      <!-- <div
-        class="sideNav-group"
-        :class="[
-          currentPage === 'Podcasts' ? 'active-sideNav-group' : '',
-          'sideNav-group',
-        ]"
-        @click="switchPage('Podcasts')"
-      >
-        <router-link to="/podcasts">
-          <img
-            class="icon"
-            title="Podcasts"
-            src="@/RendererProcess/assets/images/podcast.svg"
-            alt
-          />
-          <p v-if="!isCollapsed">Podcasts</p>
-        </router-link>
-      </div> -->
-      <!-- <div
-        class="sideNav-group"
-        :class="[
-          currentPage === 'Deezer' ? 'active-sideNav-group' : '',
-          'sideNav-group',
-        ]"
-        @click="switchPage('Deezer')"
-      >
-        <router-link to="/deezer">
-          <img
-            class="icon"
-            title="Deezer"
-            src="@/RendererProcess/assets/images/deezer.svg"
-            alt
-          />
-          <p v-if="!isCollapsed">Deezer</p>
-        </router-link>
-      </div> -->
-      <!-- <div
-        :class="[
-          currentPage === 'Spotify' ? 'active-sideNav-group' : '',
-          'sideNav-group',
-        ]"
-        @click="switchPage('Spotify')"
-      >
-        <a>
-          <span v-if="!isCollapsed">Coming Soon</span>
-          <img
-            title="Spotify"
-            class="icon"
-            src="@/RendererProcess/assets/images/spotify.svg"
-            alt
-          />
-          <p v-if="!isCollapsed">Spotify</p>
-        </a>
-      </div> -->
     </div>
     <div>
-      <div class="sideNav-group">
-        <a href="https://flbmusic.kampsite.co/" target="_blank">
-          <img
-            title="Settings"
-            class="icon"
-            src="@/RendererProcess/assets/images/request.svg"
-            alt
-          />
-          <p v-if="!isCollapsed">Request Feature</p>
-        </a>
-      </div>
       <div
         @click="UIcontrollerToggleProperty('showSettings')"
         class="sideNav-group"

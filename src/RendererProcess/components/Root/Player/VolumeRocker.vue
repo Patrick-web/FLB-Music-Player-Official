@@ -75,7 +75,7 @@ export default {
     top: 0px;
     left: 0px;
     height: 20px;
-    width: 100px;
+    width: 100%;
   }
   .base_slider_progress {
     position: absolute;

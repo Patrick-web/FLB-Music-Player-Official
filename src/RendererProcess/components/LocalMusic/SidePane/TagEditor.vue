@@ -23,10 +23,20 @@
           />
         </div>
       </div>
-      <div class="tag">
+      <div class="tag bg1">
         <div class="flex-col gap10">
           <p>Title🖊</p>
-          <p class="text-small-1">{{ targetTrack.title || "unknown" }}</p>
+          <p
+            style="
+              white-space: nowrap;
+              text-overflow: ellipsis;
+              max-height: 2ch;
+              overflow: hidden;
+            "
+            class="text-small-1"
+          >
+            {{ targetTrack.title || "unknown" }}
+          </p>
         </div>
         <input
           placeholder="New Title"
@@ -35,7 +45,7 @@
           class="inputElem"
         />
       </div>
-      <div class="tag">
+      <div class="tag bg1">
         <div class="flex-col gap10">
           <p>Artist🎙</p>
           <p class="text-small-1">{{ targetTrack.artist || "unknown" }}</p>
@@ -47,7 +57,7 @@
           id="artistTag"
         />
       </div>
-      <div class="tag">
+      <div class="tag bg1">
         <div class="flex-col gap10">
           <p>Album🧊</p>
           <p class="text-small-1">{{ targetTrack.album }}</p>
@@ -170,7 +180,6 @@ export default {
   .tag {
     padding: 10px;
     margin-bottom: 5px;
-    background: rgba(255, 255, 255, 0.062);
     border-radius: 15px;
     input {
       width: 95%;

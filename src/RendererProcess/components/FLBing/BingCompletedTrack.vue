@@ -1,6 +1,6 @@
 <template>
   <div class="BingCompletedTrack">
-    <img id="cover" :src="track.albumArt" />
+    <!-- <img id="cover" :src="track.albumArt" /> -->
 
     <div class="content">
       <p class="track_title">{{ track.defaultTitle }}</p>

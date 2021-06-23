@@ -9,6 +9,7 @@ const state = {
     settings: {
         includeVideo: false,
         desktopNotifications: true,
+        videoSupport: false,
         defaultTab: "Tracks",
         theme: "Fancy",
         accentColor: "accent_blue",

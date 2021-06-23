@@ -1,8 +1,8 @@
 <template>
   <div class="customTitleBar bg1">
     <div class="leftSide">
-      <img id="logo" src="@/RendererProcess/assets/images/Logo.png" />
-      <p>LB Music</p>
+      <!-- <img id="logo" src="@/RendererProcess/assets/images/Logo.png" /> -->
+      <p>Melody Music</p>
     </div>
     <div class="ctrls">
       <div class="ctrl" @click="sendMessage('minimize')">
@@ -23,7 +23,7 @@
         <img
           class="icon"
           style="width: 12px"
-          src="@/RendererProcess/assets/images/windowClose.svg"
+          src="@/RendererProcess/assets/images/x.svg"
         />
       </div>
     </div>

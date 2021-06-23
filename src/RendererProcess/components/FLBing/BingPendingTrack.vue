@@ -68,7 +68,6 @@ export default {
 <style lang="scss">
 .BingDownloadTrack {
   position: relative;
-  background: rgba(255, 255, 255, 0.11);
   margin-bottom: 5px;
   margin-right: 10px;
   border-radius: 10px;

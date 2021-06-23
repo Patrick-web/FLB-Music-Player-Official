@@ -23,7 +23,6 @@ import { createParsedTrack } from "./MainProcess/core/createParsedTrack";
 import { deleteFile, sendNativeNotification, downloadFile, isValidFileType, sendMessageToRenderer } from "./MainProcess/utilities";
 import { TrackType, SettingsType, FolderType, FolderInfoType, TagChangesType } from "@/types";
 import { downloadArtistPicture } from "./MainProcess/services";
-import { FLBing } from "./MainProcess/modules/FLBing";
 import { SUPPORTED_FORMATS } from "./MainProcess/constants/constants";
 import { DownloadManager } from "./MainProcess/modules/BingDownloader";
 
@@ -32,6 +31,7 @@ dialog.showErrorBox = function (title, content) {
     console.log(`An Error Occurred ⚠`);
     console.log(`${title}\n ${content}`);
 };
+
 
 let appIsFocused = true;
 export const fileTracker = new FilesTracker();
@@ -70,8 +70,7 @@ async function createWindow() {
                 .ELECTRON_NODE_INTEGRATION as unknown) as boolean,
         },
     });
-
-    // win.maximize();
+    win.setTitle('Melody Music')
 
     if (process.env.WEBPACK_DEV_SERVER_URL) {
         // Load the url of the dev server if in development mode
@@ -119,7 +118,7 @@ async function createWindow() {
     });
     autoUpdater.checkForUpdatesAndNotify()
 }
-
+app.setName('Melody Music')
 if (process.platform === 'win32') {
     app.setAppUserModelId(app.getName());
 }
@@ -346,6 +345,7 @@ ipcMain.on('downloadBingTrack', (e, payload) => {
     downloaderManager.downloadTrack(payload)
 })
 
+
 // ipcMain.on('cancelBingDownload', (e) => {
 //     downloaderManager.cancelCurrentDownload()
 // })
@@ -364,6 +364,7 @@ ipcMain.on('downloadBingTrack', (e, payload) => {
 ipcMain.on('checkForUpdate', () => {
     sendMessageToRenderer('normalMsg', 'Checking For Update')
     checkForUpdates()
+    console.log(app.getAppMetrics());
 })
 
 ipcMain.on('toggleMiniMode', (e, payload) => {

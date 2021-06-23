@@ -51,8 +51,7 @@ button {
     white-space: nowrap;
   }
   &:active {
-    border-top: 1.5px solid rgb(255, 255, 255);
-    border-bottom: 1.5px solid rgb(255, 255, 255);
+    border: 2px solid rgb(255, 255, 255);
   }
   .btnLoaderWrapper {
     width: 100%;
@@ -92,11 +91,7 @@ button {
   }
   &:hover {
     border-radius: 20px;
-    background: linear-gradient(
-      200deg,
-      transparent,
-      var(--accentColor)
-    ) !important;
+    background: linear-gradient(200deg, transparent, var(--accentColor));
   }
 }
 .iconBtn {
@@ -111,11 +106,7 @@ button {
   }
   &:hover {
     border-radius: 50%;
-    background: linear-gradient(
-      200deg,
-      transparent,
-      var(--accentColor)
-    ) !important;
+    background: linear-gradient(200deg, transparent, var(--accentColor));
   }
 }
 .btnWithIcon {

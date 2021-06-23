@@ -22,7 +22,7 @@
           Completed
         </div>
       </div>
-      <div class="tab_content bg1">
+      <div class="tab_content">
         <div v-if="tab == 'Pending'" class="pending_tracks tracks_wrapper">
           <bing-pending-track
             v-for="track in downloadQueue"
@@ -117,14 +117,15 @@ export default {
     padding: 8px;
   }
   .tab_switcher {
-    width: 64%;
+    width: 92%;
     display: flex;
     align-items: center;
-    justify-content: left;
+    justify-content: center;
     margin: 0px 10px;
-    border-radius: 15px 15px 0px 0px;
+    border-radius: 15px;
     overflow: hidden;
     .switcher {
+      width: 100%;
       padding: 8px 12px;
       text-align: center;
       cursor: pointer;
