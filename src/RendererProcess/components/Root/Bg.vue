@@ -1,12 +1,17 @@
 <template>
   <div class="bg">
     <img
+      v-if="playingTrack"
       :src="
         playingTrack.albumArt ||
         require('@/RendererProcess/assets/images/FLBDefaultCover.png')
       "
       id="bg_fancy"
-      alt=""
+    />
+    <img
+      v-if="!playingTrack"
+      :src="require('@/RendererProcess/assets/images/FLBDefaultCover.png')"
+      id="bg_fancy"
     />
   </div>
 </template>
