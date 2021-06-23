@@ -27,15 +27,17 @@
         @start="drag = true"
         @end="drag = false"
       >
-        <transition-group
-          enter-active-class="animated  lightSpeedIn faster"
-          leave-active-class="animated hinge fast"
-        >
+        <transition-group enter-active-class="animated  lightSpeedIn faster">
           <div
             v-for="(track, index) in customQueue"
             :key="track.fileLocation"
-            class="queuedTrack bg1"
-            @click.stop="playQueuedTrack($event, index, track)"
+            :class="[
+              currentlyPlayingTrackPath === track.fileLocation
+                ? 'playing_track'
+                : '',
+              'queuedTrack bg1',
+            ]"
+            @click.stop="playQueuedTrack(track)"
           >
             <p class="card_title">{{ track.defaultTitle }}</p>
             <p class="card_subTitle">{{ track.defaultArtist }}</p>
@@ -65,11 +67,28 @@ export default {
   computed: {
     customQueue: {
       get() {
-        return this.$store.state.PlaybackManger.customQueue;
+        const queue = this.$store.state.PlaybackManger.customQueue;
+        const indexOfPlayingTrack = queue.findIndex(
+          (track) => track.fileLocation === this.currentlyPlayingTrackPath
+        );
+        if (indexOfPlayingTrack > -1) {
+          return queue;
+        } else if (queue.length === 1) {
+          return [this.$store.state.PlaybackManger.playingTrackInfo.track];
+        } else {
+          return [
+            this.$store.state.PlaybackManger.playingTrackInfo.track,
+            ...queue,
+          ];
+        }
       },
       set(value) {
         this.$store.commit("reorderQueue", value);
       },
+    },
+    currentlyPlayingTrackPath() {
+      return this.$store.state.PlaybackManger.playingTrackInfo.track
+        .fileLocation;
     },
   },
   methods: {
@@ -79,12 +98,8 @@ export default {
       "UIcontrollerToggleProperty",
       "clearCustomQueue",
     ]),
-    playQueuedTrack(e, index, track) {
-      const trackBox = e.currentTarget;
-      trackBox.classList.add("playingTrack");
-      this.setPlayingTrack({ track: track, index: index });
-      this.removeTrackFromCustomQueue(index);
-      document.querySelector("audio").muted = false;
+    playQueuedTrack(track) {
+      this.setPlayingTrack({ track: track, index: 0 });
     },
   },
 };
@@ -93,7 +108,6 @@ export default {
 <style lang="scss">
 .QueuedTracks {
   height: 95%;
-  width: 19.5vw;
   overflow: hidden;
   overflow-y: scroll;
   .clearQueueBt {
@@ -106,20 +120,22 @@ export default {
     z-index: 2;
     width: 84%;
     cursor: pointer;
+    display: none;
     &:hover {
       border-radius: 20px;
     }
   }
   .QueuedTracksWrapper {
-    padding-top: 40px;
+    // padding-top: 40px;
   }
   .queuedTrack {
     position: relative;
     padding: 10px;
     border-radius: 10px;
     margin-bottom: 10px;
-    margin-right: 10px;
+    // margin-right: 10px;
     cursor: pointer;
+    width: 90%;
     p {
       overflow: hidden;
       white-space: nowrap;
@@ -177,24 +193,17 @@ export default {
       transform: translateX(-50%) scale(1);
     }
   }
-  .playingtrack {
-    z-index: 1;
-    margin-top: 0px;
-    box-shadow: none;
-    .info {
-      padding-left: 5px !important;
+  .queuedTrack:active {
+    img {
+      transform: translateX(-50%) scale(0);
     }
-    .cover {
-      transform: scale(0.8);
-      box-shadow: none;
-      box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.123);
-    }
-    .options {
-      display: none;
-    }
-    .unQueueIcon {
-      display: none;
-    }
+  }
+  .playing_track {
+    border-left: 5px solid var(--accentColor);
+    border-right: 5px solid var(--accentColor);
+    // border-top-left-radius: 0px;
+    // border-bottom-right-radius: 0px;
+    width: 86%;
   }
 }
 </style>
