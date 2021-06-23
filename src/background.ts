@@ -366,6 +366,21 @@ ipcMain.on('checkForUpdate', () => {
     checkForUpdates()
 })
 
+ipcMain.on('toggleMiniMode', (e, payload) => {
+    const primaryDisplay = screen.getPrimaryDisplay();
+    const { width, height } = primaryDisplay.workAreaSize;
+    console.log("MiniMode " + payload);
+    if (payload) {
+        win.unmaximize()
+        win.setSize(250, 300)
+        win.setPosition(width - 250, height - 300, true)
+        win.setAlwaysOnTop(true)
+    } else {
+        win.maximize()
+        win.setAlwaysOnTop(false)
+    }
+})
+
 
 
 async function parseFolder(
@@ -476,7 +491,6 @@ export async function writeTags(filePath: string, tagChanges: TagChangesType) {
     if (tagChanges.APIC && tagChanges.APIC.includes("http")) {
         tagChanges.APIC = await downloadFile(tagChanges.APIC, paths.albumArtFolder, tagChanges.title || path.parse(filePath).name);
     }
-    tagChanges.APIC.replace("file:///", "");
     tagChanges.APIC = decodeURI(tagChanges.APIC);
     let isSuccessFull = NodeID3.update(tagChanges, filePath);
     if (isSuccessFull) {

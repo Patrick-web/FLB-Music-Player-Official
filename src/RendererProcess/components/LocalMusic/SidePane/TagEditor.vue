@@ -1,32 +1,33 @@
 <template>
-  <div class="TagEditor blurred_bg blur10">
-    <base-button
-      @click.native="UIcontrollerToggleProperty('showTagEditor')"
-      :icon="require('@/RendererProcess/assets/images/x.svg')"
-      extraClass="modalClose"
-      :small="true"
-      style="transform: translate(5px, -5px) scale(0.8)"
-      :transparent="true"
-    />
-    <div class="centerContents">
-      <h1>Tag Editor</h1>
+  <div class="TagEditor widget blurred_bg blur10">
+    <div class="widget_header">
+      <h1 class="widget_title">Tag Editor</h1>
+      <base-button
+        @click.native="UIcontrollerToggleProperty('showTagEditor')"
+        :icon="require('@/RendererProcess/assets/images/x.svg')"
+        extraClass="widget_close shrink_icon circle"
+        :small="true"
+      />
     </div>
     <div class="trackTags">
-      <div class="centerContents">
+      <div class="tag flex-col center-a">
         <img id="coverArtTag" :src="targetTrack.albumArt" />
         <p style="margin-top: 10px" v-if="!targetTrack.albumArt">
-          No Album Art
+          No Album Art 🖼
         </p>
-        <div class="grid2 gap10 tag">
+        <div class="grid2 gap10">
           <base-button @click.native="importCover" text="Import Picture" />
           <base-button
-            @click.native="searchAlbumArt = true"
+            @click.native="UIcontrollerToggleProperty('showImageSearcher')"
             text="Search Online"
           />
         </div>
       </div>
       <div class="tag">
-        <p>Current Title : {{ targetTrack.title || "unknown" }}</p>
+        <div class="flex-col gap10">
+          <p>Title🖊</p>
+          <p class="text-small-1">{{ targetTrack.title || "unknown" }}</p>
+        </div>
         <input
           placeholder="New Title"
           v-model="newTitle"
@@ -35,7 +36,10 @@
         />
       </div>
       <div class="tag">
-        <p>Current Artist : {{ targetTrack.artist || "unknown" }}</p>
+        <div class="flex-col gap10">
+          <p>Artist🎙</p>
+          <p class="text-small-1">{{ targetTrack.artist || "unknown" }}</p>
+        </div>
         <input
           placeholder="New Artist"
           v-model="newArtist"
@@ -44,7 +48,10 @@
         />
       </div>
       <div class="tag">
-        <p>Current Album : {{ targetTrack.album }}</p>
+        <div class="flex-col gap10">
+          <p>Album🧊</p>
+          <p class="text-small-1">{{ targetTrack.album }}</p>
+        </div>
         <input
           placeholder="New Album"
           v-model="newAlbum"
@@ -52,52 +59,19 @@
           id="albumTag"
         />
       </div>
-      <div v-if="searchAlbumArt" class="possibleCovers">
-        <p>Album Art Search</p>
-        <div class="centerContents">
-          <input
-            type="text"
-            v-model="query"
-            @keyup.enter="searchImage"
-            class="inputElem"
-            placeholder="Search"
-          />
-          <button @click="searchImage"><h2>Search</h2></button>
-        </div>
-        <div
-          v-if="possibleAlbumArt.length == 0 && searching"
-          class="loadingArea"
-        >
-          <div class="loadingIndicator"></div>
-        </div>
-        <div class="possibles">
-          <img
-            v-for="cover in possibleAlbumArt"
-            :key="cover.url"
-            :src="cover.url"
-            @click="selectCover(cover.url)"
-          />
-        </div>
-      </div>
     </div>
-    <div class="tag">
-      <div class="animated faster">
-        <base-button
-          :active="true"
-          :block="true"
-          @click.native="saveChanges"
-          text="Save Changes"
-        />
-      </div>
-    </div>
-    <p style="margin: 10px">File Name : {{ targetTrack.fileName }}</p>
+    <base-button
+      :active="true"
+      :block="true"
+      @click.native="saveChanges"
+      text="Save Changes"
+    />
   </div>
 </template>
 
 <script>
 import { ipcRenderer } from "electron";
 import { mapMutations } from "vuex";
-import gis from "g-i-s";
 import BaseButton from "../../BaseComponents/BaseButton.vue";
 export default {
   components: { BaseButton },
@@ -123,10 +97,7 @@ export default {
   },
   methods: {
     ...mapMutations(["UIcontrollerToggleProperty"]),
-    selectCover(url) {
-      this.selectedCover = url;
-      document.querySelector("#coverArtTag").src = url;
-    },
+
     importCover() {
       ipcRenderer.send("importCoverArt");
     },
@@ -147,7 +118,8 @@ export default {
         tags["album"] = this.newAlbum;
       }
       if (newAlbumArtSrc && this.targetTrack.albumArt != newAlbumArtSrc) {
-        tags.APIC = newAlbumArtSrc;
+        tags.APIC = newAlbumArtSrc.replace("file:///", "");
+        console.log(tags.APIC);
       }
       const data = {
         track: this.targetTrack,
@@ -158,20 +130,6 @@ export default {
         ipcRenderer.send("updateTags", data);
       }
       this.UIcontrollerToggleProperty("showTagEditor");
-    },
-    searchImage() {
-      this.possibleAlbumArt = [];
-      this.searching = true;
-      gis(this.query, (error, results) => {
-        console.log("logging results");
-        if (error) {
-          console.log(error);
-        } else {
-          if (results.length > 1) {
-            this.possibleAlbumArt = results.slice(0, 10);
-          }
-        }
-      });
     },
   },
   mounted() {
@@ -194,14 +152,9 @@ export default {
 <style lang="scss">
 .TagEditor {
   position: fixed;
-  border: 1px solid rgba(255, 255, 255, 0.315);
   border-radius: 20px;
-  box-shadow: 0px 0px 50px black;
-  padding: 10px;
-  top: 40px;
-  right: 10px;
   z-index: 50;
-  width: 260px;
+  width: 240px;
   color: white;
 
   p {
@@ -209,12 +162,19 @@ export default {
     margin-bottom: 5px;
   }
   #coverArtTag {
-    width: 140px;
-    margin-top: 10px;
-    margin-bottom: 10px;
+    width: 100px;
+    margin-bottom: 5px;
+    border-radius: 15px;
+    transform: translateX(50%);
   }
   .tag {
     padding: 10px;
+    margin-bottom: 5px;
+    background: rgba(255, 255, 255, 0.062);
+    border-radius: 15px;
+    input {
+      width: 95%;
+    }
   }
 
   .bt {
@@ -232,28 +192,6 @@ export default {
   }
   p:hover {
     border-radius: 12px;
-  }
-  .possibleCovers {
-    padding: 10px;
-    position: absolute;
-    left: -2px;
-    top: 0px;
-    transform: translateX(-100%);
-    background-color: rgb(22, 22, 22);
-    width: 100%;
-    .possibles {
-      margin-top: 10px;
-      max-height: 440px;
-      overflow: hidden;
-      overflow-y: scroll;
-    }
-    img {
-      width: 100%;
-      cursor: pointer;
-    }
-    img:hover {
-      transform: scale(0.9);
-    }
   }
 }
 </style>

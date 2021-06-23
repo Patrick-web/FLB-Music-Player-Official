@@ -1,5 +1,9 @@
 <template>
-  <div @click="cleanUp" id="app" :class="[accentColor, theme + '_theme']">
+  <div
+    @click="cleanUp"
+    id="app"
+    :class="[accentColor, theme + '_theme', miniMode ? 'miniMode' : '']"
+  >
     <CustomTitleBar />
     <IpcListener />
     <transition
@@ -11,13 +15,13 @@
     <OnBoard v-on:closeOnBoard="showOnboard = false" v-if="showOnboard" />
     <Notifications />
     <section id="main-view">
-      <div class="flex" id="sub-view-1">
+      <div v-if="!miniMode" class="flex" id="sub-view-1">
         <SideNav />
         <router-view />
       </div>
       <PlayingPane v-if="playingTrack" />
     </section>
-    <Bg />
+    <Bg v-if="theme === 'fancy'" />
   </div>
 </template>
 <script lang="js"> 
@@ -62,6 +66,9 @@
       },
     addedTracks() {
       return this.$store.state.TabsManager.tabsData.addedTracks;
+    },
+        miniMode() {
+      return this.$store.state.UIController.UIProperties.miniMode;
     },
 	  },
 	  methods: {
