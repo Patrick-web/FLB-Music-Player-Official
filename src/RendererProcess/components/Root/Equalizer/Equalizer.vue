@@ -80,9 +80,6 @@ export default {
   flex-direction: column;
   align-items: center;
   z-index: 50;
-  .presets {
-    margin-top: 10px;
-  }
   .filter_sliders {
     padding: 10px;
     display: flex;

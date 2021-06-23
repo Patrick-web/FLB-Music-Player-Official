@@ -182,6 +182,7 @@ export default {
     left: 0;
     width: 100%;
     height: 100%;
+    background: rgba(255, 255, 255, 0.151);
     // display: grid;
     // grid-template-columns: repeat(auto-fit, minmax(50px, 1fr));
     display: flex;
