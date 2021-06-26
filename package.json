@@ -24,7 +24,6 @@
 		"postinstall": "electron-builder install-app-deps",
 		"postuninstall": "electron-builder install-app-deps",
 		"deploy:steps": "git commit -am vx.x.x && git tag vx.x.x && git push --tags",
-		"no": "0775473860"
 	},
 	"main": "background.js",
 	"dependencies": {
