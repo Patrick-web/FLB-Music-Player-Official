@@ -133,7 +133,7 @@ export default {
 .results {
   height: 78vh;
   .contentsWrapper {
-    height: 93%;
+    height: 87%;
     overflow: hidden;
     overflow-y: scroll;
     align-items: center;

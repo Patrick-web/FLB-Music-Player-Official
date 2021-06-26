@@ -122,7 +122,7 @@ export class FLBing {
         })
     }
     async writeTrackTags(location: any, tags: any) {
-        const success = writeTags(location, tags)
+        const success = writeTags(location, tags, true)
         console.log("Writing tags first");
         console.log(tags);
         console.log(location);

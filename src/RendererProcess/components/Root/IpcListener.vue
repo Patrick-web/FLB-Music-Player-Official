@@ -70,7 +70,7 @@ export default {
       this.setPlayingTrack({ track: track, index: 0 });
     });
 
-    ipcRenderer.on("updatedTrack", (e, updatedTrack) => {
+    ipcRenderer.on("updateTrack", (e, updatedTrack) => {
       this.updateTrack(updatedTrack);
     });
     ipcRenderer.on("deleteComplete", (e, pathToTrack) => {

@@ -1,5 +1,5 @@
 <template>
-  <div class="searchResults blurred_bg blur20">
+  <div class="searchResults blurred_bg blur20 no_scroll">
     <base-button
       id="closeSearch"
       :icon="require('@/RendererProcess/assets/images/x.svg')"
@@ -58,7 +58,7 @@
       <div
         v-if="searchResults.albums.length > 0"
         class="grid_auto"
-        style="max-height: 180px; overflow: hidden; overflow-y: scroll"
+        style="max-height: 150px; overflow: hidden; overflow-y: scroll"
       >
         <AlbumCard
           v-for="album in searchResults.albums"

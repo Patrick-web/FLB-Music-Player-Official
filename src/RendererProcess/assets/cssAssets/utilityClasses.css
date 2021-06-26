@@ -174,7 +174,7 @@
 .mr5 {
 	margin-right: 5px;
 }
-.mtr10 {
+.mr10 {
 	margin-right: 10px;
 }
 .ma10 {
@@ -202,7 +202,7 @@
 .pr5 {
 	padding-right: 5px;
 }
-.ptr10 {
+.pr10 {
 	padding-right: 10px;
 }
 .pa5 {
@@ -214,4 +214,32 @@
 
 .border_split {
 	border-bottom: 1px solid rgba(255, 255, 255, 0.103);
+}
+
+.scroll_y {
+	overflow: hidden;
+	overflow-y: scroll;
+}
+.scroll_x {
+	overflow: hidden;
+	overflow-x: scroll;
+}
+.scroll_xy {
+	overflow: scroll;
+}
+.no_scroll {
+	overflow: hidden;
+}
+
+.round5 {
+	border-radius: 5px;
+}
+.round10 {
+	border-radius: 10px;
+}
+.round15 {
+	border-radius: 15px;
+}
+.round20 {
+	border-radius: 20px;
 }

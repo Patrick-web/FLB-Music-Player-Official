@@ -61,13 +61,13 @@
           <img
             v-if="artistPicture"
             class="coverArt roundImage"
-            :src="artistPicture"
+            :src="'file://' + artistPicture"
           />
           <letter-card v-else :text="selectedGroup.name" />
           <img
             v-if="artistPicture"
             class="coverArt"
-            :src="artistPicture"
+            :src="'file://' + artistPicture"
             id="blurred"
           />
         </div>

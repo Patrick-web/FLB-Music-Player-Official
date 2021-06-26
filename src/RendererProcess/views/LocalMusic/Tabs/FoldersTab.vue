@@ -13,9 +13,18 @@
             src="@/RendererProcess/assets/images/folder.svg"
           />
           <div class="top3">
-            <img v-if="folder.tracks[0]" :src="folder.tracks[0].albumArt" />
-            <img v-if="folder.tracks[1]" :src="folder.tracks[1].albumArt" />
-            <img v-if="folder.tracks[2]" :src="folder.tracks[2].albumArt" />
+            <img
+              v-if="folder.tracks[0]"
+              :src="'file://' + folder.tracks[0].albumArt"
+            />
+            <img
+              v-if="folder.tracks[1]"
+              :src="'file://' + folder.tracks[1].albumArt"
+            />
+            <img
+              v-if="folder.tracks[2]"
+              :src="'file://' + folder.tracks[2].albumArt"
+            />
           </div>
         </div>
         <p>{{ folder.name }}</p>
@@ -59,7 +68,7 @@
           <img
             v-if="selectedGroup.tracks[0].albumArt"
             id="blurred"
-            :src="selectedGroup.tracks[0].albumArt"
+            :src="'file://' + selectedGroup.tracks[0].albumArt"
           />
           <img
             v-if="!selectedGroup.tracks[0].albumArt"

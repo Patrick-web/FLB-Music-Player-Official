@@ -6,7 +6,7 @@
     >
       <img
         v-if="playingTrack.albumArt"
-        :src="playingTrack.albumArt"
+        :src="'file://' + playingTrack.albumArt"
         id="tag_albumArt"
       />
       <p v-if="!playingTrack.albumArt">No Album Art</p>

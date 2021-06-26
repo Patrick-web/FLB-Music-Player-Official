@@ -11,7 +11,11 @@
       :key="track.fileLocation"
       class="card blurred_bg blur20 bg2"
     >
-      <img class="card_image" v-if="track.albumArt" :src="track.albumArt" />
+      <img
+        class="card_image"
+        v-if="track.albumArt"
+        :src="'file://' + track.albumArt"
+      />
       <img
         class="card_image"
         v-else

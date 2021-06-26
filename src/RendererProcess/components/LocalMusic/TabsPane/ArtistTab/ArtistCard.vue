@@ -6,7 +6,7 @@
     <img
       v-if="artistPicture"
       class="coverArt roundImage"
-      :src="artistPicture"
+      :src="'file://' + artistPicture"
     />
     <letter-card v-if="!artistPicture" :text="artist.name.charAt(0)" />
     <div class="groupedCard_info">

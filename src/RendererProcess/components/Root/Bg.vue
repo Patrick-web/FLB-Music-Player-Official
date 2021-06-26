@@ -3,7 +3,7 @@
     <img
       v-if="playingTrack"
       :src="
-        playingTrack.albumArt ||
+        'file://' + playingTrack.albumArt ||
         require('@/RendererProcess/assets/images/FLBDefaultCover.png')
       "
       id="bg_fancy"

@@ -1,3 +1,4 @@
+
 <template>
   <div class="playingPane bg2">
     <div class="left_pane_section">
@@ -5,14 +6,14 @@
         @click="expandPlayingPane"
         class="album_art"
         :src="
-          playingTrack.albumArt ||
+          'file://' + playingTrack.albumArt ||
           require('@/RendererProcess/assets/images/FLBDefaultCover.png')
         "
       />
       <img
         class="album_art_blurred"
         :src="
-          playingTrack.albumArt ||
+          'file://' + playingTrack.albumArt ||
           require('@/RendererProcess/assets/images/FLBDefaultCover.png')
         "
       />
@@ -351,7 +352,7 @@ export default {
   display: flex;
   gap: 10px;
   height: 100px;
-  // transition: none;
+  transition: none;
   .album_art {
     width: 70px;
     margin: 5px;

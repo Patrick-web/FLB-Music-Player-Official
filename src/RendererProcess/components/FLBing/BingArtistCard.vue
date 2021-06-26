@@ -1,6 +1,6 @@
 <template>
   <div @click="getArtistData" class="bing_artist bing_card groupCard">
-    <img class="coverArt" :src="artistInfo.picture" alt />
+    <img class="coverArt" :src="'file://' + artistInfo.picture" alt />
     <div class="groupedCard_info">
       <p class="groupedInfo_title">
         {{ artistInfo.name }}

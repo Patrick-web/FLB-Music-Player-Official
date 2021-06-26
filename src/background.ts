@@ -66,19 +66,22 @@ async function createWindow() {
             webviewTag: true,
             // Use pluginOptions.nodeIntegration, leave this alone
             // See nklayman.github.io/vue-cli-plugin-electron-builder/guide/security.html#node-integration for more info
-            nodeIntegration: (process.env
-                .ELECTRON_NODE_INTEGRATION as unknown) as boolean,
+            nodeIntegration: true,
+            contextIsolation: false,
+            webgl: false
         },
     });
-    win.setTitle('Melody Music')
 
     if (process.env.WEBPACK_DEV_SERVER_URL) {
         // Load the url of the dev server if in development mode
         await win.loadURL(process.env.WEBPACK_DEV_SERVER_URL as string);
     } else {
         createProtocol("app");
+        win.once('ready-to-show', () => {
+            win.loadURL("app://./index.html");
+            win.show()
+        })
         // Load the index.html when not in development
-        win.loadURL("app://./index.html");
     }
 
     win.on("blur", () => {
@@ -118,7 +121,6 @@ async function createWindow() {
     });
     autoUpdater.checkForUpdatesAndNotify()
 }
-app.setName('Melody Music')
 if (process.platform === 'win32') {
     app.setAppUserModelId(app.getName());
 }
@@ -148,7 +150,6 @@ app.on("ready", async () => {
         const pathname = decodeURI(request.url.replace("file:///", ""));
         callback(pathname);
     });
-    //Register shortcuts
 });
 
 // Exit cleanly on request from parent process in development mode.
@@ -315,6 +316,10 @@ ipcMain.on("closeWindow", () => {
 ipcMain.on('downloadArtistPicture', (e, payload) => {
     console.log("Downloading artist pic...");
     downloadArtistPicture(payload)
+})
+
+ipcMain.on('imageSearcherChoice', (e, sourceURL) => {
+    sendMessageToRenderer('importedCoverArt', sourceURL);
 })
 
 ipcMain.on("importCoverArt", async () => {
@@ -488,16 +493,19 @@ function refreshTracks() {
 }
 
 
-export async function writeTags(filePath: string, tagChanges: TagChangesType) {
+export async function writeTags(filePath: string, tagChanges: TagChangesType, silent: boolean = false) {
     if (tagChanges.APIC && tagChanges.APIC.includes("http")) {
-        tagChanges.APIC = await downloadFile(tagChanges.APIC, paths.albumArtFolder, tagChanges.title || path.parse(filePath).name);
+        tagChanges.APIC = await downloadFile(tagChanges.APIC, paths.albumArtFolder, path.parse(filePath).name);
+        tagChanges.APIC = decodeURI(tagChanges.APIC);
     }
-    tagChanges.APIC = decodeURI(tagChanges.APIC);
     let isSuccessFull = NodeID3.update(tagChanges, filePath);
-    if (isSuccessFull) {
-        win.webContents.send("normalMsg", "Tags Successfully changed");
+    console.log("Just Wrote");
+    console.log(tagChanges);
+    if (isSuccessFull && !silent) {
+        sendMessageToRenderer("normalMsg", "Tags Successfully changed");
+        sendMessageToRenderer("updateTrack", { filePath, tagChanges });
     } else {
-        win.webContents.send("errorMsg", "An Error occurred while changing tags");
+        sendMessageToRenderer("errorMsg", "An Error occurred while changing tags");
     }
     return isSuccessFull;
 }

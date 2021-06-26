@@ -3,7 +3,7 @@
     <img
       class="coverArt"
       v-if="album.tracks[0].albumArt"
-      :src="album.tracks[0].albumArt"
+      :src="'file://' + album.tracks[0].albumArt"
     />
     <img
       class="coverArt"

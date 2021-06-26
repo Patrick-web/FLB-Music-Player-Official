@@ -3,6 +3,7 @@ import { removeDuplicates, sortArrayOfObjects } from "@/sharedUtilities";
 import { TrackType, ArtistType, AlbumType, PlaylistType, FolderParsedType, FolderInfoType, ArtistInfoInterface } from "@/types";
 import { ActionTree } from "vuex";
 import TrackSelector from "./TrackSelector";
+import PlaybackManger from "./PlaybackManger";
 
 interface TabsManagerStateInterface {
     tabsData: {
@@ -42,7 +43,11 @@ const mutations = {
     },
     updateTrack(state: TabsManagerStateInterface, payload: TrackType) {
         const indexOfUpdatedTrack = state.tabsData.addedTracks.findIndex((track => track.fileLocation == payload.fileLocation))
-        state.tabsData.addedTracks[indexOfUpdatedTrack] = payload
+        state.tabsData.addedTracks.splice(indexOfUpdatedTrack, 1)
+        state.tabsData.addedTracks.unshift(payload);
+        if (PlaybackManger.state.playingTrackInfo.track?.fileLocation === payload.fileLocation) {
+            PlaybackManger.state.playingTrackInfo.track = payload
+        }
     },
     deleteTrack(state: TabsManagerStateInterface, payload: string) {
         const indexOfDeletedTrack = state.tabsData.addedTracks.findIndex((track => track.fileLocation == payload))

@@ -15,24 +15,11 @@
         @end="drag = false"
       >
         <transition-group enter-active-class="animated  lightSpeedIn faster">
-          <div
-            v-for="(track, index) in customQueue"
+          <que-track
+            v-for="track in customQueue"
             :key="track.fileLocation"
-            :class="[
-              currentlyPlayingTrackPath === track.fileLocation
-                ? 'playing_track'
-                : '',
-              'queuedTrack bg1',
-            ]"
-            @click.stop="playQueuedTrack(track)"
-          >
-            <p class="card_title">{{ track.defaultTitle }}</p>
-            <p class="card_subTitle">{{ track.defaultArtist }}</p>
-            <img
-              @click.stop="removeTrackFromCustomQueue(index)"
-              src="@/RendererProcess/assets/images/x.svg"
-            />
-          </div>
+            :track="track"
+          />
         </transition-group>
       </draggable>
     </div>
@@ -42,6 +29,7 @@
 <script>
 import { mapMutations } from "vuex";
 import draggable from "vuedraggable";
+import QueTrack from "./QueTrack.vue";
 export default {
   data() {
     return {
@@ -50,6 +38,7 @@ export default {
   },
   components: {
     draggable,
+    QueTrack,
   },
   computed: {
     customQueue: {

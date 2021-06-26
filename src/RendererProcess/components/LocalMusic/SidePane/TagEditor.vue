@@ -11,7 +11,7 @@
     </div>
     <div class="trackTags">
       <div class="tag flex-col center-a">
-        <img id="coverArtTag" :src="targetTrack.albumArt" />
+        <img id="coverArtTag" :src="'file://' + targetTrack.albumArt" />
         <p style="margin-top: 10px" v-if="!targetTrack.albumArt">
           No Album Art 🖼
         </p>

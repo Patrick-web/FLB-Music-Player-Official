@@ -25,7 +25,7 @@
               :key="albumArt"
               class="flex_image_wrapper"
             >
-              <img class="flexImage" :src="albumArt" />
+              <img class="flexImage" :src="'file://' + albumArt" />
             </div>
           </div>
 

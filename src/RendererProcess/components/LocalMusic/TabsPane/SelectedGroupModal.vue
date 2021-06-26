@@ -18,8 +18,11 @@
           <p>Add To Queue</p>
         </button>
       </div>
-      <img class="coverArt" :src="selectedGroup.tracks[0].albumArt" />
-      <img id="blurred" :src="selectedGroup.tracks[0].albumArt" />
+      <img
+        class="coverArt"
+        :src="'file://' + selectedGroup.tracks[0].albumArt"
+      />
+      <img id="blurred" :src="'file://' + selectedGroup.tracks[0].albumArt" />
       <div class="groupedCard_info">
         <p class="groupedInfo_title">
           {{ selectedGroup.name }}
