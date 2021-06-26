@@ -23,8 +23,7 @@
 		"push-update": "vue-cli-service electron:build -- -p always",
 		"postinstall": "electron-builder install-app-deps",
 		"postuninstall": "electron-builder install-app-deps",
-		"deploy:steps": "git commit -am vx.x.x && git tag vx.x.x && git push --tags",
-		"no": "0775473860"
+		"deploy:steps": "git commit -am vx.x.x && git tag vx.x.x && git push --tags"
 	},
 	"main": "background.js",
 	"dependencies": {
