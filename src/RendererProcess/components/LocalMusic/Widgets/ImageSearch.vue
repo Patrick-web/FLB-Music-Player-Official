@@ -1,8 +1,5 @@
 <template>
   <div class="image_searcher blurred_bg blur20 widget">
-    <p>
-      {{ this.selectedImage }}
-    </p>
     <div class="widget_header">
       <h1 class="widget_title">Image Searcher</h1>
       <base-button
