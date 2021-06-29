@@ -5,7 +5,7 @@
       min="0"
       value=".5"
       max="1"
-      step="0.1"
+      step="0.05"
       type="range"
     />
     <!-- <div class="base_slider_progress"></div> -->
@@ -72,8 +72,8 @@ export default {
     opacity: 0;
     position: absolute;
     z-index: 2;
-    top: 0px;
-    left: 0px;
+    top: -10px;
+    left: -5px;
     height: 20px;
     width: 100%;
   }
