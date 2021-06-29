@@ -36,7 +36,7 @@ export function createParsedTrack(
         track.fileName = path.parse(fileLocation).name;
         NodeID3.read(fileLocation, async (err: any, tags: any) => {
             if (tags && tags.image && tags.image.imageBuffer) {
-                tags.image.mime = tags.image.mime.replace(/image\//g, '')
+                tags.image.mime = tags.image.mime.replace(/image\//g, '') || 'jpg'
                 const albumArtPath = path.join(
                     paths.albumArtFolder,
                     `${removeMIME(track.fileName)}.${tags.image.mime}`
