@@ -52,6 +52,8 @@ export default {
   cursor: pointer;
   display: flex;
   align-items: center;
+  background: var(--accentColor, #0066ff);
+
   h4 {
     font-family: roboto-light;
     font-size: 0.9rem;
@@ -72,12 +74,12 @@ export default {
   }
 }
 .normal {
-  background: var(--accentColor);
+  background: var(--accentColor, #0066ff);
 }
 .danger {
-  background: crimson;
+  background: crimson !important;
 }
 .warning {
-  background: orangered;
+  background: orangered !important;
 }
 </style>
