@@ -138,12 +138,15 @@ export default {
     ipcRenderer.on("parsingProgress", (e, [currentIndex, total]) => {
       this.fraction = `${currentIndex}/${total}`;
     });
+    ipcRenderer.on("processedFiles", (e) => {
+      this.$emit("closeOnBoard");
+    });
     ipcRenderer.send("initializeSettings");
     setTimeout(() => {
       if (this.addedTracks.length > 0) {
         this.$emit("closeOnBoard");
       }
-    }, 500);
+    }, 1000);
   },
 };
 </script>
