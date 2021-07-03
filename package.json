@@ -33,12 +33,12 @@
 		"genius-lyrics-api": "3.0.6",
 		"node-downloader-helper": "1.0.18",
 		"node-id3": "0.2.3",
-		"vue": "2.6.11",
-		"vue-router": "3.2.0",
+		"vue": "2.6.14",
+		"vue-router": "3.5.2",
 		"vue-virtual-scroll-list": "2.3.2",
 		"vue-virtual-scroller": "1.0.10",
 		"vuedraggable": "2.24.3",
-		"vuex": "3.4.0",
+		"vuex": "3.6.2",
 		"ytdl-core": "4.8.3"
 	},
 	"devDependencies": {
@@ -54,6 +54,6 @@
 		"sass-loader": "10.2.0",
 		"typescript": "4.1.6",
 		"vue-cli-plugin-electron-builder": "2.1.1",
-		"vue-template-compiler": "2.6.11"
+		"vue-template-compiler": "2.6.14"
 	}
 }
