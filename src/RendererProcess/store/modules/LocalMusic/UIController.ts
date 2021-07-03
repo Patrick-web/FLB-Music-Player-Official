@@ -11,6 +11,7 @@ interface UIControllerStateInterface {
         showPlaylistWidget: boolean;
         showEqualizerWidget: boolean;
         showImageSearcher: boolean;
+        showFeedbackWidget: boolean;
         miniMode: boolean;
         currentPage: 'My Music' | 'Deezer' | 'Spotify' | 'Podcasts' | 'FLBing';
         currentMainTab: 'Tracks' | 'Recents' | 'Playlists' | 'Home' | 'Albums' | 'Artists';
@@ -26,6 +27,7 @@ const state: UIControllerStateInterface = {
         showPlaylistWidget: false,
         showEqualizerWidget: false,
         showImageSearcher: false,
+        showFeedbackWidget: false,
         miniMode: false,
         currentPage: 'My Music',
         currentMainTab: 'Home',
