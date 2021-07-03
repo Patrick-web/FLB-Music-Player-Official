@@ -5,13 +5,13 @@
       <base-button
         @click.native="UIcontrollerToggleProperty('showPlaylistWidget')"
         :icon="require('@/RendererProcess/assets/images/x.svg')"
-        extraClass="widget_close shrink_icon circle"
+        extraClass="widget_close shrink_icon circle shrink8"
         :small="true"
       />
     </div>
     <div class="newPlaylistForm">
       <input
-        class="inputElem"
+        class="inputElem w-90"
         placeholder="Create new playlist"
         type="text"
         v-model="newPlaylistName"
@@ -19,9 +19,8 @@
       <base-button
         text="Create"
         :active="true"
-        :block="true"
         @click.native="createNewPlaylist()"
-        style="margin-top: 10px"
+        class="w-100 mt10"
       />
     </div>
     <div class="playlistNamesWrapper">

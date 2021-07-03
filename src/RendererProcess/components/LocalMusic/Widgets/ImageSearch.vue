@@ -5,7 +5,7 @@
       <base-button
         @click.native="UIcontrollerToggleProperty('showImageSearcher')"
         :icon="require('@/RendererProcess/assets/images/x.svg')"
-        extraClass="widget_close shrink_icon circle"
+        extraClass="widget_close shrink_icon circle shrink8"
         :small="true"
       />
     </div>
@@ -14,7 +14,7 @@
         type="text"
         v-model="query"
         @keyup.enter="searchImage"
-        class="inputElem mb5"
+        class="inputElem mb10 w-90"
         placeholder="Search"
       />
       <base-button
