@@ -1,21 +1,11 @@
 <template>
   <div class="Settings blurred_bg blur40">
-    <!-- <h1 id="SettingsTitle" style="font-size: 1.6rem; margin-top: 5px">
-      Settings
-    </h1>
-    <base-button
-      @click.native="UIcontrollerToggleProperty('showSettings')"
-      :icon="require('@/RendererProcess/assets/images/x.svg')"
-      extraClass="modalClose"
-      :small="true"
-      :transparent="true"
-    /> -->
     <div class="widget_header">
       <h1 class="widget_title">Settings</h1>
       <base-button
         @click.native="UIcontrollerToggleProperty('showSettings')"
         :icon="require('@/RendererProcess/assets/images/x.svg')"
-        extraClass="widget_close shrink_icon circle"
+        extraClass="widget_close shrink_icon circle shrink8"
         :small="true"
       />
     </div>
@@ -208,15 +198,27 @@
               <p>Join us on Telegram 🦅</p>
             </a>
           </div>
-          <div class="switch bg1">
-            <a target="_blank" href="https://flbmusic.kampsite.co/">
-              <p>Request a Feature 💎</p>
-            </a>
+          <div
+            @click="
+              UIcontrollerSetPropertyValue({
+                property: 'showFeedbackWidget',
+                newValue: true,
+              })
+            "
+            class="switch bg1"
+          >
+            <p>Request a Feature 💎</p>
           </div>
-          <div class="switch bg1">
-            <a target="_blank" href="https://t.me/flbmusiccommunity">
-              <p>Report a Bug 🐜</p>
-            </a>
+          <div
+            @click="
+              UIcontrollerSetPropertyValue({
+                property: 'showFeedbackWidget',
+                newValue: true,
+              })
+            "
+            class="switch bg1"
+          >
+            <p>Report a Bug 🐜</p>
           </div>
         </div>
       </section>
@@ -224,6 +226,9 @@
         <div class="grid2 gap10"></div>
       </section>
     </main>
+    <transition enter-active-class="animated fadeInUp extrafaster">
+      <feedback-widget v-if="showFeedbackWidget" />
+    </transition>
   </div>
 </template>
 
@@ -238,8 +243,9 @@ import albumIcon from "@/RendererProcess/assets/images/album.svg";
 import artistIcon from "@/RendererProcess/assets/images/user.svg";
 import folderIcon from "@/RendererProcess/assets/images/folderNormal.svg";
 import BaseButton from "../BaseComponents/BaseButton.vue";
+import FeedbackWidget from "./Feedback Widget.vue";
 export default {
-  components: { BaseButton },
+  components: { BaseButton, FeedbackWidget },
   data() {
     return {
       appVersion: "0.0.1",
@@ -269,9 +275,16 @@ export default {
     settings() {
       return this.$store.state.SettingsManager.settings;
     },
+    showFeedbackWidget() {
+      return this.$store.state.UIController.UIProperties.showFeedbackWidget;
+    },
   },
   methods: {
-    ...mapMutations(["setSettingValue", "UIcontrollerToggleProperty"]),
+    ...mapMutations([
+      "setSettingValue",
+      "UIcontrollerToggleProperty",
+      "UIcontrollerSetPropertyValue",
+    ]),
     addFolder() {
       sendMessageToNode("addScanFolder", "");
     },

@@ -5,7 +5,7 @@
       <base-button
         @click.native="UIcontrollerToggleProperty('showEqualizerWidget')"
         :icon="require('@/RendererProcess/assets/images/x.svg')"
-        extraClass="widget_close shrink_icon circle"
+        class="widget_close shrink_icon circle shrink8"
         :small="true"
       />
     </div>
