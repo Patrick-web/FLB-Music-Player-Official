@@ -1,102 +1,108 @@
 
 <template>
   <div class="playingPane bg2">
-    <div class="left_pane_section">
-      <img
-        @click="expandPlayingPane"
-        class="album_art"
-        :src="
-          'file://' + playingTrack.albumArt ||
-          require('@/RendererProcess/assets/images/FLBDefaultCover.png')
-        "
-      />
-      <img
-        class="album_art_blurred"
-        :src="
-          'file://' + playingTrack.albumArt ||
-          require('@/RendererProcess/assets/images/FLBDefaultCover.png')
-        "
-      />
+    <div class="flex split">
+      <div class="left_pane_section">
+        <img
+          @click="expandPlayingPane"
+          class="album_art"
+          :src="
+            'file://' + playingTrack.albumArt ||
+            require('@/RendererProcess/assets/images/FLBDefaultCover.png')
+          "
+        />
+        <img
+          class="album_art_blurred"
+          :src="
+            'file://' + playingTrack.albumArt ||
+            require('@/RendererProcess/assets/images/FLBDefaultCover.png')
+          "
+        />
 
-      <div class="track_info">
-        <p class="track_title">
-          {{ playingTrack.defaultTitle }}
-        </p>
-        <p
-          @click="goToArtist(playingTrack.defaultArtist)"
-          title="Go To Artist"
-          class="track_artist"
-        >
-          {{ playingTrack.defaultArtist }}
-        </p>
+        <div class="track_info">
+          <p class="track_title">
+            {{ playingTrack.defaultTitle }}
+          </p>
+          <p
+            @click="goToArtist(playingTrack.defaultArtist)"
+            title="Go To Artist"
+            class="track_artist"
+          >
+            {{ playingTrack.defaultArtist }}
+          </p>
+        </div>
       </div>
-    </div>
-    <div class="center_pane_section">
-      <div class="flex center-v gap20 t_actions">
-        <base-button
-          @click.native="shuffler"
-          :icon="require('@/RendererProcess/assets/images/shuffle.svg')"
-          :active="audioState.shuffle"
-          id="shuffle_bt"
-        />
-        <base-button
-          @click.native="determineNextTrack('prev')"
-          :icon="require('@/RendererProcess/assets/images/play-previous.svg')"
-          extraClass="scale_icon"
-          id="prev_bt"
-        />
-        <div @click="toggleIsPlaying" id="toggle_play" class="iconsWrapper">
-          <img
-            v-if="!audioState.playing"
-            class="toggleIcons playIcon"
-            src="@/RendererProcess/assets/images/playButton.svg"
-            alt
+      <div class="center_pane_section">
+        <div class="flex center-v gap20 t_actions">
+          <base-button
+            @click.native="shuffler"
+            :icon="require('@/RendererProcess/assets/images/shuffle.svg')"
+            :active="audioState.shuffle"
+            id="shuffle_bt"
           />
-          <img
-            v-if="audioState.playing"
-            class="toggleIcons pauseIcon"
-            src="@/RendererProcess/assets/images/pause.svg"
-            alt
+          <base-button
+            @click.native="determineNextTrack('prev')"
+            :icon="require('@/RendererProcess/assets/images/play-previous.svg')"
+            extraClass="scale_icon"
+            id="prev_bt"
+          />
+          <div @click="toggleIsPlaying" id="toggle_play" class="iconsWrapper">
+            <img
+              v-if="!audioState.playing"
+              class="toggleIcons playIcon"
+              src="@/RendererProcess/assets/images/playButton.svg"
+              alt
+            />
+            <img
+              v-if="audioState.playing"
+              class="toggleIcons pauseIcon"
+              src="@/RendererProcess/assets/images/pause.svg"
+              alt
+            />
+          </div>
+
+          <base-button
+            @click.native="determineNextTrack('next')"
+            :icon="require('@/RendererProcess/assets/images/play-next.svg')"
+            extraClass="scale_icon"
+            id="next_bt"
+          />
+
+          <base-button
+            @click.native="changeRepeat"
+            :icon="require('@/RendererProcess/assets/images/repeat_one.svg')"
+            :active="audioState.repeat"
+            id="repeat_bt"
           />
         </div>
-
-        <base-button
-          @click.native="determineNextTrack('next')"
-          :icon="require('@/RendererProcess/assets/images/play-next.svg')"
-          extraClass="scale_icon"
-          id="next_bt"
-        />
-
-        <base-button
-          @click.native="changeRepeat"
-          :icon="require('@/RendererProcess/assets/images/repeat_one.svg')"
-          :active="audioState.repeat"
-          id="repeat_bt"
-        />
+        <TrackBar />
       </div>
-      <TrackBar />
     </div>
 
     <div class="right_pane_section">
       <div class="flex center-v gap20">
         <base-button
+          :small="true"
           @click.native="toggleFromFavorites"
           :icon="require('@/RendererProcess/assets/images/heart.svg')"
           :active="isInFavorites"
         />
         <base-button
+          :small="true"
           @click.native="showPlaylistAdder"
           :icon="require('@/RendererProcess/assets/images/playlist.svg')"
           :active="showPlaylistWidget"
           title="Playlist"
         />
         <base-button
+          :small="true"
           @click.native="UIcontrollerToggleProperty('showEqualizerWidget')"
           :icon="require('@/RendererProcess/assets/images/equalizer.svg')"
           :active="showEqualizerWidget"
           title="Equalizer"
         />
         <base-button
+          :small="true"
           @click.native="toggleMiniMode"
           :icon="require('@/RendererProcess/assets/images/crop.svg')"
           :active="miniMode"
@@ -126,7 +132,7 @@
     />
     <transition enter-active-class="animated fadeInRight">
       <div v-if="playingPaneExpanded && !showLyrics" class="que_wrappers">
-        <h1>Coming Up</h1>
+        <h1>Queue</h1>
         <queued-tracks />
       </div>
       <div v-if="playingPaneExpanded && showLyrics" class="lyrics_wrappers">
@@ -350,9 +356,12 @@ export default {
   z-index: 20;
   border-radius: 20px;
   display: flex;
-  gap: 10px;
+  justify-content: space-between;
   height: 100px;
   transition: none;
+  .split {
+    width: 80%;
+  }
   .album_art {
     width: 70px;
     margin: 5px;
@@ -377,14 +386,14 @@ export default {
   display: flex;
   gap: 10px;
   align-items: center;
-  width: 20%;
+  width: 25%;
   transition: none;
 }
 .track_info {
   height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly;
+  justify-content: center;
   transition: none;
 
   .track_title,
@@ -412,11 +421,11 @@ export default {
 }
 
 .center_pane_section {
-  width: 55%;
+  width: 60%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   padding: 10px;
   transition: none;
 
@@ -429,7 +438,7 @@ export default {
 
     img {
       transition: none;
-      width: 3rem;
+      width: 2rem;
       transform: scale(1.2);
       &:hover {
         transform: scale(1.25) perspective(1px);
@@ -438,17 +447,15 @@ export default {
   }
 }
 .right_pane_section {
-  padding: 10px 0px;
-  width: 20%;
-  justify-self: flex-end;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
+  gap: 10px;
+  width: 20%;
   transition: none;
 
   .vol_rocker {
-    transform: translateY(4px) translateX(-30px);
     transition: none;
   }
 }
@@ -531,8 +538,8 @@ export default {
       left: 52%;
       transform: translateX(-50%);
       button {
-        width: 50px;
-        height: 50px;
+        width: 40px;
+        height: 40px;
         // transform: scale(2);
       }
       #toggle_play {
