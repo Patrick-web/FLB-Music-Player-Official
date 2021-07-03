@@ -149,6 +149,21 @@
 	border-radius: 50%;
 }
 
+.shrink9{
+	transform: scale(0.9);
+}
+.shrink8{
+	transform: scale(0.8);
+}
+.shrink7{
+	transform: scale(0.7);
+}
+.shrink6{
+	transform: scale(0.6);
+}
+.shrink5{
+	transform: scale(0.5);
+}
 .shrink_icon img {
 	transform: scale(0.7);
 }
@@ -242,4 +257,230 @@
 }
 .round20 {
 	border-radius: 20px;
+}
+
+.w-50{
+	width: 50%;
+}
+.w-60{
+	width: 60%;
+}
+.w-70{
+	width: 70%;
+}
+.w-80{
+	width: 80%;
+}
+.w-90{
+	width: 90%;
+}
+.w-100{
+	width: 100%;
+}
+
+.min-w-50{
+	min-width: 50%;
+}
+.min-w-60{
+	min-width: 60%;
+}
+.min-w-70{
+	min-width: 70%;
+}
+.min-w-80{
+	min-width: 80%;
+}
+.min-w-90{
+	min-width: 90%;
+}
+.min-w-100{
+	min-width: 100%;
+}
+
+.max-w-50{
+	max-width: 50%;
+}
+.max-w-60{
+	max-width: 60%;
+}
+.max-w-70{
+	max-width: 70%;
+}
+.max-w-80{
+	max-width: 80%;
+}
+.max-w-90{
+	max-width: 90%;
+}
+.max-w-100{
+	max-width: 100%;
+}
+
+
+
+
+.h-50{
+	height: 50%;
+}
+.h-60{
+	height: 60%;
+}
+.h-70{
+	height: 70%;
+}
+.h-80{
+	height: 80%;
+}
+.h-90{
+	height: 90%;
+}
+.h-100{
+	height: 100%;
+}
+
+.min-h-50{
+	min-height: 50%;
+}
+.min-h-60{
+	min-height: 60%;
+}
+.min-h-70{
+	min-height: 70%;
+}
+.min-h-80{
+	min-height: 80%;
+}
+.min-h-90{
+	min-height: 90%;
+}
+.min-h-100{
+	min-height: 100%;
+}
+
+.max-h-50{
+	max-height: 50%;
+}
+.max-h-60{
+	max-height: 60%;
+}
+.max-h-70{
+	max-height: 70%;
+}
+.max-h-80{
+	max-height: 80%;
+}
+.max-h-90{
+	max-height: 90%;
+}
+.max-h-100{
+	max-height: 100%;
+}
+
+.abs{
+	position: absolute;
+}
+.rel{
+	position: relative;
+}
+
+.top5{
+	top: 5px;
+}
+.top10{
+	top: 10px;
+}
+.top20{
+	top: 20px;
+}
+.top30{
+	top: 30px;
+}
+.top40{
+	top: 40px;
+}
+.top50{
+	top: 50px;
+}
+.top_center{
+	top: 50%;
+}
+
+
+.bottom5{
+	bottom: 5px;
+}
+.bottom10{
+	bottom: 10px;
+}
+.bottom20{
+	bottom: 20px;
+}
+.bottom30{
+	bottom: 30px;
+}
+.bottom40{
+	bottom: 40px;
+}
+.bottom50{
+	bottom: 50px;
+}
+.bottom_center{
+	bottom: 50%;
+}
+
+
+.left5{
+	left: 5px;
+}
+.left10{
+	left: 10px;
+}
+.left20{
+	left: 20px;
+}
+.left30{
+	left: 30px;
+}
+.left40{
+	left: 40px;
+}
+.left50{
+	left: 50px;
+}
+.left_center{
+	left: 50%;
+}
+
+
+.right5{
+	right: 5px;
+}
+.right10{
+	right: 10px;
+}
+.right20{
+	right: 20px;
+}
+.right30{
+	right: 30px;
+}
+.right40{
+	right: 40px;
+}
+.right50{
+	right: 50px;
+}
+.right_center{
+	right: 50%;
+}
+
+.abs-center-y{
+	position: absolute;
+	top:50%;
+	transform: translateY(-50%);
+}
+.abs-center-x{
+	position: absolute;
+	left:50%;
+	transform: translateX(-50%);
 }
