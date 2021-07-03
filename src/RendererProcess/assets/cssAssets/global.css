@@ -80,7 +80,15 @@ pre {
 }
 input {
 	background: rgba(0, 0, 0, 0.158);
-	width: 100%;
+	padding: 5px 8px;
+	border: none;
+	font-size: 1em;
+	font-family: roboto-thin;
+	color: white;
+	border-radius: 10px;
+}
+textarea {
+	background: rgba(0, 0, 0, 0.158);
 	padding: 5px 8px;
 	border: none;
 	font-size: 1em;
