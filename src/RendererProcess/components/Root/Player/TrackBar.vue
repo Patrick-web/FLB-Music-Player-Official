@@ -170,11 +170,11 @@ export default {
 .seekBar {
   background: #ffffff21;
   width: 100%;
-  height: 8px;
+  height: 6px;
   position: relative;
   border-radius: 10px;
   &:active {
-    height: 10px;
+    height: 8px;
   }
   &:hover {
     .seekProgress {
@@ -184,8 +184,8 @@ export default {
   .seekProgress {
     border-radius: 10px;
     position: absolute;
-    height: 150%;
-    bottom: -2px;
+    height: 140%;
+    bottom: -1px;
     width: 0%;
     background: #ffffff;
     transition: 0.2s linear;

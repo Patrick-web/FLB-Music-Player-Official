@@ -55,7 +55,7 @@ export default {
 .VolumeRocker {
   position: relative;
   width: 135px;
-  height: 8px;
+  height: 6px;
   border-radius: 10px;
   cursor: pointer;
   &:active {

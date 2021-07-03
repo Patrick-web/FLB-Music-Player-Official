@@ -10,8 +10,7 @@
       small ? 'smallBtn' : '',
       tiny ? 'tinyBtn' : '',
       extraClass,
-      transparent ? 'transparentBt' : '',
-      'bg1',
+      transparent ? 'transparentBt' : 'bg1',
       loading ? 'disabledBtn' : '',
     ]"
   >
@@ -68,7 +67,7 @@ button {
   pointer-events: none;
 }
 .transparentBt {
-  background: none !important;
+  background: none;
 }
 .activeBtn {
   background: var(--accentColor) !important;
@@ -102,7 +101,7 @@ button {
   justify-content: center;
   align-items: center;
   img {
-    width: 50%;
+    width: 18px;
   }
   &:hover {
     border-radius: 50%;
@@ -135,10 +134,15 @@ button {
     ) !important;
   }
 }
-.smallBtn {
-  transform: scale(0.8);
+.iconBtn.smallBtn {
+  height: 35px;
+  width: 35px;
 }
-.tinyBtn {
-  transform: scale(0.6);
+.iconBtn.tinyBtn {
+  height: 25px;
+  width: 25px;
+  img {
+    width: 12px;
+  }
 }
 </style>

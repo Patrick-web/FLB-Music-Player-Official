@@ -1,13 +1,22 @@
 <template>
   <div class="Titlebar">
     <MultiSelectButton />
-    <input
-      @keyup="search(searchQuery)"
-      v-model="searchQuery"
-      id="search"
-      placeholder="Search"
-      class="inputElem bg1"
-    />
+    <div class="rel flex">
+      <input
+        @keyup="search(searchQuery)"
+        v-model="searchQuery"
+        id="search"
+        placeholder="Search"
+        class="inputElem bg1"
+      />
+      <base-button
+        class="shrink_icon shrink7 abs-center-y right5 round20"
+        :icon="require('@/RendererProcess/assets/images/x.svg')"
+        @click.native="searchQuery = ''"
+        :tiny="true"
+        v-if="searchQuery"
+      />
+    </div>
     <SortWidget />
     <SearchResults v-on:closeSearch="searchQuery = ''" v-if="searchQuery" />
   </div>
@@ -18,6 +27,7 @@ import { mapMutations } from "vuex";
 import SortWidget from "./SortWidget.vue";
 import SearchResults from "./SearchResults";
 import MultiSelectButton from "./MultiSelectButton.vue";
+import BaseButton from "@/RendererProcess/components/BaseComponents/BaseButton.vue";
 export default {
   data() {
     return {
@@ -31,6 +41,7 @@ export default {
     SortWidget,
     SearchResults,
     MultiSelectButton,
+    BaseButton,
   },
 };
 </script>

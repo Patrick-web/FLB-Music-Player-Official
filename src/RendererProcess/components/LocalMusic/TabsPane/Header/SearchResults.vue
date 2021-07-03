@@ -1,13 +1,5 @@
 <template>
   <div class="searchResults blurred_bg blur20 no_scroll">
-    <base-button
-      id="closeSearch"
-      :icon="require('@/RendererProcess/assets/images/x.svg')"
-      @click.native="closeSearch"
-      :small="true"
-      :tiny="true"
-      color="rgba(255, 255, 255, 0.1)"
-    />
     <div class="TracksResults">
       <div class="sectionHeading">
         <h3>Tracks</h3>
@@ -122,15 +114,6 @@ export default {
   border: 1px solid rgba(255, 255, 255, 0.315);
   border-radius: 20px;
   box-shadow: 0px 0px 50px black;
-  #closeSearch {
-    position: absolute;
-    left: 63%;
-    top: -42px;
-    border-radius: 50%;
-    img {
-      transform: scale(0.8);
-    }
-  }
   h3 {
     padding: 5px;
   }

@@ -24,16 +24,16 @@ const mutations = {
                     (track: TrackType) =>
                         track.defaultTitle
                             ?.toLowerCase()
-                            ?.includes(query.toLocaleLowerCase()) ||
+                            ?.startsWith(query.toLocaleLowerCase()) ||
                         track.fileName
                             ?.toLowerCase()
-                            ?.includes(query.toLocaleLowerCase()) ||
+                            ?.startsWith(query.toLocaleLowerCase()) ||
                         track.artist
                             ?.toLowerCase()
-                            ?.includes(query.toLocaleLowerCase()) ||
+                            ?.startsWith(query.toLocaleLowerCase()) ||
                         track.extractedArtist
                             ?.toLowerCase()
-                            ?.includes(query.toLocaleLowerCase())
+                            ?.startsWith(query.toLocaleLowerCase())
                 )
                 .slice(0, 8);
             state.searchResults.artists = TabsManager.state.tabsData.artists

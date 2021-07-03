@@ -2,9 +2,6 @@ import Vue from "vue";
 import VueRouter, { RouteConfig } from "vue-router";
 import LocalMusic from "../views/LocalMusic/LocalMusic.vue";
 import FLBing from '../views/FLBing.vue'
-import Podcasts from '../views/Podcasts/Podcasts.vue'
-import Deezer from "../views/Deezer.vue";
-import Spotify from "../views/Spotify.vue";
 import HomeTab from "../views/LocalMusic/Tabs/HomeTab.vue";
 import TracksTab from "../views/LocalMusic/Tabs/TracksTab.vue";
 import RecentsTab from "../views/LocalMusic/Tabs/RecentsTab.vue";
@@ -12,9 +9,6 @@ import ArtistsTab from "../views/LocalMusic/Tabs/ArtistsTab.vue";
 import AlbumsTab from "../views/LocalMusic/Tabs/AlbumsTab.vue";
 import FoldersTab from "../views/LocalMusic/Tabs/FoldersTab.vue";
 import PlaylistsTab from "../views/LocalMusic/Tabs/PlaylistsTab.vue";
-import Discover from "../views/Podcasts/Tabs/Discover.vue";
-import Downloads from "../views/Podcasts/Tabs/Downloads.vue";
-import Subscriptions from "../views/Podcasts/Tabs/Subscriptions.vue";
 
 Vue.use(VueRouter);
 
@@ -52,32 +46,6 @@ const routes: Array<RouteConfig> = [
 				component: PlaylistsTab,
 			},
 		],
-	},
-	{
-		path: "/deezer",
-		component: Deezer,
-	},
-	{
-		path: "/podcasts",
-		component: Podcasts,
-		children: [
-			{
-				path: "/discover",
-				component: Discover,
-			},
-			{
-				path: "/subscriptions",
-				component: Subscriptions,
-			},
-			{
-				path: "/downloads",
-				component: Downloads,
-			},
-		]
-	},
-	{
-		path: "/spotify",
-		component: Spotify,
 	},
 	{
 		path: "/flbing",
