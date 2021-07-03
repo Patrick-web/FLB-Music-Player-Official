@@ -43,17 +43,17 @@
 	},
 	"devDependencies": {
 		"@types/electron-devtools-installer": "2.2.0",
-		"@vue/cli-plugin-babel": "~4.5.0",
-		"@vue/cli-plugin-router": "~4.5.0",
-		"@vue/cli-plugin-typescript": "~4.5.0",
-		"@vue/cli-plugin-vuex": "~4.5.0",
-		"@vue/cli-service": "~4.5.0",
+		"@vue/cli-plugin-babel": "4.5.13",
+		"@vue/cli-plugin-router": "4.5.13",
+		"@vue/cli-plugin-typescript": "4.5.13",
+		"@vue/cli-plugin-vuex": "4.5.13",
+		"@vue/cli-service": "4.5.13",
 		"electron": "13.0.0",
 		"electron-devtools-installer": "3.1.0",
 		"sass": "1.26.5",
 		"sass-loader": "10.2.0",
-		"typescript": "~4.1.5",
-		"vue-cli-plugin-electron-builder": "~2.1.1",
+		"typescript": "4.1.6",
+		"vue-cli-plugin-electron-builder": "2.1.1",
 		"vue-template-compiler": "2.6.11"
 	}
 }
