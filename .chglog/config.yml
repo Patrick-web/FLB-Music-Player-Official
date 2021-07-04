@@ -1,3 +1,5 @@
+# Generate CHANGELOG.md by git-chglog (https://github.com/git-chglog/git-chglog)
+
 style: github
 template: CHANGELOG.tpl.md
 info:
@@ -6,13 +8,22 @@ info:
 options:
   commits:
     # filters:
-    #   Type: []
+    #   Type:
+    #     - feat
+    #     - fix
+    #     - perf
+    #     - refactor
   commit_groups:
-    # title_maps: []
+    # title_maps:
+    #   feat: Features
+    #   fix: Bug Fixes
+    #   perf: Performance Improvements
+    #   refactor: Code Refactoring
   header:
-    pattern: "^(.*)$"
+    pattern: "^((\\w+)\\s.*)$"
     pattern_maps:
       - Subject
+      - Type
   notes:
     keywords:
       - BREAKING CHANGE
