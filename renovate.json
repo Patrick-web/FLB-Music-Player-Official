@@ -6,6 +6,9 @@
     "matchPackageNames": ["sass-loader"],
     "allowedVersions": "<11.0.0"
   }],
+  "lockFileMaintenance": {
+    "enabled": true
+  },
   "labels": [
     "renovate-bot",
     "dependencies"
