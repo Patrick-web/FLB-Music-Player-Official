@@ -1,9 +1,6 @@
 <template>
   <div class="PlaylistsTab tab">
-    <div
-      v-if="!selectedGroup"
-      class="playlistCards"
-    >
+    <div v-if="!selectedGroup" class="playlistCards">
       <playlist-card
         v-for="playlist in playlists"
         :key="playlist.name"
@@ -14,10 +11,7 @@
       enter-active-class="animated fadeInUp extrafaster"
       leave-active-class="animated fadeOutDown extrafaster"
     >
-      <div
-        v-if="selectedGroup"
-        class="selectedGroup bg1"
-      >
+      <div v-if="selectedGroup" class="selectedGroup bg1">
         <base-button
           id="backToUnfilteredItems"
           extra-class="blurred_bg"
@@ -32,10 +26,7 @@
               :key="albumArt"
               class="flex_image_wrapper"
             >
-              <img
-                class="flexImage"
-                :src="'file://' + albumArt"
-              >
+              <img class="flexImage" :src="'file://' + albumArt" />
             </div>
           </div>
 
@@ -46,10 +37,7 @@
           />
           <div class="sliverBarFooter">
             <div class="groupedCard_info">
-              <p
-                style="margin-bottom: 10px"
-                class="groupedInfo_title"
-              >
+              <p style="margin-bottom: 10px" class="groupedInfo_title">
                 {{ selectedGroup.name }}
               </p>
             </div>
@@ -94,114 +82,114 @@
 </template>
 
 <script>
-  import { mapMutations } from 'vuex';
-  import { removeDuplicates } from '@/shared-utils';
+import { mapMutations } from 'vuex';
+import { removeDuplicates } from '@/shared-utils';
 
-  export default {
-    name: 'PlaylistsTab',
+export default {
+  name: 'PlaylistsTab',
 
-    data() {
-      return {
-        showPlaylistEditor: false
-      };
+  data() {
+    return {
+      showPlaylistEditor: false
+    };
+  },
+  methods: {
+    ...mapMutations([
+      'selectGroup',
+      'deSelectGroup',
+      'deletePlaylist',
+      'addToSelectedTracks',
+      'clearSelectedTracks',
+      'addSelectedTrackToCustomQueue',
+      'UIcontrollerSetPropertyValue',
+      'renameCurrentPlaylist'
+    ]),
+    addPlaylistToQueue() {
+      this.UIcontrollerSetPropertyValue({
+        property: 'currentSidePaneTab',
+        newValue: 'Queue'
+      });
+      this.clearSelectedTracks();
+      this.selectedGroup.tracks.forEach(track => {
+        this.addToSelectedTracks(track);
+      });
+      this.addSelectedTrackToCustomQueue();
     },
-    methods: {
-      ...mapMutations([
-        'selectGroup',
-        'deSelectGroup',
-        'deletePlaylist',
-        'addToSelectedTracks',
-        'clearSelectedTracks',
-        'addSelectedTrackToCustomQueue',
-        'UIcontrollerSetPropertyValue',
-        'renameCurrentPlaylist'
-      ]),
-      addPlaylistToQueue() {
-        this.UIcontrollerSetPropertyValue({
-          property: 'currentSidePaneTab',
-          newValue: 'Queue'
-        });
-        this.clearSelectedTracks();
-        this.selectedGroup.tracks.forEach(track => {
-          this.addToSelectedTracks(track);
-        });
-        this.addSelectedTrackToCustomQueue();
-      },
-      deleteCurrentPlaylist() {
-        this.deletePlaylist(this.selectedGroup.name);
-        this.deSelectGroup();
-      },
-      renamePlaylist(newPlaylistName) {
-        this.showPlaylistEditor = false;
-        this.renameCurrentPlaylist(newPlaylistName);
-      },
-      closeWidget() {
-        this.showPlaylistEditor = false;
-      }
+    deleteCurrentPlaylist() {
+      this.deletePlaylist(this.selectedGroup.name);
+      this.deSelectGroup();
     },
-    computed: {
-      playlists() {
-        return this.$store.state.TabsManager.tabsData.playlists;
-      },
-      selectedTracks() {
-        return this.$store.state.TrackSelector.selectedTracks;
-      },
-      selectedGroup() {
-        return this.$store.state.TrackSelector.selectedGroup;
-      },
-      imageFlex() {
-        return removeDuplicates(this.selectedGroup.tracks, 'album')
-          .filter(track => track.albumArt)
-          .map(track => track.albumArt);
-      }
+    renamePlaylist(newPlaylistName) {
+      this.showPlaylistEditor = false;
+      this.renameCurrentPlaylist(newPlaylistName);
+    },
+    closeWidget() {
+      this.showPlaylistEditor = false;
     }
-  };
+  },
+  computed: {
+    playlists() {
+      return this.$store.state.TabsManager.tabsData.playlists;
+    },
+    selectedTracks() {
+      return this.$store.state.TrackSelector.selectedTracks;
+    },
+    selectedGroup() {
+      return this.$store.state.TrackSelector.selectedGroup;
+    },
+    imageFlex() {
+      return removeDuplicates(this.selectedGroup.tracks, 'album')
+        .filter(track => track.albumArt)
+        .map(track => track.albumArt);
+    }
+  }
+};
 </script>
 
 <style lang="scss">
-  @import '@scss/mixins.scss';
+@import '@scss/mixins.scss';
 
-  .PlaylistsTab {
-    position: relative;
+.PlaylistsTab {
+  position: relative;
+  height: 100%;
+  .playlistCards {
+    padding: 10px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    // flex-direction: column;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+    justify-content: space-between;
+    height: 95%;
+    overflow: hidden;
+    overflow-y: scroll;
+  }
+  .images_flex {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
     height: 100%;
-    .playlistCards {
-      padding: 10px;
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      // flex-direction: column;
-      flex-wrap: wrap;
-      gap: 10px;
-      align-items: center;
-      justify-content: space-between;
-      height: 95%;
-      overflow: hidden;
-      overflow-y: scroll;
-    }
-    .images_flex {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
+    background: rgba(255, 255, 255, 0.151);
+    // display: grid;
+    // grid-template-columns: repeat(auto-fit, minmax(50px, 1fr));
+    display: flex;
+    .flex_image_wrapper {
       height: 100%;
-      background: rgba(255, 255, 255, 0.151);
-      // display: grid;
-      // grid-template-columns: repeat(auto-fit, minmax(50px, 1fr));
-      display: flex;
-      .flex_image_wrapper {
+      overflow: hidden;
+      .flexImage {
+        // position: absolute;
+        // display: none;
         height: 100%;
-        overflow: hidden;
-        .flexImage {
-          // position: absolute;
-          // display: none;
-          height: 100%;
-        }
-      }
-    }
-    .selectedGroup {
-      button {
-        @include blur-bg(10px);
-        background: rgba(0, 0, 0, 0.24);
       }
     }
   }
+  .selectedGroup {
+    button {
+      @include blur-bg(10px);
+      background: rgba(0, 0, 0, 0.24);
+    }
+  }
+}
 </style>

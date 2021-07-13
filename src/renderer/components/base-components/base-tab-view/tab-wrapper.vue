@@ -8,21 +8,21 @@
 </template>
 
 <script>
-  export default {
-    name: 'TabWrapper',
+export default {
+  name: 'TabWrapper',
 
-    props: {
-      title: {
-        type: String,
-        default: 'Tab'
-      }
-    },
-    data() {
-      return {
-        isActive: true
-      };
+  props: {
+    title: {
+      type: String,
+      default: 'Tab'
     }
-  };
+  },
+  data() {
+    return {
+      isActive: true
+    };
+  }
+};
 </script>
 
 <style lang="css"></style>

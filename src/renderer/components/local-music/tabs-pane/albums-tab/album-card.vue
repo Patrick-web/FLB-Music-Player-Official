@@ -1,18 +1,15 @@
 <template>
-  <div
-    class="groupCard albumCard"
-    @click="goToAlbum(album)"
-  >
+  <div class="groupCard albumCard" @click="goToAlbum(album)">
     <img
       v-if="album.tracks[0].albumArt"
       class="coverArt"
       :src="'file://' + album.tracks[0].albumArt"
-    >
+    />
     <img
       v-if="!album.tracks[0].albumArt"
       class="coverArt"
       src="@img/flbdefault-cover.png"
-    >
+    />
     <div class="tracksCount">
       <p>
         {{ album.tracks.length }}
@@ -29,10 +26,7 @@
         <p class="groupedInfo_title">
           {{ album.name }}
         </p>
-        <p
-          v-if="!hideArtist"
-          class="groupedInfo_subtitle"
-        >
+        <p v-if="!hideArtist" class="groupedInfo_subtitle">
           {{ album.tracks[0].artist }}
         </p>
       </div>
@@ -41,41 +35,41 @@
 </template>
 
 <script>
-  import { mapMutations } from 'vuex';
+import { mapMutations } from 'vuex';
 
-  export default {
-    name: 'AlbumCard',
+export default {
+  name: 'AlbumCard',
 
-    methods: {
-      ...mapMutations(['selectGroup']),
-      goToAlbum(album) {
-        document.querySelector('#Albums').click();
-        this.selectGroup(album);
-      }
-    },
-    props: {
-      album: Object,
-      hideArtist: Boolean
+  methods: {
+    ...mapMutations(['selectGroup']),
+    goToAlbum(album) {
+      document.querySelector('#Albums').click();
+      this.selectGroup(album);
     }
-  };
+  },
+  props: {
+    album: Object,
+    hideArtist: Boolean
+  }
+};
 </script>
 
 <style lang="scss">
-  .albumCard {
-    .coverArt {
-      border-radius: 15px;
-    }
+.albumCard {
+  .coverArt {
+    border-radius: 15px;
+  }
+  #card_playBt {
+    position: absolute;
+    top: 115px;
+    left: 15px;
+    transform: scale(0) perspective(1px);
+  }
+  &:hover {
     #card_playBt {
-      position: absolute;
-      top: 115px;
-      left: 15px;
-      transform: scale(0) perspective(1px);
-    }
-    &:hover {
-      #card_playBt {
-        transform: scale(0.9) perspective(1px);
-        background: rgba(0, 0, 0, 0.24);
-      }
+      transform: scale(0.9) perspective(1px);
+      background: rgba(0, 0, 0, 0.24);
     }
   }
+}
 </style>

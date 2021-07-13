@@ -38,7 +38,7 @@
 		"node-downloader-helper": "1.0.18",
 		"node-id3": "0.2.3",
 		"phosphor-vue": "1.3.1",
-		"scule": "0.2.1",
+		"scule": "^0.2.1",
 		"vue": "2.6.14",
 		"vue-router": "3.5.2",
 		"vue-virtual-scroll-list": "2.3.2",

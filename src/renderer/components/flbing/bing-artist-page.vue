@@ -1,15 +1,8 @@
 <template>
   <div class="groupedContentTab blurred_bg blur30 bingArtistPage bingPage">
     <div class="sliverBar">
-      <img
-        id="blurred"
-        class="coverArt"
-        :src="artistInfo.picture"
-      >
-      <img
-        class="coverArt roundImage"
-        :src="artistInfo.picture"
-      >
+      <img id="blurred" class="coverArt" :src="artistInfo.picture" />
+      <img class="coverArt roundImage" :src="artistInfo.picture" />
       <div class="sliverBarFooter">
         <div class="groupedCard_info">
           <p class="groupedInfo_title">
@@ -37,7 +30,7 @@
               v-for="track in artistInfo.tracks"
               :key="track.id"
               :track-info="track"
-            >
+            />
           </div>
         </div>
         <div class="artist_data">
@@ -61,60 +54,60 @@
 </template>
 
 <script>
-  export default {
-    name: 'BingArtistPage',
+export default {
+  name: 'BingArtistPage',
 
-    props: {
-      artistInfo: Object
-    },
-    methods: {
-      bubbleAlbum(albumData) {
-        this.$emit('selectedAlbum', albumData);
-        console.log('Sending...');
-        console.table(albumData);
-      }
+  props: {
+    artistInfo: Object
+  },
+  methods: {
+    bubbleAlbum(albumData) {
+      this.$emit('selectedAlbum', albumData);
+      console.log('Sending...');
+      console.table(albumData);
     }
-  };
+  }
+};
 </script>
 
 <style lang="scss">
-  .bingPage {
-    position: absolute;
-    top: 0;
-    z-index: 4;
-    border-radius: 20px;
+.bingPage {
+  position: absolute;
+  top: 0;
+  z-index: 4;
+  border-radius: 20px;
+  overflow: hidden;
+  height: 96% !important;
+  .content {
+    padding: 20px;
     overflow: hidden;
-    height: 96% !important;
-    .content {
-      padding: 20px;
-      overflow: hidden;
-      overflow-y: scroll;
-    }
-    .sectionHeading {
-      margin-right: 20px;
-      margin-left: 10px;
-    }
+    overflow-y: scroll;
   }
-  .artist_data_results {
-    height: 72%;
-    overflow: hidden;
-    .grid2 {
-      height: 100%;
-      align-items: flex-start;
-      .artist_data {
-        .content {
-          height: 43vh;
-        }
+  .sectionHeading {
+    margin-right: 20px;
+    margin-left: 10px;
+  }
+}
+.artist_data_results {
+  height: 72%;
+  overflow: hidden;
+  .grid2 {
+    height: 100%;
+    align-items: flex-start;
+    .artist_data {
+      .content {
+        height: 43vh;
       }
     }
   }
-  .artist_data {
-    .albums {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 5px;
-      align-items: flex-start;
-      justify-content: left;
-    }
+}
+.artist_data {
+  .albums {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 5px;
+    align-items: flex-start;
+    justify-content: left;
   }
+}
 </style>

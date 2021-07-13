@@ -28,7 +28,7 @@ window.addEventListener('DOMContentLoaded', () => {
   }, 1000);
 });
 
-function loadComponents (entities: any) {
+function loadComponents(entities: any) {
   const mapper = (file: string) => {
     const { default: component } = entities(file);
     Vue.component(pascalCase(component.name), component);

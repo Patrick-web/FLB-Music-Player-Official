@@ -1,9 +1,7 @@
 <template>
   <div class="Equalizer widget blurred_bg blur20">
     <div class="widget_header">
-      <h1 class="widget_title">
-        Equalizer
-      </h1>
+      <h1 class="widget_title">Equalizer</h1>
       <base-button
         icon="x"
         class="widget_close shrink_icon circle shrink8"
@@ -22,11 +20,7 @@
       />
     </div>
     <div class="filter_sliders">
-      <div
-        v-for="(band, index) in bands"
-        :key="band.id"
-        class="filter"
-      >
+      <div v-for="(band, index) in bands" :key="band.id" class="filter">
         <p>{{ band.value }}db</p>
         <filter-slider
           :target-band="band.id"
@@ -38,82 +32,73 @@
       </div>
     </div>
     <div class="b_t">
-      <triangle-slider
-        filter-name="Bass"
-        @newGainValues="changeBandGains"
-      />
-      <triangle-slider
-        filter-name="Treble"
-        @newGainValues="changeBandGains"
-      />
-      <triangle-slider
-        filter-name="VBoost"
-        title="Boost Volume"
-      />
+      <triangle-slider filter-name="Bass" @newGainValues="changeBandGains" />
+      <triangle-slider filter-name="Treble" @newGainValues="changeBandGains" />
+      <triangle-slider filter-name="VBoost" title="Boost Volume" />
     </div>
   </div>
 </template>
 
 <script>
-  import { mapMutations } from 'vuex';
+import { mapMutations } from 'vuex';
 
-  export default {
-    name: 'Equalizer',
+export default {
+  name: 'Equalizer',
 
-    computed: {
-      bands() {
-        return this.$store.state.EqualizerManager.bands;
-      },
-      equalizerPresets() {
-        return this.$store.state.EqualizerManager.equalizerPresets;
-      },
-      currentPreset() {
-        return this.$store.state.EqualizerManager.currentPreset;
-      }
+  computed: {
+    bands() {
+      return this.$store.state.EqualizerManager.bands;
     },
-    methods: {
-      ...mapMutations([
-        'UIcontrollerToggleProperty',
-        'updateBandFilter',
-        'changeBandGains',
-        'loadPreset'
-      ])
+    equalizerPresets() {
+      return this.$store.state.EqualizerManager.equalizerPresets;
+    },
+    currentPreset() {
+      return this.$store.state.EqualizerManager.currentPreset;
     }
-  };
+  },
+  methods: {
+    ...mapMutations([
+      'UIcontrollerToggleProperty',
+      'updateBandFilter',
+      'changeBandGains',
+      'loadPreset'
+    ])
+  }
+};
 </script>
 
 <style lang="scss">
-  .Equalizer {
+.Equalizer {
+  padding: 10px;
+  padding-top: 5px;
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.582);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 50;
+  .filter_sliders {
     padding: 10px;
-    padding-top: 5px;
-    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.582);
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    z-index: 50;
-    .filter_sliders {
-      padding: 10px;
+    gap: 15px;
+    .filter {
       display: flex;
-      gap: 15px;
-      .filter {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: space-between;
-        gap: 5px;
-        p {
-          font-size: 0.8rem;
-          font-family: inherit;
-        }
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      gap: 5px;
+      p {
+        font-size: 0.8rem;
+        font-family: inherit;
       }
     }
-    .b_t {
-      width: 100%;
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 0px;
-    }
   }
+  .b_t {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 0px;
+  }
+}
 </style>

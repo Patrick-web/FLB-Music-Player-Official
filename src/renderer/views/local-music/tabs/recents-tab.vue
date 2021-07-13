@@ -5,13 +5,8 @@
       class="centerContents"
       style="height: 100%"
     >
-      <img
-        width="300px"
-        src="@img/no_recents.svg"
-      >
-      <p style="font-family: inherit">
-        You still haven't played anything
-      </p>
+      <img width="300px" src="@img/no_recents.svg" />
+      <p style="font-family: inherit">You still haven't played anything</p>
     </div>
     <track-card
       v-for="track in recentlyPlayedTracks"
@@ -22,25 +17,25 @@
   </div>
 </template>
 <script>
-  export default {
-    name: 'RecentsTab',
+export default {
+  name: 'RecentsTab',
 
-    data() {
-      return {};
-    },
-    computed: {
-      recentlyPlayedTracks() {
-        return this.$store.state.TabsManager.tabsData.recentlyPlayedTracks;
-      }
+  data() {
+    return {};
+  },
+  computed: {
+    recentlyPlayedTracks() {
+      return this.$store.state.TabsManager.tabsData.recentlyPlayedTracks;
     }
-  };
+  }
+};
 </script>
 
 <style>
-  .RecentsTab {
-    overflow: hidden;
-    overflow-y: scroll;
-    height: 100%;
-    padding-right: 10px;
-  }
+.RecentsTab {
+  overflow: hidden;
+  overflow-y: scroll;
+  height: 100%;
+  padding-right: 10px;
+}
 </style>

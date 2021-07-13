@@ -24,40 +24,40 @@
 </template>
 
 <script>
-  export default {
-    name: 'DownloadWidgetToggle',
+export default {
+  name: 'DownloadWidgetToggle',
 
-    data() {
-      return {
-        widgetIsVisible: false
-      };
-    },
-    computed: {
-      downloadQueue() {
-        return this.$store.state.BingDownloadManager.pendingDownloads;
-      }
-    },
-    methods: {
-      toggleWidget() {
-        this.widgetIsVisible = !this.widgetIsVisible;
-        document.querySelector('.FLBing').classList.toggle('widgetVisible');
-      }
+  data() {
+    return {
+      widgetIsVisible: false
+    };
+  },
+  computed: {
+    downloadQueue() {
+      return this.$store.state.BingDownloadManager.pendingDownloads;
     }
-  };
+  },
+  methods: {
+    toggleWidget() {
+      this.widgetIsVisible = !this.widgetIsVisible;
+      document.querySelector('.FLBing').classList.toggle('widgetVisible');
+    }
+  }
+};
 </script>
 
 <style lang="scss">
-  .toggleDownloadWidget {
-    position: fixed;
-    z-index: 50;
-    top: 35px;
-    right: 5px;
-    button {
-      background: var(--accentColor);
-      transform: scale(0.8);
-      &:hover {
-        background: var(--accentColor) !important;
-      }
+.toggleDownloadWidget {
+  position: fixed;
+  z-index: 50;
+  top: 35px;
+  right: 5px;
+  button {
+    background: var(--accentColor);
+    transform: scale(0.8);
+    &:hover {
+      background: var(--accentColor) !important;
     }
   }
+}
 </style>

@@ -1,15 +1,8 @@
 <template>
   <div class="groupedContentTab bingPage blurred_bg blur30 bingAlbumPage">
     <div class="sliverBar">
-      <img
-        id="blurred"
-        class="coverArt"
-        :src="albumInfo.cover"
-      >
-      <img
-        class="coverArt"
-        :src="albumInfo.cover"
-      >
+      <img id="blurred" class="coverArt" :src="albumInfo.cover" />
+      <img class="coverArt" :src="albumInfo.cover" />
       <div class="sliverBarFooter">
         <div class="groupedCard_info">
           <p class="groupedInfo_title">
@@ -40,7 +33,7 @@
             :key="track.id"
             :track-info="track"
             :override-cover-art="albumInfo.cover"
-          >
+          />
         </div>
       </div>
     </div>
@@ -48,39 +41,39 @@
 </template>
 
 <script>
-  export default {
-    name: 'BingAlbumPage',
+export default {
+  name: 'BingAlbumPage',
 
-    props: {
-      albumInfo: Object
-    },
-    data() {
-      return {
-        tracks: []
-      };
-    },
-    mounted() {
-      console.log(this.albumInfo);
-    }
-  };
+  props: {
+    albumInfo: Object
+  },
+  data() {
+    return {
+      tracks: []
+    };
+  },
+  mounted() {
+    console.log(this.albumInfo);
+  }
+};
 </script>
 
 <style lang="scss">
-  .widgetVisible {
-    .bingAlbumPage {
-      width: 76%;
-    }
-  }
+.widgetVisible {
   .bingAlbumPage {
-    z-index: 5 !important;
-    width: 100%;
-    .cardsWrapper {
-      height: 50%;
-      padding: 40px;
-      padding-right: 60px;
-      padding-top: 10px;
-      overflow: hidden;
-      overflow-y: scroll;
-    }
+    width: 76%;
   }
+}
+.bingAlbumPage {
+  z-index: 5 !important;
+  width: 100%;
+  .cardsWrapper {
+    height: 50%;
+    padding: 40px;
+    padding-right: 60px;
+    padding-top: 10px;
+    overflow: hidden;
+    overflow-y: scroll;
+  }
+}
 </style>

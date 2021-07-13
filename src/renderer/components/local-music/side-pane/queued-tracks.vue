@@ -27,156 +27,156 @@
 </template>
 
 <script>
-  import { mapMutations } from 'vuex';
+import { mapMutations } from 'vuex';
 
-  export default {
-    name: 'QueuedTracks',
+export default {
+  name: 'QueuedTracks',
 
-    data() {
-      return {
-        queue: []
-      };
-    },
-    computed: {
-      customQueue: {
-        get() {
-          const queue = this.$store.state.PlaybackManger.customQueue;
-          const indexOfPlayingTrack = queue.findIndex(
-            track => track.fileLocation === this.currentlyPlayingTrackPath
-          );
-          if (indexOfPlayingTrack > -1) {
-            return queue;
-          }
-          if (queue.length === 1) {
-            return [this.$store.state.PlaybackManger.playingTrackInfo.track];
-          }
-          return [
-            this.$store.state.PlaybackManger.playingTrackInfo.track,
-            ...queue
-          ];
-        },
-        set(value) {
-          this.$store.commit('reorderQueue', value);
+  data() {
+    return {
+      queue: []
+    };
+  },
+  computed: {
+    customQueue: {
+      get() {
+        const queue = this.$store.state.PlaybackManger.customQueue;
+        const indexOfPlayingTrack = queue.findIndex(
+          track => track.fileLocation === this.currentlyPlayingTrackPath
+        );
+        if (indexOfPlayingTrack > -1) {
+          return queue;
         }
+        if (queue.length === 1) {
+          return [this.$store.state.PlaybackManger.playingTrackInfo.track];
+        }
+        return [
+          this.$store.state.PlaybackManger.playingTrackInfo.track,
+          ...queue
+        ];
       },
-      currentlyPlayingTrackPath() {
-        return this.$store.state.PlaybackManger.playingTrackInfo.track
-          .fileLocation;
+      set(value) {
+        this.$store.commit('reorderQueue', value);
       }
     },
-    methods: {
-      ...mapMutations([
-        'setPlayingTrack',
-        'removeTrackFromCustomQueue',
-        'UIcontrollerToggleProperty',
-        'clearCustomQueue'
-      ]),
-      playQueuedTrack(track) {
-        this.setPlayingTrack({ track, index: 0 });
-      }
+    currentlyPlayingTrackPath() {
+      return this.$store.state.PlaybackManger.playingTrackInfo.track
+        .fileLocation;
     }
-  };
+  },
+  methods: {
+    ...mapMutations([
+      'setPlayingTrack',
+      'removeTrackFromCustomQueue',
+      'UIcontrollerToggleProperty',
+      'clearCustomQueue'
+    ]),
+    playQueuedTrack(track) {
+      this.setPlayingTrack({ track, index: 0 });
+    }
+  }
+};
 </script>
 
 <style lang="scss">
-  .QueuedTracks {
-    height: 95%;
-    overflow: hidden;
-    overflow-y: scroll;
-    .clearQueueBt {
-      padding: 5px;
-      text-align: center;
-      background: crimson;
-      border-radius: 10px;
-      position: absolute;
-      top: 50px;
-      z-index: 2;
-      width: 84%;
-      cursor: pointer;
-      display: none;
-      &:hover {
-        border-radius: 20px;
-      }
-    }
-    .QueuedTracksWrapper {
-      // padding-top: 40px;
-    }
-    .queuedTrack {
-      position: relative;
-      padding: 10px;
-      border-radius: 10px;
-      margin-bottom: 10px;
-      // margin-right: 10px;
-      cursor: pointer;
-      width: 90%;
-      p {
-        overflow: hidden;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        font-size: 0.95rem;
-      }
-      .card_title {
-        font-family: inherit;
-        font-size: 0.9rem;
-        width: 90%;
-      }
-      .card_subTitle {
-        font-family: inherit;
-        font-size: 0.8rem;
-      }
-      img {
-        position: absolute;
-        bottom: -5px;
-        left: 50%;
-        transform: translateX(-50%) scale(0);
-        width: 10px;
-        padding: 5px;
-        background: crimson;
-        border-radius: 10px;
-      }
-      img:hover {
-        transform: translateX(-50%) scale(1.2) !important;
-      }
-      &::before,
-      &::after {
-        content: '';
-        position: absolute;
-        height: 3px;
-        width: 20px;
-        right: 10px;
-        cursor: grab;
-        top: 40%;
-      }
-
-      &::before {
-        border-top: 2px solid white;
-      }
-      &::after {
-        border-bottom: 2px solid white;
-        border-top: 2px solid white;
-        transform: translateY(5px);
-      }
-    }
-    .ghost {
-      background: var(--accentColor);
-    }
-    .queuedTrack:hover {
-      background: rgba(255, 255, 255, 0.158);
-      img {
-        transform: translateX(-50%) scale(1);
-      }
-    }
-    .queuedTrack:active {
-      img {
-        transform: translateX(-50%) scale(0);
-      }
-    }
-    .playing_track {
-      border-left: 5px solid var(--accentColor);
-      border-right: 5px solid var(--accentColor);
-      // border-top-left-radius: 0px;
-      // border-bottom-right-radius: 0px;
-      width: 86%;
+.QueuedTracks {
+  height: 95%;
+  overflow: hidden;
+  overflow-y: scroll;
+  .clearQueueBt {
+    padding: 5px;
+    text-align: center;
+    background: crimson;
+    border-radius: 10px;
+    position: absolute;
+    top: 50px;
+    z-index: 2;
+    width: 84%;
+    cursor: pointer;
+    display: none;
+    &:hover {
+      border-radius: 20px;
     }
   }
+  .QueuedTracksWrapper {
+    // padding-top: 40px;
+  }
+  .queuedTrack {
+    position: relative;
+    padding: 10px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    // margin-right: 10px;
+    cursor: pointer;
+    width: 90%;
+    p {
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      font-size: 0.95rem;
+    }
+    .card_title {
+      font-family: inherit;
+      font-size: 0.9rem;
+      width: 90%;
+    }
+    .card_subTitle {
+      font-family: inherit;
+      font-size: 0.8rem;
+    }
+    img {
+      position: absolute;
+      bottom: -5px;
+      left: 50%;
+      transform: translateX(-50%) scale(0);
+      width: 10px;
+      padding: 5px;
+      background: crimson;
+      border-radius: 10px;
+    }
+    img:hover {
+      transform: translateX(-50%) scale(1.2) !important;
+    }
+    &::before,
+    &::after {
+      content: '';
+      position: absolute;
+      height: 3px;
+      width: 20px;
+      right: 10px;
+      cursor: grab;
+      top: 40%;
+    }
+
+    &::before {
+      border-top: 2px solid white;
+    }
+    &::after {
+      border-bottom: 2px solid white;
+      border-top: 2px solid white;
+      transform: translateY(5px);
+    }
+  }
+  .ghost {
+    background: var(--accentColor);
+  }
+  .queuedTrack:hover {
+    background: rgba(255, 255, 255, 0.158);
+    img {
+      transform: translateX(-50%) scale(1);
+    }
+  }
+  .queuedTrack:active {
+    img {
+      transform: translateX(-50%) scale(0);
+    }
+  }
+  .playing_track {
+    border-left: 5px solid var(--accentColor);
+    border-right: 5px solid var(--accentColor);
+    // border-top-left-radius: 0px;
+    // border-bottom-right-radius: 0px;
+    width: 86%;
+  }
+}
 </style>

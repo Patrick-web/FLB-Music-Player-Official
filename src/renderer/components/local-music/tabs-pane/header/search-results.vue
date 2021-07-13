@@ -18,7 +18,7 @@
         />
       </div>
     </div>
-    <hr>
+    <hr />
     <div
       class="ArtistResults groupedContentTab"
       style="padding: 0px"
@@ -41,10 +41,7 @@
         />
       </div>
     </div>
-    <div
-      class="AlbumResults groupedContentTab"
-      @click="closeSearch"
-    >
+    <div class="AlbumResults groupedContentTab" @click="closeSearch">
       <div class="sectionHeading">
         <h3>Albums</h3>
         <div class="line" />
@@ -66,66 +63,66 @@
 </template>
 
 <script>
-  import { mapMutations } from 'vuex';
+import { mapMutations } from 'vuex';
 
-  export default {
-    name: 'SearchResults',
+export default {
+  name: 'SearchResults',
 
-    computed: {
-      searchResults() {
-        return this.$store.state.SearchManager.searchResults;
-      }
-    },
-    methods: {
-      ...mapMutations(['search', 'selectGroup', 'clearSelectedTracks']),
-      goToArtist(artist) {
-        document.querySelector('#Artists').click();
-        this.selectGroup(artist);
-        this.closeSearch();
-      },
-      goToAlbum(album) {
-        document.querySelector('#Albums').click();
-        this.selectGroup(album);
-        this.closeSearch();
-      },
-      closeSearch() {
-        this.$emit('closeSearch');
-      }
+  computed: {
+    searchResults() {
+      return this.$store.state.SearchManager.searchResults;
     }
-  };
+  },
+  methods: {
+    ...mapMutations(['search', 'selectGroup', 'clearSelectedTracks']),
+    goToArtist(artist) {
+      document.querySelector('#Artists').click();
+      this.selectGroup(artist);
+      this.closeSearch();
+    },
+    goToAlbum(album) {
+      document.querySelector('#Albums').click();
+      this.selectGroup(album);
+      this.closeSearch();
+    },
+    closeSearch() {
+      this.$emit('closeSearch');
+    }
+  }
+};
 </script>
 
 <style lang="scss">
+.searchResults {
+  position: absolute;
+  bottom: -5px;
+  left: -7px;
+  transform: translateY(100%);
+  min-width: 61vw;
+  max-width: 70vw;
+  max-height: 85vh;
+  padding: 10px;
+  padding-bottom: 0px;
+  border: 1px solid rgba(255, 255, 255, 0.315);
+  border-radius: 20px;
+  box-shadow: 0px 0px 50px black;
+  h3 {
+    padding: 5px;
+  }
+  hr {
+    height: 1px;
+    background: rgba(255, 255, 255, 0.377);
+    border: none;
+    margin-bottom: 5px;
+  }
+  .groupCard {
+    transform: scale(0.8) translateY(-25px);
+  }
+}
+@media (max-width: 900px) {
   .searchResults {
-    position: absolute;
-    bottom: -5px;
-    left: -7px;
-    transform: translateY(100%);
-    min-width: 61vw;
-    max-width: 70vw;
-    max-height: 85vh;
-    padding: 10px;
-    padding-bottom: 0px;
-    border: 1px solid rgba(255, 255, 255, 0.315);
-    border-radius: 20px;
-    box-shadow: 0px 0px 50px black;
-    h3 {
-      padding: 5px;
-    }
-    hr {
-      height: 1px;
-      background: rgba(255, 255, 255, 0.377);
-      border: none;
-      margin-bottom: 5px;
-    }
-    .groupCard {
-      transform: scale(0.8) translateY(-25px);
-    }
+    width: 86vw !important;
+    max-width: 86vw !important;
   }
-  @media (max-width: 900px) {
-    .searchResults {
-      width: 86vw !important;
-      max-width: 86vw !important;
-    }
-  }
+}
 </style>

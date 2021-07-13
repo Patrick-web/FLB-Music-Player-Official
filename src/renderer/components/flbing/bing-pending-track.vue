@@ -47,100 +47,100 @@
 </template>
 
 <script>
-  import { sendMessageToNode } from '@/renderer/utils';
+import { sendMessageToNode } from '@/renderer/utils';
 
-  export default {
-    name: 'BingPendingTrack',
+export default {
+  name: 'BingPendingTrack',
 
-    props: {
-      trackInfo: Object
+  props: {
+    trackInfo: Object
+  },
+  mounted() {
+    console.log(this.trackInfo);
+  },
+  methods: {
+    cancelDownload() {
+      sendMessageToNode('cancelBingDownload');
     },
-    mounted() {
-      console.log(this.trackInfo);
+    retryDownload() {
+      console.log('Retrying Download');
     },
-    methods: {
-      cancelDownload() {
-        sendMessageToNode('cancelBingDownload');
-      },
-      retryDownload() {
-        console.log('Retrying Download');
-      },
-      removeFromQueue() {
-        sendMessageToNode('removeFromDownloadQueue', this.trackInfo.id);
-      }
+    removeFromQueue() {
+      sendMessageToNode('removeFromDownloadQueue', this.trackInfo.id);
     }
-  };
+  }
+};
 </script>
 
 <style lang="scss">
-  .BingDownloadTrack {
-    position: relative;
-    margin-bottom: 5px;
-    margin-right: 10px;
-    border-radius: 10px;
-    overflow: hidden;
-    max-width: 280px;
+.BingDownloadTrack {
+  position: relative;
+  margin-bottom: 5px;
+  margin-right: 10px;
+  border-radius: 10px;
+  overflow: hidden;
+  max-width: 280px;
+}
+.track_body {
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+}
+.track_title {
+  font-family: inherit;
+  margin-bottom: 5px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: 0.95rem;
+  width: 100%;
+}
+.track_artist {
+  font-family: inherit;
+  font-size: 0.9rem;
+  width: 100%;
+}
+.dl_progress_bar {
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  .track_progress {
+    transform: translateX(-20px);
   }
-  .track_body {
-    display: flex;
-    gap: 10px;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px;
-  }
-  .track_title {
-    font-family: inherit;
-    margin-bottom: 5px;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    font-size: 0.95rem;
-    width: 100%;
-  }
-  .track_artist {
-    font-family: inherit;
-    font-size: 0.9rem;
-    width: 100%;
-  }
-  .dl_progress_bar {
-    position: relative;
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    padding: 10px;
-    .track_progress {
-      transform: translateX(-20px);
-    }
-    &::before {
-      content: '';
-      background: var(--accentColor);
-      filter: brightness(0.5);
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-    }
-    p {
-      font-size: 0.9rem;
-      font-family: inherit;
-      filter: brightness(2);
-    }
-  }
-  .dl_progress {
+  &::before {
+    content: '';
+    background: var(--accentColor);
+    filter: brightness(0.5);
     position: absolute;
     top: 0;
     left: 0;
-    background: var(--accentColor);
-    height: 20px;
-    width: 0%;
-    z-index: -1;
-    padding: 10px;
+    right: 0;
+    bottom: 0;
   }
-  .track_state {
+  p {
+    font-size: 0.9rem;
     font-family: inherit;
-    font-size: 0.8rem;
-    padding: 5px;
-    padding-left: 10px;
+    filter: brightness(2);
   }
+}
+.dl_progress {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: var(--accentColor);
+  height: 20px;
+  width: 0%;
+  z-index: -1;
+  padding: 10px;
+}
+.track_state {
+  font-family: inherit;
+  font-size: 0.8rem;
+  padding: 5px;
+  padding-left: 10px;
+}
 </style>

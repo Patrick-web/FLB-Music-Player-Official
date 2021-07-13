@@ -7,10 +7,7 @@
       :class="[currentTab === tab.name ? 'activeTab' : '', 'tabBtn bg1']"
       @click="routeTo(tab)"
     >
-      <base-icon
-        :icon="tab.icon"
-        class="icon"
-      />
+      <base-icon :icon="tab.icon" class="icon" />
       <p>{{ tab.name }}</p>
     </div>
   </div>
@@ -66,57 +63,57 @@
 </script>
 
 <style lang="scss">
-  .Tabswitcher {
-    display: flex;
-    gap: 10px;
-    justify-content: center;
+.Tabswitcher {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  position: relative;
+  z-index: 10;
+  margin-bottom: 10px;
+  margin-top: 10px;
+  .tabBtn {
+    text-align: center;
     position: relative;
-    z-index: 10;
-    margin-bottom: 10px;
-    margin-top: 10px;
-    .tabBtn {
-      text-align: center;
-      position: relative;
-      z-index: 2;
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      padding: 5px 8px;
-      color: white;
-      border-radius: 10px;
-      overflow: hidden;
-      cursor: pointer;
-      transition: 0.4s ease border-radius;
-      p {
-        font-size: 0.9rem;
-        font-family: inherit;
-      }
-      img {
-        width: 20px;
-        transition: 0.2s cubic-bezier(0.23, 1, 0.32, 1);
-      }
-      &:hover {
-        background: rgba(255, 255, 255, 0.062);
-      }
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 8px;
+    color: white;
+    border-radius: 10px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: 0.4s ease border-radius;
+    p {
+      font-size: 0.9rem;
+      font-family: inherit;
     }
-    .activeTab {
-      background: var(--accentColor) !important;
-      border-radius: 20px;
-      // padding-left: 5px;
-      // padding-right: 5px;
-      // p {
-      //   width: 0px;
-      //   margin-left: -5px;
-      //   opacity: 0;
-      // }
+    img {
+      width: 20px;
+      transition: 0.2s cubic-bezier(0.23, 1, 0.32, 1);
     }
-    .activeTab:hover {
-      background: var(--accentColor);
+    &:hover {
+      background: rgba(255, 255, 255, 0.062);
     }
   }
-  // @media (max-width: 700px) {
-  //   .Tabswitcher {
-  //     display: none;
-  //   }
-  // }
+  .activeTab {
+    background: var(--accentColor) !important;
+    border-radius: 20px;
+    // padding-left: 5px;
+    // padding-right: 5px;
+    // p {
+    //   width: 0px;
+    //   margin-left: -5px;
+    //   opacity: 0;
+    // }
+  }
+  .activeTab:hover {
+    background: var(--accentColor);
+  }
+}
+// @media (max-width: 700px) {
+//   .Tabswitcher {
+//     display: none;
+//   }
+// }
 </style>
