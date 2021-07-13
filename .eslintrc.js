@@ -12,6 +12,7 @@ const rules = {
     }
   ],
   'comma-dangle': ['error', 'never'],
+  'eqeqeq': 'warn',
   'func-names': 0,
   'import/no-named-as-default': 0,
   indent: 'off',
@@ -27,7 +28,7 @@ const rules = {
   'no-alert': 0,
   'no-bitwise': 0,
   'no-console': !isDev ? 'warn' : 0,
-  'no-debuger': !isDev ? 'warm' : 0,
+  'no-debuger': !isDev ? 'warn' : 0,
   'no-duplicate-imports': 'error',
   'no-empty': [
     'error',
@@ -87,7 +88,11 @@ const rules = {
   'space-unary-ops': 'error',
   'spaced-comment': 'error',
   'template-curly-spacing': 'error',
-  'vue/order-in-components': !isDev ? 'off' : 'warn'
+  'vue/component-name-in-template-casing': ['error', 'kebab-case', {
+    registeredComponentsOnly: false
+  }],
+  'vue/order-in-components': !isDev ? 'warn' : 'off',
+  'vue/require-default-prop': !isDev ? 'warn' : 'off'
 };
 
 module.exports = {

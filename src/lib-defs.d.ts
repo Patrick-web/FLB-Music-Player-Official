@@ -2,19 +2,21 @@
 //     let __static: string;
 // }
 
-declare module "genius-lyrics-api" {
+declare module 'css-color-converter';
+
+declare module 'genius-lyrics-api' {
   export function getSong({
     title: string,
     artist: string,
     apiKey: string,
-    optimizeQuery: boolean,
+    optimizeQuery: boolean
   });
 }
 
 // Type definitions for vue-virtual-scroller
 // Project: https://github.com/Akryum/vue-virtual-scroller/
-declare module "vue-virtual-scroller" {
-  import Vue, { ComponentOptions, PluginObject, Component } from "vue";
+declare module 'vue-virtual-scroller' {
+  import Vue, { Component, ComponentOptions, PluginObject } from 'vue';
   interface PluginOptions {
     installComponents?: boolean;
     componentsPrefix?: string;
