@@ -1,4 +1,5 @@
 <template>
+  <div>
   <div
     :class="[!artistPicture ? 'groupCard_noPicture' : '', 'groupCard']"
     @click="goToArtist()"
@@ -15,6 +16,7 @@
       </p>
     </div>
   </div>
+</div>
 </template>
 
 <script>
@@ -22,13 +24,12 @@ import { mapActions } from 'vuex';
 
 export default {
   name: 'ArtistCard',
-
   computed: {
     artistPicture() {
       return (
-        this.$store.state.TabsManager.downloadedArtistPictures.filter(
+        this.artist.name ? this.$store.state.TabsManager.downloadedArtistPictures.filter(
           artistPicInfo => artistPicInfo.name == this.artist.name
-        )[0]?.pathToPicture || false
+        )[0]?.pathToPicture : false
       );
     }
   },
@@ -40,7 +41,12 @@ export default {
     }
   },
   props: {
-    artist: Object
+    artist: {
+      type: Object,
+      default () {
+        return {}
+      }
+    }
   }
 };
 </script>

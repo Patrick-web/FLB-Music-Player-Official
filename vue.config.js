@@ -14,8 +14,7 @@ module.exports = {
         '@vue': rendererDir('components'),
         '@img': rendererDir('assets', 'images'),
         '@icon': rendererDir('assets', 'icons'),
-        '@scss': rendererDir('assets', 'styles'),
-        'phosphor-icons': 'phosphor-vue/src/lib/index'
+        '@scss': rendererDir('assets', 'styles')
       }
     },
     plugins: [

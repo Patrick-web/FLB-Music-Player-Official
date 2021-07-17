@@ -19,7 +19,7 @@
       enter-active-class="animated slideInUp faster"
       leave-active-class="animated slideOutDown faster"
     >
-      <y-t-video-player
+      <ytvideo-player
         v-if="showYTPlayer"
         ref="ytPlayer"
         :src-string="ytSrc"

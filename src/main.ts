@@ -5,14 +5,11 @@ import VueVirtualScroller from 'vue-virtual-scroller';
 import router from './renderer/router';
 import store from './renderer/store';
 import App from './App.vue';
-
-const views = require.context(`./renderer/views`, true, /\.vue$/i);
-const components = require.context(`./renderer/components`, true, /\.vue$/i);
-loadComponents(components);
-loadComponents(views);
+import useFLB from './use-flb'
 
 Vue.component('draggable', vuedraggable);
 Vue.use(VueVirtualScroller);
+Vue.use(useFLB);
 
 Vue.config.productionTip = false;
 
@@ -23,15 +20,5 @@ const app = new Vue({
 });
 
 window.addEventListener('DOMContentLoaded', () => {
-  setTimeout(() => {
-    app.$mount('#app');
-  }, 1000);
+  app.$mount('#app');
 });
-
-function loadComponents(entities: any) {
-  const mapper = (file: string) => {
-    const { default: component } = entities(file);
-    Vue.component(pascalCase(component.name), component);
-  };
-  entities.keys().map(mapper);
-}
