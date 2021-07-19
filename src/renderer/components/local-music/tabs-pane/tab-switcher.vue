@@ -7,23 +7,27 @@
       :class="[currentTab === tab.name ? 'activeTab' : '', 'tabBtn bg1']"
       @click="routeTo(tab)"
     >
-      <base-icon :icon="tab.icon" class="icon" />
+      <base-icon
+        :icon="tab.icon"
+        class="icon"
+        :size="16"
+      />
       <p>{{ tab.name }}</p>
     </div>
   </div>
 </template>
 
 <script lang="js">
-  	import { mapMutations } from 'vuex';
-  import { ipcRenderer } from 'electron';
+import { mapMutations } from 'vuex';
+import { ipcRenderer } from 'electron';
 
-  	export default {
-    name: 'TabSwitcher',
+export default {
+  name: 'TabSwitcher',
 
 
-    data() {
-      return {
-        tabs: [
+  data() {
+    return {
+      tabs: [
           { name: 'Home', path: '/', icon: 'house' },
           { name: 'Tracks', path: '/Tracks', icon: 'music-note-simple' },
           { name: 'Recents', path: '/Recents', icon: 'clock-clockwise' },
@@ -31,10 +35,10 @@
           { name: 'Artists', path: '/Artists', icon: 'user' },
           { name: 'Albums', path: '/Albums', icon: 'disc' },
           { name: 'Folders', path: '/Folders', icon: 'folder-simple' }
-        ]
-      };
-    },
-  	computed: {
+      ]
+    };
+  },
+  computed: {
     currentTab() {
       return this.$store.state.UIController.UIProperties.currentMainTab;
     },
@@ -42,24 +46,24 @@
       return this.$store.state.SettingsManager.settings.defaultTab;
     }
   },
-    methods: {
-      ...mapMutations(['deSelectGroup', 'clearSelectedTracks', 'UIcontrollerSetPropertyValue']),
-      routeTo(tab) {
-        this.clearSelectedTracks();
-        this.deSelectGroup();
-        if (tab.path !== this.$route.path) this.$router.push(tab.path);
-        this.UIcontrollerSetPropertyValue({ property: 'currentMainTab', newValue: tab.name });
-      }
-    },
-    mounted() {
-      ipcRenderer.on('userSettings', (e, payload) => {
-        setTimeout(() => {
-          const defaultTabIndex = this.tabs.findIndex(tab => tab.name == this.defaultTab);
-          this.routeTo(this.tabs[defaultTabIndex]);
-        }, 100);
-      });
+  methods: {
+    ...mapMutations(['deSelectGroup', 'clearSelectedTracks', 'UIcontrollerSetPropertyValue']),
+    routeTo(tab) {
+      this.clearSelectedTracks();
+      this.deSelectGroup();
+      if (tab.path !== this.$route.path) this.$router.push(tab.path);
+      this.UIcontrollerSetPropertyValue({ property: 'currentMainTab', newValue: tab.name });
     }
-  };
+  },
+  mounted() {
+    ipcRenderer.on('userSettings', (e, payload) => {
+      setTimeout(() => {
+        const defaultTabIndex = this.tabs.findIndex(tab => tab.name === this.defaultTab);
+        this.routeTo(this.tabs[defaultTabIndex]);
+      }, 100);
+    });
+  }
+};
 </script>
 
 <style lang="scss">

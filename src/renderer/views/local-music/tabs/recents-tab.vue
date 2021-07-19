@@ -1,12 +1,17 @@
 <template>
   <div class="tab RecentsTab">
     <div
-      v-if="recentlyPlayedTracks.length == 0"
+      v-if="recentlyPlayedTracks.length === 0"
       class="centerContents"
       style="height: 100%"
     >
-      <img width="300px" src="@img/no_recents.svg" />
-      <p style="font-family: inherit">You still haven't played anything</p>
+      <img
+        width="300px"
+        src="@img/no_recents.svg"
+      >
+      <p style="font-family: inherit">
+        You still haven't played anything
+      </p>
     </div>
     <track-card
       v-for="track in recentlyPlayedTracks"

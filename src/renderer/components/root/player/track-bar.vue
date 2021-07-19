@@ -13,9 +13,21 @@
         {{ duration }}
       </p>
     </div>
-    <div class="seekBar" @click="goToPosition($event)">
-      <input type="range" value="0" min="0" max="100" @input="seek($event)" />
-      <div :style="{ width: seekBarWidth }" class="seekProgress">
+    <div
+      class="seekBar"
+      @click="goToPosition($event)"
+    >
+      <input
+        type="range"
+        value="0"
+        min="0"
+        max="100"
+        @input="seek($event)"
+      >
+      <div
+        :style="{ width: seekBarWidth }"
+        class="seekProgress"
+      >
         <div />
       </div>
       <p id="hoverTime">
@@ -59,7 +71,7 @@ export default {
     },
     seek(e) {
       const audio = document.querySelector('#audioTag');
-      this.seekPercent = parseInt(e.srcElement.value);
+      this.seekPercent = parseInt(e.srcElement.value, 10);
       this.seekBarWidth = `${this.seekPercent}%`;
       audio.currentTime = (this.seekPercent * audio.duration) / 100;
     },
@@ -112,20 +124,20 @@ export default {
   mounted() {
     const progressBar = document.querySelector('.seekBar');
     const audio = document.querySelector('audio');
-    document.querySelector('audio').addEventListener('timeupdate', e => {
+    document.querySelector('audio').addEventListener('timeupdate', () => {
       this.currentTime = this.timeFormatter(audio.currentTime);
       this.duration = this.timeFormatter(audio.duration);
       const percent = Math.floor((audio.currentTime / audio.duration) * 100);
       this.seekBarWidth = `${percent}%`;
-      if (audio.currentTime == audio.duration) {
+      if (audio.currentTime === audio.duration) {
         this.determineNextTrack('next');
       }
     });
     progressBar.addEventListener('mousemove', e => {
       const posX = e.clientX - progressBar.getBoundingClientRect().x;
       const percentageSeek = Math.ceil(
-        (posX / window.getComputedStyle(progressBar).width.replace('px', '')) *
-          100
+        (posX / window.getComputedStyle(progressBar).width.replace('px', ''))
+          * 100
       );
       this.hoverTime = this.timeFormatter(
         (percentageSeek * audio.duration) / 100

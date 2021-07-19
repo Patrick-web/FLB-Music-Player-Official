@@ -1,27 +1,48 @@
 <template>
   <div class="LyricsContainer">
-    <div v-if="!playingTrackLyrics" class="centerContents" style="height: 90%">
-      <img width="200px" src="@img/no_lyrics.svg" />
+    <div
+      v-if="!playingTrackLyrics"
+      class="centerContents"
+      style="height: 90%"
+    >
+      <img
+        width="200px"
+        src="@img/no_lyrics.svg"
+      >
       <p
-        v-if="allLyrics.length == 0"
+        v-if="allLyrics.length === 0"
         style="text-align: center; font-family: inherit"
       >
         Comeback here for lyrics. A small dose of internet and bam💥 I'll have
         all the lyrics
       </p>
-      <p v-else style="text-align: center; font-family: inherit">
+      <p
+        v-else
+        style="text-align: center; font-family: inherit"
+      >
         I haven't found the lyrics for this one, yet
       </p>
     </div>
-    <div v-if="playingTrackLyrics" class="lyrics">
-      <div v-for="(verse, index) in playingTrackLyrics" :key="index">
-        <pre>
-				{{ verse.replace(/\[.*\].*/gi, '') }}
-        </pre>
+    <div
+      v-if="playingTrackLyrics"
+      class="lyrics"
+    >
+      <div
+        v-for="(verse, index) in playingTrackLyrics"
+        :key="index"
+      >
+        <pre> {{ verse.replace(/\[.*\].*/gi, '') }}</pre>
       </div>
     </div>
-    <div v-if="playingTrackLyrics" class="lyr_controls">
-      <base-button id="off_add" icon="x" @click.native="offset += 10" />
+    <div
+      v-if="playingTrackLyrics"
+      class="lyr_controls"
+    >
+      <base-button
+        id="off_add"
+        icon="x"
+        @click.native="offset += 10"
+      />
       <p>{{ offset }}</p>
       <base-button
         id="off_minus"
@@ -69,7 +90,8 @@ export default {
       return (
         this.$store.state.PlaybackManger.allLyrics.filter(
           trackLyricInfo =>
-            trackLyricInfo.trackName == this.playingTrack.defaultTitle
+            // eslint-disable-next-line implicit-arrow-linebreak
+            trackLyricInfo.trackName === this.playingTrack.defaultTitle
         )[0]?.lyrics || false
       );
     },

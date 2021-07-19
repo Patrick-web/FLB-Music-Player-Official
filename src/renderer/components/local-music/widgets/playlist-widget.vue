@@ -1,7 +1,9 @@
 <template>
   <div class="PlaylistWidget blurred_bg blur20 widget">
     <div class="widget_header">
-      <h1 class="widget_title">Select Playlist</h1>
+      <h1 class="widget_title">
+        Select Playlist
+      </h1>
       <base-button
         icon="x"
         extra-class="widget_close shrink_icon circle shrink8"
@@ -15,7 +17,7 @@
         class="inputElem w-90"
         placeholder="Create new playlist"
         type="text"
-      />
+      >
       <base-button
         text="Create"
         :active="true"

@@ -6,8 +6,11 @@
       max="15"
       type="range"
       @input="updateInput($event)"
+    >
+    <div
+      :style="{ height: progressBarHeight }"
+      class="base_slider_progress"
     />
-    <div :style="{ height: progressBarHeight }" class="base_slider_progress" />
   </div>
 </template>
 
@@ -34,7 +37,7 @@ export default {
   },
   methods: {
     updateInput(e) {
-      this.newFilterValue = parseInt(e.srcElement.value);
+      this.newFilterValue = parseInt(e.srcElement.value, 10);
       this.$emit('rangeUpdated', {
         targetBandIndex: this.bandIndex,
         newValue: this.newFilterValue * -1

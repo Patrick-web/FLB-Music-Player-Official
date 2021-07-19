@@ -48,8 +48,8 @@ export class PlaybackStats {
   }
   public saveChanges () {
     const stats = {
-      playedFiles: this.playedFiles.filter(file => file != undefined),
-      tracksStats: this.tracksStats.filter(file => file != undefined)
+      playedFiles: this.playedFiles.filter(file => file !== undefined),
+      tracksStats: this.tracksStats.filter(file => file !== undefined)
     };
     fs.writeFile(paths.playbackStatsLocation, JSON.stringify(stats), err => {
       if (err) console.log(err);

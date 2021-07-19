@@ -12,10 +12,17 @@
     >
       <settings v-if="showSettings" />
     </transition>
-    <on-board v-if="showOnboard" @closeOnBoard="showOnboard = false" />
+    <on-board
+      v-if="showOnboard"
+      @closeOnBoard="showOnboard = false"
+    />
     <notifications />
     <section id="main-view">
-      <div v-if="!miniMode" id="sub-view-1" class="flex">
+      <div
+        v-if="!miniMode"
+        id="sub-view-1"
+        class="flex"
+      >
         <side-nav />
         <router-view />
       </div>

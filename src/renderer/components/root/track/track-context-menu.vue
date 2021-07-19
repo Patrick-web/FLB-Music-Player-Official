@@ -1,24 +1,44 @@
 <template>
-  <div class="trackOptions blurred_bg blur10" @click="close">
-    <div class="option hideOnMultiSelectMode" @click.stop="playNext">
+  <div
+    class="trackOptions blurred_bg blur20"
+    @click="close"
+  >
+    <div
+      class="option hideOnMultiSelectMode"
+      @click.stop="playNext"
+    >
       <base-icon icon="skip-forward" />
-      <span>Play Next</span>
+      <p class="weight300">
+        Play Next
+      </p>
     </div>
-    <div class="option" @click.stop="queueTrack">
-      <base icon="queue" />
-      <span>Add to Queue</span>
+    <div
+      class="option"
+      @click.stop="queueTrack"
+    >
+      <base icon="plus">
+      <p class="weight300">
+        Add to Queue
+      </p>
     </div>
-    <div class="option" @click.stop="addToFavorites">
+    <div
+      class="option"
+      @click.stop="addToFavorites"
+    >
       <base-icon icon="heart" />
-      <span>Add to Favorites</span>
+      <p class="weight300">
+        Add to Favorites
+      </p>
     </div>
     <div
       v-if="currentTab !== 'Playlists'"
       class="option"
       @click.stop="showPlaylistWidget"
     >
-      <base-icon icon="list-plus" />
-      <span>Add to Playlist</span>
+      <base-icon icon="playlist" />
+      <p class="weight300">
+        Add to Playlist
+      </p>
     </div>
     <div
       v-if="currentTab === 'Playlists'"
@@ -26,15 +46,27 @@
       @click.stop="removeFromPlaylist"
     >
       <base-icon icon="x-circle" />
-      <span>Remove from Playlist</span>
+      <p class="weight300">
+        Remove from Playlist
+      </p>
     </div>
-    <div class="option" @click.stop="deleteSelectedTracks">
+    <div
+      class="option"
+      @click.stop="deleteSelectedTracks"
+    >
       <base-icon icon="trash-simple" />
-      <span>Delete Permanently</span>
+      <p class="weight300">
+        Delete Permanently
+      </p>
     </div>
-    <div class="option hideOnMultiSelectMode" @click.stop="showTagEditor">
+    <div
+      class="option hideOnMultiSelectMode"
+      @click.stop="showTagEditor"
+    >
       <base-icon icon="pencil-simple" />
-      <span>Edit Tags</span>
+      <p class="weight300">
+        Edit Tags
+      </p>
     </div>
   </div>
 </template>
@@ -105,15 +137,6 @@ export default {
       if (!this.UIcontroller.showPlaylistWidget) {
         this.UIcontrollerToggleProperty('showPlaylistWidget');
       }
-      const optionsWidget = document.querySelector('.trackOptions');
-      const cordinates = {
-        x: parseInt(
-          window.getComputedStyle(optionsWidget).left.replace('px', '')
-        ),
-        y: parseInt(
-          window.getComputedStyle(optionsWidget).top.replace('px', '')
-        )
-      };
       this.close();
     },
     removeFromPlaylist() {
@@ -177,7 +200,7 @@ export default {
     display: grid;
     grid-template-columns: 1fr 5fr;
     transition: 0.2s ease;
-    span {
+    p {
       font-family: inherit;
     }
     img {

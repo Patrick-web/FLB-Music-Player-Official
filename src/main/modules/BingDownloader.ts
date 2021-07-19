@@ -122,7 +122,7 @@ async function writeTrackTags (location: any, tags: any) {
   console.log(tags);
   console.log(location);
   console.log('Tag write is ' + success);
-  if ((await success) == true) {
+  if ((await success) === true) {
     createParsedTrack(location)
       .then(track => {
         console.log('Sending Downloaded track');

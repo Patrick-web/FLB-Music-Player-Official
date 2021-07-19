@@ -3,7 +3,11 @@
     <div class="cardTitle">
       <div class="flex flex_between">
         <h2>{{ cardTitle }}</h2>
-        <base-button icon="play" text="Play Mix" @click.native="playMix" />
+        <base-button
+          icon="play"
+          text="Play Mix"
+          @click.native="playMix"
+        />
       </div>
       <p>{{ cardContent }}</p>
     </div>

@@ -1,12 +1,22 @@
 <template>
-  <div class="bing_card groupCard" @click="getAlbumTracks">
-    <img class="coverArt" :src="albumInfo.cover" alt />
+  <div
+    class="bing_card groupCard"
+    @click="getAlbumTracks"
+  >
+    <img
+      class="coverArt"
+      :src="albumInfo.cover"
+      alt
+    >
     <div class="groupedCard_info">
       <p class="groupedInfo_title">
         {{ albumInfo.title }}
       </p>
     </div>
-    <div v-if="loading" class="loading">
+    <div
+      v-if="loading"
+      class="loading"
+    >
       <div class="loadingIndicator" />
     </div>
   </div>

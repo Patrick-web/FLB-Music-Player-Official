@@ -43,7 +43,7 @@ const state: TabsManagerStateInterface = {
 const mutations = {
   addTrack (state: TabsManagerStateInterface, payload: TrackType) {
     const trackAlreadyAdded = state.tabsData.addedTracks.some(
-      (track: TrackType) => track.fileLocation == payload.fileLocation
+      (track: TrackType) => track.fileLocation === payload.fileLocation
     );
     if (!trackAlreadyAdded) {
       state.tabsData.addedTracks.push(payload);
@@ -51,7 +51,7 @@ const mutations = {
   },
   updateTrack (state: TabsManagerStateInterface, payload: TrackType) {
     const indexOfUpdatedTrack = state.tabsData.addedTracks.findIndex(
-      track => track.fileLocation == payload.fileLocation
+      track => track.fileLocation === payload.fileLocation
     );
     state.tabsData.addedTracks.splice(indexOfUpdatedTrack, 1);
     state.tabsData.addedTracks.unshift(payload);
@@ -64,7 +64,7 @@ const mutations = {
   },
   deleteTrack (state: TabsManagerStateInterface, payload: string) {
     const indexOfDeletedTrack = state.tabsData.addedTracks.findIndex(
-      track => track.fileLocation == payload
+      track => track.fileLocation === payload
     );
     state.tabsData.addedTracks.splice(indexOfDeletedTrack, 1);
   },
@@ -113,7 +113,7 @@ const mutations = {
     state: TabsManagerStateInterface,
     payload: string
   ) {
-    if (payload == 'Favorites') {
+    if (payload === 'Favorites') {
       TrackSelector.state.selectedTracks.forEach((track: TrackType) => {
         state.tabsData.playlists[0].tracks.push(track);
       });
@@ -141,9 +141,9 @@ const mutations = {
   ) {
     // Deletes from the favorites playlist
     if (payload) {
-      state.tabsData.playlists[0].tracks.forEach((track: TrackType) => {
+      state.tabsData.playlists[0].tracks.forEach(() => {
         const tindex = state.tabsData.playlists[0].tracks.findIndex(
-          track => track.fileLocation == payload.fileLocation
+          track => track.fileLocation === payload.fileLocation
         );
         state.tabsData.playlists[0].tracks.splice(tindex, 1);
       });
@@ -154,11 +154,11 @@ const mutations = {
     state.tabsData.playlists.forEach(
       (playlist: PlaylistType, pindex: number) => {
         if (playlist.name === TrackSelector.state.selectedGroup?.name) {
-          playlist.tracks.forEach((track: TrackType) => {
+          playlist.tracks.forEach(() => {
             TrackSelector.state.selectedTracks.forEach(
               (selectedTrack: TrackType) => {
                 const tindex = playlist.tracks.findIndex(
-                  track => track.fileLocation == selectedTrack.fileLocation
+                  track => track.fileLocation === selectedTrack.fileLocation
                 );
                 state.tabsData.playlists[pindex].tracks.splice(tindex, 1);
               }
@@ -177,7 +177,7 @@ const mutations = {
   }
 };
 const actions: ActionTree<TabsManagerStateInterface, any> = {
-  generateArtistsData: ({ state, dispatch }) => {
+  generateArtistsData: ({ state }) => {
     // clear the current data
     state.tabsData.artists = [];
 
@@ -280,7 +280,7 @@ const actions: ActionTree<TabsManagerStateInterface, any> = {
       }
     });
   },
-  fetchArtistsInfo ({ state, commit }) {
+  fetchArtistsInfo ({ state }) {
     const artistsData: ArtistInfoInterface[] = [];
     if (navigator.onLine) {
       const dbInfo = localStorage.getItem('downloadedArtists');
@@ -295,8 +295,8 @@ const actions: ActionTree<TabsManagerStateInterface, any> = {
       artists.forEach((artist: string) => {
         if (
           downloadedArtists.findIndex(
-            artistsInfo => artistsInfo.name == artist
-          ) != -1
+            artistsInfo => artistsInfo.name === artist
+          ) !== -1
         )
           return;
         fetch(
@@ -306,8 +306,8 @@ const actions: ActionTree<TabsManagerStateInterface, any> = {
           .then(response => response.text())
           .then(result => {
             const res = JSON.parse(result).results.slice(0, 1)[0];
-            if (res && res.name != 'X UNDEFINED') {
-              if (res.name == artist) {
+            if (res && res.name !== 'X UNDEFINED') {
+              if (res.name === artist) {
                 const artistInfo = {
                   name: artist,
                   picture: res.picture

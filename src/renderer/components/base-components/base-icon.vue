@@ -30,6 +30,7 @@ import {
   PhMicrophone,
   PhMusicNoteSimple,
   PhMusicNotesSimple,
+  PhPause,
   PhPencilSimple,
   PhPlay,
   PhPlaylist,
@@ -40,6 +41,7 @@ import {
   PhSkipBack,
   PhSkipForward,
   PhSortAscending,
+  PHSpeakerSimpleHigh,
   PhTrashSimple,
   PhUser,
   PhX
@@ -51,6 +53,7 @@ export default {
     PhDisc,
     PhCrop,
     PhPlay,
+    PhPause,
     PhHeart,
     PhQueue,
     PhHouse,
@@ -76,6 +79,7 @@ export default {
     PhClockClockwise,
     PhSkipForward,
     PhTrashSimple,
+    PHSpeakerSimpleHigh,
     PhSkipBack,
     PhShuffle,
     PhUser,
@@ -93,11 +97,11 @@ export default {
     },
     weight: {
       type: String,
-      default: 'fill'
+      default: 'regular'
     },
     size: {
       type: Number,
-      default: 24
+      default: 16
     },
     color: {
       type: String,

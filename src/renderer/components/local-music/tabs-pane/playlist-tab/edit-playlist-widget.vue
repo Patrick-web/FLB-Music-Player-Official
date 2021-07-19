@@ -5,13 +5,16 @@
       class="inputElem"
       type="text"
       placeholder="New Playlist Name"
-    />
+    >
     <base-button
       v-if="newPlaylistName"
       text="Save"
       @click.native="emitNewPlaylistName"
     />
-    <base-button text="Cancel" @click.native="closeWidget" />
+    <base-button
+      text="Cancel"
+      @click.native="closeWidget"
+    />
   </div>
 </template>
 

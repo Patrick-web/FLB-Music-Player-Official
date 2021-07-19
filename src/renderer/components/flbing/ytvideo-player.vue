@@ -1,7 +1,16 @@
 <template>
   <div class="ytVideoPlayer">
-    <iframe :src="srcString" width="560" height="315" frameborder="0" />
-    <base-button icon="x" text="Close Player" @click.native="closePlayer" />
+    <iframe
+      :src="srcString"
+      width="560"
+      height="315"
+      frameborder="0"
+    />
+    <base-button
+      icon="x"
+      text="Close Player"
+      @click.native="closePlayer"
+    />
   </div>
 </template>
 

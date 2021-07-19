@@ -1,10 +1,12 @@
 <template>
   <div class="Equalizer widget blurred_bg blur20">
     <div class="widget_header">
-      <h1 class="widget_title">Equalizer</h1>
+      <h1 class="widget_title">
+        Equalizer
+      </h1>
       <base-button
         icon="x"
-        class="widget_close shrink_icon circle shrink8"
+        class="widget_close circle shrink8"
         :small="true"
         @click.native="UIcontrollerToggleProperty('showEqualizerWidget')"
       />
@@ -15,12 +17,16 @@
         :key="preset.name"
         extra-class="bg1"
         :text="preset.name"
-        :active="currentPreset == preset.name"
+        :active="currentPreset === preset.name"
         @click.native.stop="loadPreset(preset)"
       />
     </div>
     <div class="filter_sliders">
-      <div v-for="(band, index) in bands" :key="band.id" class="filter">
+      <div
+        v-for="(band, index) in bands"
+        :key="band.id"
+        class="filter"
+      >
         <p>{{ band.value }}db</p>
         <filter-slider
           :target-band="band.id"
@@ -32,9 +38,18 @@
       </div>
     </div>
     <div class="b_t">
-      <triangle-slider filter-name="Bass" @newGainValues="changeBandGains" />
-      <triangle-slider filter-name="Treble" @newGainValues="changeBandGains" />
-      <triangle-slider filter-name="VBoost" title="Boost Volume" />
+      <triangle-slider
+        filter-name="Bass"
+        @newGainValues="changeBandGains"
+      />
+      <triangle-slider
+        filter-name="Treble"
+        @newGainValues="changeBandGains"
+      />
+      <triangle-slider
+        filter-name="VBoost"
+        title="Boost Volume"
+      />
     </div>
   </div>
 </template>

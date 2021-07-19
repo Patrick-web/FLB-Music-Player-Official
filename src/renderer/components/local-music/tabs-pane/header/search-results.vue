@@ -18,7 +18,7 @@
         />
       </div>
     </div>
-    <hr />
+    <hr>
     <div
       class="ArtistResults groupedContentTab"
       style="padding: 0px"
@@ -41,7 +41,10 @@
         />
       </div>
     </div>
-    <div class="AlbumResults groupedContentTab" @click="closeSearch">
+    <div
+      class="AlbumResults groupedContentTab"
+      @click="closeSearch"
+    >
       <div class="sectionHeading">
         <h3>Albums</h3>
         <div class="line" />

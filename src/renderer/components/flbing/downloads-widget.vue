@@ -10,27 +10,33 @@
       <h3>Downloads</h3>
       <div class="tab_switcher bg1">
         <div
-          :class="[tab == 'Pending' ? 'activeSwitcher' : '', 'switcher']"
+          :class="[tab === 'Pending' ? 'activeSwitcher' : '', 'switcher']"
           @click="tab = 'Pending'"
         >
           Pending
         </div>
         <div
-          :class="[tab == 'Completed' ? 'activeSwitcher' : '', 'switcher']"
+          :class="[tab === 'Completed' ? 'activeSwitcher' : '', 'switcher']"
           @click="tab = 'Completed'"
         >
           Completed
         </div>
       </div>
       <div class="tab_content">
-        <div v-if="tab == 'Pending'" class="pending_tracks tracks_wrapper">
+        <div
+          v-if="tab === 'Pending'"
+          class="pending_tracks tracks_wrapper"
+        >
           <bing-pending-track
             v-for="track in downloadQueue"
             :key="track.id"
             :track-info="track"
           />
         </div>
-        <div v-if="tab !== 'Pending'" class="tracks_wrapper downloadedTracks">
+        <div
+          v-if="tab !== 'Pending'"
+          class="tracks_wrapper downloadedTracks"
+        >
           <bing-completed-track
             v-for="track in [...completedTracks, ...flbingFolderTracks]"
             :key="track.fileLocation"
@@ -61,7 +67,7 @@ export default {
     },
     flbingFolderTracks() {
       return this.$store.state.TabsManager.tabsData.addedTracks.filter(
-        track => track.folderInfo.name == 'FLBing'
+        track => track.folderInfo.name === 'FLBing'
       );
     }
   },

@@ -9,15 +9,18 @@
     @contextmenu="showOptions($event)"
     @click="playTrack"
   >
-    <div class="fxSelectBt" @click.stop="bulkSelectTrack($event)" />
+    <div
+      class="fxSelectBt"
+      @click.stop="bulkSelectTrack($event)"
+    />
     <div class="info">
-      <p class="trackTitle">
+      <p class="trackTitle text-small-1">
         {{ source.defaultTitle }}
       </p>
-      <p class="artist">
+      <p class="artist weight300 fade_to_8 text-small-1">
         {{ source.defaultArtist }}
       </p>
-      <p class="album">
+      <p class="album queue weight300 fade_to_8 text-small-1">
         {{ source.album }}
       </p>
       <p class="duration">
@@ -40,16 +43,16 @@ export default {
   computed: {
     isCurrentlyPlaying() {
       return (
-        this.$store.state.PlaybackManger.playingTrackInfo.track &&
-        this.$store.state.PlaybackManger.playingTrackInfo.track.fileLocation ==
-          this.source.fileLocation
+        this.$store.state.PlaybackManger.playingTrackInfo.track
+        && this.$store.state.PlaybackManger.playingTrackInfo.track.fileLocation
+          === this.source.fileLocation
       );
     },
     isSelected() {
       return (
         this.$store.state.TrackSelector.selectedTracks.findIndex(
           track => track.fileLocation === this.source.fileLocation
-        ) != -1
+        ) !== -1
       );
     }
   },
@@ -78,13 +81,13 @@ export default {
       this.clearSelectedTracks();
       this.addToSelectedTracks(this.source);
     },
-    playTrack(e) {
+    playTrack() {
       if (document.querySelector('audio')) {
         document.querySelector('audio').muted = false;
       }
       this.setPlayingTrack({ track: this.source, index: this.index });
     },
-    bulkSelectTrack(e) {
+    bulkSelectTrack() {
       this.addToSelectedTracks(this.source);
     }
   },
@@ -211,9 +214,6 @@ export default {
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-    font-size: 0.95rem;
-    font-family: inherit;
-    opacity: 0.8;
     align-self: center;
   }
   .info {

@@ -4,7 +4,11 @@
       <div
         v-for="(tab, index) in tabs"
         :key="tab.title"
-        :class="[index == selectedIndex ? 'bg_active' : '', 'bg1', 'tab_title']"
+        :class="[
+          index === selectedIndex ? 'bg_active' : '',
+          'bg1',
+          'tab_title'
+        ]"
         @click="selectTab(index)"
       >
         {{ tab.title }}
@@ -41,9 +45,9 @@ export default {
       this.selectedIndex = i;
 
       // loop over all the tabs
-      this.tabs.forEach((tab, index) => {
-        tab.isActive = index === i;
-      });
+      // this.tabs.forEach((tab, index) => {
+      //   tab.isActive = index === i;
+      // });
     }
   }
 };

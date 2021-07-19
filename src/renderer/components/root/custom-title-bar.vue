@@ -1,18 +1,43 @@
 <template>
   <div class="customTitleBar bg1">
     <div class="leftSide">
-      <!-- <img id="logo" src="@img/Logopng" /> -->
-      <p>Melody Music</p>
+      <p class="text-small-1 ml10 weight300">
+        FLB Music
+      </p>
     </div>
     <div class="ctrls">
-      <div class="ctrl" @click="sendMessage('minimize')">
-        <base-icon class="icon" icon="caret-down" weight="regular" />
+      <div
+        class="ctrl"
+        @click="sendMessage('minimize')"
+      >
+        <base-icon
+          class="icon"
+          icon="caret-down"
+          weight="regular"
+          :size="18"
+        />
       </div>
-      <div class="ctrl" @click="sendMessage('maximize')">
-        <base-icon class="icon" icon="caret-up" weight="regular" />
+      <div
+        class="ctrl"
+        @click="sendMessage('maximize')"
+      >
+        <base-icon
+          class="icon"
+          icon="caret-up"
+          weight="regular"
+          :size="18"
+        />
       </div>
-      <div id="closeWindow" class="ctrl" @click="sendMessage('closeWindow')">
-        <base-icon class="icon" icon="x" />
+      <div
+        id="closeWindow"
+        class="ctrl"
+        @click="sendMessage('closeWindow')"
+      >
+        <base-icon
+          class="icon"
+          icon="x"
+          :size="18"
+        />
       </div>
     </div>
   </div>
@@ -45,37 +70,20 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 5px;
-  padding-top: 0px;
+  // padding: 5px;
+  // padding-top: 0px;
   -webkit-app-region: drag;
   position: relative;
   z-index: 100;
-  .leftSide {
-    display: flex;
-    align-items: center;
-    margin-top: 5px;
-    #logo {
-      width: 15px;
-      margin-right: -2px;
-    }
-    p {
-      font-family: inherit;
-      font-size: 0.9rem;
-    }
-  }
   .ctrls {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     -webkit-app-region: no-drag;
-    margin-bottom: -5px;
-    margin-right: 5px;
     .ctrl {
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 10px;
-      padding-right: 15px;
-      padding-left: 15px;
+      padding: 5px 10px;
       cursor: pointer;
       img {
         width: 15px;

@@ -14,7 +14,10 @@
       loading ? 'disabledBtn' : ''
     ]"
   >
-    <p v-if="text && !loading" class="btnText">
+    <p
+      v-if="text && !loading"
+      class="btnText"
+    >
       {{ text }}
     </p>
     <base-icon
@@ -23,9 +26,17 @@
       :color="isDark(color)"
       :weight="iconWeight"
       :icon="icon"
+      :size="iconSize || 16"
     />
-    <img v-if="!icon && img && !loading" :src="require(img)" class="btnIcon" />
-    <div v-if="loading" class="btnLoaderWrapper">
+    <img
+      v-if="!icon && img && !loading"
+      :src="require(img)"
+      class="btnIcon"
+    >
+    <div
+      v-if="loading"
+      class="btnLoaderWrapper"
+    >
       <div class="loadingIndicator" />
     </div>
   </button>
@@ -52,7 +63,8 @@ export default {
     extraClass: String,
     transparent: Boolean,
     loading: Boolean,
-    iconWeight: String
+    iconWeight: String,
+    iconSize: Number
   }
 };
 </script>

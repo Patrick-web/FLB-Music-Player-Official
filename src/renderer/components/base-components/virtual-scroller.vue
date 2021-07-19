@@ -1,5 +1,8 @@
 <template>
-  <div class="virtual_scroller" @scroll="virtualize($event)">
+  <div
+    class="virtual_scroller"
+    @scroll="virtualize($event)"
+  >
     <slot :exposedItems="itemsToRender" />
   </div>
 </template>
@@ -37,7 +40,7 @@ export default {
       const scrollAmount = Math.trunc(
         (scrollInfo.scrollTop / scrollInfo.scrollHeight) * 100
       );
-      if (this.scrollAmountNotRepeated == scrollAmount) {
+      if (this.scrollAmountNotRepeated === scrollAmount) {
         return;
       }
       this.scrollAmountNotRepeated = scrollAmount;

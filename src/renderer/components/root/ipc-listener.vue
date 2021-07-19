@@ -119,8 +119,9 @@ export default {
       this.popNotification();
     });
     ipcRenderer.on('parsingProgress', (e, [currentIndex, total]) => {
-      if (currentIndex == 100) {
+      if (currentIndex === 100) {
         this.hideOnboard = true;
+        console.log(total);
       }
     });
     const dbInfo = localStorage.getItem('downloadedArtists');

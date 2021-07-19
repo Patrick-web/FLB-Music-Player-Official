@@ -7,13 +7,17 @@
         max="15"
         value="0"
         @input="updateInput($event)"
-      />
+      >
       <div
-        v-if="filterName == 'VBoost'"
+        v-if="filterName === 'VBoost'"
         class="slider_progress"
         :style="{ height: barHeightForVolumeBoost }"
       />
-      <div v-else class="slider_progress" :style="{ height: barHeight }" />
+      <div
+        v-else
+        class="slider_progress"
+        :style="{ height: barHeight }"
+      />
     </div>
     <p>
       {{ filterName }}
@@ -51,17 +55,17 @@ export default {
   methods: {
     ...mapMutations(['setSettingValue']),
     updateInput(e) {
-      const filterValue = parseInt(e.srcElement.value);
-      if (this.filterName == 'VBoost') {
+      const filterValue = parseInt(e.srcElement.value, 10);
+      if (this.filterName === 'VBoost') {
         this.adjustVolumeBoost(filterValue);
         return;
       }
-      if (this.filterName == 'Bass') {
+      if (this.filterName === 'Bass') {
         this.adjustBase(filterValue);
-        this.barHeight = `${(parseInt(filterValue) / 15) * 100}%`;
+        this.barHeight = `${(parseInt(filterValue, 10) / 15) * 100}%`;
       } else {
         this.adjustTreble(filterValue);
-        this.barHeight = `${(parseInt(filterValue) / 15) * 100}%`;
+        this.barHeight = `${(parseInt(filterValue, 10) / 15) * 100}%`;
       }
     },
     adjustBase(filterValue) {
@@ -83,13 +87,13 @@ export default {
       this.$emit('newGainValues', bandGains);
     },
     adjustVolumeBoost(filterValue) {
-      const boostedVolume = 1 + parseInt(filterValue) / 15;
+      const boostedVolume = 1 + parseInt(filterValue, 10) / 15;
       if (boostedVolume > 1) {
         this.setSettingValue({
           property: 'volume',
           newValue: boostedVolume
         });
-        gainNode.gain.value = 1 + parseInt(filterValue) / 15;
+        gainNode.gain.value = 1 + parseInt(filterValue, 10) / 15;
       } else {
         this.setSettingValue({ property: 'volume', newValue: 1 });
       }

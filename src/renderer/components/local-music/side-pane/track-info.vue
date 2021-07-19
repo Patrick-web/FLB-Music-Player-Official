@@ -1,5 +1,8 @@
 <template>
-  <div v-if="!playingTrack.fileName.match(/mp4|mkv/)" class="TrackInfo">
+  <div
+    v-if="!playingTrack.fileName.match(/mp4|mkv/)"
+    class="TrackInfo"
+  >
     <div
       class="tag"
       style="display: flex; align-items: center; justify-content: center"
@@ -8,8 +11,10 @@
         v-if="playingTrack.albumArt"
         id="tag_albumArt"
         :src="'file://' + playingTrack.albumArt"
-      />
-      <p v-if="!playingTrack.albumArt">No Album Art</p>
+      >
+      <p v-if="!playingTrack.albumArt">
+        No Album Art
+      </p>
     </div>
     <div class="tag">
       <pre class="bg1">Title</pre>
@@ -23,7 +28,10 @@
       <pre class="bg1">Album</pre>
       <p>{{ playingTrack.album }}</p>
     </div>
-    <div v-if="playingTrack.duration" class="tag">
+    <div
+      v-if="playingTrack.duration"
+      class="tag"
+    >
       <pre class="bg1">Length</pre>
       <p>{{ playingTrack.formattedLength }}</p>
     </div>

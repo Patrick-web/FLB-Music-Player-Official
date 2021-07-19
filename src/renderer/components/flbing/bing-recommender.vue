@@ -1,16 +1,34 @@
 <template>
   <div class="BingRecommender">
     <div
-      v-if="deezerRecommendedArtists.length == 0"
+      v-if="deezerRecommendedArtists.length === 0"
       class="centerContents fade_to_7"
     >
-      <p v-if="appIsOnline" class="text-thin">Loading Recommendations...</p>
-      <div v-else class="centerContents" style="font-family: inherit">
-        <p class="text-thin">Could not fetch Recommendations ⚠</p>
-        <p class="text-thin">Check your Internet Connection 📶</p>
+      <p
+        v-if="appIsOnline"
+        class="weight300"
+      >
+        Loading Recommendations...
+      </p>
+      <div
+        v-else
+        class="centerContents"
+        style="font-family: inherit"
+      >
+        <p class="weight300">
+          Could not fetch Recommendations ⚠
+        </p>
+        <p class="weight300">
+          Check your Internet Connection 📶
+        </p>
       </div>
     </div>
-    <h2 v-if="appIsOnline" class="bingRecommenderTitle">Similar artists to</h2>
+    <h2
+      v-if="appIsOnline"
+      class="bingRecommenderTitle"
+    >
+      Similar artists to
+    </h2>
     <div class="artistRecommendations">
       <div
         v-for="recommend in deezerRecommendedArtists"
@@ -72,7 +90,7 @@ export default {
     generateArtistsToSearchFor() {
       const allArtists = this.allTracks
         .map(track => track.defaultArtist)
-        .filter(artist => artist != 'unkmown' || artist != '');
+        .filter(artist => artist !== 'unkmown' || artist !== '');
       this.selectedArtists = shuffleArray(new Set(allArtists));
       setTimeout(() => {
         this.fetchRecommendedArtists();
@@ -90,7 +108,7 @@ export default {
           .then(response => response.text())
           .then(html => {
             // console.log("Getting reccomendations for " + selectedArtist);
-            if (html.match(/Aaaargh woah 404/) != null) return;
+            if (html.match(/Aaaargh woah 404/) !== null) return;
             const artists = html
               .match(/<a href.*<\/a>/g)
               .map(result => result.match(/>.*</)[0].replace(/>|</g, ''));
@@ -119,16 +137,14 @@ export default {
 
             const similarArtistObj = JSON.parse(result)
               .data.map(track => track.artist)
-              .filter(foundArtist => foundArtist.name == similarArtist)[0];
+              .filter(foundArtist => foundArtist.name === similarArtist)[0];
             if (similarArtistObj) {
               recommend.similarArtists.push(similarArtistObj);
               const index = this.deezerRecommendedArtists.findIndex(
-                existingRecommendation =>
-                  existingRecommendation.sourceArtist == recommend.sourceArtist
+                existingRecommendation => existingRecommendation.sourceArtist === recommend.sourceArtist
               );
               if (index >= 0) {
-                this.deezerRecommendedArtists[index].similarArtists =
-                  recommend.similarArtists;
+                this.deezerRecommendedArtists[index].similarArtists = recommend.similarArtists;
               } else {
                 this.deezerRecommendedArtists.push(recommend);
               }

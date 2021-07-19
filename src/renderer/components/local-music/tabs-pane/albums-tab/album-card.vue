@@ -1,15 +1,18 @@
 <template>
-  <div class="groupCard albumCard" @click="goToAlbum(album)">
+  <div
+    class="groupCard albumCard"
+    @click="goToAlbum(album)"
+  >
     <img
       v-if="album.tracks[0].albumArt"
       class="coverArt"
       :src="'file://' + album.tracks[0].albumArt"
-    />
+    >
     <img
       v-if="!album.tracks[0].albumArt"
       class="coverArt"
       src="@img/flbdefault-cover.png"
-    />
+    >
     <div class="tracksCount">
       <p>
         {{ album.tracks.length }}
@@ -26,7 +29,10 @@
         <p class="groupedInfo_title">
           {{ album.name }}
         </p>
-        <p v-if="!hideArtist" class="groupedInfo_subtitle">
+        <p
+          v-if="!hideArtist"
+          class="groupedInfo_subtitle"
+        >
           {{ album.tracks[0].artist }}
         </p>
       </div>

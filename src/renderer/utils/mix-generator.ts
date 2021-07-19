@@ -52,12 +52,12 @@ export class MixGenerator {
     );
     const favoriteArtists = favoriteTracks.map(track => track.defaultArtist);
     const twoRandomArtists = shuffleArray(favoriteArtists).slice(0, 2);
-    if (twoRandomArtists[1] && twoRandomArtists[1] != twoRandomArtists[0]) {
+    if (twoRandomArtists[1] && twoRandomArtists[1] !== twoRandomArtists[0]) {
       const firstArtistTracks = this.allTracks.filter(
-        track => track.defaultArtist == twoRandomArtists[0]
+        track => track.defaultArtist === twoRandomArtists[0]
       );
       const secondArtistTracks = this.allTracks.filter(
-        track => track.defaultArtist == twoRandomArtists[1]
+        track => track.defaultArtist === twoRandomArtists[1]
       );
       const mashedTracks = shuffleArray([
         ...firstArtistTracks,

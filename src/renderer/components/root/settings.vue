@@ -1,10 +1,12 @@
 <template>
   <div class="Settings blurred_bg blur40">
     <div class="widget_header">
-      <h1 class="widget_title">Settings</h1>
+      <h1 class="widget_title">
+        Settings
+      </h1>
       <base-button
         icon="x"
-        extra-class="widget_close shrink_icon circle shrink8"
+        extra-class="shrink8 shrink8 abs top5 right5"
         :small="true"
         @click.native="UIcontrollerToggleProperty('showSettings')"
       />
@@ -50,7 +52,7 @@
                 v-for="tab in tabs"
                 :key="tab.name"
                 :class="[
-                  settings.defaultTab == tab.name ? 'defaultTab' : '',
+                  settings.defaultTab === tab.name ? 'defaultTab' : '',
                   'tabDiv',
                   'bg2'
                 ]"
@@ -61,7 +63,10 @@
                   })
                 "
               >
-                <base-icon class="icon" :icon="tab.icon" />
+                <base-icon
+                  class="icon"
+                  :icon="tab.icon"
+                />
                 <p>{{ tab.name }}</p>
               </div>
             </ul>
@@ -90,25 +95,34 @@
           <h4>Theme 🎨</h4>
           <ul class="grid2 gap20">
             <div
-              :class="[settings.theme == 'fancy' ? 'activeSetting' : '', 'bg2']"
+              :class="[
+                settings.theme === 'fancy' ? 'activeSetting' : '',
+                'bg2'
+              ]"
               @click="setSettingValue({ property: 'theme', newValue: 'fancy' })"
             >
               <p>Fancy dancy 🍷</p>
             </div>
             <div
-              :class="[settings.theme == 'dark' ? 'activeSetting' : '', 'bg2']"
+              :class="[settings.theme === 'dark' ? 'activeSetting' : '', 'bg2']"
               @click="setSettingValue({ property: 'theme', newValue: 'dark' })"
             >
               <p>Fake Black 🏴</p>
             </div>
             <div
-              :class="[settings.theme == 'black' ? 'activeSetting' : '', 'bg2']"
+              :class="[
+                settings.theme === 'black' ? 'activeSetting' : '',
+                'bg2'
+              ]"
               @click="setSettingValue({ property: 'theme', newValue: 'black' })"
             >
               <p>Utter Black 🏴‍☠️</p>
             </div>
             <div
-              :class="[settings.theme == 'light' ? 'activeSetting' : '', 'bg2']"
+              :class="[
+                settings.theme === 'light' ? 'activeSetting' : '',
+                'bg2'
+              ]"
               @click="setSettingValue({ property: 'theme', newValue: 'light' })"
             >
               <p>Eye Killer 👁‍🗨</p>
@@ -117,25 +131,37 @@
         </article>
         <div class="grid2">
           <article class="bg1">
-            <h3 class="mb5">Shortcuts ✂</h3>
+            <h3 class="mb5">
+              Shortcuts ✂
+            </h3>
             <div class="pb5 mb5 border_split">
-              <p class="text-small-0">Pause and Play</p>
+              <p class="text-small-0">
+                Pause and Play
+              </p>
               <pre class="text-small-1">Space🔘</pre>
             </div>
             <div class="pb5 mb5 border_split">
-              <p class="text-small-0">Next and Previous Track</p>
+              <p class="text-small-0">
+                Next and Previous Track
+              </p>
               <pre class="text-small-1">Arrows ◀▶   </pre>
             </div>
             <div class="pb5 mb5 border_split">
-              <p class="text-small-0">Search Tracks</p>
+              <p class="text-small-0">
+                Search Tracks
+              </p>
               <pre class="text-small-1">Tab 🧈</pre>
             </div>
           </article>
           <article class="bg1">
-            <h3 class="mb5">About 🐲</h3>
+            <h3 class="mb5">
+              About 🐲
+            </h3>
             <div class="infos">
               <div class="pb5 border_split mb5">
-                <p class="text-small-0">App Version 💽</p>
+                <p class="text-small-0">
+                  App Version 💽
+                </p>
                 <p class="text-small-1">
                   {{ appVersion }}
                 </p>
@@ -145,22 +171,24 @@
               <p class="text-small-1">Patrick Waweru</p>
             </div> -->
               <div class="pb5 border_split mb5">
-                <p class="text-small-0">Twitter🐦</p>
+                <p class="text-small-0">
+                  Twitter🐦
+                </p>
                 <a
                   target="_blank"
                   class="text-small-1"
                   href="https://twitter.com/PnTX10"
-                  >@PnTX10</a
-                >
+                >@PnTX10</a>
               </div>
               <div class="">
-                <p class="text-small-0">Email📬</p>
+                <p class="text-small-0">
+                  Email📬
+                </p>
                 <a
                   target="_blank"
                   class="text-small-1"
                   href="https://mail.google.com"
-                  >pntx200@gmail.com</a
-                >
+                >pntx200@gmail.com</a>
               </div>
             </div>
           </article>
@@ -179,24 +207,38 @@
             "
           >
             <p>Notifications💬</p>
-            <p v-if="settings.desktopNotifications">On</p>
-            <p v-if="!settings.desktopNotifications">Off</p>
+            <p v-if="settings.desktopNotifications">
+              On
+            </p>
+            <p v-if="!settings.desktopNotifications">
+              Off
+            </p>
           </div>
           <div
             :class="[settings.videoSupport ? 'activeBtn' : '', 'switch bg1']"
             @click="toggleVideoSupport"
           >
             <p>Video Support ß</p>
-            <p v-if="settings.videoSupport">On</p>
-            <p v-if="!settings.videoSupport">Off</p>
+            <p v-if="settings.videoSupport">
+              On
+            </p>
+            <p v-if="!settings.videoSupport">
+              Off
+            </p>
           </div>
         </div>
         <div class="grid2 gap10 pa10">
-          <div class="switch bg1" @click="checkForUpdate">
+          <div
+            class="switch bg1"
+            @click="checkForUpdate"
+          >
             <p>Check for Update 🚀</p>
           </div>
           <div class="switch bg1">
-            <a target="_blank" href="https://t.me/flbmusiccommunity">
+            <a
+              target="_blank"
+              href="https://t.me/flbmusiccommunity"
+            >
               <p>Join us on Telegram 🦅</p>
             </a>
           </div>
@@ -320,7 +362,7 @@ export default {
   overflow: hidden;
   top: 40px;
   left: 10px;
-  height: 90%;
+  height: 91.5%;
   width: 97%;
   z-index: 50;
   border: 1px solid rgba(255, 255, 255, 0.315);

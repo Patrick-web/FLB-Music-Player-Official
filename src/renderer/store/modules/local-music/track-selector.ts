@@ -17,7 +17,7 @@ const state: TrackSelectorStateInterface = {
 const mutations = {
   addToSelectedTracks: (state: any, payload: TrackType) => {
     const index = state.selectedTracks.findIndex(
-      (track: TrackType) => track.fileLocation == payload.fileLocation
+      (track: TrackType) => track.fileLocation === payload.fileLocation
     );
     if (index > -1) {
       state.selectedTracks.splice(index, 1);

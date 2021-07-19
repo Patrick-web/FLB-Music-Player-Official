@@ -4,8 +4,14 @@
       enter-active-class="animated slideInRight faster"
       leave-active-class="animated slideOutLeft faster"
     >
-      <div v-if="currentSlide == 1" class="slide">
-        <img id="lamma" src="@img/lamma.gif" />
+      <div
+        v-if="currentSlide === 1"
+        class="slide"
+      >
+        <img
+          id="lamma"
+          src="@img/lamma.gif"
+        >
         <div class="intro">
           <h1>Welcome To FLB Music</h1>
           <p>Beauty🌹, Simplicity📃, Functionality🏹</p>
@@ -18,10 +24,13 @@
           @click.native="goToSlide2"
         />
       </div>
-      <div v-if="currentSlide == 2" class="slide">
+      <div
+        v-if="currentSlide === 2"
+        class="slide"
+      >
         <article>
           <h2>Add your Music Folders</h2>
-          <br />
+          <br>
           <div class="folderBoxWrapper">
             <div
               v-for="folder in settings.foldersToScan"
@@ -58,14 +67,20 @@
           @click.native="initialize"
         />
       </div>
-      <div v-if="currentSlide == 3" class="slide">
+      <div
+        v-if="currentSlide === 3"
+        class="slide"
+      >
         <h1 class="slideTitle">
           {{ msgToUser }}
         </h1>
         <h3 style="position: absolute; bottom: 100px; z-index: 2">
           Tip {{ tips[currentTip] }}
         </h3>
-        <img id="loadingCat" src="@img/cat.gif" />
+        <img
+          id="loadingCat"
+          src="@img/cat.gif"
+        >
         <base-button
           v-if="showOnboardCloseBt"
           id="jamBt"
@@ -115,7 +130,7 @@ export default {
     goToSlide2() {
       this.currentSlide = 2;
       setInterval(() => {
-        if (this.currentTip == 2) {
+        if (this.currentTip === 2) {
           this.currentTip = 0;
         } else {
           this.currentTip += 1;

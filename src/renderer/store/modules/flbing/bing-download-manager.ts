@@ -24,14 +24,14 @@ const mutations = {
     state: BingDownloadManagerState,
     payload: number
   ) {
-    state.pendingDownloads.filter(track => track.id != payload);
+    state.pendingDownloads.filter(track => track.id !== payload);
   },
   setTrackDownloadURL (
     state: BingDownloadManagerState,
     payload: BingTrackURLPayload
   ) {
     const indexOfTrack = state.pendingDownloads.findIndex(
-      track => track.id == payload.id
+      track => track.id === payload.id
     );
     state.pendingDownloads[indexOfTrack].downloadURL = payload.url;
     state.pendingDownloads[indexOfTrack].state = states[3];
@@ -42,10 +42,10 @@ const mutations = {
   ) {
     if (payload.progressInfo.progress > 100) return;
     const indexOfTrack = state.pendingDownloads.findIndex(
-      track => track.id == payload.id
+      track => track.id === payload.id
     );
     state.pendingDownloads[indexOfTrack].progressInfo = payload.progressInfo;
-    if (payload.progressInfo.progress == 100) {
+    if (payload.progressInfo.progress === 100) {
       state.pendingDownloads.splice(indexOfTrack, 1);
     }
   },
@@ -55,7 +55,7 @@ const mutations = {
   ) {
     console.log(payload);
     const indexOfTrack = state.pendingDownloads.findIndex(
-      track => track.id == payload.id
+      track => track.id === payload.id
     );
     state.pendingDownloads[indexOfTrack].state = states[payload.stateCode];
   },

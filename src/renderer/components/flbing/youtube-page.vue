@@ -5,7 +5,9 @@
       class="centerContents"
       style="height: 100%; width: 100%"
     >
-      <h1 id="noBingResults">No Results Found</h1>
+      <h1 id="noBingResults">
+        No Results Found
+      </h1>
     </div>
     <div class="grid_auto_big gap10">
       <youtube-track

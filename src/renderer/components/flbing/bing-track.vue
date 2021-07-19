@@ -1,18 +1,32 @@
 <template>
   <div class="bingTrack">
     <div class="info">
-      <img class="coverArt" :src="trackInfo.album.cover" />
+      <img
+        class="coverArt"
+        :src="trackInfo.album.cover"
+      >
       <div class="flex-col">
-        <p style="font-family: inherit" class="trackTitle">
+        <p
+          style="font-family: inherit"
+          class="trackTitle"
+        >
           {{ trackInfo.title }}
         </p>
-        <p style="font-size: 0.9rem" class="artist" @click="getArtistData">
+        <p
+          style="font-size: 0.9rem"
+          class="artist"
+          @click="getArtistData"
+        >
           {{ trackInfo.artist.name }}
         </p>
       </div>
     </div>
     <div class="trackActions">
-      <base-button icon="play" :small="true" @click.native="playPreview" />
+      <base-button
+        icon="play"
+        :small="true"
+        @click.native="playPreview"
+      />
       <base-button
         v-if="!trackAlreadyDownloaded"
         icon="archive-box"
@@ -20,7 +34,11 @@
         :loading="isBeingDownloaded"
         @click.native="getTrackDownloadURL"
       />
-      <base-button v-else icon="check" :small="true" />
+      <base-button
+        v-else
+        icon="check"
+        :small="true"
+      />
     </div>
   </div>
 </template>
@@ -53,15 +71,13 @@ export default {
       return (
         this.$store.state.BingDownloadManager.pendingDownloads.findIndex(
           track => track.id === this.trackInfo.id
-        ) != -1
+        ) !== -1
       );
     },
     trackAlreadyDownloaded() {
-      const index =
-        this.$store.state.TabsManager.tabsData.addedTracks.findIndex(
-          track =>
-            track.defaultTitle == this.trackInfo.title &&
-            track.defaultArtist == this.trackInfo.artist.name
+      const index = this.$store.state.TabsManager.tabsData.addedTracks.findIndex(
+          track => track.defaultTitle === this.trackInfo.title
+            && track.defaultArtist === this.trackInfo.artist.name
         );
       if (index > -1) {
         return true;
@@ -157,7 +173,7 @@ export default {
         .then(response => response.text())
         .then(result => {
           const responseRes = JSON.parse(result);
-          if (responseRes.result == 'list index out of range') {
+          if (responseRes.result === 'list index out of range') {
             this.updatePendingTrackState({
               id: this.trackInfo.id,
               stateCode: 1

@@ -5,7 +5,7 @@ export function bingAnArtist (artist: string) {
   bingBtn.querySelector('a')?.click();
 
   // Enter artist to search
-  const awaitSearchBar = setTimeout(() => {
+  setTimeout(() => {
     if (document.querySelector('#bingSearch')) {
       const bingSearch = document.querySelector(
         '#bingSearch'

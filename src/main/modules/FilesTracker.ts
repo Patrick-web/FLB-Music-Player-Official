@@ -24,7 +24,7 @@ export class FilesTracker {
   }
   updateFile (track: TrackType) {
     const index = this.processedFiles.findIndex(
-      track => track.fileLocation == track.fileLocation
+      track => track.fileLocation === track.fileLocation
     );
     this.processedFiles[index] = track;
     this.saveChanges();
@@ -40,7 +40,7 @@ export class FilesTracker {
   }
   deleteFile (pathToTrack: string) {
     const indexOfDeletedTrack = this.processedFiles.findIndex(
-      track => track.fileLocation == pathToTrack
+      track => track.fileLocation === pathToTrack
     );
     this.processedFiles.splice(indexOfDeletedTrack, 1);
     this.saveChanges();

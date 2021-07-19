@@ -1,7 +1,7 @@
 <template>
   <div class="tab addedTracksTab">
     <div
-      v-if="addedTracks.length == 0"
+      v-if="addedTracks.length === 0"
       class="flex-col center-a"
       style="height: 100%; width: 100%"
     >
@@ -33,15 +33,21 @@
       />
     </div>
     <div class="customScrollBar">
-      <div class="l" :style="{ top: scrollPercent }" />
-      <div class="wrpper" style="height: 100%">
+      <div
+        class="l"
+        :style="{ top: scrollPercent }"
+      />
+      <div
+        class="wrpper"
+        style="height: 100%"
+      >
         <input
           type="range"
           value="0"
           min="0"
           max="100"
           @input="scrollContainer($event)"
-        />
+        >
       </div>
     </div>
     <track-card v-if="0" />

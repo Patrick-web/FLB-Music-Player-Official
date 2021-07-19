@@ -6,17 +6,17 @@
           class="album_art"
           :src="
             'file://' + playingTrack.albumArt ||
-            require('@img/flbdefault-cover.png')
+              require('@img/flbdefault-cover.png')
           "
           @click="expandPlayingPane"
-        />
+        >
         <img
           class="album_art_blurred"
           :src="
             'file://' + playingTrack.albumArt ||
-            require('@img/flbdefault-cover.png')
+              require('@img/flbdefault-cover.png')
           "
-        />
+        >
 
         <div class="track_info">
           <p class="track_title">
@@ -45,18 +45,20 @@
             extra-class="scale_icon"
             @click.native="determineNextTrack('prev')"
           />
-          <div id="toggle_play" class="iconsWrapper" @click="toggleIsPlaying">
+          <div
+            id="toggle_play"
+            class="iconsWrapper"
+            @click="toggleIsPlaying"
+          >
             <base-icon
               v-if="!audioState.playing"
-              class="toggleIcons playIcon"
+              class="toggleIcons scale7 playIcon"
               icon="play"
-              alt
             />
             <base-icon
               v-if="audioState.playing"
-              class="toggleIcons pauseIcon"
+              class="toggleIcons scale7 pauseIcon"
               icon="pause"
-              alt
             />
           </div>
 
@@ -130,11 +132,17 @@
       @click.native="showLyrics = !showLyrics"
     />
     <transition enter-active-class="animated fadeInRight">
-      <div v-if="playingPaneExpanded && !showLyrics" class="que_wrappers">
+      <div
+        v-if="playingPaneExpanded && !showLyrics"
+        class="que_wrappers"
+      >
         <h1>Queue</h1>
         <queued-tracks />
       </div>
-      <div v-if="playingPaneExpanded && showLyrics" class="lyrics_wrappers">
+      <div
+        v-if="playingPaneExpanded && showLyrics"
+        class="lyrics_wrappers"
+      >
         <h1>Lyrics</h1>
         <lyrics />
       </div>
@@ -178,7 +186,7 @@ export default {
     },
     isInFavorites() {
       return this.$store.state.TabsManager.tabsData.playlists[0].tracks.some(
-        track => track.fileLocation == this.playingTrack.fileLocation
+        track => track.fileLocation === this.playingTrack.fileLocation
       );
     },
     miniMode() {
@@ -187,8 +195,7 @@ export default {
     playingTrackLyrics() {
       return (
         this.$store.state.PlaybackManger.allLyrics.filter(
-          trackLyricInfo =>
-            trackLyricInfo.trackName == this.playingTrack.defaultTitle
+          trackLyricInfo => trackLyricInfo.trackName === this.playingTrack.defaultTitle
         )[0]?.lyrics || false
       );
     }
@@ -324,15 +331,15 @@ export default {
       ]
     ];
 
-    for (const [action, handler] of actionHandlers) {
-      try {
-        navigator.mediaSession.setActionHandler(action, handler);
-      } catch (error) {
-        console.log(
-          `The media session action "${action}" is not supported yet.`
-        );
-      }
-    }
+    // for (const [action, handler] of actionHandlers) {
+    //   try {
+    //     navigator.mediaSession.setActionHandler(action, handler);
+    //   } catch (error) {
+    //     console.log(
+    //       `The media session action "${action}" is not supported yet.`
+    //     );
+    //   }
+    // }
   }
 };
 </script>

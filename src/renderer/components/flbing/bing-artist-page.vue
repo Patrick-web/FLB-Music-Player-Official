@@ -1,8 +1,15 @@
 <template>
   <div class="groupedContentTab blurred_bg blur30 bingArtistPage bingPage">
     <div class="sliverBar">
-      <img id="blurred" class="coverArt" :src="artistInfo.picture" />
-      <img class="coverArt roundImage" :src="artistInfo.picture" />
+      <img
+        id="blurred"
+        class="coverArt"
+        :src="artistInfo.picture"
+      >
+      <img
+        class="coverArt roundImage"
+        :src="artistInfo.picture"
+      >
       <div class="sliverBarFooter">
         <div class="groupedCard_info">
           <p class="groupedInfo_title">
@@ -30,7 +37,7 @@
               v-for="track in artistInfo.tracks"
               :key="track.id"
               :track-info="track"
-            />
+            >
           </div>
         </div>
         <div class="artist_data">

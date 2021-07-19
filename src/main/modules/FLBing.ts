@@ -22,7 +22,7 @@ export class FLBing {
       trackLocation: path.join(paths.flbingFolder, payload.tags.title) + '.mp3'
     };
     this.downloadQueue.push(newTrackToDownload);
-    if (this.downloadState == 'empty') {
+    if (this.downloadState === 'empty') {
       sendMessageToRenderer('updatePendingTrackState', {
         id: payload.trackID,
         stateCode: 3
@@ -161,7 +161,7 @@ export class FLBing {
     console.log(tags);
     console.log(location);
     console.log('Tag write is ' + success);
-    if ((await success) == true) {
+    if ((await success) === true) {
       createParsedTrack(location)
         .then(track => {
           console.log('Sending Downloaded track');

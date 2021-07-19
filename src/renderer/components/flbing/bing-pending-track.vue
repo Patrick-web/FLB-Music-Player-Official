@@ -28,18 +28,18 @@
     </p>
     <!-- <div class="track_actions">
       <base-button
-        v-if="trackInfo.state.code == 5 || trackInfo.state.code == 4"
+        v-if="trackInfo.state.code===5 || trackInfo.state.code===4"
         text="Cancel"
         @click.native="cancelDownload"
       />
       <base-button
-        v-if="trackInfo.state.code == 7 || trackInfo.state.code == 2"
+        v-if="trackInfo.state.code===7 || trackInfo.state.code===2"
         text="Retry"
         @click.native="retryDownload"
       />
       <base-button
         @click.native="removeFromQueue"
-        v-if="trackInfo.state.code == 4"
+        v-if="trackInfo.state.code===4"
         text="Remove From Queue"
       />
     </div> -->

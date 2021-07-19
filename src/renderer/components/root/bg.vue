@@ -5,14 +5,14 @@
       id="bg_fancy"
       :src="
         'file://' + playingTrack.albumArt ||
-        require('@img/flbdefault-cover.png')
+          require('@img/flbdefault-cover.png')
       "
-    />
+    >
     <img
       v-if="!playingTrack"
       id="bg_fancy"
       :src="require('@img/flbdefault-cover.png')"
-    />
+    >
   </div>
 </template>
 

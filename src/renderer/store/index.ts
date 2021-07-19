@@ -26,19 +26,20 @@ const store: StoreOptions<any> = {
     }
   },
   actions: {
-    sortTracks ({ commit, state }, payload: string) {
+    sortTracks ({ state }, payload: string) {
       sortArrayOfObjects(TabsManager.state.tabsData.addedTracks, payload);
+      console.log(state);
     },
-    toggleSortMode ({ state }) {
+    toggleSortMode () {
       TabsManager.state.tabsData.addedTracks.reverse();
     },
-    removeSelectedTracksFromAppState ({ commit, state }) {
+    removeSelectedTracksFromAppState ({ state }) {
       TrackSelector.state.selectedTracks.forEach((selectedTrack: TrackType) => {
         state.tabsData.addedTracks.filter(
-          (track: TrackType) => track.fileLocation == selectedTrack.fileLocation
+          (track: TrackType) => track.fileLocation === selectedTrack.fileLocation
         );
         state.tabsData.recentTracks.filter(
-          (track: TrackType) => track.fileLocation == selectedTrack.fileLocation
+          (track: TrackType) => track.fileLocation === selectedTrack.fileLocation
         );
       });
       TrackSelector.state.selectedTracks = [];
@@ -58,4 +59,5 @@ const store: StoreOptions<any> = {
   }
 };
 
+// eslint-disable-next-line import/no-named-as-default-member
 export default new Vuex.Store(store);

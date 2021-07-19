@@ -1,13 +1,18 @@
 <template>
   <div class="sortWidget actionBt">
-    <base-button id="sort_toggle_button" icon="sort-ascending" text="Sort" />
+    <base-button
+      id="sort_toggle_button"
+      icon="sort-ascending"
+      text="Sort"
+      size="16"
+    />
     <section class="sortParamsWrapper blurred_bg blur20">
       <base-button
         v-for="option in sortOptions"
         :key="option.name"
         extra-class="param"
         :text="option.name"
-        :active="selectedSortOption == option.name"
+        :active="selectedSortOption === option.name"
         :transparent="true"
         @click.native.stop="sortBy(option.value)"
       />

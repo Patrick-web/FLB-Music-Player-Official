@@ -1,6 +1,6 @@
 <template>
   <div class="toggleDownloadWidget">
-    <div v-if="downloadQueue.length == 0">
+    <div v-if="downloadQueue.length === 0">
       <base-button
         v-if="widgetIsVisible"
         icon="x"

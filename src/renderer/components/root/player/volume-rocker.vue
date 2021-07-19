@@ -7,9 +7,12 @@
       step="0.05"
       type="range"
       @input="changeVolume($event)"
-    />
+    >
     <!-- <div class="base_slider_progress"></div> -->
-    <div :style="{ width: progressBarWidth }" class="base_slider_progress" />
+    <div
+      :style="{ width: progressBarWidth }"
+      class="base_slider_progress"
+    />
   </div>
 </template>
 

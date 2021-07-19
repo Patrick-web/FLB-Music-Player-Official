@@ -35,7 +35,7 @@ export class Settings {
   removeFromScannedFolders (folderPath: string) {
     this.settings.foldersToScan.forEach((folder, index) => {
       if (
-        folder.replace(/(.*)[/\\]/, '') == folderPath.replace(/(.*)[/\\]/, '')
+        folder.replace(/(.*)[/\\]/, '') === folderPath.replace(/(.*)[/\\]/, '')
       ) {
         this.settings.foldersToScan.splice(index, 1);
         return;
