@@ -1,24 +1,20 @@
 <template>
-  <div
-    :class="[!artistPicture ? 'groupCard_noPicture' : '', 'groupCard']"
-    @click="goToArtist()"
-  >
-    <img
-      v-if="artistPicture"
-      class="coverArt roundImage"
-      :src="'file://' + artistPicture"
+  <div>
+    <div
+      :class="[!artistPicture ? 'groupCard_noPicture' : '', 'groupCard']"
+      @click="goToArtist()"
     >
-    <letter-card
-      v-if="!artistPicture"
-      :text="artist.name.charAt(0)"
-    />
-    <div class="groupedCard_info">
-      <p
-        class="groupedInfo_title"
-        style="text-align: center"
-      >
-        {{ artist.name }}
-      </p>
+      <img
+        v-if="artistPicture"
+        class="coverArt roundImage"
+        :src="'file://' + artistPicture"
+      />
+      <letter-card v-if="!artistPicture" :text="artist.name.charAt(0)" />
+      <div class="groupedCard_info">
+        <p class="groupedInfo_title" style="text-align: center">
+          {{ artist.name }}
+        </p>
+      </div>
     </div>
   </div>
 </template>
@@ -28,7 +24,6 @@ import { mapActions } from 'vuex';
 
 export default {
   name: 'ArtistCard',
-
   computed: {
     artistPicture() {
       return (
@@ -46,7 +41,12 @@ export default {
     }
   },
   props: {
-    artist: Object
+    artist: {
+      type: Object,
+      default() {
+        return {};
+      }
+    }
   }
 };
 </script>

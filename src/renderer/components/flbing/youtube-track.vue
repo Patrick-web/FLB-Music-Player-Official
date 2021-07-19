@@ -86,7 +86,7 @@ export default {
   methods: {
     ...mapMutations(['addTrackToPendingDownloads']),
     playVideo() {
-      const iframeSrc = `https://www.youtube.com/embed/${this.ytTrack.id}?autoplay=1&showinfo=0&rel=0&iv_load_policy=3&disablekb=1`;
+      const iframeSrc = `https://flbmusic-bot.herokuapp.com/watch/${this.ytTrack.id}`;
 
       this.$emit('playYTVideo', iframeSrc);
     },

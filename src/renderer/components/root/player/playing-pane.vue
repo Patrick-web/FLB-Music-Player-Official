@@ -112,7 +112,7 @@
         />
       </div>
       <div class="flex center-v vol_rocker">
-        <base-icon icon="speaker-simple-down" />
+        <base-icon icon="speaker-simple-low" />
         <volume-rocker />
       </div>
     </div>
