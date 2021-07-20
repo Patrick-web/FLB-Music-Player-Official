@@ -18,6 +18,7 @@ glob('./src/**/*.vue', {}, (err, files) => {
   let content = `${exportComponents}`;
   const icons = [
     'PhPause',
+    'PhArchiveBox',
     'PhSpeakerSimpleLow',
     'PhArrowClockwise',
     'PhBookOpen',

@@ -70,6 +70,7 @@ export { default as tracksTab } from './renderer/views/local-music/tabs/tracks-t
 
 // export component icons from phosphor-vue
 export { default as PhPause } from 'phosphor-vue/src/components/PhPause.vue';
+export { default as PhArchiveBox } from 'phosphor-vue/src/components/PhArchiveBox.vue';
 export { default as PhSpeakerSimpleLow } from 'phosphor-vue/src/components/PhSpeakerSimpleLow.vue';
 export { default as PhArrowClockwise } from 'phosphor-vue/src/components/PhArrowClockwise.vue';
 export { default as PhBookOpen } from 'phosphor-vue/src/components/PhBookOpen.vue';
