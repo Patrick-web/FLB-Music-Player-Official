@@ -1,15 +1,8 @@
 <template>
   <div class="groupedContentTab bingPage blurred_bg blur30 bingAlbumPage">
     <div class="sliverBar">
-      <img
-        id="blurred"
-        class="coverArt"
-        :src="albumInfo.cover"
-      >
-      <img
-        class="coverArt"
-        :src="albumInfo.cover"
-      >
+      <img id="blurred" class="coverArt" :src="albumInfo.cover" />
+      <img class="coverArt" :src="albumInfo.cover" />
       <div class="sliverBarFooter">
         <div class="groupedCard_info">
           <p class="groupedInfo_title">
@@ -35,12 +28,12 @@
           <p>{{ albumInfo.tracks.length }}</p>
         </div>
         <div class="cardsWrapper">
-          <track
+          <bing-track
             v-for="track in albumInfo.tracks"
             :key="track.id"
             :track-info="track"
             :override-cover-art="albumInfo.cover"
-          >
+          />
         </div>
       </div>
     </div>

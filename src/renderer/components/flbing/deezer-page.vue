@@ -3,37 +3,29 @@
     <div
       v-if="
         !searchResults.tracks.length &&
-          !searchResults.albums.length &&
-          !searchResults.artists.length
+        !searchResults.albums.length &&
+        !searchResults.artists.length
       "
       class="centerContents"
       style="height: 100%; width: 300%"
     >
-      <h1 id="noBingResults">
-        No Results Found
-      </h1>
+      <h1 id="noBingResults">No Results Found</h1>
     </div>
 
-    <div
-      v-if="searchResults.tracks.length"
-      class="results trackResults"
-    >
+    <div v-if="searchResults.tracks.length" class="results trackResults">
       <h2>Tracks</h2>
       <div class="column contentsWrapper">
-        <track
+        <bing-track
           v-for="track in searchResults.tracks"
           :key="track.id"
           :track-info="track"
-        >
+        />
       </div>
     </div>
-    <div
-      v-if="searchResults.artists.length"
-      class="results artistResults"
-    >
+    <div v-if="searchResults.artists.length" class="results artistResults">
       <h2>Artists</h2>
       <div class="flex_auto contentsWrapper">
-        <artist-card
+        <bing-artist-card
           v-for="artist in searchResults.artists"
           :key="artist.id"
           :artist-info="artist"
@@ -41,13 +33,10 @@
         />
       </div>
     </div>
-    <div
-      v-if="searchResults.albums.length"
-      class="results albumResults"
-    >
+    <div v-if="searchResults.albums.length" class="results albumResults">
       <h2>Albums</h2>
       <div class="flex_auto contentsWrapper">
-        <album-card
+        <bing-album-card
           v-for="album in searchResults.albums"
           :key="album.id"
           :album-info="album"

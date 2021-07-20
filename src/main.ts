@@ -5,7 +5,7 @@ import VueVirtualScroller from 'vue-virtual-scroller';
 import router from './renderer/router';
 import store from './renderer/store';
 import App from './App.vue';
-import useFLB from './use-flb'
+import useFLB from './use-flb';
 
 Vue.component('draggable', vuedraggable);
 Vue.use(VueVirtualScroller);

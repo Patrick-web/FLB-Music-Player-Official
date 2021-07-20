@@ -4,31 +4,13 @@
       v-if="deezerRecommendedArtists.length === 0"
       class="centerContents fade_to_7"
     >
-      <p
-        v-if="appIsOnline"
-        class="weight300"
-      >
-        Loading Recommendations...
-      </p>
-      <div
-        v-else
-        class="centerContents"
-        style="font-family: inherit"
-      >
-        <p class="weight300">
-          Could not fetch Recommendations ⚠
-        </p>
-        <p class="weight300">
-          Check your Internet Connection 📶
-        </p>
+      <p v-if="appIsOnline" class="weight300">Loading Recommendations...</p>
+      <div v-else class="centerContents" style="font-family: inherit">
+        <p class="weight300">Could not fetch Recommendations ⚠</p>
+        <p class="weight300">Check your Internet Connection 📶</p>
       </div>
     </div>
-    <h2
-      v-if="appIsOnline"
-      class="bingRecommenderTitle"
-    >
-      Similar artists to
-    </h2>
+    <h2 v-if="appIsOnline" class="bingRecommenderTitle">Similar artists to</h2>
     <div class="artistRecommendations">
       <div
         v-for="recommend in deezerRecommendedArtists"
@@ -40,7 +22,7 @@
         </div>
 
         <div class="flex_auto contentsWrapper">
-          <artist-card
+          <bing-artist-card
             v-for="artist in recommend.similarArtists.slice(0, 2)"
             :key="artist.id"
             :artist-info="artist"
@@ -141,10 +123,12 @@ export default {
             if (similarArtistObj) {
               recommend.similarArtists.push(similarArtistObj);
               const index = this.deezerRecommendedArtists.findIndex(
-                existingRecommendation => existingRecommendation.sourceArtist === recommend.sourceArtist
+                existingRecommendation =>
+                  existingRecommendation.sourceArtist === recommend.sourceArtist
               );
               if (index >= 0) {
-                this.deezerRecommendedArtists[index].similarArtists = recommend.similarArtists;
+                this.deezerRecommendedArtists[index].similarArtists =
+                  recommend.similarArtists;
               } else {
                 this.deezerRecommendedArtists.push(recommend);
               }

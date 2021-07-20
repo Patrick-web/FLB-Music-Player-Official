@@ -53,11 +53,11 @@ glob('./src/**/*.vue', {}, (err, files) => {
     'PhUser',
     'PhX'
   ];
-  content += '\n// export component icons from phosphor-vue\n'
+  content += '\n// export component icons from phosphor-vue\n';
   for (let i = 0; i < icons.length; i += 1) {
-    content += `export { default as ${icons[i]} } from 'phosphor-vue/src/components/${icons[i]}.vue';\n`
+    content += `export { default as ${icons[i]} } from 'phosphor-vue/src/components/${icons[i]}.vue';\n`;
   }
-  fs.writeFile('./src/flb-components.ts', content, (err) => {
-    if (!err) consola.success('Created: ./src/flb-components.ts')
-  })
+  fs.writeFile('./src/flb-components.ts', content, err => {
+    if (!err) consola.success('Created: ./src/flb-components.ts');
+  });
 });

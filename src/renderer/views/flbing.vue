@@ -36,7 +36,7 @@
         enter-active-class="animated slideInUp extrafaster"
         leave-active-class="animated slideOutDown extrafaster"
       >
-        <artist-page
+        <bing-artist-page
           v-if="selectedArtist"
           :artist-info="selectedArtist"
           @clearArtistResults="clearSelectedArtistOrAlbum('artist')"
@@ -47,7 +47,7 @@
         enter-active-class="animated slideInUp extrafaster"
         leave-active-class="animated slideOutDown extrafaster"
       >
-        <album-page
+        <bing-album-page
           v-if="selectedAlbum"
           :album-info="selectedAlbum"
           @clearAlbumResults="clearSelectedArtistOrAlbum('album')"

@@ -8,10 +8,16 @@
         v-if="artistPicture"
         class="coverArt roundImage"
         :src="'file://' + artistPicture"
+      >
+      <letter-card
+        v-if="!artistPicture"
+        :text="artist.name.charAt(0)"
       />
-      <letter-card v-if="!artistPicture" :text="artist.name.charAt(0)" />
       <div class="groupedCard_info">
-        <p class="groupedInfo_title" style="text-align: center">
+        <p
+          class="groupedInfo_title"
+          style="text-align: center"
+        >
           {{ artist.name }}
         </p>
       </div>

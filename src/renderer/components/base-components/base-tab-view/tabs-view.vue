@@ -45,9 +45,9 @@ export default {
       this.selectedIndex = i;
 
       // loop over all the tabs
-      // this.tabs.forEach((tab, index) => {
-      //   tab.isActive = index === i;
-      // });
+      this.tabs.forEach((tab, index) => {
+        tab.isActive = index === i;
+      });
     }
   }
 };
