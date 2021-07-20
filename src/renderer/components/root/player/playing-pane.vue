@@ -31,24 +31,29 @@
             id="shuffle_bt"
             icon="shuffle"
             :active="audioState.shuffle"
+            :small="true"
             @click.native="shuffler"
           />
           <base-button
             id="prev_bt"
             icon="skip-back"
-            extra-class="scale_icon"
+            :small="true"
             @click.native="determineNextTrack('prev')"
           />
-          <div id="toggle_play" class="iconsWrapper" @click="toggleIsPlaying">
-            <base-icon
+          <div id="toggle_play" @click="toggleIsPlaying">
+            <base-button
               v-if="!audioState.playing"
-              class="toggleIcons scale7 playIcon"
+              id="play_bt"
               icon="play"
+              :icon-size="23"
+              @click="toggleIsPlaying"
             />
-            <base-icon
+            <base-button
               v-if="audioState.playing"
-              class="toggleIcons scale7 pauseIcon"
+              id="prev_bt"
               icon="pause"
+              :icon-size="23"
+              @click="toggleIsPlaying"
             />
           </div>
 
@@ -56,6 +61,7 @@
             id="next_bt"
             icon="skip-forward"
             extra-class="scale_icon"
+            :small="true"
             @click.native="determineNextTrack('next')"
           />
 
@@ -63,6 +69,7 @@
             id="repeat_bt"
             icon="repeat"
             :active="audioState.repeat"
+            :small="true"
             @click.native="changeRepeat"
           />
         </div>
@@ -73,9 +80,9 @@
     <div class="right_pane_section">
       <div class="flex center-v gap20">
         <base-button
-          :small="true"
           icon="heart"
           :active="isInFavorites"
+          :small="true"
           @click.native="toggleFromFavorites"
         />
         <base-button
@@ -407,23 +414,6 @@ export default {
   justify-content: center;
   padding: 10px;
   transition: none;
-
-  button {
-    transform: scale(0.8);
-    transition: none;
-  }
-  #toggle_play {
-    transition: none;
-
-    img {
-      transition: none;
-      width: 2rem;
-      transform: scale(1.2);
-      &:hover {
-        transform: scale(1.25) perspective(1px);
-      }
-    }
-  }
 }
 .right_pane_section {
   display: flex;
