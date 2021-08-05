@@ -1,6 +1,11 @@
 
 ![Logo](https://i.ibb.co/ry3w6cw/flb-website-min.jpg)
-
+<a href="https://snapcraft.io/flbmusic">
+  <img alt="flbmusic" src="https://snapcraft.io/flbmusic/badge.svg" />
+</a>
+<a href="https://snapcraft.io/flbmusic">
+  <img alt="flbmusic" src="https://snapcraft.io/flbmusic/trending.svg?name=0" />
+</a>
     
 # FLB Music
 
