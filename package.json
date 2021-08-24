@@ -27,7 +27,7 @@
 	},
 	"main": "background.js",
 	"dependencies": {
-		"core-js": "3.15.2",
+		"core-js": "3.16.2",
 		"electron-updater": "4.3.9",
 		"g-i-s": "2.1.6",
 		"genius-lyrics-api": "3.0.6",
