@@ -28,11 +28,17 @@
 .flex {
   display: flex;
 }
+.flex-wrap{
+  flex-wrap: wrap;
+}
 .flex-col {
   flex-direction: column;
 }
 .flex.center-v {
   align-items: center;
+}
+.flex.center-h {
+  justify-content: center;
 }
 .flex-col.center-h {
   justify-content: center;
@@ -48,6 +54,11 @@
 .flex_between {
   display: flex;
   justify-content: space-between;
+  align-items: center;
+}
+.flex_evenly {
+  display: flex;
+  justify-content: space-evenly;
   align-items: center;
 }
 .flex_auto {
@@ -269,6 +280,12 @@
 .border_split {
   border-bottom: 1px solid rgba(255, 255, 255, 0.103);
 }
+.border_split_left {
+  border-left: 1px solid rgba(255, 255, 255, 0.103);
+}
+.border_split_right {
+  border-right: 1px solid rgba(255, 255, 255, 0.103);
+}
 
 .scroll_y {
   overflow: hidden;
@@ -412,13 +429,37 @@
   max-height: 100%;
 }
 
-.abs {
+.pos-fix {
+  position: fixed;
+}
+.pos-abs {
   position: absolute;
 }
-.rel {
+
+.abs-center-y {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.abs-center-x {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.abs-center-xy {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%,-50%);
+}
+
+.pos-rel {
   position: relative;
 }
 
+.top0 {
+  top: 0px;
+}
 .top5 {
   top: 5px;
 }
@@ -441,6 +482,9 @@
   top: 50%;
 }
 
+.bottom0 {
+  bottom: 0px;
+}
 .bottom5 {
   bottom: 5px;
 }
@@ -463,6 +507,9 @@
   bottom: 50%;
 }
 
+.left0 {
+  left: 0px;
+}
 .left5 {
   left: 5px;
 }
@@ -485,6 +532,9 @@
   left: 50%;
 }
 
+.right0 {
+  right: 0px;
+}
 .right5 {
   right: 5px;
 }
@@ -507,13 +557,9 @@
   right: 50%;
 }
 
-.abs-center-y {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
+.unclickable{
+  pointer-events: none;
 }
-.abs-center-x {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
+.cursor-pointer{
+  cursor:pointer
 }

@@ -1,8 +1,9 @@
 const path = require('path');
 const WebpackBar = require('webpackbar');
 
-const mainDir = (...args) => path.join(__dirname, 'src', 'main', ...args)
-const rendererDir = (...args) => path.join(__dirname, 'src', 'renderer', ...args)
+const mainDir = (...args) => path.join(__dirname, 'src', 'main', ...args);
+const rendererDir = (...args) =>
+  path.join(__dirname, 'src', 'renderer', ...args);
 
 module.exports = {
   devServer: {
@@ -14,7 +15,8 @@ module.exports = {
         '@vue': rendererDir('components'),
         '@img': rendererDir('assets', 'images'),
         '@icon': rendererDir('assets', 'icons'),
-        '@scss': rendererDir('assets', 'styles')
+        '@scss': rendererDir('assets', 'styles'),
+        '@fonts': rendererDir('assets', 'fonts')
       }
     },
     plugins: [

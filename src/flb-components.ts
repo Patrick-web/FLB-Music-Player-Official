@@ -52,6 +52,7 @@ export { default as baseNotification } from './renderer/components/root/notifica
 export { default as notifications } from './renderer/components/root/notifications/notifications.vue';
 export { default as onBoard } from './renderer/components/root/onboarder/on-board.vue';
 export { default as playingPane } from './renderer/components/root/player/playing-pane.vue';
+export { default as albumArtWrapper } from './renderer/components/root/player/album-art-wrapper.vue';
 export { default as trackBar } from './renderer/components/root/player/track-bar.vue';
 export { default as volumeRocker } from './renderer/components/root/player/volume-rocker.vue';
 export { default as settings } from './renderer/components/root/settings.vue';
@@ -72,6 +73,8 @@ export { default as tracksTab } from './renderer/views/local-music/tabs/tracks-t
 export { default as PhPause } from 'phosphor-vue/src/components/PhPause.vue';
 export { default as PhArchiveBox } from 'phosphor-vue/src/components/PhArchiveBox.vue';
 export { default as PhSpeakerSimpleLow } from 'phosphor-vue/src/components/PhSpeakerSimpleLow.vue';
+export { default as PhSpeakerSimpleHigh } from 'phosphor-vue/src/components/PhSpeakerSimpleHigh.vue';
+export { default as PhSpeakerSlash } from 'phosphor-vue/src/components/PhSpeakerSlash.vue';
 export { default as PhArrowClockwise } from 'phosphor-vue/src/components/PhArrowClockwise.vue';
 export { default as PhBookOpen } from 'phosphor-vue/src/components/PhBookOpen.vue';
 export { default as PhCaretDown } from 'phosphor-vue/src/components/PhCaretDown.vue';

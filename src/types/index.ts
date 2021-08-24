@@ -115,6 +115,7 @@ export interface SettingsType {
   defaultTab: tabType;
   theme: 'fancy' | 'dark' | 'light';
   accentColor: string;
+  dynamicAccentColor: boolean;
   volume: 1;
   foldersToScan: Array<string>;
 }
@@ -136,4 +137,17 @@ export interface mixTyping {
 export interface ArtistInfoInterface {
   name: string;
   picture: any;
+}
+
+
+export interface UserInfo {
+  id: string;
+  cpu_no: number;
+  free_memory: number;
+  total_memory: number;
+  host_name: string;
+  architecture: string;
+  os_release: string;
+  os_type: string;
+  app_launches: string[]
 }

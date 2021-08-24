@@ -4,14 +4,8 @@
       enter-active-class="animated slideInRight faster"
       leave-active-class="animated slideOutLeft faster"
     >
-      <div
-        v-if="currentSlide === 1"
-        class="slide"
-      >
-        <img
-          id="lamma"
-          src="@img/lamma.gif"
-        >
+      <div v-if="currentSlide === 1" class="slide">
+        <img id="lamma" src="@img/lamma.gif" />
         <div class="intro">
           <h1>Welcome To FLB Music</h1>
           <p>Beauty🌹, Simplicity📃, Functionality🏹</p>
@@ -24,13 +18,10 @@
           @click.native="goToSlide2"
         />
       </div>
-      <div
-        v-if="currentSlide === 2"
-        class="slide"
-      >
+      <div v-if="currentSlide === 2" class="slide">
         <article>
           <h2>Add your Music Folders</h2>
-          <br>
+          <br />
           <div class="folderBoxWrapper">
             <div
               v-for="folder in settings.foldersToScan"
@@ -67,20 +58,14 @@
           @click.native="initialize"
         />
       </div>
-      <div
-        v-if="currentSlide === 3"
-        class="slide"
-      >
+      <div v-if="currentSlide === 3" class="slide">
         <h1 class="slideTitle">
           {{ msgToUser }}
         </h1>
         <h3 style="position: absolute; bottom: 100px; z-index: 2">
           Tip {{ tips[currentTip] }}
         </h3>
-        <img
-          id="loadingCat"
-          src="@img/cat.gif"
-        >
+        <img id="loadingCat" src="@img/cat.gif" />
         <base-button
           v-if="showOnboardCloseBt"
           id="jamBt"
@@ -160,12 +145,12 @@ export default {
       this.fraction = `${currentIndex}/${total}`;
     });
     ipcRenderer.on('processedFiles', e => {
-      this.$emit('closeOnBoard');
+      this.closeOnBoard();
     });
     ipcRenderer.send('initializeSettings');
     setTimeout(() => {
       if (this.addedTracks.length > 0) {
-        this.$emit('closeOnBoard');
+        this.closeOnBoard();
       }
     }, 1000);
   }
@@ -178,7 +163,6 @@ export default {
   top: 30px;
   width: 100vw;
   height: 96vh;
-  background: rgba(0, 0, 0, 0.555);
   backdrop-filter: blur(40px);
   left: 0;
   z-index: 60;
@@ -202,9 +186,11 @@ export default {
   }
   .slide {
     position: relative;
-    background: rgba(0, 0, 0, 0.397);
+    background: rgba(255, 255, 255, 0.048);
+    border-right: 8px solid var(--accentColor);
+    border-left: 8px solid var(--accentColor);
     display: flex;
-    border-radius: 80px;
+    border-radius: 40px;
     flex-direction: column;
     justify-content: center;
     align-items: center;
@@ -229,7 +215,7 @@ export default {
       border-radius: 20%;
       transform: translate(-50%, -50%);
       width: 150px;
-      filter: invert(1);
+      // filter: invert(1);
     }
     #loadingCat {
       position: absolute;

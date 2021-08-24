@@ -7,11 +7,7 @@
       :class="[currentTab === tab.name ? 'activeTab' : '', 'tabBtn bg1']"
       @click="routeTo(tab)"
     >
-      <base-icon
-        :icon="tab.icon"
-        class="icon"
-        :size="16"
-      />
+      <base-icon :icon="tab.icon" class="icon" :size="16" />
       <p>{{ tab.name }}</p>
     </div>
   </div>
@@ -82,7 +78,7 @@ export default {
     display: flex;
     align-items: center;
     gap: 5px;
-    padding: 5px 8px;
+    padding: 5px 10px;
     color: white;
     border-radius: 10px;
     overflow: hidden;
@@ -92,17 +88,13 @@ export default {
       font-size: 0.9rem;
       font-family: inherit;
     }
-    img {
-      width: 20px;
-      transition: 0.2s cubic-bezier(0.23, 1, 0.32, 1);
-    }
     &:hover {
       background: rgba(255, 255, 255, 0.062);
     }
   }
   .activeTab {
     background: var(--accentColor) !important;
-    border-radius: 20px;
+    // border-radius: 20px;
     // padding-left: 5px;
     // padding-right: 5px;
     // p {

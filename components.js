@@ -20,6 +20,8 @@ glob('./src/**/*.vue', {}, (err, files) => {
     'PhPause',
     'PhArchiveBox',
     'PhSpeakerSimpleLow',
+    'PhSpeakerSimpleHigh',
+    'PhSpeakerSlash',
     'PhArrowClockwise',
     'PhBookOpen',
     'PhCaretDown',

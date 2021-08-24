@@ -25,7 +25,10 @@
     "deploy:steps": "git commit -am vx.x.x && git tag vx.x.x && git push --tags"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^1.21.0",
     "animate.css": "4.1.1",
+    "axios": "^0.21.1",
+    "color-thief-browser": "^2.0.2",
     "core-js": "3.15.2",
     "css-color-converter": "2.0.0",
     "electron": "13.1.5",
@@ -33,10 +36,12 @@
     "g-i-s": "2.1.6",
     "genius-lyrics-api": "3.0.6",
     "glob": "7.1.7",
+    "is-online": "^9.0.1",
     "json5": "2.2.0",
     "lodash": "4.17.21",
     "node-downloader-helper": "1.0.18",
     "node-id3": "0.2.3",
+    "node-vibrant": "^3.2.1-alpha.1",
     "phosphor-vue": "1.3.1",
     "scule": "^0.2.1",
     "vue": "2.6.14",
@@ -45,6 +50,8 @@
     "vue-virtual-scroller": "1.0.10",
     "vuedraggable": "2.24.3",
     "vuex": "3.6.2",
+    "youtube-api-v3-search": "^1.2.1",
+    "youtube-music-api": "^1.0.6",
     "ytdl-core": "4.8.3"
   },
   "devDependencies": {

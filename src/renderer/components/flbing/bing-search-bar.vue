@@ -6,13 +6,9 @@
       placeholder="Search and Download Music"
       type="text"
       class="BigSearch inputElem"
-      @keyup.enter="sendSearchQuery"
-    >
-    <p
-      id="bingEnter"
-      style="opacity: 0"
-      @click="sendSearchQuery"
+      @keyup.enter="searchInYTMusic"
     />
+    <p id="bingEnter" style="opacity: 0" @click="sendSearchQuery" />
     <base-button
       v-if="searchIsComplete"
       id="clearResultsIcon"
@@ -30,6 +26,7 @@
 
 <script>
 import { mapMutations } from 'vuex';
+import YoutubeMusicApi from 'youtube-music-api';
 
 export default {
   name: 'BingSearchBar',
@@ -40,7 +37,9 @@ export default {
   },
   data() {
     return {
-      query: ''
+      query: '',
+      API: null,
+      apiInitialized: false
     };
   },
   computed: {
@@ -50,6 +49,9 @@ export default {
   },
   methods: {
     ...mapMutations(['pushNotification']),
+    searchInYTMusic(query) {
+      this.API.search(query, 'song').then(result => console.log(result));
+    },
     sendSearchQuery() {
       if (!this.query) return;
       if (!this.appIsOnline) {
@@ -67,6 +69,13 @@ export default {
       this.$emit('clearSearch');
       this.query = '';
     }
+  },
+  mounted() {
+    this.API = new YoutubeMusicApi();
+    this.API.initalize().then(info => {
+      console.log(info);
+      this.apiInitialized = true;
+    });
   }
 };
 </script>

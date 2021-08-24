@@ -13,6 +13,8 @@ declare module 'genius-lyrics-api' {
   });
 }
 
+declare module 'youtube-music-api'
+
 // Type definitions for vue-virtual-scroller
 // Project: https://github.com/Akryum/vue-virtual-scroller/
 declare module 'vue-virtual-scroller' {

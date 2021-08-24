@@ -12,21 +12,14 @@
     >
       <settings v-if="showSettings" />
     </transition>
-    <on-board
-      v-if="showOnboard"
-      @closeOnBoard="showOnboard = false"
-    />
+    <on-board v-if="showOnboard" @closeOnBoard="showOnboard = false" />
     <notifications />
     <section id="main-view">
-      <div
-        v-if="!miniMode"
-        id="sub-view-1"
-        class="flex"
-      >
+      <div v-if="!miniMode" id="sub-view-1" class="flex">
         <side-nav />
         <router-view />
       </div>
-      <playing-pane v-if="playingTrack" />
+      <playing-pane v-if="playingTrack" v-on:fullPlayer="reactToFullPlayer" />
     </section>
     <bg v-if="theme === 'fancy'" />
   </div>
@@ -36,7 +29,8 @@ export default {
   name: 'App',
   data() {
     return {
-      showOnboard: true
+      showOnboard: true,
+      fullPlayer: false
     };
   },
   computed: {
@@ -64,18 +58,26 @@ export default {
       if (document.querySelector('.trackOptions')) {
         document.querySelector('.trackOptions').style.height = `0px`;
       }
+    },
+    reactToFullPlayer(fullPlayer) {
+      this.fullPlayer = fullPlayer;
+      console.log(this.fullPlayer);
     }
   }
 };
 </script>
 <style lang="scss">
-@import '~animate.css';
+@import '@scss/animate.scss';
 @import '@scss/global.scss';
 @import '@scss/themer.scss';
 @import '@scss/grouped-content.scss';
 @import '@scss/utility-classes.scss';
 @import '@scss/mixins.scss';
 @import '@scss/fun.scss';
+// @font-face {
+//   font-family: 'Quicksand';
+//   src: local('@styles/Quicksand.tff') format('tff');
+// }
 * {
   scroll-behavior: smooth;
 }

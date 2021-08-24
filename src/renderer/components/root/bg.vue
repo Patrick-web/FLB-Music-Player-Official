@@ -1,18 +1,6 @@
 <template>
   <div class="bg">
-    <img
-      v-if="playingTrack"
-      id="bg_fancy"
-      :src="
-        'file://' + playingTrack.albumArt ||
-          require('@img/flbdefault-cover.png')
-      "
-    >
-    <img
-      v-if="!playingTrack"
-      id="bg_fancy"
-      :src="require('@img/flbdefault-cover.png')"
-    >
+    <img id="bg_fancy" :src="albumArt" />
   </div>
 </template>
 
@@ -26,6 +14,12 @@ export default {
     },
     theme() {
       return this.$store.state.SettingsManager.settings.theme;
+    },
+    albumArt() {
+      if (this.playingTrack?.albumArt) {
+        return 'file://' + this.playingTrack.albumArt;
+      }
+      return require('@img/flbdefault-cover.png');
     }
   }
 };

@@ -1,18 +1,19 @@
 <template>
-  <div class="VolumeRocker bg1">
-    <input
-      min="0"
-      value=".5"
-      max="1"
-      step="0.05"
-      type="range"
-      @input="changeVolume($event)"
-    >
-    <!-- <div class="base_slider_progress"></div> -->
-    <div
-      :style="{ width: progressBarWidth }"
-      class="base_slider_progress"
-    />
+  <div class="VolumeRocker flex center-v gap10 pl5">
+    <div class="rocker_icons flex center-a" @click="toggleMute">
+      <base-icon v-if="volume > 0.6" icon="speaker-simple-high" :size="18" />
+      <base-icon
+        v-if="volume <= 0.6 && volume > 0"
+        icon="speaker-simple-low"
+        :size="18"
+      />
+      <base-icon v-if="volume == 0" icon="speaker-slash" :size="18" />
+    </div>
+    <div class="rocker_wrapper bg1 pos-rel round10">
+      <input min="0" v-model="volume" max="1" step="0.05" type="range" />
+      <!-- <div class="base_slider_progress"></div> -->
+      <div :style="{ width: progressBarWidth }" class="base_slider_progress" />
+    </div>
   </div>
 </template>
 
@@ -25,7 +26,8 @@ export default {
 
   data() {
     return {
-      volume: 0.5
+      volume: 0.5,
+      mute: false
     };
   },
   computed: {
@@ -36,12 +38,21 @@ export default {
       return this.$store.state.SettingsManager.settings.volume;
     }
   },
-  methods: {
-    ...mapMutations(['setSettingValue']),
-    changeVolume(e) {
-      this.volume = e.srcElement.value;
+  watch: {
+    volume() {
       gainNode.gain.value = this.volume;
       this.setSettingValue({ property: 'volume', newValue: this.volume });
+    }
+  },
+  methods: {
+    ...mapMutations(['setSettingValue']),
+    toggleMute() {
+      this.mute = !this.mute;
+      if (this.mute) {
+        this.volume = 0;
+      } else {
+        this.volume = 0.5;
+      }
     }
   },
   mounted() {
@@ -60,13 +71,21 @@ export default {
   height: 6px;
   border-radius: 10px;
   cursor: pointer;
-  &:active {
-    height: 12px;
-  }
-  &:hover {
-    .base_slider_progress {
-      background: var(--accentColor);
+
+  .rocker_wrapper {
+    width: 100%;
+    height: 100%;
+    &:active {
+      height: 12px;
     }
+    &:hover {
+      .base_slider_progress {
+        background: var(--accentColor);
+      }
+    }
+  }
+  .rocker_icons {
+    width: 20px;
   }
   input {
     cursor: pointer;

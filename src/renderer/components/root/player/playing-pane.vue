@@ -2,11 +2,12 @@
   <div class="playingPane bg2">
     <div class="flex split">
       <div class="left_pane_section">
-        <img
+        <!-- <img
           class="album_art"
           :src="playingTrack.albumArt || require('@img/flbdefault-cover.png')"
           @click="expandPlayingPane"
-        />
+        /> -->
+        <album-art-wrapper v-on:togglePlayerMode="togglePlayerMode" />
         <img
           class="album_art_blurred"
           :src="playingTrack.albumArt || require('@img/flbdefault-cover.png')"
@@ -77,7 +78,7 @@
       </div>
     </div>
 
-    <div class="right_pane_section">
+    <div class="right_pane_section gap20">
       <div class="flex center-v gap20">
         <base-button
           icon="heart"
@@ -108,10 +109,7 @@
           @click.native="toggleMiniMode"
         />
       </div>
-      <div class="flex center-v vol_rocker">
-        <base-icon icon="speaker-simple-low" />
-        <volume-rocker />
-      </div>
+      <volume-rocker />
     </div>
 
     <transition
@@ -204,6 +202,7 @@ export default {
       'addSelectedTracksToPlaylist',
       'deleteSelectedTrackFromPlaylist',
       'UIcontrollerToggleProperty',
+      'UIcontrollerSetPropertyValue',
       'setSettingValue',
       'clearSelectedTracks'
     ]),
@@ -214,9 +213,13 @@ export default {
       'determineNextTrack',
       'findAndGoToArtist'
     ]),
-    expandPlayingPane() {
+    togglePlayerMode() {
       document.body.classList.toggle('fullScreenPlayingPane');
       this.playingPaneExpanded = !this.playingPaneExpanded;
+      this.UIcontrollerSetPropertyValue({
+        property: 'currentSidePaneTab',
+        newValue: 'Info'
+      });
     },
     toggleMiniMode() {
       sendMessageToNode('toggleMiniMode', !this.miniMode);
@@ -323,15 +326,15 @@ export default {
       ]
     ];
 
-    // for (const [action, handler] of actionHandlers) {
-    //   try {
-    //     navigator.mediaSession.setActionHandler(action, handler);
-    //   } catch (error) {
-    //     console.log(
-    //       `The media session action "${action}" is not supported yet.`
-    //     );
-    //   }
-    // }
+    for (const [action, handler] of actionHandlers) {
+      try {
+        navigator.mediaSession.setActionHandler(action, handler);
+      } catch (error) {
+        console.log(
+          `The media session action "${action}" is not supported yet.`
+        );
+      }
+    }
   }
 };
 </script>
@@ -344,16 +347,9 @@ export default {
   display: flex;
   justify-content: space-between;
   height: 100px;
-  transition: none;
+  transition: 0.1s;
   .split {
     width: 80%;
-  }
-  .album_art {
-    width: 70px;
-    margin: 5px;
-    border-radius: 15px;
-    cursor: pointer;
-    transition: none;
   }
 }
 .album_art_blurred {
@@ -414,13 +410,18 @@ export default {
   justify-content: center;
   padding: 10px;
   transition: none;
+  #toggle_play {
+    button {
+      width: 45px;
+      height: 45px;
+    }
+  }
 }
 .right_pane_section {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
-  gap: 10px;
+  align-items: flex-start;
   width: 20%;
   transition: none;
 
@@ -451,7 +452,7 @@ export default {
   .playingPane {
     position: fixed;
     z-index: 30;
-    height: 93vh;
+    height: 93.5vh;
     width: 98.5vw;
     bottom: 10px;
     background: black;
@@ -486,12 +487,12 @@ export default {
       height: 150px;
       .track_title {
         font-size: 4rem;
-        max-width: 50vw;
+        max-width: 40vw;
         text-align: center;
       }
       .track_artist {
         font-size: 3rem;
-        max-width: 50vw;
+        max-width: 40vw;
         pointer-events: none;
         text-align: center;
       }
@@ -501,6 +502,12 @@ export default {
     margin-left: 20px;
     width: 98%;
     justify-content: flex-end;
+    .TrackBar {
+      position: absolute;
+      left: 52%;
+      transform: translateX(-50%);
+      width: 80%;
+    }
     .t_actions {
       position: absolute;
       bottom: 40px;
@@ -509,11 +516,12 @@ export default {
       button {
         width: 40px;
         height: 40px;
-        // transform: scale(2);
       }
       #toggle_play {
-        width: 50px;
-        height: 50px;
+        button {
+          width: 50px;
+          height: 50px;
+        }
       }
     }
   }
@@ -542,7 +550,7 @@ export default {
 .que_wrappers {
   position: absolute;
   right: 10px;
-  height: 86%;
+  height: 82%;
   padding-top: 10px;
   width: 300px;
   h1 {
@@ -571,7 +579,8 @@ export default {
     position: absolute;
     right: 10px;
     top: 10px;
-    height: 90%;
+    height: 85%;
+    width: 22%;
   }
 }
 

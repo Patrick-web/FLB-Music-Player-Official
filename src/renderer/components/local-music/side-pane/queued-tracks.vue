@@ -14,13 +14,12 @@
         @start="drag = true"
         @end="drag = false"
       >
-        <transition-group enter-active-class="animated  lightSpeedIn faster">
-          <que-track
-            v-for="track in customQueue"
-            :key="track.fileLocation"
-            :track="track"
-          />
-        </transition-group>
+        <que-track
+          v-for="(track, index) in customQueue"
+          :key="track.fileLocation"
+          :track="track"
+          :index="index"
+        />
       </draggable>
     </div>
   </div>
@@ -60,6 +59,7 @@ export default {
       }
     },
     currentlyPlayingTrackPath() {
+      this.scrollToPlayingTrack();
       return this.$store.state.PlaybackManger.playingTrackInfo.track
         .fileLocation;
     }
@@ -73,6 +73,14 @@ export default {
     ]),
     playQueuedTrack(track) {
       this.setPlayingTrack({ track, index: 0 });
+    },
+    scrollToPlayingTrack() {
+      setTimeout(() => {
+        const index = parseInt(
+          document.querySelector('.playing_track').getAttribute('data-index')
+        );
+        console.log(index);
+      }, 100);
     }
   }
 };

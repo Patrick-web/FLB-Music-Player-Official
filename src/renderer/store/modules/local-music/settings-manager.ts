@@ -13,19 +13,20 @@ const state = {
     defaultTab: 'Tracks',
     theme: 'Fancy',
     accentColor: 'accent_blue',
+    dynamicAccentColor: false,
     volume: 1,
     scannedFolders: []
   }
 };
 const mutations = {
-  setSettingValue (state: any, payload: SettingPayloadType) {
+  setSettingValue(state: any, payload: SettingPayloadType) {
     state.settings[payload.property] = payload.newValue;
     sendMessageToNode('updateSettings', state.settings);
   },
-  restoreSettings (state: any, payload: SettingsType) {
+  restoreSettings(state: any, payload: SettingsType) {
     state.settings = payload;
   },
-  setScannedFolders (state: any, payload: Array<FolderInfoType>) {
+  setScannedFolders(state: any, payload: Array<FolderInfoType>) {
     state.settings.scannedFolders = payload;
   }
 };

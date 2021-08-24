@@ -14,10 +14,7 @@
       loading ? 'disabledBtn' : ''
     ]"
   >
-    <p
-      v-if="text && !loading"
-      class="btnText"
-    >
+    <p v-if="text && !loading" class="btnText">
       {{ text }}
     </p>
     <base-icon
@@ -28,15 +25,8 @@
       :icon="icon"
       :size="iconSize || 16"
     />
-    <img
-      v-if="!icon && img && !loading"
-      :src="require(img)"
-      class="btnIcon"
-    >
-    <div
-      v-if="loading"
-      class="btnLoaderWrapper"
-    >
+    <img v-if="!icon && img && !loading" :src="require(img)" class="btnIcon" />
+    <div v-if="loading" class="btnLoaderWrapper">
       <div class="loadingIndicator" />
     </div>
   </button>
@@ -75,6 +65,9 @@ button {
   font-family: inherit;
   border: none;
   transition: 0.2s ease;
+  &:hover {
+    background: rgba(255, 255, 255, 0.192);
+  }
   p {
     white-space: nowrap;
   }
@@ -119,7 +112,6 @@ button {
   }
   &:hover {
     border-radius: 20px;
-    background: linear-gradient(200deg, transparent, var(--accentColor));
   }
 }
 .iconBtn {
@@ -134,7 +126,6 @@ button {
   }
   &:hover {
     border-radius: 50%;
-    background: linear-gradient(200deg, transparent, var(--accentColor));
   }
 }
 .btnWithIcon {
@@ -156,20 +147,15 @@ button {
   }
   &:hover {
     border-radius: 20px;
-    background: linear-gradient(
-      200deg,
-      transparent,
-      var(--accentColor)
-    ) !important;
   }
 }
 .iconBtn.smallBtn {
-  height: 35px;
-  width: 35px;
+  height: 35px !important;
+  width: 35px !important;
 }
 .iconBtn.tinyBtn {
-  height: 25px;
-  width: 25px;
+  height: 25px !important;
+  width: 25px !important;
   img {
     width: 12px;
   }

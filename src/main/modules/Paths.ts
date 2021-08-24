@@ -7,6 +7,7 @@ const ALBUM_ART_FOLDER = path.join(APP_DATA_FOLDER, 'Album Art');
 const ARTIST_PICTURE_FOLDER = path.join(APP_DATA_FOLDER, 'Artist Pictures');
 const MUSIC_FOLDER = path.join(os.homedir(), 'Music');
 const FLBING_FOLDER = path.join(MUSIC_FOLDER, 'FLBing');
+
 if (!fs.existsSync(ALBUM_ART_FOLDER)) {
   fs.mkdirSync(ALBUM_ART_FOLDER);
 }
@@ -25,5 +26,6 @@ export const paths = {
   filesTrackerLocation: path.join(APP_DATA_FOLDER, 'processedFiles.json'),
   playlistsLocation: path.join(APP_DATA_FOLDER, 'Playlists.json'),
   playbackStatsLocation: path.join(APP_DATA_FOLDER, 'PlaybackStats.json'),
-  settingsLocation: path.join(APP_DATA_FOLDER, 'Settings.json')
+  settingsLocation: path.join(APP_DATA_FOLDER, 'Settings.json'),
+  usageData: path.join(APP_DATA_FOLDER, 'UsageData.json'),
 };

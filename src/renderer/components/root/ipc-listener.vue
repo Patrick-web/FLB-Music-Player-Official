@@ -9,29 +9,21 @@
     >
       <defs>
         <filter id="goo">
-          <feGaussianBlur
-            in="SourceGraphic"
-            stdDeviation="8"
-            result="blur"
-          />
+          <feGaussianBlur in="SourceGraphic" stdDeviation="8" result="blur" />
           <feColorMatrix
             in="blur"
             mode="matrix"
             values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 19 -9"
             result="goo"
           />
-          <feComposite
-            in="SourceGraphic"
-            in2="goo"
-            operator="atop"
-          />
+          <feComposite in="SourceGraphic" in2="goo" operator="atop" />
         </filter>
       </defs>
     </svg>
   </div>
 </template>
 <script>
-import { ipcRenderer } from 'electron';
+import { ipcRenderer, ipc } from 'electron';
 import { mapActions, mapMutations } from 'vuex';
 import { removeDuplicates } from '@/shared-utils';
 import { sendMessageToNode } from '@/renderer/utils';
@@ -67,6 +59,11 @@ export default {
       'getLyrics'
     ])
   },
+  computed: {
+    appIsOnline() {
+      return this.$store.state.appIsOnline;
+    }
+  },
   mounted() {
     ipcRenderer.send('initializeSettings');
     ipcRenderer.send('initializeApp');
@@ -92,7 +89,7 @@ export default {
       this.generateAlbumsData();
       this.generateArtistsData();
       this.generateFoldersData();
-      if (navigator.onLine) {
+      if (this.appIsOnline) {
         this.fetchArtistsInfo();
         this.getLyrics();
       }
@@ -156,18 +153,24 @@ export default {
     });
     ipcRenderer.on('downloadedTrack', (e, payload) => {
       console.log("I've received the newly downloaded track");
+      console.log(payload);
       this.addToCompletedDownloads(payload);
+      setTimeout(() => {
+        this.generateFoldersData();
+      }, 1000);
     });
     ipcRenderer.on('updatePendingTrackState', (e, payload) => {
       console.log('updating Pending Track State to');
       console.table(payload);
       this.updatePendingTrackState(payload);
     });
-
-    window.addEventListener('online', () => {
-      this.getLyrics();
-      this.fetchArtistsInfo();
+    ipcRenderer.on('isOnline', (e, payload) => {
+      console.log(payload);
     });
+    // window.addEventListener('online', () => {
+    //   this.getLyrics();
+    //   this.fetchArtistsInfo();
+    // });
 
     // Record that the app has been launched
 
@@ -178,16 +181,17 @@ export default {
     } else {
       localStorage.setItem('launches', 1);
     }
-
-    window.addEventListener('offline', () => {
-      this.seIstOnlineState(false);
-    });
-    window.addEventListener('online', () => {
-      this.seIstOnlineState(true);
-    });
-    if (navigator.onLine) {
-      this.seIstOnlineState(true);
-    }
+    setInterval(() => {
+      ipcRenderer.invoke('checkOnline').then(result => {
+        this.seIstOnlineState(result);
+      });
+    }, 3000);
+    setTimeout(() => {
+      console.log('App is ' + this.appIsOnline);
+      if (this.appIsOnline) {
+        // sendMessageToNode('sendUsageStats');
+      }
+    }, 4000);
   }
 };
 </script>

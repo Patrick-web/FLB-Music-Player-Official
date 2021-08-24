@@ -1,18 +1,15 @@
 <template>
   <div
-    :class="[currentNotification.type, 'notificationCard']"
+    :class="[currentNotification.type, 'notificationCard', 'blurred_bg blur30']"
     @click="popNotification"
   >
     <div class="notification_body">
-      <h4>{{ currentNotification.title }}</h4>
+      <p>{{ currentNotification.title }}</p>
       <p v-if="currentNotification.subTitle">
         {{ currentNotification.subTitle }}
       </p>
     </div>
-    <base-icon
-      class="closeNotification"
-      icon="x"
-    />
+    <base-icon class="closeNotification" icon="x" />
   </div>
 </template>
 
@@ -55,8 +52,6 @@ export default {
   cursor: pointer;
   display: flex;
   align-items: center;
-  background: var(--accentColor, #0066ff);
-
   h4 {
     font-family: inherit;
     font-size: 0.9rem;
@@ -69,7 +64,6 @@ export default {
     padding: 10px;
   }
   .closeNotification {
-    width: 12px;
     margin-right: 10px;
   }
   .closeNotification:hover {
@@ -77,12 +71,15 @@ export default {
   }
 }
 .normal {
-  background: var(--accentColor, #0066ff);
+  border-bottom: 2px solid #0066ff;
+  border-top: 2px solid #0066ff;
 }
 .danger {
-  background: crimson !important;
+  border-bottom: 2px solid crimson;
+  border-top: 2px solid crimson;
 }
 .warning {
-  background: orangered !important;
+  border-bottom: 2px solid orangered;
+  border-top: 2px solid orangered;
 }
 </style>

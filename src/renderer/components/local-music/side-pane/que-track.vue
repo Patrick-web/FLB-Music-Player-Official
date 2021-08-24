@@ -4,18 +4,22 @@
       currentlyPlayingTrackPath === track.fileLocation ? 'playing_track' : '',
       'queuedTrack bg1 border_split'
     ]"
-    @click.stop="playQueuedTrack(track)"
+    :data-index="index"
   >
-    <p class="card_title text-small-1">
-      {{ track.defaultTitle }}
-    </p>
-    <p class="card_subTitle weight300 text-small-2">
-      {{ track.defaultArtist }}
-    </p>
+    <div @click.stop="playQueuedTrack(track)">
+      <p class="card_title text-small-1">
+        {{ track.defaultTitle }}
+      </p>
+      <p class="card_subTitle weight300 text-small-2">
+        {{ track.defaultArtist }}
+      </p>
+    </div>
     <base-button
       icon="x"
       class="removeBt"
-      @click.stop="removeTrackFromCustomQueue(index)"
+      :small="true"
+      style="width: 25px; height: 25px"
+      @click.native="removeTrackFromCustomQueue(index)"
     />
   </div>
 </template>
@@ -26,7 +30,8 @@ import { mapMutations } from 'vuex';
 export default {
   name: 'QueTrack',
   props: {
-    track: Object
+    track: Object,
+    index: Number
   },
   computed: {
     currentlyPlayingTrackPath() {
@@ -91,7 +96,7 @@ export default {
 .ghost {
   background: var(--accentColor);
 }
-.queuedTrack:hover {
+.queuedTrack:hover:not(.playing_track) {
   background: rgba(255, 255, 255, 0.158);
   .removeBt {
     transform: translateX(-50%) scale(1);
@@ -103,10 +108,8 @@ export default {
   }
 }
 .playing_track {
-  border-left: 5px solid var(--accentColor);
-  border-right: 5px solid var(--accentColor);
-  // border-top-left-radius: 0px;
-  // border-bottom-right-radius: 0px;
-  width: 86%;
+  border-radius: 10px;
+  margin: 10px 0px;
+  background: var(--accentColor);
 }
 </style>

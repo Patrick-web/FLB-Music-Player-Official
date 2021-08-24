@@ -7,7 +7,7 @@ import { paths } from './Paths';
 
 export class DownloadManager {
   downloads = [] as any[];
-  downloadTrack (payload: any) {
+  downloadTrack(payload: any) {
     // const destination = path.join(paths.flbingFolder, payload.tags.title) + '.mp3'
     const source = payload.trackURL;
     const newDownloadInstance = new SparkDownload(source, payload);
@@ -20,7 +20,7 @@ class SparkDownload {
   newDownload: any;
   id: string;
   payloadInfo: any;
-  constructor (source: string, payload: any) {
+  constructor(source: string, payload: any) {
     const dConfig = {
       fileName: {
         name: payload.tags.title,
@@ -58,10 +58,6 @@ class SparkDownload {
         'successMsg',
         `${this.payloadInfo.tags.title} by ${this.payloadInfo.tags.artist} Downloaded 🚀`
       );
-      sendMessageToRenderer('updatePendingTrackState', {
-        id: this.id,
-        stateCode: 6
-      });
       setTimeout(() => {
         sendMessageToRenderer('bingTrackDownloaded', this.id);
       }, 1000);
@@ -85,27 +81,27 @@ class SparkDownload {
       });
     });
   }
-  start () {
+  start() {
     this.newDownload.start();
   }
-  pause () {
+  pause() {
     this.newDownload.pause();
   }
-  resume () {
+  resume() {
     this.newDownload.pause();
   }
-  stop () {
+  stop() {
     this.newDownload.stop();
   }
-  getTotalSize () {
+  getTotalSize() {
     this.newDownload.getTotalSize();
   }
-  isResumable () {
+  isResumable() {
     this.newDownload.isResumable();
   }
 }
 
-function sendDownloadProgress (
+function sendDownloadProgress(
   trackID: any,
   progressInfo: DownloadProgressInfo
 ) {
@@ -116,7 +112,7 @@ function sendDownloadProgress (
   });
 }
 
-async function writeTrackTags (location: any, tags: any) {
+async function writeTrackTags(location: any, tags: any) {
   const success = writeTags(location, tags);
   console.log('Writing tags first');
   console.log(tags);
