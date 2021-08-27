@@ -1,5 +1,5 @@
 
-![Logo](https://i.ibb.co/ry3w6cw/flb-website-min.jpg)
+# Future changes/updates to this repo have migrated to this ![New Repo](https://github.com/FLB-Music/FLB-Music-Player)
 <a href="https://snapcraft.io/flbmusic">
   <img alt="flbmusic" src="https://snapcraft.io/flbmusic/badge.svg" />
 </a>
