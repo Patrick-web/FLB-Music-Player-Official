@@ -1,16 +1,11 @@
+## This Repo has been migrated to [this new repo](https://github.com/FLB-Music/FLB-Music-Player) where all updates will be made
+![Logo](https://i.ibb.co/PwrL1Hy/flb-website-shot.png)
 
-# Future changes/updates to this repo have migrated to this ![New Repo](https://github.com/FLB-Music/FLB-Music-Player)
-<a href="https://snapcraft.io/flbmusic">
-  <img alt="flbmusic" src="https://snapcraft.io/flbmusic/badge.svg" />
-</a>
-<a href="https://snapcraft.io/flbmusic">
-  <img alt="flbmusic" src="https://snapcraft.io/flbmusic/trending.svg?name=0" />
-</a>
     
 # FLB Music
 
 A Beautiful🌹 and Feature Rich💎 Cross Platform Music Player and Downloader.
-Visit 🔗https://fellthebeat.xyz to download ⬇
+Visit 🔗https://flbmusic.xyz to download ⬇
 
 
 
@@ -35,12 +30,6 @@ Visit 🔗https://fellthebeat.xyz to download ⬇
 ![artists](https://i.ibb.co/6yBt2hZ/artists-1-min.jpg)
 ![artists](https://i.ibb.co/1sgQR1d/artists-2-min.jpg)
 ![equalizer](https://i.ibb.co/L8YFTpD/equalizer-min.jpg)
-![FLBing](https://i.ibb.co/BNkW23s/FLBing-1-min.jpg)
-![FLBing](https://i.ibb.co/chNDVXn/FLBing-2-min.jpg)
-![FLBing](https://i.ibb.co/P4ccyKb/FLBing-3-min.jpg)
-![FLBing](https://i.ibb.co/HFkVZ5p/FLBing-4-min.jpg)
-![FLBing](https://i.ibb.co/fGY8Zq3/FLBing-5-min.jpg)
-![FLBing](https://i.ibb.co/qdSR5n1/FLBing-6-min.jpg)
 ![folders](https://i.ibb.co/LkDJswy/folders-1-min.jpg)
 ![folders](https://i.ibb.co/H75PhGC/folders-2-min.jpg)
 ![home](https://i.ibb.co/41F677n/home-1-min.jpg)
