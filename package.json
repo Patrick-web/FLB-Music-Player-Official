@@ -31,7 +31,7 @@
 		"electron-updater": "4.3.9",
 		"g-i-s": "2.1.6",
 		"genius-lyrics-api": "3.0.6",
-		"node-downloader-helper": "1.0.18",
+		"node-downloader-helper": "1.0.19",
 		"node-id3": "0.2.3",
 		"vue": "2.6.14",
 		"vue-router": "3.5.2",
