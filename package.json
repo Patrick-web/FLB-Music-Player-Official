@@ -43,8 +43,8 @@
 	},
 	"devDependencies": {
 		"@types/electron-devtools-installer": "2.2.0",
-		"@typescript-eslint/eslint-plugin": "4.29.3",
-		"@typescript-eslint/parser": "4.29.3",
+		"@typescript-eslint/eslint-plugin": "4.33.0",
+		"@typescript-eslint/parser": "4.33.0",
 		"@vue/cli-plugin-babel": "4.5.13",
 		"@vue/cli-plugin-eslint": "4.5.13",
 		"@vue/cli-plugin-router": "4.5.13",
