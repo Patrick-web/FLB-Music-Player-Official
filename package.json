@@ -33,7 +33,7 @@
 		"genius-lyrics-api": "3.0.6",
 		"node-downloader-helper": "1.0.18",
 		"node-id3": "0.2.3",
-		"vue": "2.6.14",
+		"vue": "2.7.16",
 		"vue-router": "3.5.2",
 		"vue-virtual-scroll-list": "2.3.2",
 		"vue-virtual-scroller": "1.0.10",
@@ -66,7 +66,7 @@
 		"typescript": "4.3.5",
 		"vue-cli-plugin-electron-builder": "2.1.1",
 		"vue-eslint-parser": "7.10.0",
-		"vue-template-compiler": "2.6.14",
+		"vue-template-compiler": "2.7.16",
 		"webpackbar": "5.0.0-3"
 	}
 }
