@@ -9,7 +9,7 @@
     <p class="card_title">{{ track.defaultTitle }}</p>
     <p class="card_subTitle">{{ track.defaultArtist }}</p>
     <img
-      @click.stop="removeTrackFromCustomQueue(index)"
+      @click.stop="removeTrackFromCustomQueue(track)"
       src="@/RendererProcess/assets/images/x.svg"
     />
   </div>
